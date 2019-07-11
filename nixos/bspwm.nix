@@ -54,6 +54,10 @@ let bspwmrc = (pkgs.writeText "bspwmrc" ''
 
 {
   config = {
+    environment.systemPackages = with pkgs; [
+      bspwm
+    ];
+
     environment.etc.bspwmrc = {
       text = builtins.readFile bspwmrc;
       mode = "0645";

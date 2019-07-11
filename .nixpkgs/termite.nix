@@ -59,8 +59,9 @@ let termite-config = (pkgs.writeText "config" ''
   color21 = #dfe2f1
 
   [options]
-  font = Siji 14px
-  font = FontAwesome 14px
+  font = Noto 14px
+  font = Siji 9px
+  font = FontAwesome 9px
   font = GohuFont 14px
 ''); in
 
@@ -69,14 +70,15 @@ let termite-open = (pkgs.writeShellScriptBin "termite-open" ''
 ''); in
 
 {
+  home.packages = with pkgs; [
+    (termite-open)
+    termite
+  ];
+
   xdg.configFile = {
     "termite/config".source = termite-config;
     "gtk-3.0/gtk.css".source = gtk-css;
   };
-
-  home.packages = with pkgs; [
-    (termite-open)
-  ];
 
   # programs.termite = {
   #   enable = true;

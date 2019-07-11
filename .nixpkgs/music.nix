@@ -79,6 +79,13 @@ let ncmpcpp-bindings = (pkgs.writeText "bindings" ''
 ''); in
 
 {
+  home.packages = with pkgs; [
+    # music
+    ncmpcpp
+    # mpd
+    mpc_cli
+  ];
+
   services.mpd = {
     enable = true;
     dataDir = "${homedir}/.mpd";

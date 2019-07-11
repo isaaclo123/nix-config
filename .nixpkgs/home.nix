@@ -7,29 +7,17 @@
       ./dunst.nix
       ./music.nix
       ./mpv.nix
+      ./gpg.nix
       ./qutebrowser.nix
       ./rofi.nix
+      ./rofi-pass.nix
       ./python.nix
       ./email.nix
       ./termite.nix
       ./neomutt.nix
     ];
 
-  # home.packages = [
-  # ];
-
   services = {
-    gpg-agent = {
-      enable = false;
-
-      defaultCacheTtl = 2147483647;
-      maxCacheTtl = 2147483647;
-
-      defaultCacheTtlSsh = 2147483647;
-      maxCacheTtlSsh = 2147483647;
-
-      enableSshSupport = true;
-    };
     udiskie = {
       enable = true;
       automount = true;

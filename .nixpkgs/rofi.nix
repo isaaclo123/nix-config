@@ -19,6 +19,12 @@ let rofi-config = (pkgs.writeText "rofi.conf" ''
 ''); in
 
 {
+  home.packages = with pkgs; [
+    # rofi
+    rofi
+    # rofi-pass
+  ];
+
   xdg.configFile = {
     "rofi/config".source = rofi-config;
   };

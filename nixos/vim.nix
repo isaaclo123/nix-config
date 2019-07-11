@@ -36,6 +36,9 @@
         set shiftwidth=4
         set smarttab
 
+        " deoplete
+        let g:deoplete#enable_at_startup = 1
+
         " This is only necessary if you use "set termguicolors".
         set t_8f=^[[38;2;%lu;%lu;%lum
         set t_8b=^[[48;2;%lu;%lu;%lum
@@ -269,13 +272,26 @@
           repo = "vim-colors_atelier-schemes";
           rev = "ccdd1558b172da6928db7d27d43da75df0444ed9";
           sha256 = "14iwc9g88b6p4pjigvc7rd2x8f5xcz1ajd74i7l7i71ys8dpdcga";
-
-
-
         };
       }; in
       with pkgs.vimPlugins; [
-        (vim-base2tone-theme) editorconfig-vim vim-polyglot vim-nix ale vim-airline vim-pandoc vim-pandoc-syntax vim-speeddating vim-easymotion vim-css-color nerdtree vim-table-mode auto-pairs python-mode
+        (vim-base2tone-theme)
+        editorconfig-vim
+        vim-polyglot
+        vim-nix
+        ale
+        vim-airline
+        vim-pandoc
+        vim-pandoc-syntax
+        vim-speeddating
+        vim-easymotion
+        vim-css-color
+        nerdtree
+        vim-table-mode
+        auto-pairs
+        python-mode
+        ctrlp
+        deoplete-nvim
       ];
     };
   });
@@ -284,6 +300,12 @@
     variables = {
       EDITOR = "vim";
     };
-    systemPackages = [ pkgs.nvi pkgs.universal-ctags (system_vim) ];
+
+    systemPackages = with pkgs; [
+      (system_vim)
+      neovim
+      nvi
+      universal-ctags
+    ];
   };
 }

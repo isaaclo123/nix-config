@@ -17,7 +17,7 @@
       ./zsh.nix
       # ./qutebrowser.nix
       # ./rofi.nix
-      ./rofi-pass.nix
+      # ./rofi-pass.nix
       # ./offlineimap.nix
     ];
 
@@ -54,9 +54,12 @@
   # fonts
   fonts = {
     fonts = with pkgs; [
+      noto-fonts-emoji
+      # unifont
       gohufont
       siji
       font-awesome_4
+      # dejavu_fonts
     ];
     fontconfig = {
       allowBitmaps = true;
@@ -101,11 +104,13 @@
       nix-prefetch-scripts
       home-manager
 
-      # editor
-      neovim
+      # pdf, pandoc
+      zathura
+      pandoc
+      texlive.combined.scheme-full
 
       # mail
-      neomutt
+      # neomutt
       # isync
       # offlineimap
       # msmtp
@@ -122,28 +127,13 @@
       htop
       s-tui
 
-      # notifications
-      dunst
-      libnotify
-
       # desktop
-      # polybar
-      bspwm
-      sxhkd
-      rofi
-      rofi-pass
       i3lock-pixeled
       feh
 
-      # music
-      ncmpcpp
-      # mpd
-      mpc_cli
-
-      # terminal
-      termite
-      zsh
-      oh-my-zsh
+      # password
+      pass
+      pass-otp
 
       # setting
       acpi
@@ -154,7 +144,6 @@
       brightnessctl
 
       # internet
-      qutebrowser
       w3m-full
 
       # desktop utilities
@@ -175,9 +164,6 @@
       udiskie
       ntfs3g
 
-      # office
-      zathura
-
       # misc utilities
       killall
       wget
@@ -186,13 +172,6 @@
       unrar
       unzip
       xdotool
-      tzupdate
-
-      # password
-      gnupg
-      pass
-      pass-otp
-      diceware
 
       # development tools
       gnumake
@@ -207,10 +186,10 @@
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
-  programs.gnupg.agent = {
-    enable = true;
-    enableSSHSupport = true;
-  };
+  # programs.gnupg.agent = {
+  #   enable = true;
+  #   enableSSHSupport = true;
+  # };
 
   # List services that you want to enable:
 

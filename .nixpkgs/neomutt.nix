@@ -366,6 +366,10 @@ let muttrc = (pkgs.writeText "muttrc" ''
 ''); in
 
 {
+  home.packages = with pkgs; [
+    neomutt
+  ];
+
   home.file = {
     ".mailcap".source = mailcap;
     ".muttrc".source = muttrc;

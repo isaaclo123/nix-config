@@ -1,6 +1,12 @@
 { pkgs, ... }:
 
 {
+  home.packages = with pkgs; [
+    # notifications
+    dunst
+    libnotify
+  ];
+
   services.dunst = {
     enable = true;
     settings = {

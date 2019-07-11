@@ -173,6 +173,10 @@ let sxhkdrc = (pkgs.writeText "sxkhdrc" ''
 {
 
   config = {
+    environment.systemPackages = with pkgs; [
+      sxhkd
+    ];
+
     environment.etc.sxhkdrc = {
       text = builtins.readFile sxhkdrc;
     };

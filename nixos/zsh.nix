@@ -1,6 +1,11 @@
 { config, pkgs, ... }:
 
 {
+  environment.systemPackages = with pkgs; [
+    zsh
+    oh-my-zsh
+  ];
+
   programs.zsh.enable = true;
   programs.zsh.autosuggestions = {
     enable = true;
@@ -90,6 +95,12 @@
   programs.zsh.shellAliases = with pkgs; {
     c = "clear";
   };
+
+  environment.shellInit = ''
+    gpg-connect-agent /bye
+    export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+    echo UPDATESTARTUPTTY | gpg-connect-agent
+  '';
 
   environment.variables = {
     NOTMUCH_CONFIG = "/home/isaac/.config/notmuch/notmuchrc";
