@@ -265,17 +265,28 @@
         set path+=**
 
       '';
-      plug.plugins = let vim-base2tone-theme = pkgs.vimUtils.buildVimPlugin {
-        name = "vim-base2tone-theme";
-        src = pkgs.fetchFromGitHub {
-          owner = "atelierbram";
-          repo = "vim-colors_atelier-schemes";
-          rev = "ccdd1558b172da6928db7d27d43da75df0444ed9";
-          sha256 = "14iwc9g88b6p4pjigvc7rd2x8f5xcz1ajd74i7l7i71ys8dpdcga";
-        };
-      }; in
+      plug.plugins =
+        let vim-base2tone-theme = pkgs.vimUtils.buildVimPlugin {
+          name = "vim-base2tone-theme";
+          src = pkgs.fetchFromGitHub {
+            owner = "atelierbram";
+            repo = "vim-colors_atelier-schemes";
+            rev = "ccdd1558b172da6928db7d27d43da75df0444ed9";
+            sha256 = "14iwc9g88b6p4pjigvc7rd2x8f5xcz1ajd74i7l7i71ys8dpdcga";
+          };
+        }; in
+        let vim-wordmotion = pkgs.vimUtils.buildVimPlugin {
+          name = "vim-wordmotion";
+          src = pkgs.fetchFromGitHub {
+            owner = "chaoren";
+            repo = "vim-wordmotion";
+            rev = "4c8c4ca0165bc45ec269d1aa300afc36edee0a55";
+            sha256 = "1dnvryzqrf9msr81qlmcdf660csp43h19mbx56dnadpsyzadx6vm";
+          };
+        }; in
       with pkgs.vimPlugins; [
         (vim-base2tone-theme)
+        (vim-wordmotion)
         editorconfig-vim
         vim-polyglot
         vim-nix

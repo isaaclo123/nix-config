@@ -227,7 +227,6 @@ let muttrc = (pkgs.writeText "muttrc" ''
 
   # Macros for notmuch
   # a notmuch query, showing only the results
-  bind index L bottom-page
   macro index \Cp "<enter-command>unset wait_key<enter><shell-escape>read -p 'notmuch query: ' x; echo \$x >/tmp/mutt_terms<enter><limit>~i \"\`notmuch search --output=messages \$(cat /tmp/mutt_terms) | head -n 600 | perl -le '@a=<>;chomp@a;s/\^id:// for@a;$,=\"|\";print@a'\`\"<enter>" "show only messages matching a notmuch pattern"
 
   # Fetch mail shortcut
@@ -271,7 +270,7 @@ let muttrc = (pkgs.writeText "muttrc" ''
   # ----------------------------------------------------
 
   bind generic             z         noop
-  bind pager,attach        g         noop
+  bind attach              g         noop
   bind index,pager         d         noop
   bind index,pager         s         noop
   bind index,pager         c         noop
@@ -294,6 +293,7 @@ let muttrc = (pkgs.writeText "muttrc" ''
   bind index               zA        collapse-all
   bind index,pager         N         search-opposite
   bind index               <Backtab> previous-new-then-unread
+
 
   # Actions
   # ----------------------------------------------------
@@ -363,6 +363,10 @@ let muttrc = (pkgs.writeText "muttrc" ''
   # Pipe message to xclip with yy.  pipe_decode will ensure that
   # unnecessary headers are removed and the message is processed.
   macro index,pager,attach,compose \cy "<enter-command>set my_pipe_decode=\$pipe_decode pipe_decode<Enter><pipe-message>xclip<Enter><enter-command>set pipe_decode=\$my_pipe_decode; unset my_pipe_decode<Enter>" "copy message to clipboard using xclip"
+
+  bind index H top-page
+  bind index M middle-page
+  bind index L bottom-page
 ''); in
 
 {

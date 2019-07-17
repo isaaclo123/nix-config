@@ -37,6 +37,9 @@ let bspwmrc = (pkgs.writeText "bspwmrc" ''
   bspc rule -a neomutt_ desktop='^5'
   bspc rule -a ncmpcpp_ desktop='^6'
 
+  bspc rule -a mpv:mpvscratchpad sticky=on state=floating hidden=on
+  mpv-scratchpad &
+
   # autostart
 
   killall -q dunst && (dunst &)

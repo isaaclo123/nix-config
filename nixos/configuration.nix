@@ -94,11 +94,17 @@
         # polybar-ext
         bspc wm -r
       '');
-    in with pkgs; [
+    in
+    with pkgs; [
       # custom packages
       (reload-desktop)
       (import ./z.nix)
       # (import ./xfd.nix)
+      # programming
+      nodejs
+
+      # office
+      libreoffice
 
       # nix
       nix-prefetch-scripts
@@ -114,11 +120,6 @@
       # isync
       # offlineimap
       # msmtp
-
-      # calendar/contacts
-      calcurse
-      vdirsyncer
-      khard
 
       # organization
       todo-txt-cli

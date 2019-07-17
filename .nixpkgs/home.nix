@@ -15,6 +15,7 @@
       ./email.nix
       ./termite.nix
       ./neomutt.nix
+      ./calendar.nix
     ];
 
   services = {

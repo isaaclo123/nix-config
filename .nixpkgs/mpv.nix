@@ -69,10 +69,90 @@ let gallery-dl_hook-plugin = (pkgs.writeText "gallery-dl_hook.lua" ''
 # ); in
 #
 
+let MPV_SOCKET = "/tmp/mpvsocket"; in
+let
+  mpv-scratchpad = (pkgs.writeShellScriptBin "mpv-scratchpad" ''
+  SOCKET="${MPV_SOCKET}"
+
+  mpv --x11-name=mpvscratchpad --geometry=512x288-40+60 --no-terminal --no-border --force-window --input-ipc-server="${MPV_SOCKET}" --idle=yes
+  '');
+in
+let
+  mpv-scratchpad-add = (pkgs.writeShellScriptBin "mpv-scratchpad-add" ''
+  mpvc -a -S "${MPV_SOCKET}" "gallery-dl://$@"
+  '');
+in
+let mpv-scratchpad-toggle = (pkgs.writeShellScriptBin "mpv-scratchpad-toggle" ''
+  VISIBLE_IDS=$(xdotool search --onlyvisible --classname 'mpvscratchpad' | wc -l)
+  ID=$(xdotool search --classname 'mpvscratchpad' | head -n1);\
+
+  bspc node $ID --flag hidden;bspc node -f $ID
+  [[ $VISIBLE_IDS == 0 ]] && bspc node --focus last
+''); in
+let
+  mpv-scratchpad-ctl = (pkgs.writeShellScriptBin "mpv-scratchpad-ctl" ''
+  ME=$(basename $0)
+  TIMEOUT=5
+
+  if [ "$1" = "previous" ]; then
+      if pidof -o %PPID -x $ME; then # already running
+          # go to previous video
+          mpvc --seek -1
+          killall -o 1s $ME
+      else
+          # otherwise restart video
+          mpvc --time 0
+      fi
+
+      sleep $TIMEOUT
+      exit 0
+  fi
+
+  if [ "$1" = "next" ]; then
+      # next
+      mpvc --seek 1
+      mpvc --play
+  fi
+
+  if [ "$1" = "play" ]; then
+      # play
+      mpvc --play
+  fi
+
+  if [ "$1" = "pause" ]; then
+      mpvc --stop
+  fi
+
+  if [ "$1" = "play-pause" ]; then
+      # play toggle
+      mpvc --toggle
+  fi
+
+  if [ "$1" = "toggle" ]; then
+      id=$(cat /tmp/mpvscratchid);\
+      bspc node $id --flag hidden;bspc node -f $id
+  fi
+
+  if [ "$1" = "stop" ]; then
+      mpvc --stop
+      # hide
+      bspc query -N -n .floating > /tmp/mpvscratchid
+  fi
+
+  # reset mpvctlhelper "restart"
+  killall $ME ||
+  exit 0
+  '');
+in
+
 {
   home.packages = with pkgs; [
+    (mpv-scratchpad)
+    (mpv-scratchpad-toggle)
+    (mpv-scratchpad-ctl)
     unstable.gallery-dl
     # mpv-with-scripts
+    jshon
     mpvc
   ];
 
