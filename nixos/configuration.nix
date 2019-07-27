@@ -121,6 +121,14 @@
       # offlineimap
       # msmtp
 
+      # mpv
+      # (mpv-with-scripts.override {
+      #   scripts = [
+      #     mpvScripts.mpris
+      #   ];
+      # })
+      # playerctl
+
       # organization
       todo-txt-cli
 
@@ -194,6 +202,12 @@
 
   # List services that you want to enable:
 
+  # dconf for themes
+  services.dbus.packages = with pkgs; [ gnome3.dconf ];
+
+  # flatpak
+  services.flatpak.enable = true;
+
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
 
@@ -211,7 +225,31 @@
 
   # Enable sound.
   sound.enable = true;
-  hardware.pulseaudio.enable = true;
+  # sound.extraConfig = ''
+  #   pcm.!default {
+  #     type hw
+  #     card 1
+  #   }
+
+  #   ctl.!default {
+  #     type hw
+  #     card 0
+  #   }
+  # '';
+  hardware.pulseaudio = {
+    # package = pkgs.pulseaudioFull;
+    enable=true;
+    support32Bit = true;
+    # systemWide = true;
+    # tcp.enable = true;
+    # configFile = pkgs.writeText "default.pa" ''
+    #   load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1
+    # '';
+    configFile = pkgs.runCommand "default.pa" {} ''
+      sed 's/module-udev-detect$/module-udev-detect tsched=0/' \
+        ${pkgs.pulseaudio}/etc/pulse/default.pa > $out
+    '';
+  };
 
   services.xserver = {
     # Enable the X11 windowing system.
@@ -280,5 +318,6 @@
 
   nixpkgs.config = {
     allowUnfree = true;
+    # pulseaudio = true;
   };
 }

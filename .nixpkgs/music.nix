@@ -1,5 +1,9 @@
 { pkgs, ... }:
 
+let
+  unstable = import <unstable> {};
+in
+
 let homedir = builtins.getEnv "HOME"; in
 # let configdir = "${homedir}/.nixpkgs"; in
 
@@ -84,6 +88,7 @@ let ncmpcpp-bindings = (pkgs.writeText "bindings" ''
     ncmpcpp
     # mpd
     mpc_cli
+    unstable.audacity
   ];
 
   services.mpd = {

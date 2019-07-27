@@ -62,6 +62,38 @@ let sxhkdrc = (pkgs.writeText "sxkhdrc" ''
     super + c
       CM_HISTLENGTH=15 CM_LAUNCHER=rofi clipmenu
 
+    # mpv toggle
+    super + Up
+      mpv-scratchpad-toggle
+
+    # seek forward
+    super + Right
+      playerctl -p mpv position 3+
+
+    # seek back
+    super + Left
+      playerctl -p mpv position 3-
+
+    # mpv play/pause
+    super + Down
+      playerctl -p mpv play-pause
+
+    # mpv fullscreen toggle
+    super + shift + Up
+      mpv-scratchpad-fullscreen-toggle
+
+    # next track
+    super + shift + Right
+      playerctl -p mpv next
+
+    # prev track
+    super + shift + Left
+      playerctl -p mpv previous
+
+    # mpv scratchpad hide
+    super + shift + Down
+      mpv-scratchpad-hide
+
     #
     # bspwm hotkeys
     #

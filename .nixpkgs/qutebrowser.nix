@@ -104,8 +104,8 @@ let qutebrowser-config = (pkgs.writeText "config.py" ''
   # mpv settings
 
   # qute mpv background window
-  config.bind('M', 'hint links spawn bash -c "~/bin/mpvadd {hint-url}"')
-  config.bind('m', 'spawn bash -c "~/bin/mpvadd {url}"')
+  config.bind('M', 'hint links spawn mpv-scratchpad-open {hint-url}')
+  config.bind('m', 'spawn mpv-scratchpad-open {url}')
 
   # mpv normal open
   config.bind('<', 'hint links spawn ~/bin/mpvopen {hint-url}')

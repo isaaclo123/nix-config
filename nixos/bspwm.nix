@@ -20,7 +20,9 @@ let bspwmrc = (pkgs.writeText "bspwmrc" ''
   bspc config window_gap          14
 
   bspc config focused_border_color \#6679cc
+  bspc config active_border_color \#c76b29
   bspc config normal_border_color \#293256
+  bspc config presel_feedback_color \#6679cc
 
   bspc config split_ratio          0.52
   bspc config borderless_monocle   true
@@ -37,12 +39,13 @@ let bspwmrc = (pkgs.writeText "bspwmrc" ''
   bspc rule -a neomutt_ desktop='^5'
   bspc rule -a ncmpcpp_ desktop='^6'
 
-  bspc rule -a mpv:mpvscratchpad sticky=on state=floating hidden=on
-  mpv-scratchpad &
+  bspc rule -a mpv:mpvscratchpad sticky=on state=floating hidden=on border=off
 
   # autostart
 
   killall -q dunst && (dunst &)
+
+  mpv-scratchpad &
 
   qutebrowser &
   termite --class=termite_ &

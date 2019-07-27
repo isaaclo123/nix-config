@@ -8,6 +8,7 @@
       ./music.nix
       ./mpv.nix
       ./gpg.nix
+      ./theme.nix
       ./qutebrowser.nix
       ./rofi.nix
       ./rofi-pass.nix
@@ -17,6 +18,10 @@
       ./neomutt.nix
       ./calendar.nix
     ];
+
+  home.packages = with pkgs; [
+    openshot-qt
+  ];
 
   services = {
     udiskie = {
