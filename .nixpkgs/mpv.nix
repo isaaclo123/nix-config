@@ -267,6 +267,7 @@ let mpv-scratchpad-toggle = (pkgs.writeShellScriptBin "mpv-scratchpad-toggle" ''
     # is marked fullscreen, so should be fullscreen
     bspc node $ID --state fullscreen
     bspc node $ID --flag sticky=off
+    bspc node --focus $ID
   else
     # is not marked fullscreen, so should be not marked fullscreen
     bspc node $ID --state floating
@@ -295,7 +296,7 @@ let mpv-scratchpad-fullscreen-toggle = (pkgs.writeShellScriptBin "mpv-scratchpad
   FULLSCREEN=${fullscreen-lock}
 
   # move mpv to front
-    bspc node $ID --to-desktop newest
+  bspc node $ID --to-desktop newest
 
   bspc node $ID --flag hidden=off
 
