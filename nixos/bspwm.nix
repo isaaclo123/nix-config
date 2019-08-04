@@ -47,6 +47,8 @@ let bspwmrc = (pkgs.writeText "bspwmrc" ''
 
   mpv-scratchpad &
 
+  autocutsel -s PRIMARY &
+
   qutebrowser &
   termite --class=termite_ &
   termite --class=vim_ -e vim &

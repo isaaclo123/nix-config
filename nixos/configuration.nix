@@ -54,8 +54,9 @@
   # fonts
   fonts = {
     fonts = with pkgs; [
-      noto-fonts-emoji
-      # unifont
+      # noto-fonts-emoji
+      unifont
+      unifont_upper
       gohufont
       siji
       font-awesome_4
@@ -63,6 +64,7 @@
     ];
     fontconfig = {
       allowBitmaps = true;
+      useEmbeddedBitmaps = true;
       antialias = true;
       defaultFonts = {
         monospace = [ "GohuFont" ];
@@ -164,7 +166,7 @@
       sxiv
 
       # unclutter
-      # autocutsel
+      autocutsel
 
       # security
       clamav
@@ -318,6 +320,6 @@
 
   nixpkgs.config = {
     allowUnfree = true;
-    # pulseaudio = true;
+    pulseaudio = true;
   };
 }

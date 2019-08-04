@@ -1,12 +1,5 @@
 { pkgs, ... }:
 
-let gtk-css = (pkgs.writeText "gtk.css" ''
-  .termite {
-      padding: 14px;
-  }
-
-''); in
-
 let termite-config = (pkgs.writeText "config" ''
   [colors]
   # Base16 Atelier Sulphurpool
@@ -59,7 +52,8 @@ let termite-config = (pkgs.writeText "config" ''
   color21 = #dfe2f1
 
   [options]
-  font = Noto 14px
+  font = Unifont Upper 14px
+  font = Unifont 14px
   font = Siji 9px
   font = FontAwesome 9px
   font = GohuFont 14px
@@ -75,9 +69,15 @@ let termite-open = (pkgs.writeShellScriptBin "termite-open" ''
     termite
   ];
 
+  gtk.gtk3.extraCss = ''
+    .termite {
+      padding: 14px;
+    }
+  '';
+
   xdg.configFile = {
     "termite/config".source = termite-config;
-    "gtk-3.0/gtk.css".source = gtk-css;
+    # "gtk-3.0/gtk.css".source = gtk-css;
   };
 
   # programs.termite = {

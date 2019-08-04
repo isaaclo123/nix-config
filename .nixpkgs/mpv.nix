@@ -4,8 +4,6 @@ let
   unstable = import <unstable> {};
 in
 
-# let MPV_SOCKET = "/tmp/mpvsocket"; in
-
 let mpv-config = (pkgs.writeText "mpv.conf" ''
   # MPV config
 
@@ -242,40 +240,87 @@ let gallery-dl_hook-plugin = (pkgs.writeText "gallery-dl_hook.lua" ''
 ''); in
 
   # mpv --x11-name=mpvscratchpad --geometry=512x288-40+60 --no-terminal --no-border --force-window --input-ipc-server ${MPV_SOCKET} --keep-open=yes --idle=yes
+let fullscreen-lock = "/tmp/mpv-scratchpad-fullscreen.lock"; in
+
 let mpv-scratchpad = (pkgs.writeShellScriptBin "mpv-scratchpad" ''
+  FULLSCREEN=${fullscreen-lock}
+  rm -f $FULLSCREEN
   mpv --x11-name=mpvscratchpad --geometry=512x288-32+62 --no-terminal --force-window --keep-open=yes --idle=yes
   '');
 in
 let mpv-scratchpad-toggle = (pkgs.writeShellScriptBin "mpv-scratchpad-toggle" ''
   VISIBLE_IDS=$(xdotool search --onlyvisible --classname 'mpvscratchpad')
   ID=$(xdotool search --classname 'mpvscratchpad' | head -n1);\
+  FULLSCREEN=${fullscreen-lock}
 
+  # sticky desktop
   bspc node $ID --flag sticky=on
 
-  [ -n $ID ] && bspc node $ID --flag hidden;bspc node -f $ID
-  [ -z $VISIBLE_IDS ] && [ -n $ID ] && bspc node --focus last
-''); in
-let mpv-scratchpad-show = (pkgs.writeShellScriptBin "mpv-scratchpad-show" ''
-  ID=$(xdotool search --classname 'mpvscratchpad' | head -n1);\
+  # toggle hide
+  bspc node $ID --flag hidden
 
-  playerctl -p mpv play
-  bspc node $ID --flag sticky=off
-  bspc node $ID --flag hidden=off
-  bspc node $ID --to-desktop newest
-  bspc node --focus $ID
-  bspc node $ID -t fullscreen
+  ## if hidden, don't do anything
+  # [ -z $VISIBLE_IDS ] && exit 0
+
+  ## else toggle fullscreen
+  if [ -e "$FULLSCREEN" ]; then
+    # is marked fullscreen, so should be fullscreen
+    bspc node $ID --state fullscreen
+    bspc node $ID --flag sticky=off
+  else
+    # is not marked fullscreen, so should be not marked fullscreen
+    bspc node $ID --state floating
+    bspc node $ID --flag sticky=on
+    [ -z $VISIBLE_IDS ] && bspc node --focus $ID
+    [ -z $VISIBLE_IDS ] && bspc node --focus last
+  fi
 ''); in
+# let mpv-scratchpad-show = (pkgs.writeShellScriptBin "mpv-scratchpad-show" ''
+#   ID=$(xdotool search --classname 'mpvscratchpad' | head -n1);\
+#
+#   playerctl -p mpv play
+#   bspc node $ID --flag sticky=off
+#   bspc node $ID --flag hidden=off
+#   bspc node $ID --to-desktop newest
+#   bspc node --focus $ID
+#   bspc node $ID -t fullscreen
+# ''); in
 let mpv-scratchpad-open = (pkgs.writeShellScriptBin "mpv-scratchpad-open" ''
   playerctl -p mpv open "$@"
   playerctl -p mpv play
 ''); in
 let mpv-scratchpad-fullscreen-toggle = (pkgs.writeShellScriptBin "mpv-scratchpad-fullscreen-toggle" ''
+  VISIBLE_IDS=$(xdotool search --onlyvisible --classname 'mpvscratchpad')
   ID=$(xdotool search --classname 'mpvscratchpad' | head -n1);\
+  FULLSCREEN=${fullscreen-lock}
 
-  # if mpv is not hidden and exists
-  [ -n $ID ] && bspc node $ID --flag sticky
-  [ -n $ID ] && bspc node $ID --state \~fullscreen
-  [ -n $ID ] && bspc node --focus $ID
+  # move mpv to front
+    bspc node $ID --to-desktop newest
+
+  bspc node $ID --flag hidden=off
+
+  if [ -e "$FULLSCREEN" ]; then
+    # is marked fullscreen, so should unmark (after unfullscreen)
+    bspc node $ID --state floating
+    bspc node $ID --flag sticky=on
+    bspc node --focus $ID
+    bspc node --focus last
+    rm -f $FULLSCREEN
+  else
+    # is not marked fullscreen, so should become fullscreen
+    # bspc node $ID --to-desktop newest
+    bspc node $ID --state fullscreen
+    bspc node $ID --flag sticky=off
+    bspc node --focus $ID
+    touch $FULLSCREEN
+  fi
+
+  # ID=$(xdotool search --classname 'mpvscratchpad' | head -n1);\
+
+  # # if mpv is not hidden and exists
+  # [ -n $ID ] && bspc node $ID --flag sticky
+  # [ -n $ID ] && bspc node $ID --state \~fullscreen
+  # [ -n $ID ] && bspc node --focus $ID
 ''); in
 let mpv-scratchpad-hide = (pkgs.writeShellScriptBin "mpv-scratchpad-hide" ''
   ID=$(xdotool search --classname 'mpvscratchpad' | head -n1);\
@@ -298,209 +343,12 @@ let mpv-scratchpad-hide = (pkgs.writeShellScriptBin "mpv-scratchpad-hide" ''
     (mpv-scratchpad)
     (mpv-scratchpad-toggle)
     (mpv-scratchpad-fullscreen-toggle)
-    (mpv-scratchpad-show)
+    # (mpv-scratchpad-show)
     (mpv-scratchpad-hide)
     (mpv-scratchpad-open)
     unstable.gallery-dl
     playerctl
   ];
-
-  /*
-  programs.mpv = {
-    enable = false;
-    config = {
-      osc = false;
-      script-opts = "osc-layout=slimbox";
-      profile = "opengl-hq";
-      scale = "ewa_lanczossharp";
-      #scale=haasnsoft
-      scale-radius = 3;
-      cscale = "ewa_lanczossoft";
-      opengl-pbo = true;
-      fbo-format = "rgba16f";
-      #opengl-shaders="~/.mpv/shaders/SSimSuperRes.glsl"
-      #opengl-shaders="~/.mpv/shaders/SSimSuperRes.glsl,~/.mpv/shaders/adaptive-sharpen-2pass.glsl"
-      #opengl-shaders="~/.mpv/shaders/adaptive-sharpen-2pass.glsl"
-      icc-profile-auto = true;
-      icc-cache-dir = "/tmp/mpv-icc";
-      # target-brightness=100
-      interpolation = true;
-      tscale = "oversample";
-      hwdec = false;
-      video-sync = "display-resample";
-      deband-iterations = 2;
-      deband-range = 12;
-      #no-deband
-      temporal-dither = true;
-      # no-border                               # no window title bar
-      msg-module = true;                             # prepend module name to log messages
-      msg-color = true;                              # color log messages on terminal
-      # term-osd-bar                            # display a progress bar on the terminal
-      use-filedir-conf = true;                       # look for additional config files in the directory of the opened file                        # 'auto' does not imply interlacing-detection
-      cursor-autohide-fs-only = true;                # don't autohide the cursor in window mode, only fullscreen
-      cursor-autohide = "1000";                    # autohide the curser after 1s
-      # fs-black-out-screens
-      keep-open = true;
-
-      # Video filters
-      #vf=vapoursynth=~/.config/mpv/scripts/mvtools.vpy
-
-      # Start in fullscreen
-      # fullscreen
-
-      # Activate autosync
-      autosync = 30;
-
-      # Skip some frames to maintain A/V sync on slow systems
-      framedrop = "vo";
-
-      # Force starting with centered window
-      geometry = "50%:50%";
-      autofit-larger = "60%x60%";
-      autofit-smaller = "10%x10%";
-
-      # Keep the player window on top of all other windows.
-      ontop = true;
-
-      # Disable screensaver
-      stop-screensaver = true;
-
-      # save position on quit
-      # save-position-on-quit
-
-      # Enable hardware decoding if available.
-      #hwdec=cuda
-
-      # Screenshot format
-      screenshot-format = "png";
-      screenshot-png-compression = 0;
-      screenshot-png-filter = 0;
-      screenshot-tag-colorspace  = true;
-      screenshot-high-bit-depth  = true;
-      screenshot-directory = "~/Pictures/Screenshots";
-
-
-      # AUDIO
-      alsa-resample = false;
-      audio-channels = 2;
-      af = "format=channels=2";
-      # volume=100
-      # volume-max=230
-      audio-pitch-correction = true;
-      # audio-normalize-downmix=yes
-      audio-display = false;
-
-      #user agent for playback
-      user-agent = "Mozilla/5.0";
-
-      # osd config
-      #osd-font-size=20
-      #osd-color="#ffffffff"
-      #osd-border-color="#ff151515"
-      #osd-border-size=2
-      #osd-shadow-offset=1
-      #osd-shadow-color="#11000000"
-      #osd-fractions
-      osd-on-seek = "bar";
-
-      # SUBTITLES
-
-      demuxer-mkv-subtitle-preroll = true;            # try to correctly show embedded subs when seeking
-      sub-auto="fuzzy";                          # external subs don't have to match the file name exactly to autoload
-      sub-file-paths = "ass:srt:sub:subs:subtitles";    # search for external subs in the listed subdirectories
-      embeddedfonts = true;                       # use embedded fonts for SSA/ASS subs
-      sub-fix-timing = false;                       # do not try to fix gaps (which might make it worse in some cases);
-      sub-ass-force-style = "Kerning=yes";             # allows you to override style parameters of ASS scripts
-
-      sub-scale-by-window = true;
-
-
-      # Makes .srt not config
-      #1
-      # sub-font='Montara'
-      # sub-font-size=54
-      # sub-margin-y=45
-      # sub-color="#ffffffff"
-      # sub-border-color="#000000"
-      # sub-border-size=2.4
-      # sub-shadow-offset=0
-      # sub-shadow-color="#000000"
-      #2
-      # sub-text-font='PT Sans Tight'
-      # sub-text-bold=yes
-      sub-font-size = 45;
-      # sub-text-margin-y=40
-      ## sub-text-margin-x=160
-      sub-color = "#ffffffff";
-      sub-border-color = "#000000";
-      sub-border-size = "3.0";
-      sub-shadow-offset = "0.5";
-      sub-shadow-color="#000000";
-
-      # Change subtitle encoding. For Arabic subtitles use 'cp1256'.
-      # If the file seems to be valid UTF-8, prefer UTF-8.
-      sub-codepage = "utf8";
-
-      # Languages
-
-      slang = "en,eng,enm,de,deu,ger";             # automatically select these subtitles (decreasing priority)
-      alang = "en,eng,de,deu,ger";       # automatically select these audio tracks (decreasing priority)
-
-      # ytdl
-      ytdl = true;
-      hls-bitrate = "max";                         # use max quality for HLS streams
-      # ytdl-format=0/(bestvideo[vcodec=vp9]/bestvideo[height>720]/bestvideo[height<=1080]/bestvideo[fps>30])[tbr<13000]+(bestaudio[acodec=vorbis]/bestaudio)/best
-      # ytdl-format=0/(bestvideo[vcodec=vp9]/bestvideo[height>720]/bestvideo[height<=1080]/bestvideo[fps>30])[tbr<13000]+(bestaudio[acodec=vorbis]/bestaudio)/best
-      ytdl-format = "bestvideo[height<=?720][fps<=?30][vcodec!=?vp9]+bestaudio/best";
-    };
-
-    profiles = {
-      "protocol.http" = {
-        force-window = "immediate";
-      };
-      # [protocol.https]
-      #profile=protocol.http
-      "protocol.ytdl" = {
-        profile = "protocol.http";
-      };
-
-      # Audio-only content
-      audio = {
-        force-window = false;
-        no-video = "";
-        ytdl-format = "bestaudio/best";
-      };
-
-      # Extension config, mostly for .webm loop
-      "extension.webm" = {
-        loop-file = "inf";
-      };
-      "extension.gif" = {
-        loop-file = "inf";
-      };
-      "extension.jpeg" = {
-        loop-file = "inf";
-      };
-      "extension.png" = {
-        loop-file = "inf";
-      };
-      "extension.jpg" = {
-        loop-file = "inf";
-      };
-      "extension.gifv" = {
-        loop-file = "inf";
-      };
-
-    };
-  };
-
-  xdg.configFile = {
-    "mpv/scripts/autosave.lua".source = autosave-plugin ;
-    "mpv/scripts/autospeed.lua".source = autospeed-plugin ;
-    "mpv/scripts/gallery-dl_hook.lua".source = gallery-dl_hook-plugin;
-    "mpv/scripts/mpris.so".source = (pkgs.mpvScript);
-  };
-  */
   xdg.configFile = {
     "mpv/mpv.conf".source = mpv-config;
   };

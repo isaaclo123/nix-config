@@ -40,6 +40,7 @@ let oomox-numix-sulphurpool-icons = stdenv.mkDerivation rec {
       name = "oomox-numix-sulphurpool";
       package = (oomox-numix-sulphurpool-theme);
     };
+
     iconTheme = {
       name = "oomox-numix-sulphurpool";
       package = (oomox-numix-sulphurpool-icons);

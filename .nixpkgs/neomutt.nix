@@ -73,6 +73,7 @@ let muttrc = (pkgs.writeText "muttrc" ''
   set autoedit
   set auto_tag = yes
   set recall=no
+  # set postpone=no
 
   ## COLOR START
 
@@ -358,7 +359,7 @@ let muttrc = (pkgs.writeText "muttrc" ''
 
   # forward normally different keybind
   # forward with all attachments
-  macro index,pager f "<view-attachments>jjjjjjjjjjjjjjjjjjjj<tag-message>k<tag-message>kk<tag-message>kk<tag-message>kk<tag-message>kk<tag-message>kk<tag-message>kk<tag-message>kk<tag-message>kk<tag-message>kk<tag-message>kk<tag-message>kk<tag-message>kk;<forward-message>"
+  # macro index,pager f "<view-attachments>jjjjjjjjjjjjjjjjjjjj<tag-message>k<tag-message>kk<tag-message>kk<tag-message>kk<tag-message>kk<tag-message>kk<tag-message>kk<tag-message>kk<tag-message>kk<tag-message>kk<tag-message>kk<tag-message>kk<tag-message>kk;<forward-message>"
 
   # Pipe message to xclip with yy.  pipe_decode will ensure that
   # unnecessary headers are removed and the message is processed.
