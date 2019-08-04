@@ -12,16 +12,18 @@ let
   };
 in
 
-let
-  unstable =
-    fetchTarball
-      https://github.com/NixOS/nixpkgs-channels/archive/nixos-unstable.tar.gz;
+let hardware-configuration =
+  fetchTarball https://github.com/NixOS/nixos-hardware/archive/master.tar.gz;
+in
+
+let unstable =
+  fetchTarball https://github.com/NixOS/nixpkgs-channels/archive/nixos-unstable.tar.gz;
 in
 
 {
   imports =
     [ # Include the results of the hardware scan.
-      <nixos-hardware/lenovo/thinkpad/t480s>
+      "${hardware-configuration}/lenovo/thinkpad/t480s"
       "${home-manager}/nixos"
 
       ./hardware-configuration.nix
@@ -30,6 +32,7 @@ in
       ./vim.nix
       ./zsh.nix
 
+      # home-manager
       ./polybar.nix
       ./dunst.nix
       ./music.nix
