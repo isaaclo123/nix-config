@@ -1,9 +1,5 @@
 { config, pkgs, stdenv, ... }:
 
-let
-  unstable = import <unstable> {};
-in
-
 let mpv-config = (pkgs.writeText "mpv.conf" ''
   # MPV config
 
@@ -197,6 +193,11 @@ let autospeed-plugin = pkgs.fetchurl {
   sha256 = "18m0lzf0gs3g0mfgwfgih6mz98v5zcciykjl7jmg9rllwsx8syjl";
 }; in
 
+let autoloop-plugin = pkgs.fetchurl {
+  url = "https://raw.githubusercontent.com/zc62/mpv-scripts/master/autoloop.lua";
+  sha256 = "1g60h3c85ladx3ksixqnmg2cmpr68li38sgx167jylmgiavfaa6v";
+}; in
+
 # let gallery-dl-hook-plugin = pkgs.fetchurl {
 #   url = "https://raw.githubusercontent.com/jgreco/mpv-scripts/master/gallery-dl_hook.lua";
 #   sha256 = "1asc35rkqb1nn6yhdaf9rra6d6f9qj5a3i8hn0aw2aby3qwib87a";
@@ -239,7 +240,104 @@ let gallery-dl_hook-plugin = (pkgs.writeText "gallery-dl_hook.lua" ''
   end)
 ''); in
 
-  # mpv --x11-name=mpvscratchpad --geometry=512x288-40+60 --no-terminal --no-border --force-window --input-ipc-server ${MPV_SOCKET} --keep-open=yes --idle=yes
+let mpv-thumbnail-config = (pkgs.writeText "mpv_thumbnail_script.conf" ''
+  # The thumbnail cache directory.
+  # On Windows this defaults to %TEMP%\mpv_thumbs_cache,
+  # and on other platforms to /tmp/mpv_thumbs_cache.
+  # The directory will be created automatically, but must be writeable!
+  # Use absolute paths, and take note that environment variables like %TEMP% are unsupported (despite the default)!
+  cache_directory=/tmp/mpv_thumbs_cache
+  # THIS IS NOT A WINDOWS PATH. COMMENT IT OUT OR ADJUST IT YOURSELF.
+
+  # Whether to generate thumbnails automatically on video load, without a keypress
+  # Defaults to yes
+  autogenerate=yes
+
+  # Only automatically thumbnail videos shorter than this (in seconds)
+  # You will have to press T (or your own keybind) to enable the thumbnail previews
+  # Set to 0 to disable the check, ie. thumbnail videos no matter how long they are
+  # Defaults to 3600 (one hour)
+  autogenerate_max_duration=3600
+
+  # Use mpv to generate thumbnail even if ffmpeg is found in PATH
+  # ffmpeg is slightly faster than mpv but lacks support for ordered chapters in MKVs,
+  # which can break the resulting thumbnails. You have been warned.
+  # Defaults to yes (don't use ffmpeg)
+  prefer_mpv=yes
+
+  # Explicitly disable subtitles on the mpv sub-calls
+  # mpv can and will by default render subtitles into the thumbnails.
+  # If this is not what you wish, set mpv_no_sub to yes
+  # Defaults to no
+  mpv_no_sub=no
+
+  # Enable to disable the built-in keybind ("T") to add your own, see after the block
+  disable_keybinds=no
+
+  # The maximum dimensions of the thumbnails, in pixels
+  # Defaults to 200 and 200
+  thumbnail_width=200
+  thumbnail_height=200
+
+  # The thumbnail count target
+  # (This will result in a thumbnail every ~10 seconds for a 25 minute video)
+  thumbnail_count=150
+
+  # The above target count will be adjusted by the minimum and
+  # maximum time difference between thumbnails.
+  # The thumbnail_count will be used to calculate a target separation,
+  # and min/max_delta will be used to constrict it.
+
+  # In other words, thumbnails will be:
+  # - at least min_delta seconds apart (limiting the amount)
+  # - at most max_delta seconds apart (raising the amount if needed)
+  # Defaults to 5 and 90, values are seconds
+  min_delta=5
+  max_delta=90
+  # 120 seconds aka 2 minutes will add more thumbnails only when the video is over 5 hours long!
+
+  # Below are overrides for remote urls (you generally want less thumbnails, because it's slow!)
+  # Thumbnailing network paths will be done with mpv (leveraging youtube-dl)
+
+  # Allow thumbnailing network paths (naive check for "://")
+  # Defaults to no
+  thumbnail_network=yes
+  # Override thumbnail count, min/max delta, as above
+  remote_thumbnail_count=60
+  remote_min_delta=15
+  remote_max_delta=120
+
+  # Try to grab the raw stream and disable ytdl for the mpv subcalls
+  # Much faster than passing the url to ytdl again, but may cause problems with some sites
+  # Defaults to yes
+  remote_direct_stream=yes
+''); in
+
+let mpv-thumbnail-client-plugin = pkgs.fetchurl {
+  url = "https://github.com/TheAMM/mpv_thumbnail_script/releases/download/0.4.2/mpv_thumbnail_script_client_osc.lua";
+  sha256 = "1g8g0l2dfydmbh1rbsxvih8zsyr7r9x630jhw95jwb1s1x8izrr7";
+}; in
+
+let mpv-thumbnail-server-plugin = pkgs.fetchurl {
+  url = "https://github.com/TheAMM/mpv_thumbnail_script/releases/download/0.4.2/mpv_thumbnail_script_server.lua";
+  sha256 = "12flp0flzgsfvkpk6vx59n9lpqhb85azcljcqg21dy9g8dsihnzg";
+}; in
+
+let playlistnoplayback-plugin = pkgs.fetchurl {
+  url = "https://raw.githubusercontent.com/422658476/MPV-EASY-Player/master/portable-data/scripts/playlistnoplayback.lua";
+  sha256 = "035zsm4z349m920b625zly7zaz361972is55mg02xvgpv0awclfl";
+}; in
+
+let reload-plugin = pkgs.fetchurl {
+  url = "https://raw.githubusercontent.com/4e6/mpv-reload/2b8a719fe166d6d42b5f1dd64761f97997b54a86/reload.lua";
+  sha256 = "0dyx22rr1883m2lhnaig9jdp7lpjydha0ad7lj9pfwlgdr2zg4b9";
+}; in
+
+let youtube-quality-plugin = pkgs.fetchurl {
+  url = "https://raw.githubusercontent.com/jgreco/mpv-youtube-quality/d03278f07bd8e202845f4a8a5b7761d98ad71878/youtube-quality.lua";
+  sha256 = "0fi1b4r5znp2k2z590jrrbn6wirx7nggjcl1frkcwsv7gmhjl11l";
+}; in
+
 let fullscreen-lock = "/tmp/mpv-scratchpad-fullscreen.lock"; in
 
 let mpv-scratchpad = (pkgs.writeShellScriptBin "mpv-scratchpad" ''
@@ -332,25 +430,34 @@ let mpv-scratchpad-hide = (pkgs.writeShellScriptBin "mpv-scratchpad-hide" ''
 ''); in
 
 {
-  home.packages = with pkgs; [
-    (mpv-with-scripts.override {
-      scripts = [
-        (mpvScripts.mpris)
-        autosave-plugin
-        autospeed-plugin
-        gallery-dl_hook-plugin
-      ];
-    })
-    (mpv-scratchpad)
-    (mpv-scratchpad-toggle)
-    (mpv-scratchpad-fullscreen-toggle)
-    # (mpv-scratchpad-show)
-    (mpv-scratchpad-hide)
-    (mpv-scratchpad-open)
-    unstable.gallery-dl
-    playerctl
-  ];
-  xdg.configFile = {
-    "mpv/mpv.conf".source = mpv-config;
+  home-manager.users.isaac = {
+    home.packages = with pkgs; [
+      (unstable.mpv-with-scripts.override {
+        scripts = [
+          (mpvScripts.mpris)
+          # (mpvScripts.autocrop)
+          autosave-plugin
+          autospeed-plugin
+          autoloop-plugin
+          gallery-dl_hook-plugin
+          playlistnoplayback-plugin
+          mpv-thumbnail-client-plugin
+          mpv-thumbnail-server-plugin
+          reload-plugin
+          youtube-quality-plugin
+        ];
+      })
+      (mpv-scratchpad)
+      (mpv-scratchpad-toggle)
+      (mpv-scratchpad-fullscreen-toggle)
+      (mpv-scratchpad-hide)
+      (mpv-scratchpad-open)
+      unstable.gallery-dl
+      playerctl
+    ];
+    xdg.configFile = {
+      "mpv/mpv.conf".source = mpv-config;
+      "mpv/script-opts/mpv_thumbnail_script.conf".source = mpv-thumbnail-config;
+    };
   };
 }

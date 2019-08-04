@@ -64,20 +64,22 @@ let termite-open = (pkgs.writeShellScriptBin "termite-open" ''
 ''); in
 
 {
-  home.packages = with pkgs; [
-    (termite-open)
-    termite
-  ];
+  home-manager.users.isaac = {
+    home.packages = with pkgs; [
+      (termite-open)
+      termite
+    ];
 
-  gtk.gtk3.extraCss = ''
-    .termite {
-      padding: 14px;
-    }
-  '';
+    gtk.gtk3.extraCss = ''
+      .termite {
+        padding: 14px;
+      }
+    '';
 
-  xdg.configFile = {
-    "termite/config".source = termite-config;
-    # "gtk-3.0/gtk.css".source = gtk-css;
+    xdg.configFile = {
+      "termite/config".source = termite-config;
+      # "gtk-3.0/gtk.css".source = gtk-css;
+    };
   };
 
   # programs.termite = {

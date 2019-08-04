@@ -20,10 +20,6 @@ let calcurse-vdirsyncer = stdenv.mkDerivation rec {
 
 { config, pkgs, stdenv, ... }:
 
-let
-  unstable = import <unstable> {};
-in
-
 let calcurse-config = (pkgs.writeText "conf" ''
   appearance.calendarview=monthly
   appearance.compactpanels=no
@@ -105,15 +101,17 @@ let calcurse-key-config = (pkgs.writeText "keys" ''
 ''); in
 
 {
-  home.packages = with pkgs; [
-    (calcurse-vdirsyncer)
-    unstable.calcurse
-    vdirsyncer
-    khard
-  ];
+  home-manager.users.isaac = {
+    home.packages = with pkgs; [
+      (calcurse-vdirsyncer)
+      unstable.calcurse
+      vdirsyncer
+      khard
+    ];
 
-  home.file = {
-    ".calcurse/conf".source = calcurse-config;
-    ".calcurse/keys".source = calcurse-key-config;
+    home.file = {
+      ".calcurse/conf".source = calcurse-config;
+      ".calcurse/keys".source = calcurse-key-config;
+    };
   };
 }

@@ -103,14 +103,16 @@ let rofi-pass-config = (pkgs.writeText "config" ''
 ''); in
 
 {
-  home.packages = with pkgs; [
-    # password
-    # gnupg
-    rofi-pass
-    diceware
-  ];
+  home-manager.users.isaac = {
+    home.packages = with pkgs; [
+      # password
+      # gnupg
+      rofi-pass
+      diceware
+    ];
 
-  xdg.configFile = {
-    "rofi-pass/config".source = rofi-pass-config;
+    xdg.configFile = {
+      "rofi-pass/config".source = rofi-pass-config;
+    };
   };
 }

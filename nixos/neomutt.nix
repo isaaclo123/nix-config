@@ -1,6 +1,6 @@
 { pkgs, ... }:
 
-let homedir = builtins.getEnv "HOME"; in
+let homedir = "/home/isaac"; in
 let configdir = "${homedir}/.nixpkgs"; in
 
 let mailcap = (pkgs.writeText "mailcap" ''
@@ -371,12 +371,14 @@ let muttrc = (pkgs.writeText "muttrc" ''
 ''); in
 
 {
-  home.packages = with pkgs; [
-    neomutt
-  ];
+  home-manager.users.isaac = {
+    home.packages = with pkgs; [
+      neomutt
+    ];
 
-  home.file = {
-    ".mailcap".source = mailcap;
-    ".muttrc".source = muttrc;
+    home.file = {
+      ".mailcap".source = mailcap;
+      ".muttrc".source = muttrc;
+    };
   };
 }

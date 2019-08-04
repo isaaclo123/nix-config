@@ -300,25 +300,27 @@ let polybar-config = (pkgs.writeText "polybar.conf" ''
 # }; in
 
 {
-  services.polybar = {
-    package = pkgs.polybar.override {
-      # alsaSupport = true;
-      # githubSupport = false;
-      pulseSupport = true;
-      mpdSupport = true;
-      # iwSupport = true;
-      # nlSupport = true;
-      i3Support = false;
+  home-manager.users.isaac = {
+    services.polybar = {
+      package = pkgs.polybar.override {
+        # alsaSupport = true;
+        # githubSupport = false;
+        pulseSupport = true;
+        mpdSupport = true;
+        # iwSupport = true;
+        # nlSupport = true;
+        i3Support = false;
+      };
+      enable = true;
+      config = "${polybar-config}";
+      script = ''
+        #!/usr/bin/env sh
+        systemctl --user daemon-reload
+        polybar default &
+        # for m in $(xrandr --query | grep " connected" | cut -d" " -f1); do
+        #   MONITOR=$m polybar default &
+        # done
+      '';
     };
-    enable = true;
-    config = "${polybar-config}";
-    script = ''
-      #!/usr/bin/env sh
-      systemctl --user daemon-reload
-      polybar default &
-      # for m in $(xrandr --query | grep " connected" | cut -d" " -f1); do
-      #   MONITOR=$m polybar default &
-      # done
-    '';
   };
 }

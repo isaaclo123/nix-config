@@ -1,9 +1,5 @@
 { pkgs, ... }:
 
-let
-  unstable = import <unstable> {};
-in
-
 let homedir = builtins.getEnv "HOME"; in
 # let configdir = "${homedir}/.nixpkgs"; in
 
@@ -83,22 +79,24 @@ let ncmpcpp-bindings = (pkgs.writeText "bindings" ''
 ''); in
 
 {
-  home.packages = with pkgs; [
-    # music
-    ncmpcpp
-    # mpd
-    mpc_cli
-    unstable.audacity
-  ];
+  home-manager.users.isaac = {
+    home.packages = with pkgs; [
+      # music
+      ncmpcpp
+      # mpd
+      mpc_cli
+      unstable.audacity
+    ];
 
-  services.mpd = {
-    enable = true;
-    dataDir = "${homedir}/.mpd";
-    musicDirectory = "${homedir}/Music";
-  };
+    services.mpd = {
+      enable = true;
+      dataDir = "${homedir}/.mpd";
+      musicDirectory = "${homedir}/Music";
+    };
 
-  xdg.configFile = {
-    "ncmpcpp/config".source = ncmpcpp-config;
-    "ncmpcpp/bindings".source = ncmpcpp-bindings;
+    xdg.configFile = {
+      "ncmpcpp/config".source = ncmpcpp-config;
+      "ncmpcpp/bindings".source = ncmpcpp-bindings;
+    };
   };
 }

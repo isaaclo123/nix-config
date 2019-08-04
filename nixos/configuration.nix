@@ -4,22 +4,57 @@
 
 { config, pkgs, ... }:
 
+let
+  home-manager = builtins.fetchGit {
+    url = "https://github.com/rycee/home-manager.git";
+    rev = "dd94a849df69fe62fe2cb23a74c2b9330f1189ed"; # CHANGEME
+    ref = "release-18.09";
+  };
+in
+
+let
+  unstable =
+    fetchTarball
+      https://github.com/NixOS/nixpkgs-channels/archive/nixos-unstable.tar.gz;
+in
+
 {
   imports =
     [ # Include the results of the hardware scan.
       <nixos-hardware/lenovo/thinkpad/t480s>
+      "${home-manager}/nixos"
+
       ./hardware-configuration.nix
       ./bspwm.nix
       ./sxhkd.nix
-      # ./polybar.nix
-      # ./termite.nix
       ./vim.nix
       ./zsh.nix
-      # ./qutebrowser.nix
-      # ./rofi.nix
-      # ./rofi-pass.nix
-      # ./offlineimap.nix
+
+      ./polybar.nix
+      ./dunst.nix
+      ./music.nix
+      ./mpv.nix
+      ./gpg.nix
+      ./theme.nix
+      ./qutebrowser.nix
+      ./rofi.nix
+      ./rofi-pass.nix
+      ./python.nix
+      ./email.nix
+      ./termite.nix
+      ./neomutt.nix
+      ./calendar.nix
     ];
+
+  nixpkgs.config = {
+    allowUnfree = true;
+    pulseaudio = true;
+    packageOverrides = pkgs: {
+      unstable = import unstable {
+        config = config.nixpkgs.config;
+      };
+    };
+  };
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -312,14 +347,50 @@
     uid = 1000;
   };
 
+  home-manager.users.isaac = {
+    home.packages = with pkgs; [
+      openshot-qt
+    ];
+
+    services = {
+      udiskie = {
+        enable = true;
+        automount = true;
+        notify = true;
+      };
+      unclutter = {
+        enable = true;
+      };
+    };
+
+    programs = {
+      home-manager = {
+        enable = true;
+      };
+
+      git = {
+        enable = true;
+        userEmail = "isaaclo123@gmail.com";
+        userName = "isaaclo123";
+      };
+    };
+
+    # xsession.pointerCursor = {
+    #   name = "Vanilla-DMZ";
+    #   package = pkgs.vanilla-dmz;
+    #   # size = 128;
+    # };
+
+    # xdg.configFile = {
+    #   # autostart
+    #   "bspwm/autostart".source = (pkgs.writeText "config" ''
+    #   '');
+    # };
+  };
+
   # This value determines the NixOS release with which your system is to be
   # compatible, in order to avoid breaking some software such as database
   # servers. You should change this only after NixOS release notes say you
   # should.
   system.stateVersion = "19.03"; # Did you read the comment?
-
-  nixpkgs.config = {
-    allowUnfree = true;
-    pulseaudio = true;
-  };
 }

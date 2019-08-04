@@ -33,17 +33,19 @@ let oomox-numix-sulphurpool-icons = stdenv.mkDerivation rec {
 }; in
 
 {
-  gtk = {
-    enable = true;
+  home-manager.users.isaac = {
+    gtk = {
+      enable = true;
 
-    theme = {
-      name = "oomox-numix-sulphurpool";
-      package = (oomox-numix-sulphurpool-theme);
-    };
+      theme = {
+        name = "oomox-numix-sulphurpool";
+        package = (oomox-numix-sulphurpool-theme);
+      };
 
-    iconTheme = {
-      name = "oomox-numix-sulphurpool";
-      package = (oomox-numix-sulphurpool-icons);
+      iconTheme = {
+        name = "oomox-numix-sulphurpool";
+        package = (oomox-numix-sulphurpool-icons);
+      };
     };
   };
 }
