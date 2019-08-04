@@ -278,17 +278,17 @@ in
   # '';
   hardware.pulseaudio = {
     # package = pkgs.pulseaudioFull;
-    enable=true;
+    enable = true;
     support32Bit = true;
     # systemWide = true;
     # tcp.enable = true;
     # configFile = pkgs.writeText "default.pa" ''
     #   load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1
     # '';
-    configFile = pkgs.runCommand "default.pa" {} ''
-      sed 's/module-udev-detect$/module-udev-detect tsched=0/' \
-        ${pkgs.pulseaudio}/etc/pulse/default.pa > $out
-    '';
+    # configFile = pkgs.runCommand "default.pa" {} ''
+    #   sed 's/module-udev-detect$/module-udev-detect tsched=0/' \
+    #     ${pkgs.pulseaudio}/etc/pulse/default.pa > $out
+    # '';
   };
 
   services.xserver = {
@@ -304,27 +304,31 @@ in
         enable = true;
         user = "isaac";
       };
-
-      # autostart
-      # setupCommands = ''
-      #   dunst &
-
-      #   qutebrowser &
-      #   termite --class=termite_ &
-      #   termite --class=vim_ vim &
-      #   termite --class=ranger_ ranger &
-      #   termite --class=neomutt_ neomutt &
-      #   termite --class-ncmpcpp_ ncmpcpp &
-      # '';
     };
 
     # Enable touchpad support.
     libinput.enable = true;
   };
 
+  # enable ssd fstrim
+  services.fstrim.enable = true;
+
   services.compton = {
     enable = true;
-    shadow = false;
+    shadow = true;
+    shadowOffsets = [ (-6) (-6) ];
+    shadowOpacity = "0.3";
+    shadowExclude = [
+      "name != 'mpvscratchpad'"
+    ];
+    vSync = "drm";
+    extraOptions = ''
+      shadow-radius = 4;
+      paint-on-overlay = true;
+    '';
+
+    # paint-on-overlay = true;
+
     # shadowOffsets = [ (-9) (0) ];
     # shadowExclude = [
     #   "name = 'Polybar tray window'"
