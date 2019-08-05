@@ -9,6 +9,10 @@ let mail-sync= (pkgs.writeShellScriptBin "mail-sync" ''
 ''); in
 
 {
+  environment.systemPackages = with pkgs; [
+    (mail-sync)
+  ];
+
   home-manager.users.isaac = {
     accounts.email = {
       maildirBasePath = "${homedir}/.mail";
@@ -138,9 +142,5 @@ let mail-sync= (pkgs.writeShellScriptBin "mail-sync" ''
         enable = true;
       };
     };
-
-    home.packages = with pkgs; [
-      (mail-sync)
-    ];
   };
 }

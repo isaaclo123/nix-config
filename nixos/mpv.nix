@@ -430,31 +430,32 @@ let mpv-scratchpad-hide = (pkgs.writeShellScriptBin "mpv-scratchpad-hide" ''
 ''); in
 
 {
+  environment.systemPackages = with pkgs; [
+    (unstable.mpv-with-scripts.override {
+      scripts = [
+        (mpvScripts.mpris)
+        # (mpvScripts.autocrop)
+        autosave-plugin
+        autospeed-plugin
+        autoloop-plugin
+        gallery-dl_hook-plugin
+        playlistnoplayback-plugin
+        mpv-thumbnail-client-plugin
+        mpv-thumbnail-server-plugin
+        reload-plugin
+        youtube-quality-plugin
+      ];
+    })
+    (mpv-scratchpad)
+    (mpv-scratchpad-toggle)
+    (mpv-scratchpad-fullscreen-toggle)
+    (mpv-scratchpad-hide)
+    (mpv-scratchpad-open)
+    unstable.gallery-dl
+    playerctl
+  ];
+
   home-manager.users.isaac = {
-    home.packages = with pkgs; [
-      (unstable.mpv-with-scripts.override {
-        scripts = [
-          (mpvScripts.mpris)
-          # (mpvScripts.autocrop)
-          autosave-plugin
-          autospeed-plugin
-          autoloop-plugin
-          gallery-dl_hook-plugin
-          playlistnoplayback-plugin
-          mpv-thumbnail-client-plugin
-          mpv-thumbnail-server-plugin
-          reload-plugin
-          youtube-quality-plugin
-        ];
-      })
-      (mpv-scratchpad)
-      (mpv-scratchpad-toggle)
-      (mpv-scratchpad-fullscreen-toggle)
-      (mpv-scratchpad-hide)
-      (mpv-scratchpad-open)
-      unstable.gallery-dl
-      playerctl
-    ];
     xdg.configFile = {
       "mpv/mpv.conf".source = mpv-config;
       "mpv/script-opts/mpv_thumbnail_script.conf".source = mpv-thumbnail-config;

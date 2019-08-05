@@ -1,6 +1,6 @@
 { pkgs, ... }:
 
-let homedir = builtins.getEnv "HOME"; in
+let homedir = "/home/isaac"; in
 # let configdir = "${homedir}/.nixpkgs"; in
 
 let ncmpcpp-config = (pkgs.writeText "config" ''
@@ -79,15 +79,15 @@ let ncmpcpp-bindings = (pkgs.writeText "bindings" ''
 ''); in
 
 {
-  home-manager.users.isaac = {
-    home.packages = with pkgs; [
-      # music
-      ncmpcpp
-      # mpd
-      mpc_cli
-      unstable.audacity
-    ];
+  environment.systemPackages = with pkgs; [
+    # music
+    ncmpcpp
+    # mpd
+    mpc_cli
+    unstable.audacity
+  ];
 
+  home-manager.users.isaac = {
     services.mpd = {
       enable = true;
       dataDir = "${homedir}/.mpd";

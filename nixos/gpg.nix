@@ -4,12 +4,12 @@
 # monkeysphere s to add ssh key
 
 {
-  home-manager.users.isaac = {
-    home.packages = with pkgs; [
-      gnupg
-      monkeysphere
-    ];
+  environment.systemPackages = with pkgs; [
+    gnupg
+    monkeysphere
+  ];
 
+  home-manager.users.isaac = {
     services = {
       gpg-agent = {
         enable = true;

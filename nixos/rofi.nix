@@ -19,13 +19,12 @@ let rofi-config = (pkgs.writeText "rofi.conf" ''
 ''); in
 
 {
-  home-manager.users.isaac = {
-    home.packages = with pkgs; [
-      # rofi
-      rofi
-      # rofi-pass
-    ];
+  environment.systemPackages = with pkgs; [
+    # rofi
+    rofi
+  ];
 
+  home-manager.users.isaac = {
     xdg.configFile = {
       "rofi/config".source = rofi-config;
     };

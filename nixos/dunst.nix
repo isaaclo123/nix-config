@@ -1,13 +1,13 @@
 { pkgs, ... }:
 
 {
-  home-manager.users.isaac = {
-    home.packages = with pkgs; [
-      # notifications
-      dunst
-      libnotify
-    ];
+  environment.systemPackages = with pkgs; [
+    # notifications
+    dunst
+    libnotify
+  ];
 
+  home-manager.users.isaac = {
     services.dunst = {
       enable = true;
       settings = {

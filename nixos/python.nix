@@ -8,9 +8,7 @@ let my-python-packages = python-packages: with python-packages; [
   python-with-my-packages = python3.withPackages my-python-packages;
 in
 {
-  home-manager.users.isaac = {
-    home.packages = with pkgs; [
-      python-with-my-packages
-    ];
-  };
+  environment.systemPackages = with pkgs; [
+    python-with-my-packages
+  ];
 }

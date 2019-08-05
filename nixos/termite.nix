@@ -64,12 +64,12 @@ let termite-open = (pkgs.writeShellScriptBin "termite-open" ''
 ''); in
 
 {
-  home-manager.users.isaac = {
-    home.packages = with pkgs; [
-      (termite-open)
-      termite
-    ];
+  environment.systemPackages = with pkgs; [
+    (termite-open)
+    termite
+  ];
 
+  home-manager.users.isaac = {
     gtk.gtk3.extraCss = ''
       .termite {
         padding: 14px;
@@ -78,7 +78,6 @@ let termite-open = (pkgs.writeShellScriptBin "termite-open" ''
 
     xdg.configFile = {
       "termite/config".source = termite-config;
-      # "gtk-3.0/gtk.css".source = gtk-css;
     };
   };
 

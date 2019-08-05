@@ -371,11 +371,11 @@ let muttrc = (pkgs.writeText "muttrc" ''
 ''); in
 
 {
-  home-manager.users.isaac = {
-    home.packages = with pkgs; [
-      neomutt
-    ];
+  environment.systemPackages = with pkgs; [
+    neomutt
+  ];
 
+  home-manager.users.isaac = {
     home.file = {
       ".mailcap".source = mailcap;
       ".muttrc".source = muttrc;

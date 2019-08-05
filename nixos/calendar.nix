@@ -101,14 +101,14 @@ let calcurse-key-config = (pkgs.writeText "keys" ''
 ''); in
 
 {
-  home-manager.users.isaac = {
-    home.packages = with pkgs; [
-      (calcurse-vdirsyncer)
-      unstable.calcurse
-      vdirsyncer
-      khard
-    ];
+  environment.systemPackages = with pkgs; [
+    (calcurse-vdirsyncer)
+    unstable.calcurse
+    vdirsyncer
+    khard
+  ];
 
+  home-manager.users.isaac = {
     home.file = {
       ".calcurse/conf".source = calcurse-config;
       ".calcurse/keys".source = calcurse-key-config;

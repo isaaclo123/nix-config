@@ -228,6 +228,8 @@ in
       pkg-config
 
       jmtpfs
+
+      openshot-qt
     ];
 
   hardware.brightnessctl.enable = true;
@@ -326,18 +328,6 @@ in
       shadow-radius = 4;
       paint-on-overlay = true;
     '';
-
-    # paint-on-overlay = true;
-
-    # shadowOffsets = [ (-9) (0) ];
-    # shadowExclude = [
-    #   "name = 'Polybar tray window'"
-    #   "_GTK_FRAME_EXTENTS@:c"
-    # ];
-    # shadowOpacity = "0.5";
-    # extraOptions = ''
-    #   shadow-radius = 9;
-    # '';
   };
 
   security.sudo.wheelNeedsPassword = false;
@@ -355,10 +345,6 @@ in
   };
 
   home-manager.users.isaac = {
-    home.packages = with pkgs; [
-      openshot-qt
-    ];
-
     services = {
       udiskie = {
         enable = true;
