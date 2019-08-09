@@ -13,6 +13,10 @@ let mail-sync= (pkgs.writeShellScriptBin "mail-sync" ''
     (mail-sync)
   ];
 
+  environment.variables = {
+    NOTMUCH_CONFIG = "${homedir}/.config/notmuch/notmuchrc";
+  };
+
   home-manager.users.isaac = {
     accounts.email = {
       maildirBasePath = "${homedir}/.mail";

@@ -31,6 +31,7 @@ in
       ./sxhkd.nix
       ./vim.nix
       ./zsh.nix
+      ./compton.nix
 
       # home-manager
       ./polybar.nix
@@ -47,17 +48,9 @@ in
       ./termite.nix
       ./neomutt.nix
       ./calendar.nix
+      ./todo.nix
+      ./zathura.nix
     ];
-
-  nixpkgs.config = {
-    allowUnfree = true;
-    pulseaudio = true;
-    packageOverrides = pkgs: {
-      unstable = import unstable {
-        config = config.nixpkgs.config;
-      };
-    };
-  };
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -118,13 +111,6 @@ in
   # List packages installed in system profile. To search, run:
   # $ nix search wget
 
-  # environment.extraInit = ''
-  #   # clipboard merge
-  #   # autocutsel &
-  #   # autocutsel -s PRIMARY &
-  #   unclutter &
-  # '';
-
   environment.systemPackages =
     let
       reload-desktop = (with import <nixpkgs> {}; writeShellScriptBin "reload-desktop" ''
@@ -150,28 +136,6 @@ in
       nix-prefetch-scripts
       home-manager
 
-      # pdf, pandoc
-      zathura
-      pandoc
-      texlive.combined.scheme-full
-
-      # mail
-      # neomutt
-      # isync
-      # offlineimap
-      # msmtp
-
-      # mpv
-      # (mpv-with-scripts.override {
-      #   scripts = [
-      #     mpvScripts.mpris
-      #   ];
-      # })
-      # playerctl
-
-      # organization
-      todo-txt-cli
-
       # monitoring
       htop
       s-tui
@@ -191,9 +155,6 @@ in
       redshift
       xbrightness
       brightnessctl
-
-      # internet
-      w3m-full
 
       # desktop utilities
       ranger
@@ -230,6 +191,15 @@ in
       jmtpfs
 
       openshot-qt
+      gtk-engine-murrine
+      gtk_engines
+
+      alsa-firmware
+      alsaUtils
+      alsaTools
+      alsaLib
+      alsaOss
+      zita-alsa-pcmi
     ];
 
   hardware.brightnessctl.enable = true;
@@ -315,21 +285,6 @@ in
   # enable ssd fstrim
   services.fstrim.enable = true;
 
-  services.compton = {
-    enable = true;
-    shadow = true;
-    shadowOffsets = [ (-6) (-6) ];
-    shadowOpacity = "0.3";
-    shadowExclude = [
-      "name != 'mpvscratchpad'"
-    ];
-    vSync = "drm";
-    extraOptions = ''
-      shadow-radius = 4;
-      paint-on-overlay = true;
-    '';
-  };
-
   security.sudo.wheelNeedsPassword = false;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
@@ -345,6 +300,11 @@ in
   };
 
   home-manager.users.isaac = {
+    xsession.pointerCursor = {
+      name = "Vanilla-DMZ";
+      package = pkgs.vanilla-dmz;
+    };
+
     services = {
       udiskie = {
         enable = true;
@@ -386,4 +346,14 @@ in
   # servers. You should change this only after NixOS release notes say you
   # should.
   system.stateVersion = "19.03"; # Did you read the comment?
+
+  nixpkgs.config = {
+    pulseaudio = true;
+    allowUnfree = true;
+    packageOverrides = pkgs: {
+      unstable = import unstable {
+        config = config.nixpkgs.config;
+      };
+    };
+  };
 }

@@ -39,6 +39,10 @@
         " deoplete
         let g:deoplete#enable_at_startup = 1
 
+        " deoplete tab-complete
+        inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+        inoremap <expr><s-tab> pumvisible() ? "\<c-p>" : "\<s-tab>"
+
         " This is only necessary if you use "set termguicolors".
         set t_8f=^[[38;2;%lu;%lu;%lum
         set t_8b=^[[48;2;%lu;%lu;%lum
@@ -284,6 +288,15 @@
             sha256 = "1dnvryzqrf9msr81qlmcdf660csp43h19mbx56dnadpsyzadx6vm";
           };
         }; in
+        # let vim-completes-me = pkgs.vimUtils.buildVimPlugin {
+        #   name = "VimCompletesMe";
+        #   src = pkgs.fetchFromGitHub {
+        #     owner = "ajh17";
+        #     repo = "VimCompletesMe";
+        #     rev = "cc1eab38cca26fd1e387df5ce78e6f1e51aed8f4";
+        #     sha256 = "14d7fm3djhbsscnv8n6jsxnwppgp5isch99ma5kil64ph20zjv1v";
+        #   };
+        # }; in
       with pkgs.vimPlugins; [
         (vim-base2tone-theme)
         (vim-wordmotion)
@@ -303,6 +316,7 @@
         python-mode
         ctrlp
         deoplete-nvim
+        # vim-completes-me
       ];
     };
   });

@@ -33,6 +33,10 @@ let oomox-numix-sulphurpool-icons = stdenv.mkDerivation rec {
 }; in
 
 {
+  # environment.variables = {
+  #   NIXPKGS_ALLOW_UNFREE = "1";
+  # };
+
   home-manager.users.isaac = {
     gtk = {
       enable = true;

@@ -79,16 +79,6 @@
     zmodload zsh/complist
     bindkey -M menuselect '^[[Z' reverse-menu-complete
 
-    # todo-txt
-    t () {
-        if [ -z "$1" ]
-        then
-            todo-txt -ls -c -N -t -a
-        else
-            todo-txt -c -N -t -a $@
-        fi
-    }
-
     # unset XDG_CONFIG_HOME for termite
     unset XDG_CONFIG_HOME
   '';
@@ -96,21 +86,21 @@
     c = "clear";
   };
 
-  environment.shellInit = ''
-    gpg-connect-agent /bye
-    export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
-    echo UPDATESTARTUPTTY | gpg-connect-agent &> /dev/null
-  '';
+  # environment.shellInit = ''
+  #   gpg-connect-agent /bye
+  #   export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+  #   echo UPDATESTARTUPTTY | gpg-connect-agent &> /dev/null
+  # '';
 
-  environment.variables = {
-    NOTMUCH_CONFIG = "/home/isaac/.config/notmuch/notmuchrc";
-    # shorter delay on cmd-mode
-    # KEYTIMEOUT = "1";
-    # LESS = "-erFX";
-    # FZF_TMUX = "1";
-    # FZF_DEFAULT_COMMAND = "${pkgs.ag}/bin/ag -f -g '' --hidden --depth 16 --ignore dosdevices";
-    # FZF_CTRL_T_COMMAND = "${pkgs.ag}/bin/ag -f -g '' --hidden --depth 16 --ignore dosdevices";
-    # FZF_DEFAULT_OPTS = "-m --ansi --color=16,bg:-1,bg+:-1 --tac";
-    # FZF_ALT_C_COMMAND = "find -L . -maxdepth 16 -type d 2>/dev/null";
-  };
+  # environment.variables = {
+  #   # NOTMUCH_CONFIG = "/home/isaac/.config/notmuch/notmuchrc";
+  #   # shorter delay on cmd-mode
+  #   # KEYTIMEOUT = "1";
+  #   # LESS = "-erFX";
+  #   # FZF_TMUX = "1";
+  #   # FZF_DEFAULT_COMMAND = "${pkgs.ag}/bin/ag -f -g '' --hidden --depth 16 --ignore dosdevices";
+  #   # FZF_CTRL_T_COMMAND = "${pkgs.ag}/bin/ag -f -g '' --hidden --depth 16 --ignore dosdevices";
+  #   # FZF_DEFAULT_OPTS = "-m --ansi --color=16,bg:-1,bg+:-1 --tac";
+  #   # FZF_ALT_C_COMMAND = "find -L . -maxdepth 16 -type d 2>/dev/null";
+  # };
 }

@@ -373,6 +373,7 @@ let muttrc = (pkgs.writeText "muttrc" ''
 {
   environment.systemPackages = with pkgs; [
     neomutt
+    w3m-full
   ];
 
   home-manager.users.isaac = {

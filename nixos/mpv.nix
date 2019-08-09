@@ -343,7 +343,7 @@ let fullscreen-lock = "/tmp/mpv-scratchpad-fullscreen.lock"; in
 let mpv-scratchpad = (pkgs.writeShellScriptBin "mpv-scratchpad" ''
   FULLSCREEN=${fullscreen-lock}
   rm -f $FULLSCREEN
-  mpv --x11-name=mpvscratchpad --geometry=512x288-32+62 --no-terminal --force-window --keep-open=yes --idle=yes
+  mpv --title=mpvscratchpad --x11-name=mpvscratchpad --geometry=512x288-32+62 --no-terminal --force-window --keep-open=yes --idle=yes
   '');
 in
 let mpv-scratchpad-toggle = (pkgs.writeShellScriptBin "mpv-scratchpad-toggle" ''

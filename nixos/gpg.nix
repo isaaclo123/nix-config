@@ -9,6 +9,12 @@
     monkeysphere
   ];
 
+  environment.shellInit = ''
+    gpg-connect-agent /bye
+    export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+    echo UPDATESTARTUPTTY | gpg-connect-agent &> /dev/null
+  '';
+
   home-manager.users.isaac = {
     services = {
       gpg-agent = {
