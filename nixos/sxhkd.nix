@@ -2,6 +2,26 @@
 
 with lib;
 
+let input-toggle = device: script-name: (pkgs.writeShellScriptBin script-name ''
+  #!/bin/bash
+
+  # toggle device
+
+  DEVICE="${device}"
+
+  # Use device name and check for status
+
+  if [[ $(xinput list "$DEVICE" | grep -Ec "disabled") -eq 1 ]]; then
+      xinput enable "$DEVICE" &&
+      notify-send "${device} Enabled"
+  else
+      xinput disable "$DEVICE" &&
+      notify-send "${device} Disabled"
+  fi
+
+  exit 0
+''); in
+
 let sxhkdrc = (pkgs.writeText "sxkhdrc" ''
   #
   # wm independent hotkeys
@@ -9,10 +29,10 @@ let sxhkdrc = (pkgs.writeText "sxkhdrc" ''
 
   # music controls
   XF86AudioRaiseVolume
-    pactl set-sink-volume @DEFAULT_SINK@ '+10%'
+    pactl set-sink-volume @DEFAULT_SINK@ '+5%'
 
   XF86AudioLowerVolume
-    pactl set-sink-volume @DEFAULT_SINK@ '-10%'
+    pactl set-sink-volume @DEFAULT_SINK@ '-5%'
 
   XF86AudioMute
     pactl set-sink-mute @DEFAULT_SINK@ toggle
@@ -33,10 +53,18 @@ let sxhkdrc = (pkgs.writeText "sxkhdrc" ''
     playerctl stop
 
   XF86MonBrightnessUp
-    brightnessctl set +10%
+    brightnessctl set +5%
 
   XF86MonBrightnessDown
-    brightnessctl set 10%-
+    brightnessctl set 5%-
+
+  # Toggle touchscreen
+  XF86Display
+    touchscreen-toggle
+
+  # Toggle touchpad
+  XF86Tools
+    touchpad-toggle
 
   # terminal emulator
   super + Return
@@ -203,19 +231,20 @@ let sxhkdrc = (pkgs.writeText "sxkhdrc" ''
         bspc node -v {-20 0,0 20,0 -20,20 0}
   ''); in
 {
-
   config = {
-    environment.systemPackages = with pkgs; [
-      sxhkd
-    ];
+    environment.systemPackages =
+      let touchscreen-toggle = (input-toggle "ELAN Touchscreen" "touchscreen-toggle"); in
+      let touchpad-toggle = (input-toggle "ETPS/2 Elantech Touchpad" "touchpad-toggle"); in
+      with pkgs; [
+        (touchscreen-toggle)
+        (touchpad-toggle)
+        sxhkd
+      ];
 
     environment.etc.sxhkdrc = {
       text = builtins.readFile sxhkdrc;
     };
 
     services.xserver.windowManager.bspwm.sxhkd.configFile = "/etc/sxhkdrc";
-    # environment.systemPackages = with pkgs; [
-    #   scrot
-    # ];
   };
 }
