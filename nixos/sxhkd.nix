@@ -127,8 +127,12 @@ let sxhkdrc = (pkgs.writeText "sxkhdrc" ''
     qutebrowser
 
   # lock
+  super + F11
+    lock
+
+  # lock and suspend
   super + Delete
-    slock
+    lock systemctl suspend -i
 
   # program launcher
   super + d
