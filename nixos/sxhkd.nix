@@ -18,8 +18,38 @@ let input-toggle = device: script-name: (pkgs.writeShellScriptBin script-name ''
       xinput disable "$DEVICE" &&
       notify-send "${device} Disabled"
   fi
+''); in
 
-  exit 0
+let bluetooth-toggle = (pkgs.writeShellScriptBin "bluetooth-toggle" ''
+  #!/bin/bash
+
+  BT=bluetooth
+  BT_STATE=$(sudo rfkill list $BT | grep "Soft blocked: yes")
+
+  if [ -z "$BT_STATE" ]; then
+    # if is not soft blocked
+    sudo rfkill block $BT &&
+    notify-send "Bluetooth Disabled"
+  else
+    sudo rfkill unblock $BT &&
+    notify-send "Bluetooth Enabled"
+  fi
+''); in
+
+let screenshot = (pkgs.writeShellScriptBin "screenshot" ''
+  #!/bin/bash
+
+  SCREENSHOT=~/Pictures/Screenshots/Screenshot_%Y%m%d-%H%M%S.png
+
+  scrot "$@" $SCREENSHOT &&
+  notify-send "Screenshot Saved" "$SCREENSHOT"
+''); in
+
+let lock = (pkgs.writeShellScriptBin "lock" ''
+  #!/bin/bash
+
+  mpc pause &>/dev/null
+  sleep 0.5 && slock "$@"
 ''); in
 
 let sxhkdrc = (pkgs.writeText "sxkhdrc" ''
@@ -58,6 +88,12 @@ let sxhkdrc = (pkgs.writeText "sxkhdrc" ''
   XF86MonBrightnessDown
     brightnessctl set 5%-
 
+  XF86Bluetooth
+    bluetooth-toggle
+
+  XF86Favorites
+    sleep 0.5 && xset dpms force off
+
   # Toggle touchscreen
   XF86Display
     touchscreen-toggle
@@ -65,6 +101,22 @@ let sxhkdrc = (pkgs.writeText "sxkhdrc" ''
   # Toggle touchpad
   XF86Tools
     touchpad-toggle
+
+  # media controls
+  super + Home
+    mpc prev
+
+  super + End
+    mpc toggle
+
+  super + Insert
+    mpc next
+
+  super + Print
+    screenshot
+
+  @super + shift + Print
+    screenshot -s
 
   # terminal emulator
   super + Return
@@ -76,7 +128,7 @@ let sxhkdrc = (pkgs.writeText "sxkhdrc" ''
 
   # lock
   super + Delete
-    i3lock-pixeled
+    slock
 
   # program launcher
   super + d
@@ -229,7 +281,7 @@ let sxhkdrc = (pkgs.writeText "sxkhdrc" ''
   # move a floating window
   super + {Left,Down,Up,Right}
         bspc node -v {-20 0,0 20,0 -20,20 0}
-  ''); in
+''); in
 {
   config = {
     environment.systemPackages =
@@ -238,6 +290,8 @@ let sxhkdrc = (pkgs.writeText "sxkhdrc" ''
       with pkgs; [
         (touchscreen-toggle)
         (touchpad-toggle)
+        (bluetooth-toggle)
+        (screenshot)
         sxhkd
       ];
 

@@ -32,6 +32,7 @@ in
       ./vim.nix
       ./zsh.nix
       ./compton.nix
+      ./slock.nix
 
       # home-manager
       ./polybar.nix
@@ -94,6 +95,7 @@ in
       # dejavu_fonts
     ];
     fontconfig = {
+      enable = true;
       allowBitmaps = true;
       useEmbeddedBitmaps = true;
       antialias = true;
@@ -141,7 +143,8 @@ in
       s-tui
 
       # desktop
-      i3lock-pixeled
+      # i3lock-pixeled
+
       feh
 
       # password
@@ -346,7 +349,6 @@ in
   # servers. You should change this only after NixOS release notes say you
   # should.
   system.stateVersion = "19.03"; # Did you read the comment?
-
   nixpkgs.config = {
     pulseaudio = true;
     allowUnfree = true;

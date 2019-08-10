@@ -378,11 +378,26 @@ let qutebrowser-config = (pkgs.writeText "config.py" ''
   # Background color for webpages if unset (or empty to use the theme's
   # color).
   # c.colors.webpage.bg = BASE00
+
+  # Font
+  c.fonts.monospace = "GohuFont"
+  c.fonts.completion.category = "bold 14px monospace"
+  c.fonts.completion.entry = "14px monospace"
+  c.fonts.debug_console = "14px monospace"
+  c.fonts.downloads = "14px monospace"
+  c.fonts.hints = "bold 14px monospace"
+  c.fonts.keyhint = "14px monospace"
+  c.fonts.messages.error = "14px monospace"
+  c.fonts.messages.info = "14px monospace"
+  c.fonts.messages.warning = "14px monospace"
+  c.fonts.prompts = "14px monospace"
+  c.fonts.statusbar = "14px monospace"
+  c.fonts.tabs = "14px monospace"
   ''); in
 
 {
   environment.systemPackages = with pkgs; [
-    qutebrowser
+    unstable.qutebrowser
   ];
   home-manager.users.isaac = {
 
