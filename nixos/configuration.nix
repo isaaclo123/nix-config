@@ -33,9 +33,7 @@ in
       ./zsh.nix
       ./compton.nix
       ./slock.nix
-      ./audio.nix
       ./pkgs.nix
-      ./syncthing.nix
 
       # home-manager
       ./polybar.nix
@@ -70,6 +68,58 @@ in
     }
   ];
 
+  boot.extraModprobeConfig = ''
+    options snd-hda-intel model=auto
+  '';
+
+  boot.blacklistedKernelModules = [ "snd_pcsp" ];
+
+  # Enable sound.
+  sound = {
+    enable = true;
+    enableOSSEmulation = true;
+    # extraConfig = ''
+    #   # pcm.rear cards.pcm.default
+    #   # pcm.center_life cards.pcm.default
+    #   # pcm.side cards.pcm.default
+
+    #   pcm.!default {
+    #     type hw
+    #     card 0
+    #   }
+    # '';
+  };
+  # sound.extraConfig = ''
+  #   pcm.!default {
+  #     type hw
+  #     card 1
+  #   }
+
+  #   ctl.!default {
+  #     type hw
+  #     card 0
+  #   }
+  # '';
+
+  hardware.pulseaudio = {
+    # package = (pkgs.pulseaudioFull.override {
+    #   x11Support = true;
+    # });
+    enable = true;
+    daemon = {
+      config = {
+        realtime-scheduling = "yes";
+      };
+    };
+    support32Bit = true;
+    # configFile = pkgs.runCommand "default.pa" {} ''
+    #   sed 's/module-udev-detect$/module-udev-detect tsched=0/' \
+    #     ${pkgs.pulseaudio}/etc/pulse/default.pa > $out
+    # '';
+  };
+
+  security.rtkit.enable = true;
+
   networking.hostName = "client1"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   networking.networkmanager.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -102,9 +152,6 @@ in
   # };
 
   # List services that you want to enable:
-
-  # dconf for themes
-  services.dbus.packages = with pkgs; [ gnome3.dconf ];
 
   # flatpak
   services.flatpak.enable = true;
@@ -147,6 +194,15 @@ in
   # enable ssd fstrim
   services.fstrim.enable = true;
 
+  # syncthing service
+  services.syncthing = {
+    enable = true;
+    configDir = "/home/isaac/.config/syncthing";
+    dataDir = "/home/isaac";
+    user = "isaac";
+    # group = "isaac";
+  };
+
   security.sudo.wheelNeedsPassword = false;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
@@ -167,15 +223,13 @@ in
     #   package = pkgs.vanilla-dmz;
     # };
 
-    services = {
-      udiskie = {
-        enable = true;
-        automount = true;
-        notify = true;
-      };
-      unclutter = {
-        enable = true;
-      };
+    services.udiskie = {
+      enable = true;
+      automount = true;
+      notify = true;
+    };
+    services.unclutter = {
+      enable = true;
     };
 
     programs = {
