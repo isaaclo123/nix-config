@@ -1,5 +1,7 @@
 with import <nixpkgs> {};
 
+{ config, pkgs, ... }:
+
 let oomox-numix-sulphurpool-theme = stdenv.mkDerivation rec {
   name = "oomox-numix-sulphurpool";
   src = pkgs.fetchFromGitHub {
@@ -37,12 +39,49 @@ let oomox-numix-sulphurpool-icons = stdenv.mkDerivation rec {
   #   NIXPKGS_ALLOW_UNFREE = "1";
   # };
 
+  # fonts
+  fonts = {
+    fonts = with pkgs; [
+      # noto-fonts-emoji
+      unifont
+      unifont_upper
+      gohufont
+      font-awesome_4
+      # dejavu_fonts
+    ];
+    fontconfig = {
+      enable = true;
+      allowBitmaps = true;
+      useEmbeddedBitmaps = true;
+      antialias = true;
+      hinting = {
+        enable = true;
+      };
+      defaultFonts = {
+        monospace = [
+          "GohuFont"
+          # "Unifont"
+          # "Unifont Upper"
+        ];
+        sansSerif = [
+          "GohuFont"
+        ];
+        serif = [
+          "GohuFont"
+        ];
+      };
+      ultimate = {
+        enable = false;
+      };
+    };
+  };
+
   home-manager.users.isaac = {
     gtk = {
       enable = true;
 
       font = {
-        name = "GohuFont 14";
+        name = "GohuFont Regular 14";
         package = pkgs.gohufont;
       };
 

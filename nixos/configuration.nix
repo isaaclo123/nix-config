@@ -33,6 +33,9 @@ in
       ./zsh.nix
       ./compton.nix
       ./slock.nix
+      ./audio.nix
+      ./pkgs.nix
+      ./syncthing.nix
 
       # home-manager
       ./polybar.nix
@@ -47,10 +50,12 @@ in
       ./python.nix
       ./email.nix
       ./termite.nix
+      ./kitty.nix
       ./neomutt.nix
       ./calendar.nix
       ./todo.nix
       ./zathura.nix
+      ./ranger.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
@@ -83,127 +88,8 @@ in
   # Set your time zone.
   time.timeZone = "America/Chicago";
 
-  # fonts
-  fonts = {
-    fonts = with pkgs; [
-      # noto-fonts-emoji
-      unifont
-      unifont_upper
-      gohufont
-      siji
-      font-awesome_4
-      # dejavu_fonts
-    ];
-    fontconfig = {
-      enable = true;
-      allowBitmaps = true;
-      useEmbeddedBitmaps = true;
-      antialias = true;
-      defaultFonts = {
-        monospace = [ "GohuFont" ];
-        sansSerif = [ "GohuFont" ];
-        serif     = [ "GohuFont" ];
-      };
-      ultimate = {
-        enable = false;
-      };
-    };
-  };
-
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-
-  environment.systemPackages =
-    let
-      reload-desktop = (with import <nixpkgs> {}; writeShellScriptBin "reload-desktop" ''
-        pkill -USR1 -x sxhkd
-        pkill -USR1 -x compton
-        systemctl --user restart polybar
-        # polybar-ext
-        bspc wm -r
-      '');
-    in
-    with pkgs; [
-      # custom packages
-      (reload-desktop)
-      (import ./z.nix)
-      # (import ./xfd.nix)
-      # programming
-      nodejs
-
-      # office
-      libreoffice
-
-      # nix
-      nix-prefetch-scripts
-      home-manager
-
-      # monitoring
-      htop
-      s-tui
-
-      # desktop
-      # i3lock-pixeled
-
-      feh
-
-      # password
-      pass
-      pass-otp
-
-      # setting
-      acpi
-      arandr
-      pavucontrol
-      redshift
-      xbrightness
-      brightnessctl
-
-      # desktop utilities
-      ranger
-      firefox
-      neofetch
-      scrot
-      gimp
-      sxiv
-
-      # unclutter
-      autocutsel
-
-      # security
-      clamav
-
-      # storage
-      udiskie
-      ntfs3g
-
-      # misc utilities
-      killall
-      wget
-      git
-      python
-      unrar
-      unzip
-      xdotool
-
-      # development tools
-      gnumake
-      clang
-      pkg-config
-
-      jmtpfs
-
-      openshot-qt
-      gtk-engine-murrine
-      gtk_engines
-
-      alsa-firmware
-      alsaUtils
-      alsaTools
-      alsaLib
-      alsaOss
-      zita-alsa-pcmi
-    ];
 
   hardware.brightnessctl.enable = true;
 
@@ -238,34 +124,6 @@ in
   # Enable CUPS to print documents.
   services.printing.enable = true;
 
-  # Enable sound.
-  sound.enable = true;
-  # sound.extraConfig = ''
-  #   pcm.!default {
-  #     type hw
-  #     card 1
-  #   }
-
-  #   ctl.!default {
-  #     type hw
-  #     card 0
-  #   }
-  # '';
-  hardware.pulseaudio = {
-    # package = pkgs.pulseaudioFull;
-    enable = true;
-    support32Bit = true;
-    # systemWide = true;
-    # tcp.enable = true;
-    # configFile = pkgs.writeText "default.pa" ''
-    #   load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1
-    # '';
-    # configFile = pkgs.runCommand "default.pa" {} ''
-    #   sed 's/module-udev-detect$/module-udev-detect tsched=0/' \
-    #     ${pkgs.pulseaudio}/etc/pulse/default.pa > $out
-    # '';
-  };
-
   services.xserver = {
     # Enable the X11 windowing system.
     enable = true;
@@ -279,6 +137,7 @@ in
         enable = true;
         user = "isaac";
       };
+      xpra.pulseaudio = true;
     };
 
     # Enable touchpad support.
@@ -303,10 +162,10 @@ in
   };
 
   home-manager.users.isaac = {
-    xsession.pointerCursor = {
-      name = "Vanilla-DMZ";
-      package = pkgs.vanilla-dmz;
-    };
+    # xsession.pointerCursor = {
+    #   name = "Vanilla-DMZ";
+    #   package = pkgs.vanilla-dmz;
+    # };
 
     services = {
       udiskie = {
@@ -350,7 +209,7 @@ in
   # should.
   system.stateVersion = "19.03"; # Did you read the comment?
   nixpkgs.config = {
-    pulseaudio = true;
+    # pulseaudio = true;
     allowUnfree = true;
     packageOverrides = pkgs: {
       unstable = import unstable {

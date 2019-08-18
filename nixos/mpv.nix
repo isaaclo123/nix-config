@@ -338,17 +338,19 @@ let youtube-quality-plugin = pkgs.fetchurl {
   sha256 = "0fi1b4r5znp2k2z590jrrbn6wirx7nggjcl1frkcwsv7gmhjl11l";
 }; in
 
+let mpv-socket = "/tmp/mpv-scratchpad-socket"; in
 let fullscreen-lock = "/tmp/mpv-scratchpad-fullscreen.lock"; in
 
 let mpv-scratchpad = (pkgs.writeShellScriptBin "mpv-scratchpad" ''
+  SOCKET=${mpv-socket}
   FULLSCREEN=${fullscreen-lock}
   rm -f $FULLSCREEN
-  mpv --title=mpvscratchpad --x11-name=mpvscratchpad --geometry=512x288-32+62 --no-terminal --force-window --keep-open=yes --idle=yes
+  mpv --input-ipc-server=$SOCKET --title=mpvscratchpad --x11-name=mpvscratchpad --geometry=512x288-32+62 --no-terminal --force-window --keep-open=yes --idle=yes
   '');
 in
 let mpv-scratchpad-toggle = (pkgs.writeShellScriptBin "mpv-scratchpad-toggle" ''
   VISIBLE_IDS=$(xdotool search --onlyvisible --classname 'mpvscratchpad')
-  ID=$(xdotool search --classname 'mpvscratchpad' | head -n1);\
+  ID=$(xdotool search --classname 'mpvscratchpad' | head -n1)
   FULLSCREEN=${fullscreen-lock}
 
   # sticky desktop
@@ -373,24 +375,70 @@ let mpv-scratchpad-toggle = (pkgs.writeShellScriptBin "mpv-scratchpad-toggle" ''
     [ -z $VISIBLE_IDS ] && bspc node --focus $ID
     [ -z $VISIBLE_IDS ] && bspc node --focus last
   fi
+  exit 0
 ''); in
-# let mpv-scratchpad-show = (pkgs.writeShellScriptBin "mpv-scratchpad-show" ''
-#   ID=$(xdotool search --classname 'mpvscratchpad' | head -n1);\
-#
-#   playerctl -p mpv play
-#   bspc node $ID --flag sticky=off
-#   bspc node $ID --flag hidden=off
-#   bspc node $ID --to-desktop newest
-#   bspc node --focus $ID
-#   bspc node $ID -t fullscreen
-# ''); in
+let mpv-scratchpad-ctl = (pkgs.writeShellScriptBin "mpv-scratchpad-ctl" ''
+  socket=${mpv-socket}
+
+  command() {
+      # JSON preamble.
+      local tosend='{ "command": ['
+      # adding in the parameters.
+      for arg in "$@"; do
+          tosend="$tosend \"$arg\","
+      done
+      # closing it up.
+      tosend=''${tosend%?}' ] }'
+      # send it along and ignore output.
+      # to print output just remove the redirection to /dev/null
+      # echo $tosend | socat - $socket &> /dev/null
+      echo $tosend | socat - $socket
+  }
+
+  # exit mpv
+  [ "$1" = "stop" ] && command 'stop'
+  # toggle play-pause
+  [ "$1" = "play-pause" ] && command 'cycle' 'pause'
+  # start playing
+  [ "$1" = "pause" ] && command 'set' 'pause' 'yes'
+  # stop playing
+  [ "$1" = "play" ] && command 'set' 'pause' 'no'
+  # play next item in playlist
+  [ "$1" = "next" ] && command 'playlist_next'
+  # play previous item in playlist
+  [ "$1" = "previous" ] && command 'playlist_prev'
+  # seek forward
+  [ "$1" = "forward" ] && command 'seek' "$2" 'relative'
+  # seek backward
+  [ "$1" = "backward" ] && command 'seek' "-$2" 'relative'
+  # restart video
+  [ "$1" = "restart" ] && command 'seek' "0" 'absolute'
+  # toggle video status
+  [ "$1" = "video-novideo" ] && command 'cycle' 'video'
+  # video status yes
+  [ "$1" = "video" ] && command 'set' 'video' 'no' && command 'cycle' 'video'
+  # video status no
+  [ "$1" = "novideo" ] && command 'set' 'video' 'no'
+  # add item(s) to playlist
+  [ "$1" = "add" ] && shift &&
+      for video in "$@"; do
+          command 'loadfile' "$video" 'append-play';
+      done;
+  # replace item(s) in playlist
+  [ "$1" = "replace" ] && shift &&
+      for video in "$@"; do
+          command 'loadfile' "$video" 'replace';
+      done;
+
+''); in
 let mpv-scratchpad-open = (pkgs.writeShellScriptBin "mpv-scratchpad-open" ''
-  playerctl -p mpv open "$@"
-  playerctl -p mpv play
+  mpv-scratchpad-ctl replace "$@"
+  mpv-scratchpad-ctl play
+  exit 0
 ''); in
 let mpv-scratchpad-fullscreen-toggle = (pkgs.writeShellScriptBin "mpv-scratchpad-fullscreen-toggle" ''
   VISIBLE_IDS=$(xdotool search --onlyvisible --classname 'mpvscratchpad')
-  ID=$(xdotool search --classname 'mpvscratchpad' | head -n1);\
+  ID=$(xdotool search --classname 'mpvscratchpad' | head -n1)
   FULLSCREEN=${fullscreen-lock}
 
   # move mpv to front
@@ -413,27 +461,22 @@ let mpv-scratchpad-fullscreen-toggle = (pkgs.writeShellScriptBin "mpv-scratchpad
     bspc node --focus $ID
     touch $FULLSCREEN
   fi
-
-  # ID=$(xdotool search --classname 'mpvscratchpad' | head -n1);\
-
-  # # if mpv is not hidden and exists
-  # [ -n $ID ] && bspc node $ID --flag sticky
-  # [ -n $ID ] && bspc node $ID --state \~fullscreen
-  # [ -n $ID ] && bspc node --focus $ID
+  exit 0
 ''); in
 let mpv-scratchpad-hide = (pkgs.writeShellScriptBin "mpv-scratchpad-hide" ''
-  ID=$(xdotool search --classname 'mpvscratchpad' | head -n1);\
+  ID=$(xdotool search --classname 'mpvscratchpad' | head -n1)
 
-  playerctl -p mpv pause
+  mpv-scratchpad-ctl pause
   bspc node $ID --flag sticky=on
   bspc node $ID --flag hidden=on
+  exit 0
 ''); in
 
 {
   environment.systemPackages = with pkgs; [
-    (unstable.mpv-with-scripts.override {
+    (mpv-with-scripts.override {
       scripts = [
-        (mpvScripts.mpris)
+        # (mpvScripts.mpris)
         # (mpvScripts.autocrop)
         autosave-plugin
         autospeed-plugin
@@ -452,7 +495,8 @@ let mpv-scratchpad-hide = (pkgs.writeShellScriptBin "mpv-scratchpad-hide" ''
     (mpv-scratchpad-hide)
     (mpv-scratchpad-open)
     unstable.gallery-dl
-    playerctl
+    mpv-scratchpad-ctl
+    mpvc
   ];
 
   home-manager.users.isaac = {

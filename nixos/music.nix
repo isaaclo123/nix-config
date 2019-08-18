@@ -84,7 +84,6 @@ let ncmpcpp-bindings = (pkgs.writeText "bindings" ''
     ncmpcpp
     # mpd
     mpc_cli
-    unstable.audacity
   ];
 
   home-manager.users.isaac = {

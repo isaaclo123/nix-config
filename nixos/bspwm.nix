@@ -2,6 +2,21 @@
 
 with lib;
 
+let autostarted-status = "/tmp/autostarted-status.lock"; in
+
+let logout-desktop = (pkgs.writeShellScriptBin "logout-desktop" ''
+  #!/bin/bash
+  rm -f ${autostarted-status}
+  bspc quit
+''); in
+
+let reload-desktop = (pkgs.writeShellScriptBin "reload-desktop" ''
+  pkill -USR1 -x sxhkd
+  pkill -USR1 -x compton
+  systemctl --user restart polybar
+  bspc wm -r
+''); in
+
 let bspwmrc = (pkgs.writeText "bspwmrc" ''
   #!/usr/bin/env bash
 
@@ -41,28 +56,34 @@ let bspwmrc = (pkgs.writeText "bspwmrc" ''
 
   bspc rule -a mpv:mpvscratchpad sticky=on state=floating hidden=on border=off
 
-  # autostart
-
+  # always autostart
   killall -q dunst && (dunst &)
-
-  mpv-scratchpad &
-
-  autocutsel -s PRIMARY &
-
-  qutebrowser &
-  termite --class=termite_ &
-  termite --class=vim_ -e vim &
-  termite --class=ranger_ -e ranger &
-  termite --class=neomutt_ -e neomutt &
-  termite --class=ncmpcpp_ -e ncmpcpp &
-
-  # feh
   feh --bg-scale /etc/nixos/wallpaper.jpg
+
+  # only autostart on beginning
+  if [ ! -f ${autostarted-status} ]; then
+    autocutsel -s PRIMARY &
+
+    # window autostart
+    qutebrowser &
+    termite --class=termite_ &
+    termite --class=vim_ -e vim &
+    termite --class=ranger_ -e ranger &
+    termite --class=neomutt_ -e neomutt &
+    termite --class=ncmpcpp_ -e ncmpcpp &
+
+    mpv-scratchpad &
+
+    # create autostarted status file
+    touch ${autostarted-status}
+  fi
 ''); in
 
 {
   config = {
     environment.systemPackages = with pkgs; [
+      (reload-desktop)
+      (logout-desktop)
       bspwm
     ];
 

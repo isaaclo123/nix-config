@@ -52,10 +52,9 @@ let termite-config = (pkgs.writeText "config" ''
   color21 = #dfe2f1
 
   [options]
+  font = FontAwesome 9px
   font = Unifont Upper 14px
   font = Unifont 14px
-  font = Siji 9px
-  font = FontAwesome 9px
   font = GohuFont 14px
 ''); in
 
@@ -66,7 +65,7 @@ let termite-open = (pkgs.writeShellScriptBin "termite-open" ''
 {
   environment.systemPackages = with pkgs; [
     (termite-open)
-    termite
+    unstable.termite
   ];
 
   home-manager.users.isaac = {

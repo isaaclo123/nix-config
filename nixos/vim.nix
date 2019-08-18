@@ -93,7 +93,7 @@ let vim-config = ''
   " indentLine
   "let g:indentLine_setColors = 0
   let g:indentLine_char = '▏'
-  let g:indentLine_color_term = 19
+  " let g:indentLine_color_term = 19
   let g:indentLine_concealcursor = ' '
   " let g:indentLine_leadingSpaceEnabled = 1
   " let g:indentLine_leadingSpaceChar = '-'
@@ -196,6 +196,8 @@ let vim-config = ''
     let g:ctrlp_use_caching = 0
   endif
   set wildignore+=*/.git/*,*/tmp/*,*.swp
+  " let g:ctrlp_open_new_file = 'v'
+  " let g:ctrlp_open_multiple_files = 'v'
 
   " Vim table mode settings
   let g:table_mode_corner = '+'
@@ -340,6 +342,7 @@ let vim-config = ''
             python-mode
             ctrlp
             deoplete-nvim
+            ansible-vim
             # vim-completes-me
           ];
           opt = [ ];

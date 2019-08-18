@@ -57,7 +57,7 @@ let sxhkdrc = (pkgs.writeText "sxkhdrc" ''
   # wm independent hotkeys
   #
 
-  # music controls
+  # volume controls
   XF86AudioRaiseVolume
     pactl set-sink-volume @DEFAULT_SINK@ '+5%'
 
@@ -70,29 +70,16 @@ let sxhkdrc = (pkgs.writeText "sxkhdrc" ''
   XF86AudioMicMute
     pactl set-source-mute 1 toggle
 
-  XF86AudioPrev
-    playerctl previous
-
-  XF86AudioNext
-    playerctl next
-
-  XF86AudioPlay
-    playerctl play-pause
-
-  XF86AudioStop
-    playerctl stop
+  # XF86AudioPrev
+  # XF86AudioNext
+  # XF86AudioPlay
+  # XF86AudioStop
 
   XF86MonBrightnessUp
     brightnessctl set +5%
 
   XF86MonBrightnessDown
     brightnessctl set 5%-
-
-  XF86Bluetooth
-    bluetooth-toggle
-
-  XF86Favorites
-    sleep 0.5 && xset dpms force off
 
   # Toggle touchscreen
   XF86Display
@@ -101,6 +88,17 @@ let sxhkdrc = (pkgs.writeText "sxkhdrc" ''
   # Toggle touchpad
   XF86Tools
     touchpad-toggle
+
+  # Toggle bluetooth
+  XF86Bluetooth
+    bluetooth-toggle
+
+  # lock
+  super + F11
+    lock
+
+  XF86Favorites
+    sleep 0.5 && xset dpms force off
 
   # media controls
   super + Home
@@ -118,6 +116,10 @@ let sxhkdrc = (pkgs.writeText "sxkhdrc" ''
   @super + shift + Print
     screenshot -s
 
+  # lock and suspend
+  super + Delete
+    lock systemctl suspend -i
+
   # terminal emulator
   super + Return
     termite
@@ -125,14 +127,6 @@ let sxhkdrc = (pkgs.writeText "sxkhdrc" ''
   # browser
   super + b
     qutebrowser
-
-  # lock
-  super + F11
-    lock
-
-  # lock and suspend
-  super + Delete
-    lock systemctl suspend -i
 
   # program launcher
   super + d
@@ -152,15 +146,15 @@ let sxhkdrc = (pkgs.writeText "sxkhdrc" ''
 
   # seek forward
   super + Right
-    playerctl -p mpv position 3+
+    mpv-scratchpad-ctl forward 3
 
   # seek back
   super + Left
-    playerctl -p mpv position 3-
+    mpv-scratchpad-ctl backward 3
 
   # mpv play/pause
   super + Down
-    playerctl -p mpv play-pause
+    mpv-scratchpad-ctl play-pause
 
   # mpv fullscreen toggle
   super + shift + Up
@@ -168,11 +162,11 @@ let sxhkdrc = (pkgs.writeText "sxkhdrc" ''
 
   # next track
   super + shift + Right
-    playerctl -p mpv next
+      mpv-scratchpad-ctl next
 
   # prev track
   super + shift + Left
-    playerctl -p mpv previous
+      mpv-scratchpad-ctl previous
 
   # mpv scratchpad hide
   super + shift + Down
@@ -184,7 +178,7 @@ let sxhkdrc = (pkgs.writeText "sxkhdrc" ''
 
   # quit/restart bspwm
   super + shift + e
-      bspc quit
+      logout-desktop
 
   super + shift + r
       reload-desktop
@@ -201,12 +195,12 @@ let sxhkdrc = (pkgs.writeText "sxkhdrc" ''
       bspc desktop -l next
 
   # send the newest marked node to the newest preselected node
-  super + y
-      bspc node newest.marked.local -n newest.!automatic.local
+  # super + y
+  #     bspc node newest.marked.local -n newest.!automatic.local
 
   # swap the current node and the biggest node
-  super + g
-      bspc node -s biggest
+  # super + g
+  #     bspc node -s biggest
 
   #
   # state/flags
@@ -229,8 +223,8 @@ let sxhkdrc = (pkgs.writeText "sxkhdrc" ''
       bspc node -{f,s} {west,south,north,east}
 
   # focus the node for the given path jump
-  super + {p,b,comma,period}
-      bspc node -f @{parent,brother,first,second}
+  # super + {p,b,comma,period}
+  #     bspc node -f @{parent,brother,first,second}
 
   # focus the next/previous node in the current desktop
   # super + {_,shift + }c
@@ -245,14 +239,21 @@ let sxhkdrc = (pkgs.writeText "sxkhdrc" ''
   #     bspc {node,desktop} -f last
 
   # focus the older or newer node in the focus history
-  super + {o,i}
-      bspc wm -h off; \
-      bspc node {older,newer} -f; \
-      bspc wm -h on
+  # super + {o,i}
+  #     bspc wm -h off; \
+  #     bspc node {older,newer} -f; \
+  #     bspc wm -h on
 
   # focus or send to the given desktop
   super + {_,shift + }{1-9,0}
       bspc {desktop -f,node -d} '^{1-9,10}'
+
+  # resize windows
+  super + alt + {h,j,k,l}
+      bspc window -e {left -10,down +10,up -10,right +10}
+
+  super + alt + shift + {h,j,k,l}
+      bspc window -e {right -10,up +10,down -10,left +10}
 
   #
   # preselect
@@ -275,34 +276,33 @@ let sxhkdrc = (pkgs.writeText "sxkhdrc" ''
   #
 
   # expand a window by moving one of its side outward
-  super + alt + {h,j,k,l}
-      bspc node -z {left -20 0,bottom 0 20,top 0 -20,right 20 0}
+  # super + alt + {h,j,k,l}
+  #     bspc node -z {left -20 0,bottom 0 20,top 0 -20,right 20 0}
 
-  # contract a window by moving one of its side inward
-  super + alt + shift + {h,j,k,l}
-      bspc node -z {right -20 0,top 0 20,bottom 0 -20,left 20 0}
+  # # contract a window by moving one of its side inward
+  # super + alt + shift + {h,j,k,l}
+  #     bspc node -z {right -20 0,top 0 20,bottom 0 -20,left 20 0}
 
   # move a floating window
   super + {Left,Down,Up,Right}
         bspc node -v {-20 0,0 20,0 -20,20 0}
 ''); in
 {
-  config = {
-    environment.systemPackages =
-      let touchscreen-toggle = (input-toggle "ELAN Touchscreen" "touchscreen-toggle"); in
-      let touchpad-toggle = (input-toggle "ETPS/2 Elantech Touchpad" "touchpad-toggle"); in
-      with pkgs; [
-        (touchscreen-toggle)
-        (touchpad-toggle)
-        (bluetooth-toggle)
-        (screenshot)
-        sxhkd
-      ];
+  environment.systemPackages =
+    let touchscreen-toggle = (input-toggle "ELAN Touchscreen" "touchscreen-toggle"); in
+    let touchpad-toggle = (input-toggle "ETPS/2 Elantech Touchpad" "touchpad-toggle"); in
+    with pkgs; [
+      (touchscreen-toggle)
+      (touchpad-toggle)
+      (bluetooth-toggle)
+      (screenshot)
+      (lock)
+      sxhkd
+    ];
 
-    environment.etc.sxhkdrc = {
-      text = builtins.readFile sxhkdrc;
-    };
-
-    services.xserver.windowManager.bspwm.sxhkd.configFile = "/etc/sxhkdrc";
+  environment.etc.sxhkdrc = {
+    text = builtins.readFile sxhkdrc;
   };
+
+  services.xserver.windowManager.bspwm.sxhkd.configFile = "/etc/sxhkdrc";
 }

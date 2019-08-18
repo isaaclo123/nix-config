@@ -397,7 +397,7 @@ let qutebrowser-config = (pkgs.writeText "config.py" ''
 
 {
   environment.systemPackages = with pkgs; [
-    unstable.qutebrowser
+    qutebrowser
   ];
   home-manager.users.isaac = {
 
