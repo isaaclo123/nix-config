@@ -7,6 +7,7 @@ let autostarted-status = "/tmp/autostarted-status.lock"; in
 let logout-desktop = (pkgs.writeShellScriptBin "logout-desktop" ''
   #!/bin/bash
   rm -f ${autostarted-status}
+  mpc pause &>/dev/null
   bspc quit
 ''); in
 
@@ -73,6 +74,10 @@ let bspwmrc = (pkgs.writeText "bspwmrc" ''
     termite --class=ncmpcpp_ -e ncmpcpp &
 
     mpv-scratchpad &
+
+    NOTIFY=off bluetooth-toggle off &
+    NOTIFY=off touchpad-toggle off &
+    NOTIFY=off touchscreen-toggle off &
 
     # create autostarted status file
     touch ${autostarted-status}

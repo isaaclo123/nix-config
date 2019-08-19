@@ -3,9 +3,11 @@
 let homedir = "/home/isaac"; in
 let configdir = "${homedir}/.nixpkgs"; in
 
+let notmuch-config = "${homedir}/.config/notmuch/notmuchrc"; in
+
 let mail-sync= (pkgs.writeShellScriptBin "mail-sync" ''
   mbsync -a &&
-  notmuch new
+  notmuch --config=${notmuch-config} new
 ''); in
 
 {
@@ -14,7 +16,7 @@ let mail-sync= (pkgs.writeShellScriptBin "mail-sync" ''
   ];
 
   environment.variables = {
-    NOTMUCH_CONFIG = "${homedir}/.config/notmuch/notmuchrc";
+    NOTMUCH_CONFIG = notmuch-config;
   };
 
   home-manager.users.isaac = {
@@ -50,7 +52,7 @@ let mail-sync= (pkgs.writeShellScriptBin "mail-sync" ''
             };
           };
 
-          passwordCommand = "pass show google.com/isaaclo123@gmail.com | head -n1";
+          passwordCommand = "${pkgs.pass}/bin/pass show google.com/isaaclo123@gmail.com | head -n1";
 
           mbsync = {
             enable = true;
@@ -104,7 +106,7 @@ let mail-sync= (pkgs.writeShellScriptBin "mail-sync" ''
           #   showSignature = "append";
           # };
 
-          passwordCommand = "pass show umn.edu/loxxx298@umn.edu | head -n1";
+          passwordCommand = "${pkgs.pass}/bin/pass show umn.edu/loxxx298@umn.edu | head -n1";
 
           mbsync = {
             enable = true;
@@ -122,7 +124,7 @@ let mail-sync= (pkgs.writeShellScriptBin "mail-sync" ''
       mbsync = {
         enable = true;
         frequency = "*:0/15";
-        postExec = "notmuch new";
+        postExec = "${pkgs.notmuch}/bin/notmuch --config=${notmuch-config} new";
       };
     };
 

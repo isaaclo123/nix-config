@@ -345,7 +345,7 @@ let mpv-scratchpad = (pkgs.writeShellScriptBin "mpv-scratchpad" ''
   SOCKET=${mpv-socket}
   FULLSCREEN=${fullscreen-lock}
   rm -f $FULLSCREEN
-  mpv --input-ipc-server=$SOCKET --title=mpvscratchpad --x11-name=mpvscratchpad --geometry=512x288-32+62 --no-terminal --force-window --keep-open=yes --idle=yes
+  mpv --input-ipc-server=$SOCKET --x11-name=mpvscratchpad --geometry=512x288-32+62 --no-terminal --force-window --keep-open=yes --idle=yes
   '');
 in
 let mpv-scratchpad-toggle = (pkgs.writeShellScriptBin "mpv-scratchpad-toggle" ''
@@ -412,7 +412,9 @@ let mpv-scratchpad-ctl = (pkgs.writeShellScriptBin "mpv-scratchpad-ctl" ''
   # seek backward
   [ "$1" = "backward" ] && command 'seek' "-$2" 'relative'
   # restart video
-  [ "$1" = "restart" ] && command 'seek' "0" 'absolute'
+  [ "$1" = "restart" ] && command 'seek' "0" 'absolute-percent+exact'; command 'set' 'pause' 'no'
+  # end video
+  [ "$1" = "end" ] && command 'seek' "100" 'absolute-percent+exact'
   # toggle video status
   [ "$1" = "video-novideo" ] && command 'cycle' 'video'
   # video status yes
@@ -421,14 +423,11 @@ let mpv-scratchpad-ctl = (pkgs.writeShellScriptBin "mpv-scratchpad-ctl" ''
   [ "$1" = "novideo" ] && command 'set' 'video' 'no'
   # add item(s) to playlist
   [ "$1" = "add" ] && shift &&
-      for video in "$@"; do
-          command 'loadfile' "$video" 'append-play';
-      done;
+    for video in "$@"; do
+        command 'loadfile' "$video" 'append-play';
+    done;
   # replace item(s) in playlist
-  [ "$1" = "replace" ] && shift &&
-      for video in "$@"; do
-          command 'loadfile' "$video" 'replace';
-      done;
+  [ "$1" = "replace" ] && shift && command 'loadfile' "$1" 'replace';
 
 ''); in
 let mpv-scratchpad-open = (pkgs.writeShellScriptBin "mpv-scratchpad-open" ''
@@ -494,8 +493,8 @@ let mpv-scratchpad-hide = (pkgs.writeShellScriptBin "mpv-scratchpad-hide" ''
     (mpv-scratchpad-fullscreen-toggle)
     (mpv-scratchpad-hide)
     (mpv-scratchpad-open)
+    (mpv-scratchpad-ctl)
     unstable.gallery-dl
-    mpv-scratchpad-ctl
     mpvc
   ];
 

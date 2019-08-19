@@ -73,6 +73,7 @@ in
   '';
 
   boot.blacklistedKernelModules = [ "snd_pcsp" ];
+  boot.cleanTmpDir = true;
 
   # Enable sound.
   sound = {
@@ -202,6 +203,9 @@ in
     user = "isaac";
     # group = "isaac";
   };
+
+  # dbus for gtk theme
+  services.dbus.packages = with pkgs; [ xfce.dconf ];
 
   security.sudo.wheelNeedsPassword = false;
 

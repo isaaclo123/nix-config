@@ -81,7 +81,7 @@ let oomox-numix-sulphurpool-icons = stdenv.mkDerivation rec {
       enable = true;
 
       font = {
-        name = "GohuFont Regular 14";
+        name = "GohuFont 14";
         package = pkgs.gohufont;
       };
 

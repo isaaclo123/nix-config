@@ -1,7 +1,5 @@
 { pkgs, ... }:
 
-let configdir = "${builtins.getEnv "HOME"}/.nixpkgs"; in
-
 let userContentCss = pkgs.fetchurl {
   url = "https://www.floppymoose.com/userContent.css";
   sha256 = "0bmlm6aslvgczzwpy1ijbi6h6f0n1qva4453ls5gv7x40c3qg8mq";

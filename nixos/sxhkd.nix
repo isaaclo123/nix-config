@@ -9,14 +9,27 @@ let input-toggle = device: script-name: (pkgs.writeShellScriptBin script-name ''
 
   DEVICE="${device}"
 
+  NOTIFY_VAL=''${NOTIFY:-on}
+
+  enable_device () {
+    xinput enable "$DEVICE" &&
+    [ "$NOTIFY_VAL" == "on" ] && notify-send "${device} Enabled"
+  }
+
+  disable_device () {
+    xinput disable "$DEVICE" &&
+    [ "$NOTIFY_VAL" == "on" ] && notify-send "${device} Disabled"
+  }
+
+  [ "$1" == "on" ] && enable_device && exit 0
+  [ "$1" == "off" ] && disable_device && exit 0
+
   # Use device name and check for status
 
   if [[ $(xinput list "$DEVICE" | grep -Ec "disabled") -eq 1 ]]; then
-      xinput enable "$DEVICE" &&
-      notify-send "${device} Enabled"
+    enable_device
   else
-      xinput disable "$DEVICE" &&
-      notify-send "${device} Disabled"
+    disable_device
   fi
 ''); in
 
@@ -26,13 +39,26 @@ let bluetooth-toggle = (pkgs.writeShellScriptBin "bluetooth-toggle" ''
   BT=bluetooth
   BT_STATE=$(sudo rfkill list $BT | grep "Soft blocked: yes")
 
+  NOTIFY_VAL=''${NOTIFY:-on}
+
+  enable_device () {
+    sudo rfkill unblock $BT &&
+    [ "$NOTIFY_VAL" == "on" ] && notify-send "Bluetooth Enabled"
+  }
+
+  disable_device () {
+    sudo rfkill block $BT &&
+    [ "$NOTIFY_VAL" == "on" ] && notify-send "Bluetooth Disabled"
+  }
+
+  [ "$1" == "on" ] && enable_device && exit 0
+  [ "$1" == "off" ] && disable_device && exit 0
+
   if [ -z "$BT_STATE" ]; then
     # if is not soft blocked
-    sudo rfkill block $BT &&
-    notify-send "Bluetooth Disabled"
+    disable_device
   else
-    sudo rfkill unblock $BT &&
-    notify-send "Bluetooth Enabled"
+    enable_device
   fi
 ''); in
 
@@ -50,6 +76,14 @@ let lock = (pkgs.writeShellScriptBin "lock" ''
 
   mpc pause &>/dev/null
   sleep 0.5 && slock "$@"
+''); in
+
+let clipmenu-ext = (pkgs.writeShellScriptBin "clipmenu-ext" ''
+  CM_HISTLENGTH=20 CM_LAUNCHER=rofi clipmenu -p clipmenu
+''); in
+
+let clipmenu-del = (pkgs.writeShellScriptBin "clipmenu-del" ''
+  clipdel -d ".*" && notify-send "Clipboard Cleared"
 ''); in
 
 let sxhkdrc = (pkgs.writeText "sxkhdrc" ''
@@ -138,7 +172,10 @@ let sxhkdrc = (pkgs.writeText "sxkhdrc" ''
 
   # clipmenu rofi
   super + c
-    CM_HISTLENGTH=15 CM_LAUNCHER=rofi clipmenu
+    clipmenu-ext
+
+  super + shift + c
+    clipmenu-del
 
   # mpv toggle
   super + Up
@@ -171,6 +208,21 @@ let sxhkdrc = (pkgs.writeText "sxkhdrc" ''
   # mpv scratchpad hide
   super + shift + Down
     mpv-scratchpad-hide
+
+  # shorter seek
+  super + Prior
+    mpv-scratchpad-ctl forward 1
+
+  super + Next
+    mpv-scratchpad-ctl backward 1
+
+  # restart
+  super + shift + Prior
+    mpv-scratchpad-ctl restart
+
+  # end
+  super + shift + Next
+    mpv-scratchpad-ctl end
 
   #
   # bspwm hotkeys
@@ -248,13 +300,6 @@ let sxhkdrc = (pkgs.writeText "sxkhdrc" ''
   super + {_,shift + }{1-9,0}
       bspc {desktop -f,node -d} '^{1-9,10}'
 
-  # resize windows
-  super + alt + {h,j,k,l}
-      bspc window -e {left -10,down +10,up -10,right +10}
-
-  super + alt + shift + {h,j,k,l}
-      bspc window -e {right -10,up +10,down -10,left +10}
-
   #
   # preselect
   #
@@ -276,16 +321,16 @@ let sxhkdrc = (pkgs.writeText "sxkhdrc" ''
   #
 
   # expand a window by moving one of its side outward
-  # super + alt + {h,j,k,l}
-  #     bspc node -z {left -20 0,bottom 0 20,top 0 -20,right 20 0}
+  super + alt + {h,j,k,l}
+      bspc node -z {left -20 0,bottom 0 20,top 0 -20,right 20 0}
 
-  # # contract a window by moving one of its side inward
+  # contract a window by moving one of its side inward
   # super + alt + shift + {h,j,k,l}
   #     bspc node -z {right -20 0,top 0 20,bottom 0 -20,left 20 0}
 
   # move a floating window
-  super + {Left,Down,Up,Right}
-        bspc node -v {-20 0,0 20,0 -20,20 0}
+  #super + {Left,Down,Up,Right}
+  #      bspc node -v {-20 0,0 20,0 -20,20 0}
 ''); in
 {
   environment.systemPackages =
@@ -297,6 +342,8 @@ let sxhkdrc = (pkgs.writeText "sxkhdrc" ''
       (bluetooth-toggle)
       (screenshot)
       (lock)
+      (clipmenu-ext)
+      (clipmenu-del)
       sxhkd
     ];
 
