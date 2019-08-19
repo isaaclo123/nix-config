@@ -412,7 +412,7 @@ let mpv-scratchpad-ctl = (pkgs.writeShellScriptBin "mpv-scratchpad-ctl" ''
   # seek backward
   [ "$1" = "backward" ] && command 'seek' "-$2" 'relative'
   # restart video
-  [ "$1" = "restart" ] && command 'seek' "0" 'absolute-percent+exact'; command 'set' 'pause' 'no'
+  [ "$1" = "restart" ] && (command 'seek' "0" 'absolute'; command 'set' 'pause' 'no')
   # end video
   [ "$1" = "end" ] && command 'seek' "100" 'absolute-percent+exact'
   # toggle video status
