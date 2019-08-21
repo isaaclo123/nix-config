@@ -96,6 +96,14 @@ let ranger-scope-sh = (pkgs.writeShellScriptBin "scope.sh" ''
 
           ## HTML
           htm|html|xhtml)
+              ## preview with color
+              export COLORTERM=screen-256color
+              elinks -dump\
+                -dump-color-mode 3\
+                -dump-width ''${PV_WIDTH}\
+                -no-references "''${FILE_PATH}"\
+                && exit 5
+
               ## Preview as text conversion
               w3m -dump "''${FILE_PATH}" && exit 5
               lynx -dump -- "''${FILE_PATH}" && exit 5
@@ -152,10 +160,6 @@ let ranger-scope-sh = (pkgs.writeShellScriptBin "scope.sh" ''
 
           # PDF
           application/pdf)
-              convert -background white \
-                  -alpha remove \
-                  "''${FILE_PATH}[0]" "''${IMAGE_CACHE_PATH}" \
-                  && exit 6
               pdftoppm -f 1 -l 1 \
                        -scale-to-x "''${DEFAULT_SIZE%x*}" \
                        -scale-to-y -1 \
@@ -163,7 +167,6 @@ let ranger-scope-sh = (pkgs.writeShellScriptBin "scope.sh" ''
                        -jpeg -tiffcompression jpeg \
                        -- "''${FILE_PATH}" "''${IMAGE_CACHE_PATH%.*}" \
                   && exit 6 || exit 1;;
-
 
           ## ePub, MOBI, FB2 (using Calibre)
           application/epub+zip|application/x-mobipocket-ebook|\
@@ -318,15 +321,14 @@ let ranger-rc = (pkgs.writeText "ranger.conf" ''
   environment.systemPackages = with pkgs; [
     (ranger-derivation)
     imagemagick
-    w3m
+    elinks
     ffmpegthumbnailer
     p7zip
-    # python37Packages.pdf2image
     odt2txt
     libtar
     file
-    # xpdf
     calibre
+    poppler_utils
   ];
 
   home-manager.users.isaac = {

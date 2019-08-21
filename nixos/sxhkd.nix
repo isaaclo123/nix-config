@@ -66,9 +66,7 @@ let screenshot = (pkgs.writeShellScriptBin "screenshot" ''
   #!/bin/bash
 
   SCREENSHOT=~/Pictures/Screenshots/Screenshot_%Y%m%d-%H%M%S.png
-
-  scrot "$@" $SCREENSHOT &&
-  notify-send "Screenshot Saved" "$SCREENSHOT"
+  scrot "$@" $SCREENSHOT -e 'notify-send "Screenshot Saved" "$f"'
 ''); in
 
 let lock = (pkgs.writeShellScriptBin "lock" ''

@@ -50,7 +50,6 @@ in
       ./python.nix
       ./email.nix
       ./termite.nix
-      ./kitty.nix
       ./neomutt.nix
       ./calendar.nix
       ./todo.nix
