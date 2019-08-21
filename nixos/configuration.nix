@@ -205,6 +205,15 @@ in
     # group = "isaac";
   };
 
+  services.redshift = {
+    enable = true;
+    provider = "geoclue2";
+    temperature = {
+      day = 6000;
+      night = 3000;
+    };
+  };
+
   # dbus for gtk theme
   services.dbus.packages = with pkgs; [ xfce.dconf ];
 
@@ -275,5 +284,16 @@ in
         config = config.nixpkgs.config;
       };
     };
+  };
+
+  nix = {
+    # auto garbage collect
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 30d";
+    };
+    # auto optimize
+    autoOptimiseStore = true;
   };
 }

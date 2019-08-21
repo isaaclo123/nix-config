@@ -8,9 +8,13 @@ let mailcap = (pkgs.writeText "mailcap" ''
   # text/html; w3m -I %{charset} -T text/html; copiousoutput;
   # text/html;    elinks -dump -dump-color-mode 3 -no-references -default-mime-type text/html %s; needsterminal; copiousoutput;
 
+  # text/html; elinks -dump -dump-color-mode 4; copiousoutput;
+  text/html; elinks -dump -no-references; copiousoutput;
+  auto_view text/html
+
   # text/html;    elinks %s; nametemplate=%s.html
-  text/html;    w3m %s; nametemplate=%s.html
-  text/html; w3m -I %{charset} -T text/html; copiousoutput;
+  # text/html;    w3m %s; nametemplate=%s.html
+  # text/html; w3m -I %{charset} -T text/html; copiousoutput;
   # text/html;    elinks -dump -dump-color-mode 1 -no-references -dump-charset utf-8 --default-mime-type text/html %s; needsterminal; copiousoutput;
   # text/html; elinks -dump -dump-color-mode 3 \
   #     dump-charset utf-8 -default-mime-type text/htm %s; \
@@ -31,14 +35,6 @@ let account = folder: email: signature: (pkgs.writeText folder ''
   set record    = "+${folder}/Sent"
   set trash     = "+${folder}/Trash"
   set signature="${signature}"
-
-  bind index,pager g noop
-  bind index,pager gi noop
-  bind index,pager ga noop
-  bind index,pager gd noop
-  bind index,pager gs noop
-  bind index,pager gt noop
-  bind index,pager gf noop
 
   # Go to folder...
   macro index,pager gi "<change-folder>=${folder}/Inbox<enter>"       "open inbox"
@@ -194,12 +190,6 @@ let muttrc = (pkgs.writeText "muttrc" ''
   color index  color15  color00  "(~U|~N|~O)"     # unread, new, old messages
   color index  color15  color18  "~v~(~U|~N|~O)"  # collapsed thread with unread
 
-  # multiple account setup
-  source ${personal}
-
-  folder-hook Personal/* source ${personal}
-  folder-hook School/*   source ${school}
-
   set sleep_time = 0
 
   set realname   = "Isaac Lo"
@@ -271,7 +261,20 @@ let muttrc = (pkgs.writeText "muttrc" ''
   # ----------------------------------------------------
 
   bind generic             z         noop
-  bind attach              g         noop
+
+  bind index,pager,attach g noop
+  bind index,pager gi noop
+  bind index,pager ga noop
+  bind index,pager gd noop
+  bind index,pager gs noop
+  bind index,pager gt noop
+  bind index,pager gf noop
+  bind index,pager,attach,compose gx noop
+
+  bind index,pager,attach,compose y noop
+
+  # bind index,pager,attach g noop
+  # bind attach              g         noop
   bind index,pager         d         noop
   bind index,pager         s         noop
   bind index,pager         c         noop
@@ -279,12 +282,12 @@ let muttrc = (pkgs.writeText "muttrc" ''
 
   bind generic,index,pager \Cf       next-page
   bind generic,index,pager \Cb       previous-page
-  bind generic             gg        first-entry
   bind generic,index       G         last-entry
-  bind pager               gg        top
   bind pager               G         bottom
-  # bind generic,pager       \Cy       previous-line
-  # bind generic,index,pager \Ce       next-line
+  bind pager               gg        top
+  bind generic             gg        first-entry
+  bind generic,pager       \Cy       previous-line
+  bind generic,index,pager \Ce       next-line
   bind generic,index,pager \Cd       half-down
   bind generic,index,pager \Cu       half-up
   # bind generic             zt        current-top
@@ -317,6 +320,9 @@ let muttrc = (pkgs.writeText "muttrc" ''
 
   macro index,pager    gx  "<pipe-message>urlview<Enter>"                                   "call urlview to extract URLs out of a message"
   macro attach,compose gx  "<pipe-entry>urlview<Enter>"                                     "call urlview to extract URLs out of a message"
+
+  # bind pager           gg top
+  # bind generic         gg first-entry
 
   # Command Line
   # ----------------------------------------------------
@@ -363,17 +369,25 @@ let muttrc = (pkgs.writeText "muttrc" ''
 
   # Pipe message to xclip with yy.  pipe_decode will ensure that
   # unnecessary headers are removed and the message is processed.
-  macro index,pager,attach,compose \cy "<enter-command>set my_pipe_decode=\$pipe_decode pipe_decode<Enter><pipe-message>xclip<Enter><enter-command>set pipe_decode=\$my_pipe_decode; unset my_pipe_decode<Enter>" "copy message to clipboard using xclip"
+  macro index,pager,attach,compose yy "<enter-command>set my_pipe_decode=\$pipe_decode pipe_decode<Enter><pipe-message>xclip<Enter><enter-command>set pipe_decode=\$my_pipe_decode; unset my_pipe_decode<Enter>" "copy message to clipboard using xclip"
 
   bind index H top-page
   bind index M middle-page
   bind index L bottom-page
+
+  # multiple account setup
+  source ${personal}
+
+  folder-hook Personal/* source ${personal}
+  folder-hook School/*   source ${school}
 ''); in
 
 {
   environment.systemPackages = with pkgs; [
     neomutt
-    w3m-full
+    elinks
+    urlview
+    xclip
   ];
 
   home-manager.users.isaac = {
