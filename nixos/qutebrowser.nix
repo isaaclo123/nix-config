@@ -397,8 +397,8 @@ let qutebrowser-config = (pkgs.writeText "config.py" ''
   environment.systemPackages = with pkgs; [
     qutebrowser
   ];
-  home-manager.users.isaac = {
 
+  home-manager.users.isaac = {
     xdg.configFile = {
       "qutebrowser/config.py".source = qutebrowser-config;
     };

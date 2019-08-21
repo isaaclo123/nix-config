@@ -35,6 +35,8 @@ in
       ./slock.nix
       ./pkgs.nix
 
+      ./bat.nix
+
       # home-manager
       ./polybar.nix
       ./dunst.nix

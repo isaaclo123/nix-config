@@ -477,11 +477,11 @@ let mpv-scratchpad-hide = (pkgs.writeShellScriptBin "mpv-scratchpad-hide" ''
       scripts = [
         # (mpvScripts.mpris)
         # (mpvScripts.autocrop)
-        autosave-plugin
+        # autosave-plugin
+        # playlistnoplayback-plugin
         autospeed-plugin
         autoloop-plugin
         gallery-dl_hook-plugin
-        playlistnoplayback-plugin
         mpv-thumbnail-client-plugin
         mpv-thumbnail-server-plugin
         reload-plugin

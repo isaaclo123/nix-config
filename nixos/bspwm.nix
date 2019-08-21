@@ -61,6 +61,9 @@ let bspwmrc = (pkgs.writeText "bspwmrc" ''
   killall -q dunst && (dunst &)
   feh --bg-scale /etc/nixos/wallpaper.jpg
 
+  # rebuild bat cache
+  bat cache --build &
+
   # only autostart on beginning
   if [ ! -f ${autostarted-status} ]; then
     autocutsel -s PRIMARY &
