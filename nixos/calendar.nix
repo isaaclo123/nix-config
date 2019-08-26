@@ -20,7 +20,7 @@ let calcurse-vdirsyncer = stdenv.mkDerivation rec {
 
 { config, pkgs, stdenv, ... }:
 
-let calcurse-config = (pkgs.writeText "conf" ''
+let calcurse-config = ''
   appearance.calendarview=monthly
   appearance.compactpanels=no
   appearance.defaultpanel=calendar
@@ -48,9 +48,9 @@ let calcurse-config = (pkgs.writeText "conf" ''
   notification.command=calcurse --next | xargs -0 notify-send "Appointment"
   notification.notifyall=all
   notification.warning=600
-''); in
+''; in
 
-let calcurse-key-config = (pkgs.writeText "keys" ''
+let calcurse-key-config = ''
   generic-cancel  ESC
   generic-select  SPC
   generic-credits  @
@@ -98,7 +98,88 @@ let calcurse-key-config = (pkgs.writeText "keys" ''
   view-note  >
   raise-priority  +
   lower-priority  -
+''; in
+
+let vdirsyncer-getpass-sh = (pkgs.writeShellScriptBin "getpass.sh" ''
+  ${pkgs.pass}/bin/pass show vps.myrdd.info/radicale/isaac | head -n1
 ''); in
+
+let dav-url = "https://vps.myrdd.info/radicale/isaac"; in
+
+let vdirsyncer-config = ''
+  # An example configuration for vdirsyncer.
+  #
+  # Move it to ~/.vdirsyncer/config or ~/.config/vdirsyncer/config and edit it.
+  # Run `vdirsyncer --help` for CLI usage.
+  #
+  # Optional parameters are commented out.
+  # This file doesn't document all available parameters, see
+  # http://vdirsyncer.pimutils.org/ for the rest of them.
+
+  [general]
+  # A folder where vdirsyncer can store some metadata about each pair.
+  status_path = "~/.vdirsyncer/status/"
+
+  # CARDDAV
+  [pair contacts]
+  # A `[pair <name>]` block defines two storages `a` and `b` that should be
+  # synchronized. The definition of these storages follows in `[storage <name>]`
+  # blocks. This is similar to accounts in OfflineIMAP.
+  a = "contacts_local"
+  b = "contacts_remote"
+
+  # Synchronize all collections that can be found.
+  # You need to run `vdirsyncer discover` if new calendars/addressbooks are added
+  # on the server.
+
+  collections = ["from a", "from b"]
+
+  # Synchronize the "display name" property into a local file (~/.contacts/displayname).
+  metadata = ["displayname"]
+
+  # To resolve a conflict the following values are possible:
+  #   `null` - abort when collisions occur (default)
+  #   `"a wins"` - assume a's items to be more up-to-date
+  #   `"b wins"` - assume b's items to be more up-to-date
+  #conflict_resolution = null
+
+  [storage contacts_local]
+  # A storage references actual data on a remote server or on the local disk.
+  # Similar to repositories in OfflineIMAP.
+  type = "filesystem"
+  path = "~/.contacts/"
+  fileext = ".vcf"
+
+  [storage contacts_remote]
+  type = "carddav"
+  url = "${dav-url}"
+  username = "isaac"
+  # The password can also be fetched from the system password storage, netrc or a
+  # custom command. See http://vdirsyncer.pimutils.org/en/stable/keyring.html
+  password.fetch = ["command", "${vdirsyncer-getpass-sh}/bin/getpass.sh"]
+  verify = "/etc/ssl/certs/ca-certificates.crt"
+
+  # CALDAV
+  [pair calendar]
+  a = "calendar_local"
+  b = "calendar_remote"
+  collections = ["from a", "from b"]
+
+  # Calendars also have a color property
+  metadata = ["displayname", "color"]
+
+  [storage calendar_local]
+  type = "filesystem"
+  path = "~/.calendars/"
+  fileext = ".ics"
+
+  [storage calendar_remote]
+  type = "caldav"
+  url = "${dav-url}"
+  username = "isaac"
+  password.fetch = ["command", "${vdirsyncer-getpass-sh}/bin/getpass.sh"]
+  verify = "/etc/ssl/certs/ca-certificates.crt"
+''; in
 
 {
   environment.systemPackages = with pkgs; [
@@ -110,8 +191,9 @@ let calcurse-key-config = (pkgs.writeText "keys" ''
 
   home-manager.users.isaac = {
     home.file = {
-      ".calcurse/conf".source = calcurse-config;
-      ".calcurse/keys".source = calcurse-key-config;
+      ".calcurse/conf".text = calcurse-config;
+      ".calcurse/keys".text = calcurse-key-config;
+      ".vdirsyncer/config".text = vdirsyncer-config;
     };
   };
 }

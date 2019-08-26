@@ -1,7 +1,6 @@
 { pkgs, ... }:
 
 let homedir = "/home/isaac"; in
-let configdir = "${homedir}/.nixpkgs"; in
 
 let notmuch-config = "${homedir}/.config/notmuch/notmuchrc"; in
 

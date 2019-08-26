@@ -42,7 +42,6 @@
       neofetch
       scrot
       gimp
-      sxiv
 
       # unclutter
       autocutsel
@@ -84,5 +83,7 @@
       sshpass
 
       bc
+
+      bfg-repo-cleaner
     ];
 }

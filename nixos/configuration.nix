@@ -36,6 +36,7 @@ in
       ./pkgs.nix
 
       ./bat.nix
+      ./sxiv.nix
 
       # home-manager
       ./polybar.nix

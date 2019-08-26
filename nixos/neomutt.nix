@@ -1,7 +1,6 @@
 { pkgs, ... }:
 
 let homedir = "/home/isaac"; in
-let configdir = "${homedir}/.nixpkgs"; in
 
 let mailcap = (pkgs.writeText "mailcap" ''
   # auto view using w3m
@@ -22,6 +21,10 @@ let mailcap = (pkgs.writeText "mailcap" ''
 
   image/*; sxiv %s; test=test -n "$DISPLAY";
   application/pdf; zathura %s; test=test -n "$DISPLAY"
+''); in
+
+let urlview-config = (pkgs.writeText "urlview" ''
+  COMMAND qutebrowser
 ''); in
 
 # take a folder name and email to produce a sourcable file
@@ -393,6 +396,7 @@ let muttrc = (pkgs.writeText "muttrc" ''
   home-manager.users.isaac = {
     home.file = {
       ".mailcap".source = mailcap;
+      ".urlview".source = urlview-config;
       ".muttrc".source = muttrc;
     };
   };

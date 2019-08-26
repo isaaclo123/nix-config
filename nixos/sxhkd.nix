@@ -21,8 +21,14 @@ let input-toggle = device: script-name: (pkgs.writeShellScriptBin script-name ''
     [ "$NOTIFY_VAL" == "on" ] && notify-send "${device} Disabled"
   }
 
-  [ "$1" == "on" ] && enable_device && exit 0
-  [ "$1" == "off" ] && disable_device && exit 0
+  if [ "$1" == "on" ]; then
+    enable_device
+    exit 0
+  fi
+  if [ "$1" == "off" ]; then
+    disable_device
+    exit 0
+  fi
 
   # Use device name and check for status
 
@@ -51,8 +57,14 @@ let bluetooth-toggle = (pkgs.writeShellScriptBin "bluetooth-toggle" ''
     [ "$NOTIFY_VAL" == "on" ] && notify-send "Bluetooth Disabled"
   }
 
-  [ "$1" == "on" ] && enable_device && exit 0
-  [ "$1" == "off" ] && disable_device && exit 0
+  if [ "$1" == "on" ]; then
+    enable_device
+    exit 0
+  fi
+  if [ "$1" == "off" ]; then
+    disable_device
+    exit 0
+  fi
 
   if [ -z "$BT_STATE" ]; then
     # if is not soft blocked
@@ -84,7 +96,7 @@ let clipmenu-del = (pkgs.writeShellScriptBin "clipmenu-del" ''
   clipdel -d ".*" && notify-send "Clipboard Cleared"
 ''); in
 
-let sxhkdrc = (pkgs.writeText "sxkhdrc" ''
+let sxhkdrc = (pkgs.writeText "sxhkdrc" ''
   #
   # wm independent hotkeys
   #
@@ -330,6 +342,7 @@ let sxhkdrc = (pkgs.writeText "sxkhdrc" ''
   #super + {Left,Down,Up,Right}
   #      bspc node -v {-20 0,0 20,0 -20,20 0}
 ''); in
+
 {
   environment.systemPackages =
     let touchscreen-toggle = (input-toggle "ELAN Touchscreen" "touchscreen-toggle"); in

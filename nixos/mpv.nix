@@ -345,7 +345,7 @@ let mpv-scratchpad = (pkgs.writeShellScriptBin "mpv-scratchpad" ''
   SOCKET=${mpv-socket}
   FULLSCREEN=${fullscreen-lock}
   rm -f $FULLSCREEN
-  mpv --input-ipc-server=$SOCKET --x11-name=mpvscratchpad --geometry=512x288-32+62 --no-terminal --force-window --keep-open=yes --idle=yes
+  mpv --input-ipc-server=$SOCKET --x11-name=mpvscratchpad --title=mpvscratchpad --geometry=512x288-32+62 --no-terminal --force-window --keep-open=yes --idle=yes
   '');
 in
 let mpv-scratchpad-toggle = (pkgs.writeShellScriptBin "mpv-scratchpad-toggle" ''
