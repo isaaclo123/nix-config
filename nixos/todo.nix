@@ -1,14 +1,9 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
-let todo-config = (pkgs.writeText "config" ''
-  export TODO_DIR="$HOME/Documents/todo"
-  export TODO_FILE="$TODO_DIR/todo.txt"
-  export DONE_FILE="$TODO_DIR/done.txt"
-  export REPORT_FILE="$TODO_DIR/report.txt"
-  export TMP_FILE="/tmp/todo.tmp"
-  export TODOTXT_DEFAULT_ACTION=ls
-  export TODOTXT_SORT_COMMAND="env LC_COLLATE=C sort -k 2,2 -k 1,1n"
-''); in
+let todo-map-string = config-map:
+  lib.concatMapStringsSep "\n"
+    (key: "export ${key}=\"${builtins.getAttr key config-map}\"")
+    (builtins.attrNames config-map); in
 
 {
   environment.systemPackages = with pkgs; [
@@ -29,7 +24,16 @@ let todo-config = (pkgs.writeText "config" ''
 
   home-manager.users.isaac = {
     home.file = {
-      ".todo/config".source = todo-config;
+      ".todo/config".text =
+        (todo-map-string {
+          TODO_DIR="$HOME/Documents/todo";
+          TODO_FILE="$TODO_DIR/todo.txt";
+          DONE_FILE="$TODO_DIR/done.txt";
+          REPORT_FILE="$TODO_DIR/report.txt";
+          TMP_FILE="/tmp/todo.tmp";
+          TODOTXT_DEFAULT_ACTION="ls";
+          TODOTXT_SORT_COMMAND="env LC_COLLATE=C sort -k 2,2 -k 1,1n";
+        });
     };
   };
 }

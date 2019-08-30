@@ -1,4 +1,4 @@
-{ config, pkgs, stdenv, ... }:
+{ pkgs, ... }:
 
 {
   environment.systemPackages =
@@ -85,5 +85,9 @@
       bc
 
       bfg-repo-cleaner
+
+      go-mtpfs
+
+      steam
     ];
 }

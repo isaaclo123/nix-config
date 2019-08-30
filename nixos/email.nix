@@ -4,15 +4,14 @@ let homedir = "/home/isaac"; in
 
 let notmuch-config = "${homedir}/.config/notmuch/notmuchrc"; in
 
-let mail-sync= (pkgs.writeShellScriptBin "mail-sync" ''
-  mbsync -a &&
-  notmuch --config=${notmuch-config} new
-''); in
-
 {
-  environment.systemPackages = with pkgs; [
-    (mail-sync)
-  ];
+  environment.systemPackages = with pkgs;
+    let mail-sync= (writeShellScriptBin "mail-sync" ''
+      mbsync -a &&
+      notmuch --config=${notmuch-config} new
+    ''); in [
+      (mail-sync)
+    ];
 
   environment.variables = {
     NOTMUCH_CONFIG = notmuch-config;
@@ -122,7 +121,7 @@ let mail-sync= (pkgs.writeShellScriptBin "mail-sync" ''
     services = {
       mbsync = {
         enable = true;
-        frequency = "*:0/15";
+        frequency = "*:0/30";
         postExec = "${pkgs.notmuch}/bin/notmuch --config=${notmuch-config} new";
       };
     };

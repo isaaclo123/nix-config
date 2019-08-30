@@ -4,13 +4,13 @@
 
 { config, pkgs, ... }:
 
-let
-  home-manager = builtins.fetchGit {
-    url = "https://github.com/rycee/home-manager.git";
-    rev = "dd94a849df69fe62fe2cb23a74c2b9330f1189ed"; # CHANGEME
-    ref = "release-18.09";
-  };
-in
+let homedir = "/home/isaac"; in
+
+let home-manager = builtins.fetchGit {
+  url = "https://github.com/rycee/home-manager.git";
+  rev = "dd94a849df69fe62fe2cb23a74c2b9330f1189ed"; # CHANGEME
+  ref = "release-18.09";
+}; in
 
 let hardware-configuration =
   fetchTarball https://github.com/NixOS/nixos-hardware/archive/master.tar.gz;
@@ -31,7 +31,6 @@ in
       ./sxhkd.nix
       ./vim.nix
       ./zsh.nix
-      ./compton.nix
       ./slock.nix
       ./pkgs.nix
 
@@ -104,6 +103,8 @@ in
   #   }
   # '';
 
+  hardware.opengl.driSupport32Bit = true;
+
   hardware.pulseaudio = {
     # package = (pkgs.pulseaudioFull.override {
     #   x11Support = true;
@@ -138,6 +139,42 @@ in
   #   defaultLocale = "en_US.UTF-8";
   # };
 
+  fonts = {
+    fonts = with pkgs; [
+      # noto-fonts-emoji
+      unifont
+      unifont_upper
+      gohufont
+      font-awesome_4
+      # dejavu_fonts
+    ];
+    fontconfig = {
+      enable = true;
+      allowBitmaps = true;
+      useEmbeddedBitmaps = true;
+      antialias = true;
+      hinting = {
+        enable = true;
+      };
+      defaultFonts = {
+        monospace = [
+          "GohuFont"
+          # "Unifont"
+          # "Unifont Upper"
+        ];
+        sansSerif = [
+          "GohuFont"
+        ];
+        serif = [
+          "GohuFont"
+        ];
+      };
+      ultimate = {
+        enable = false;
+      };
+    };
+  };
+
   # Set your time zone.
   time.timeZone = "America/Chicago";
 
@@ -155,6 +192,25 @@ in
   # };
 
   # List services that you want to enable:
+
+  # compton
+  services.compton = {
+    enable = true;
+    shadow = true;
+    shadowOffsets = [ (-6) (-6) ];
+    shadowOpacity = "0.3";
+    shadowExclude = [
+      "name != 'mpvscratchpad'"
+    ];
+    vSync = "drm";
+    extraOptions = ''
+      shadow-radius = 4;
+      paint-on-overlay = true;
+    '';
+  };
+
+  # adb
+  programs.adb.enable = true;
 
   # flatpak
   services.flatpak.enable = true;
@@ -200,8 +256,8 @@ in
   # syncthing service
   services.syncthing = {
     enable = true;
-    configDir = "/home/isaac/.config/syncthing";
-    dataDir = "/home/isaac";
+    configDir = "${homedir}/.config/syncthing";
+    dataDir = "${homedir}";
     user = "isaac";
     # group = "isaac";
   };
@@ -225,9 +281,9 @@ in
 
   users.users.isaac = {
     createHome = true;
-    extraGroups = [ "wheel" "video" "audio" "disk" "networkmanager" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "uucp" "adbusers" "wheel" "video" "audio" "disk" "networkmanager" "sudo" ]; # Enable ‘sudo’ for the user.
     group = "users";
-    home = "/home/isaac";
+    home = "${homedir}";
     isNormalUser = true;
     uid = 1000;
   };

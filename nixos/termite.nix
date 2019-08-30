@@ -1,72 +1,14 @@
 { pkgs, ... }:
 
-let termite-config = (pkgs.writeText "config" ''
-  [colors]
-  # Base16 Atelier Sulphurpool
-  # Author: Bram de Haan (http://atelierbramdehaan.nl)
-
-  foreground          = #979db4
-  foreground_bold     = #dfe2f1
-  cursor              = #dfe2f1
-  cursor_foreground   = #202746
-  background          = #202746
-
-  # 16 color space
-
-  # Black, Gray, Silver, White
-  color0  = #202746
-  color8  = #6b7394
-  color7  = #979db4
-  color15 = #f5f7ff
-
-  # Red
-  color1  = #c94922
-  color9  = #c94922
-
-  # Green
-  color2  = #ac9739
-  color10 = #ac9739
-
-  # Yellow
-  color3  = #c08b30
-  color11 = #c08b30
-
-  # Blue
-  color4  = #3d8fd1
-  color12 = #3d8fd1
-
-  # Purple
-  color5  = #6679cc
-  color13 = #6679cc
-
-  # Teal
-  color6  = #22a2c9
-  color14 = #22a2c9
-
-  # Extra colors
-  color16 = #c76b29
-  color17 = #9c637a
-  color18 = #293256
-  color19 = #5e6687
-  color20 = #898ea4
-  color21 = #dfe2f1
-
-  [options]
-  font = FontAwesome 9px
-  font = Unifont Upper 14px
-  font = Unifont 14px
-  font = GohuFont 14px
-''); in
-
-let termite-open = (pkgs.writeShellScriptBin "termite-open" ''
-  termite -e "$*"
-''); in
-
 {
-  environment.systemPackages = with pkgs; [
-    (termite-open)
-    unstable.termite
-  ];
+  environment.systemPackages =
+    let termite-open = (pkgs.writeShellScriptBin "termite-open" ''
+      termite -e "$*"
+    ''); in
+    with pkgs; [
+      (termite-open)
+      termite
+    ];
 
   home-manager.users.isaac = {
     gtk.gtk3.extraCss = ''
@@ -76,13 +18,17 @@ let termite-open = (pkgs.writeShellScriptBin "termite-open" ''
     '';
 
     xdg.configFile = {
-      "termite/config".source = termite-config;
+      "termite/config".text =
+        (builtins.readFile (pkgs.fetchurl {
+          url = "https://raw.githubusercontent.com/khamer/base16-termite/8f34cab45ebcd73f23321f82204532353edf581f/themes/base16-atelier-sulphurpool.config";
+          sha256 = "0kab000aj67sip821rj2aka80jrphh9k125k7gc88mqz3ac7i33r";
+        })) + ''
+          [options]
+          font = FontAwesome 9px
+          font = Unifont Upper 14px
+          font = Unifont 14px
+          font = GohuFont 14px
+        '';
     };
   };
-
-  # programs.termite = {
-  #   enable = true;
-  #   allowBold = true;
-  #   audibleBell = false;
-  # };
 }

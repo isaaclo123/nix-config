@@ -1,24 +1,122 @@
 with import <nixpkgs> {};
 
-let calcurse-vdirsyncer = stdenv.mkDerivation rec {
-  name = "calcurse-vdirsyncer";
-  src = pkgs.fetchFromGitHub {
-    owner = "lfos";
-    repo = "calcurse";
-    rev = "61d3667899881b8ca17c35b1dbb718c723ecab8e";
-    sha256 = "1iw1w5cz1f7p8fc2i89sbbxxmjbxsw8q5jr9r9l1mjlk7kb8v2zd";
-    fetchSubmodules = false;
-  };
-
-  dontBuild = true;
-  installPhase = ''
-    mkdir -p $out/bin
-    cp ./contrib/vdir/calcurse-vdirsyncer $out/bin/
-    chmod +x $out/bin/calcurse-vdirsyncer
-  '';
-}; in
+# let calcurse-vdirsyncer = stdenv.mkDerivation rec {
+#   name = "calcurse-vdirsyncer";
+#   src = pkgs.fetchFromGitHub {
+#     owner = "lfos";
+#     repo = "calcurse";
+#     rev = "61d3667899881b8ca17c35b1dbb718c723ecab8e";
+#     sha256 = "1iw1w5cz1f7p8fc2i89sbbxxmjbxsw8q5jr9r9l1mjlk7kb8v2zd";
+#     fetchSubmodules = false;
+#   };
+#
+#   dontBuild = true;
+#   installPhase = ''
+#     mkdir -p $out/bin
+#     cp ./contrib/vdir/calcurse-vdirsyncer $out/bin/
+#     chmod +x $out/bin/calcurse-vdirsyncer
+#   '';
+# }; in
+# let vdirsyncer-derivation = stdenv.lib.overrideDerivation pkgs.vdirsyncer (oldAttrs : {
+#   src = fetchFromGitHub {
+#     owner = "pimutils";
+#     repo = "vdirsyncer";
+#     rev = "7a92aa20b1910eb5cc3c451a9a2fa62e76c80141";
+#     sha256 = "0prmvfgrpa8npkc2hcl7fi0wwj4zzx6plnwkhyks24hfqs7dimvv";
+#   };
+#   patches = [];
+#   postPatch = "";
+# }); in
 
 { config, pkgs, stdenv, ... }:
+
+let calcurse-vdirsyncer = (pkgs.writeShellScriptBin "calcurse-vdirsyncer" ''
+  #!/bin/sh
+
+  set -e
+
+  usage() {
+  	echo "usage: calcurse-vdirsyncer vdir [-h] [-f] [-v] [-D] datadir"
+  	exit
+  }
+
+  set_vdir() {
+  	if [ ! -d "$1" ]; then
+  		echo "error: $1 is not a valid vdir directory."
+  		exit 1
+  	else
+  		VDIR="$1"
+  	fi
+  }
+
+  set_datadir() {
+  	if [ -z "$1" ]; then
+  		echo "error: no datadir specified."
+  		usage
+  	fi
+  	if [ ! -d "$1" ]; then
+  		echo "error: $1 is not a valid data directory."
+  		exit 1
+  	else
+  		DATADIR="$1"
+  		shift
+  	fi
+  }
+
+  if [ "$#" -lt 1 ] || [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
+  	usage
+  fi
+
+  DATADIR="$HOME/.calcurse"
+  VERBOSE=""
+  FORCE=""
+
+  set_vdir "$1"
+  shift
+
+  while [ $# -gt 0 ]; do
+  	case "$1" in
+  			-D|--datadir)
+  				shift
+  				set_datadir "$1"
+  				shift
+  			;;
+  			-h|--help)
+  				usage
+  			;;
+  			-f|--force)
+  				FORCE="-f"
+  				shift
+  			;;
+  			-v|--verbose)
+  				VERBOSE="-v"
+  				shift
+  			;;
+  			*)
+  				echo "error: invalid argument $1"
+  				usage
+  			;;
+  	esac
+  done
+
+  if [[ ! -z "$VERBOSE" ]] && [[ ! -z "$FORCE" ]]; then
+    calcurse-vdir export "$VDIR" -D "$DATADIR" "$FORCE" "$VERBOSE" && \
+      vdirsyncer sync && \
+      calcurse-vdir import "$VDIR" -D "$DATADIR" "$FORCE" "$VERBOSE"
+  elif [[ ! -z "$VERBOSE" ]]; then
+    calcurse-vdir export "$VDIR" -D "$DATADIR" "$VERBOSE" && \
+      vdirsyncer sync && \
+      calcurse-vdir import "$VDIR" -D "$DATADIR" "$VERBOSE"
+  elif [[ ! -z "$FORCE" ]]; then
+    calcurse-vdir export "$VDIR" -D "$DATADIR" "$FORCE" && \
+      vdirsyncer sync && \
+      calcurse-vdir import "$VDIR" -D "$DATADIR" "$FORCE"
+  else
+    calcurse-vdir export "$VDIR" -D "$DATADIR" && \
+      vdirsyncer sync && \
+      calcurse-vdir import "$VDIR" -D "$DATADIR"
+  fi
+''); in
 
 let calcurse-config = ''
   appearance.calendarview=monthly
@@ -104,7 +202,7 @@ let vdirsyncer-getpass-sh = (pkgs.writeShellScriptBin "getpass.sh" ''
   ${pkgs.pass}/bin/pass show vps.myrdd.info/radicale/isaac | head -n1
 ''); in
 
-let dav-url = "https://vps.myrdd.info/radicale/isaac"; in
+let dav-url = "https://vps.myrdd.info/radicale/isaac/"; in
 
 let vdirsyncer-config = ''
   # An example configuration for vdirsyncer.
@@ -157,7 +255,7 @@ let vdirsyncer-config = ''
   # The password can also be fetched from the system password storage, netrc or a
   # custom command. See http://vdirsyncer.pimutils.org/en/stable/keyring.html
   password.fetch = ["command", "${vdirsyncer-getpass-sh}/bin/getpass.sh"]
-  verify = "/etc/ssl/certs/ca-certificates.crt"
+  # verify = "/etc/ssl/certs/ca-certificates.crt"
 
   # CALDAV
   [pair calendar]
@@ -178,7 +276,7 @@ let vdirsyncer-config = ''
   url = "${dav-url}"
   username = "isaac"
   password.fetch = ["command", "${vdirsyncer-getpass-sh}/bin/getpass.sh"]
-  verify = "/etc/ssl/certs/ca-certificates.crt"
+  # verify = "/etc/ssl/certs/ca-certificates.crt"
 ''; in
 
 {
@@ -193,7 +291,7 @@ let vdirsyncer-config = ''
     home.file = {
       ".calcurse/conf".text = calcurse-config;
       ".calcurse/keys".text = calcurse-key-config;
-      ".vdirsyncer/config".text = vdirsyncer-config;
+      ".config/vdirsyncer/config".text = vdirsyncer-config;
     };
   };
 }

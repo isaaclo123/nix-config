@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
   environment.systemPackages = with pkgs; [
@@ -7,15 +7,18 @@
   ];
 
   programs.zsh.enable = true;
+
   programs.zsh.autosuggestions = {
     enable = true;
     strategy = "match_prev_cmd";
     # highlightStyle = "fg=8";
   };
+
   programs.zsh.syntaxHighlighting = {
     enable = true;
     # highlighters = [ "main" "brackets" "cursor" "root" "line" ];
   };
+
   programs.zsh.ohMyZsh = {
     enable = true;
     plugins = [
@@ -31,11 +34,14 @@
     customPkgs = with pkgs;
       [ pkgs.zsh-completions pkgs.nix-zsh-completions ];
   };
+
   # zprofile (once, before zshrc)
   # programs.zsh.loginShellInit = ''
   # '';
+
   # zshrc (start)
   programs.zsh.enableGlobalCompInit = true;
+
   environment.interactiveShellInit = ''
     # disable ctrl-d EOF
     stty eof undef
@@ -50,6 +56,7 @@
     # z.sh
     . ${import ./z.nix}/bin/z
   '';
+
   # zshrc (end)
   programs.zsh.promptInit = ''
     # for history-substring-search
@@ -82,6 +89,7 @@
     # unset XDG_CONFIG_HOME for termite
     unset XDG_CONFIG_HOME
   '';
+
   programs.zsh.shellAliases = with pkgs; {
     c = "clear";
   };
