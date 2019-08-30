@@ -66,9 +66,11 @@ let calcurse-vdirsyncer =
   systemd.user = {
     timers.calcurse-vdirsyncer = {
       wantedBy = [ "timers.target" ];
-      wants = [ "calcurse-vdirsyncer.service" ];
       partOf = [ "calcurse-vdirsyncer.service" ];
-      timerConfig.OnCalendar = "*:0/30";
+      timerConfig = {
+        OnCalendar = "*:0/30";
+        OnActiveSec = "0";
+      };
     };
 
     services.calcurse-vdirsyncer = {
