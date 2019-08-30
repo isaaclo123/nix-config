@@ -51,7 +51,8 @@ in
       ./email.nix
       ./termite.nix
       ./neomutt.nix
-      ./calendar.nix
+      ./calcurse.nix
+      ./vdirsyncer.nix
       ./todo.nix
       ./zathura.nix
       ./ranger.nix

@@ -7,17 +7,14 @@ let bat-syntax-map-string = syntax-map:
     (key: "--map-syntax ${key}:${builtins.getAttr key syntax-map}")
     (builtins.attrNames syntax-map); in
 
-# let bat-derivation = stdenv.lib.overrideDerivation pkgs.bat (oldAttrs : {
-#   postInstall = oldAttrs.postInstall or "" + ''
-#     export BAT_CONFIG_PATH=/home/isaac/.config/bat
-#     ${pkgs.bat}/bin/bat cache --build
-#   '';
-# }); in
-
 {
   environment.systemPackages = with pkgs; [
     bat
   ];
+
+  system.userActivationScripts.batSetup = ''
+    ${pkgs.bat}/bin/bat cache --build
+  '';
 
   home-manager.users.isaac = {
     xdg.configFile = {

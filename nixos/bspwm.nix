@@ -70,9 +70,6 @@ let autostarted-status = "/tmp/autostarted-status.lock"; in
       killall -q dunst && (dunst &)
       feh --bg-scale /etc/nixos/wallpaper.jpg
 
-      # rebuild bat cache
-      bat cache --build &
-
       # only autostart on beginning
       if [ ! -f ${autostarted-status} ]; then
         autocutsel -fork
