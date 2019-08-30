@@ -81,6 +81,10 @@ let calcurse-vdirsyncer =
 
         ${calcurse-vdirsyncer}/bin/calcurse-vdirsyncer $CALENDAR_DIR
       '';
+      path = with pkgs; [
+        unstable.calcurse
+        vdirsyncer
+      ];
     };
   };
 
