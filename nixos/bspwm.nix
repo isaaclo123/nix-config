@@ -69,6 +69,7 @@ let autostarted-status = "/tmp/autostarted-status.lock"; in
       # always autostart
       killall -q dunst && (dunst &)
       feh --bg-scale /etc/nixos/wallpaper.jpg
+      calcurse --daemon
 
       # only autostart on beginning
       if [ ! -f ${autostarted-status} ]; then
