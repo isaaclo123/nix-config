@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 let homedir = "/home/isaac"; in
 
@@ -69,13 +69,17 @@ let calcurse-vdirsyncer =
       partOf = [ "calcurse-vdirsyncer.service" ];
       timerConfig = {
         OnCalendar = "*:0/30";
-        OnActiveSec = "0";
       };
     };
 
     services.calcurse-vdirsyncer = {
       description = "calcurse-vdirsyncer systemd service";
+
+      wantedBy = [ "nixos-activation.service" ];
+      after = [ "nixos-activation.service" ];
+
       serviceConfig.Type = "oneshot";
+
       script = ''
         CALENDAR_DIR=$(ls -d ${homedir}/.calendars/* | head -n1)
 
@@ -83,6 +87,7 @@ let calcurse-vdirsyncer =
 
         ${calcurse-vdirsyncer}/bin/calcurse-vdirsyncer $CALENDAR_DIR
       '';
+
       path = with pkgs; [
         unstable.calcurse
         vdirsyncer
