@@ -75,7 +75,7 @@ let calcurse-vdirsyncer =
     services.calcurse-vdirsyncer = {
       description = "calcurse-vdirsyncer systemd service";
 
-      wantedBy = [ "nixos-activation.service" ];
+      requiredBy = [ "nixos-activation.service" ];
       after = [ "nixos-activation.service" ];
 
       serviceConfig.Type = "oneshot";
@@ -96,7 +96,7 @@ let calcurse-vdirsyncer =
   };
 
   system.userActivationScripts.vdirsyncerSetup = ''
-    ${pkgs.vdirsyncer}/bin/vdirsyncer discover
+    ${config.system.path}/bin/yes | ${pkgs.vdirsyncer}/bin/vdirsyncer discover
     ${pkgs.vdirsyncer}/bin/vdirsyncer sync
   '';
 
