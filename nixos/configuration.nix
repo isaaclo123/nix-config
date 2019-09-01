@@ -36,6 +36,7 @@ in
 
       ./bat.nix
       ./sxiv.nix
+      ./weechat.nix
 
       # home-manager
       ./polybar.nix

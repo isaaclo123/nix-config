@@ -18,34 +18,12 @@ let calcurse-vdirsyncer =
       };
 
       patches = [
-        (pkgs.writeText "calcurse-vdirsyncer.patch" ''
-          --- a/contrib/vdir/calcurse-vdirsyncer	2019-08-30 11:33:23.860473150 -0500
-          +++ b/contrib/vdir/calcurse-vdirsyncer	2019-08-30 11:36:45.910492110 -0500
-          @@ -66,6 +66,20 @@
-              esac
-           done
-
-          -calcurse-vdir export "$VDIR" -D "$DATADIR" "$FORCE" "$VERBOSE" && \
-          -	vdirsyncer sync && \
-          -	calcurse-vdir import "$VDIR" -D "$DATADIR" "$FORCE" "$VERBOSE"
-          +if [[ ! -z "$VERBOSE" ]] && [[ ! -z "$FORCE" ]]; then
-          +  calcurse-vdir export "$VDIR" -D "$DATADIR" "$FORCE" "$VERBOSE" && \
-          +    vdirsyncer sync && \
-          +    calcurse-vdir import "$VDIR" -D "$DATADIR" "$FORCE" "$VERBOSE"
-          +elif [[ ! -z "$VERBOSE" ]]; then
-          +  calcurse-vdir export "$VDIR" -D "$DATADIR" "$VERBOSE" && \
-          +    vdirsyncer sync && \
-          +    calcurse-vdir import "$VDIR" -D "$DATADIR" "$VERBOSE"
-          +elif [[ ! -z "$FORCE" ]]; then
-          +  calcurse-vdir export "$VDIR" -D "$DATADIR" "$FORCE" && \
-          +    vdirsyncer sync && \
-          +    calcurse-vdir import "$VDIR" -D "$DATADIR" "$FORCE"
-          +else
-          +  calcurse-vdir export "$VDIR" -D "$DATADIR" && \
-          +    vdirsyncer sync && \
-          +    calcurse-vdir import "$VDIR" -D "$DATADIR"
-          +fi
-        '')
+        (pkgs.fetchurl {
+          # https://gist.github.com/isaaclo123/f8f46730cf01363aec926206f7524c61
+          name = "calcurse-vdirsyncer-fix";
+          url = "https://gist.githubusercontent.com/isaaclo123/f8f46730cf01363aec926206f7524c61/raw/93853866e320c67524ef9fea8af300d00135e0d6/calcurse-vdirsyncer-fix.patch";
+          sha256 = "1zicfl3qhq53ipbs7xih2p8praswzvqwr7xcmkjczvw6lzmvfvah";
+        })
       ];
 
       dontBuild = true;

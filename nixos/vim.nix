@@ -1,6 +1,8 @@
 { pkgs, ... }:
 
 {
+  programs.vim.defaultEditor = true;
+
   environment.systemPackages =
     let vimrc = ''
       set wildmode=longest,list,full
@@ -374,8 +376,4 @@
       universal-ctags
       ripgrep
     ];
-
-  environment.variables = {
-    EDITOR = "vim";
-  };
 }

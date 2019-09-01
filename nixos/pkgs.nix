@@ -75,8 +75,6 @@
       gtk_engines
       lxappearance
 
-      weechat
-
       squashfsTools
 
       ansible
