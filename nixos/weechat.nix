@@ -28,6 +28,12 @@ let nixos-weechat = (with import <nixpkgs> {};
             sha256 = "0bcfd7mnwcij746221a4b50hj11b24kl1ggyqj72gg8v4vqh9f71";
           };
         };
+        # autosort = attrs: {
+        #   src = pkgs.fetchurl {
+        #     url = "https://weechat.org/files/scripts/autosort.py";
+        #     sha256 = "0i56y0glp23krkahrrfzrd31y3pj59z7skr1przlkngwdbrpf06r";
+        #   };
+        # };
       };
 
       scripts = pkgs.unstable.callPackage "${nixos-weechat}/scripts.nix" {
@@ -41,10 +47,9 @@ let nixos-weechat = (with import <nixpkgs> {};
 
             scripts = with scripts; [
               # python
-              autojoin
               apply_corrections
               auto_away
-              autoconf
+              # autoconf
               autoconnect
               autojoin
               autosort
@@ -52,7 +57,7 @@ let nixos-weechat = (with import <nixpkgs> {};
               buffer_autoclose
               colorize_nicks
               go
-              notify_send
+              # notify_send
               screen_away
               server_autoswitch
               spell_correction
@@ -73,5 +78,10 @@ let nixos-weechat = (with import <nixpkgs> {};
             ];
           };
         })
+
+        aspell
+        aspellDicts.en
+        aspellDicts.en-computers
+        aspellDicts.en-science
       ];
 }

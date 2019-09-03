@@ -150,14 +150,17 @@ in
       font-awesome_4
       # dejavu_fonts
     ];
+
     fontconfig = {
       enable = true;
       allowBitmaps = true;
       useEmbeddedBitmaps = true;
       antialias = true;
+
       hinting = {
         enable = true;
       };
+
       defaultFonts = {
         monospace = [
           "GohuFont"
@@ -171,10 +174,13 @@ in
           "GohuFont"
         ];
       };
+
       ultimate = {
         enable = false;
       };
     };
+
+    enableFontDir = true;
   };
 
   # Set your time zone.
