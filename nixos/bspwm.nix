@@ -25,7 +25,17 @@ let autostarted-status = "/tmp/autostarted-status.lock"; in
       autocutsel
     ];
 
+  services.xserver.windowManager = {
+    bspwm = {
+      enable = true;
+      configFile = "/etc/bspwmrc";
+    };
+
+    default = "bspwm";
+  };
+
   environment.etc.bspwmrc = {
+    mode = "0755";
     text = ''
       #!/usr/bin/env bash
 
@@ -94,15 +104,5 @@ let autostarted-status = "/tmp/autostarted-status.lock"; in
         touch ${autostarted-status}
       fi
     '';
-    mode = "0645";
-  };
-
-  services.xserver.windowManager = {
-    bspwm = {
-      enable = true;
-      configFile = "/etc/bspwmrc";
-    };
-
-    default = "bspwm";
   };
 }

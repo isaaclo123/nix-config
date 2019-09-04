@@ -39,6 +39,7 @@ let input-toggle-create = device: script-name: (pkgs.writeShellScriptBin script-
 ''); in
 
 {
+
   environment.systemPackages =
     let touchscreen-toggle = (input-toggle-create "ELAN Touchscreen" "touchscreen-toggle"); in
 
@@ -112,8 +113,11 @@ let input-toggle-create = device: script-name: (pkgs.writeShellScriptBin script-
       sxhkd
     ];
 
-  services.xserver.windowManager.bspwm.sxhkd.configFile =
-    let sxhdrc = (pkgs.writeText "sxhdrc" ''
+  services.xserver.windowManager.bspwm.sxhkd.configFile = "/etc/sxhkdrc";
+
+  environment.etc.sxhkdrc = {
+    mode = "0644";
+    text = ''
       #
       # wm independent hotkeys
       #
@@ -198,10 +202,10 @@ let input-toggle-create = device: script-name: (pkgs.writeShellScriptBin script-
         rofi-pass
 
       # clipmenu rofi
-      super + c
+      super + x
         clipmenu-ext
 
-      super + shift + c
+      super + shift + x
         clipmenu-del
 
       # mpv toggle
@@ -256,11 +260,33 @@ let input-toggle-create = device: script-name: (pkgs.writeShellScriptBin script-
       #
 
       # quit/restart bspwm
-      super + shift + e
+      super + ctrl + e
           logout-desktop
 
-      super + shift + r
+      super + ctrl + r
           reload-desktop
+
+      # window rotate and flip
+
+      # Rotate desktop
+      super + {_,shift + }r
+          bspc node @/ --rotate {90,-90}
+
+      # Circulate the leaves of the tree
+      super + {_,shift + }c
+          bspc node @/ --circulate {backward,forward}
+
+      # flip
+      super + {_,shift + }s
+          bspc node @/ --flip {horizontal,vertical}
+
+      # Make split ratios equal
+      super + equal
+      	bspc node @/ --equalize
+
+      # Make split ratios balanced
+      super + minus
+      	bspc node @/ --balance
 
       # close and kill
       super + shift + q
@@ -352,12 +378,12 @@ let input-toggle-create = device: script-name: (pkgs.writeShellScriptBin script-
           bspc node -z {left -20 0,bottom 0 20,top 0 -20,right 20 0}
 
       # contract a window by moving one of its side inward
-      # super + alt + shift + {h,j,k,l}
-      #     bspc node -z {right -20 0,top 0 20,bottom 0 -20,left 20 0}
+      super + alt + shift + {h,j,k,l}
+          bspc node -z {right -20 0,top 0 20,bottom 0 -20,left 20 0}
 
       # move a floating window
       #super + {Left,Down,Up,Right}
       #      bspc node -v {-20 0,0 20,0 -20,20 0}
-    ''); in
-    "${sxhdrc}";
+    '';
+  };
 }

@@ -28,13 +28,28 @@ let nixos-weechat = (with import <nixpkgs> {};
             sha256 = "0bcfd7mnwcij746221a4b50hj11b24kl1ggyqj72gg8v4vqh9f71";
           };
         };
-        # autosort = attrs: {
-        #   src = pkgs.fetchurl {
-        #     url = "https://weechat.org/files/scripts/autosort.py";
-        #     sha256 = "0i56y0glp23krkahrrfzrd31y3pj59z7skr1przlkngwdbrpf06r";
-        #   };
-        # };
+        notify_send = attrs: {
+          language = "python";
+        };
       };
+
+      weechat_notify_send = (with import <nixpkgs> {};
+        stdenv.mkDerivation rec {
+          pname = "weechat-autosort";
+          version = "0.9";
+
+          src = pkgs.fetchFromGitHub {
+            owner = "s3rvac";
+            repo = "weechat-notify-send";
+            rev = "dc248f442925b6e8ab787c6e39812d41236d7459";
+            sha256 = "0bq5r89ahv0ppw35qw2npzrgw58ifr9bkkn6kxs719i3yzs64k7m";
+          };
+
+          passthru.scripts = [ "notify_send.py" ];
+          installPhase = ''
+            install -D notify_send.py $out/share/notify_send.py
+          '';
+        });
 
       scripts = pkgs.unstable.callPackage "${nixos-weechat}/scripts.nix" {
         inherit defaultWeechatScriptOverrides;
@@ -57,7 +72,6 @@ let nixos-weechat = (with import <nixpkgs> {};
               buffer_autoclose
               colorize_nicks
               go
-              # notify_send
               screen_away
               server_autoswitch
               spell_correction
@@ -68,6 +82,8 @@ let nixos-weechat = (with import <nixpkgs> {};
               zerotab
               zncnotice
               zncplayback
+              grep
+              weechat_notify_send
 
               # perl
               atcomplete
@@ -75,6 +91,7 @@ let nixos-weechat = (with import <nixpkgs> {};
               iset
               perlexec
               pv_info
+              multiline
             ];
           };
         })

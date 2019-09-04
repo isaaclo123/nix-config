@@ -53,6 +53,7 @@ in
       ./termite.nix
       ./neomutt.nix
       ./calcurse.nix
+      ./khard.nix
       ./vdirsyncer.nix
       ./todo.nix
       ./zathura.nix
@@ -328,12 +329,6 @@ in
     #   package = pkgs.vanilla-dmz;
     #   # size = 128;
     # };
-
-    # xdg.configFile = {
-    #   # autostart
-    #   "bspwm/autostart".source = (pkgs.writeText "config" ''
-    #   '');
-    # };
   };
 
   # This value determines the NixOS release with which your system is to be
@@ -360,5 +355,12 @@ in
     };
     # auto optimize
     autoOptimiseStore = true;
+
+
+    #   plugin-files = ${pkgs.nix-plugins.override { nix = config.nix.package; }}/lib/nix/plugins/libnix-extra-builtins.so
+    #   extra-builtins-file = /etc/nixos/extra-builtins.nix
+    extraOptions = ''
+      allow-unsafe-native-code-during-evaluation = true
+    '';
   };
 }

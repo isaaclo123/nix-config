@@ -59,7 +59,7 @@ let calcurse-vdirsyncer =
       serviceConfig.Type = "oneshot";
 
       script = ''
-        CALENDAR_DIR=$(ls -d ${homedir}/.calendars/* | head -n1)
+        CALENDAR_DIR=${(import ./extra-builtins.nix {}).firstdir "${homedir}/.calendars/"}
 
         [ -z "$CALENDAR_DIR" ] && exit 1
 

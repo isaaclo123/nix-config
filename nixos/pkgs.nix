@@ -87,5 +87,9 @@
       go-mtpfs
 
       steam
+
+      gcc
+
+      networkmanagerapplet
     ];
 }

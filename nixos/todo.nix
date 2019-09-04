@@ -25,8 +25,8 @@ let todo-map-string = config-map:
   home-manager.users.isaac = {
     home.file = {
       ".todo/config".text =
+        "export TODO_DIR=$HOME/Documents/todo\n" +
         (todo-map-string {
-          TODO_DIR="$HOME/Documents/todo";
           TODO_FILE="$TODO_DIR/todo.txt";
           DONE_FILE="$TODO_DIR/done.txt";
           REPORT_FILE="$TODO_DIR/report.txt";

@@ -47,7 +47,6 @@ let create-account = folder: email: signature: (pkgs.writeText folder ''
 
       ".muttrc".text =
         let signature = (pkgs.writeText "sig" ''
-          --
 
           Isaac Lo
 
@@ -270,7 +269,7 @@ let create-account = folder: email: signature: (pkgs.writeText folder ''
           bind index,pager gf noop
           bind index,pager,attach,compose gx noop
 
-          bind index,pager,attach,compose y noop
+          # bind index,pager,attach,compose y noop
 
           # bind index,pager,attach g noop
           # bind attach              g         noop
@@ -366,9 +365,9 @@ let create-account = folder: email: signature: (pkgs.writeText folder ''
           # forward with all attachments
           # macro index,pager f "<view-attachments>jjjjjjjjjjjjjjjjjjjj<tag-message>k<tag-message>kk<tag-message>kk<tag-message>kk<tag-message>kk<tag-message>kk<tag-message>kk<tag-message>kk<tag-message>kk<tag-message>kk<tag-message>kk<tag-message>kk<tag-message>kk;<forward-message>"
 
-          # Pipe message to xclip with yy.  pipe_decode will ensure that
+          # Pipe message to xclip with \CY.  pipe_decode will ensure that
           # unnecessary headers are removed and the message is processed.
-          macro index,pager,attach,compose yy "<enter-command>set my_pipe_decode=\$pipe_decode pipe_decode<Enter><pipe-message>xclip<Enter><enter-command>set pipe_decode=\$my_pipe_decode; unset my_pipe_decode<Enter>" "copy message to clipboard using xclip"
+          macro index,pager,attach,compose \CY "<enter-command>set my_pipe_decode=\$pipe_decode pipe_decode<Enter><pipe-message>xclip<Enter><enter-command>set pipe_decode=\$my_pipe_decode; unset my_pipe_decode<Enter>" "copy message to clipboard using xclip"
 
           bind index H top-page
           bind index M middle-page

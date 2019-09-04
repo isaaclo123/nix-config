@@ -25,7 +25,8 @@
         format.outputdate=%D
         format.dayheading=%B %-d, %Y
         general.autogc=yes
-        general.autosave=yes
+        # general.autosave=yes
+        general.autosave=no
         general.confirmdelete=yes
         general.confirmquit=no
         general.firstdayofweek=monday

@@ -369,11 +369,64 @@
         customRC = vimrc;
       };
     }); in
+    let system_vimdiff = (pkgs.writeShellScriptBin "vimdiff" ''
+      vim -d "$@"
+    ''); in
     with pkgs; [
       (system_vim)
+      (system_vimdiff)
       neovim
       nvi
       universal-ctags
       ripgrep
     ];
+
+  home-manager.users.isaac = {
+    home.file = {
+      ".editorconfig".text = ''
+        root = true
+
+        [*]
+        end_of_line = lf
+        charset = utf-8
+        trim_trailing_whitespace = true
+        insert_final_newline = false
+
+        [Makefile]
+        indent-style = tab
+
+        [makefile]
+        indent-style = tab
+
+        [*.{py,kv}]
+        indent-style = space
+        indent_size = 4
+        max_line_length = 80
+
+        [*.md]
+        indent-style = space
+        indent_size = 4
+
+        [*.{ml,li}]
+        indent-style = space
+        indent_size = 2
+        max_line_length = 70
+
+        [*.{c,cc,h}]
+        indent-style = space
+        indent_size = 2
+        max_line_length = 80
+
+        [*.{js,css,scss,html,json,jsx}]
+        max_line_length = 100
+        indent-style = space
+        indent_size = 2
+
+        [**.min.js]
+        indent_style = ignore
+        insert_final_newline = ignore
+
+        '';
+    };
+  };
 }
