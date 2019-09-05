@@ -7,13 +7,15 @@
   environment.systemPackages = with pkgs; [
     gnupg
     monkeysphere
-    pinentry_gnome
   ];
 
   environment.shellInit = ''
-    gpg-connect-agent /bye
-    export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
-    echo UPDATESTARTUPTTY | gpg-connect-agent &> /dev/null
+    if [ "$EUID" -ne 0 ]; then
+      # if not root
+      gpg-connect-agent /bye
+      export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+      echo UPDATESTARTUPTTY | gpg-connect-agent &> /dev/null
+    fi
   '';
 
   home-manager.users.isaac = {
@@ -28,10 +30,9 @@
         maxCacheTtlSsh = 2147483647;
 
         enableSshSupport = true;
-
-        extraConfig = ''
-          pinentry-program ${pkgs.pinentry_gnome}/bin/pinentry-gtk-2
-        '';
+        # extraConfig = ''
+        #   pinentry-program ${pkgs.pinentry}/bin/pinentry_gnome
+        # '';
       };
     };
   };

@@ -198,37 +198,6 @@ let create-account = folder: email: signature: (pkgs.writeText folder ''
           set quit             # don't ask, just do!!
           unset mark_old       # read/new is good enough for me
 
-          # toggle new
-          bind index U toggle-new
-
-          # Macros for switching accounts
-          macro index,pager <f1> '<sync-mailbox><enter-command>source ${personal}<enter><change-folder>!<enter>'
-          macro index,pager <f2> '<sync-mailbox><enter-command>source ${school}<enter><change-folder>!<enter>'
-
-          # Macros for khard
-          set query_command= "khard email --parsable %s"
-          bind editor <Tab> complete-query
-          bind editor ^T    complete
-
-          macro index,pager A \
-              "<pipe-message>khard add-email<return>" \
-              "add the sender email address to khard"
-
-          # Macros for notmuch
-          # a notmuch query, showing only the results
-          macro index \Cp "<enter-command>unset wait_key<enter><shell-escape>read -p 'notmuch query: ' x; echo \$x >/tmp/mutt_terms<enter><limit>~i \"\`notmuch search --output=messages \$(cat /tmp/mutt_terms) | head -n 600 | perl -le '@a=<>;chomp@a;s/\^id:// for@a;$,=\"|\";print@a'\`\"<enter>" "show only messages matching a notmuch pattern"
-
-          # Fetch mail shortcut
-          unset wait_key
-          macro index r "<shell-escape>mail-sync<enter>" "run mbsync and notmuch to sync all mail"
-
-          set allow_ansi="yes"
-
-          # viewing HTML mail
-          auto_view text/html
-          macro attach 'V' "<pipe-entry>tee /tmp/mutt.html 1>/dev/null && qutebrowser /tmp/mutt.html<enter>"
-          bind attach <return> view-mailcap
-
           # sort/threading
           set sort     = threads
           set sort_aux = reverse-last-date-received
@@ -295,7 +264,6 @@ let create-account = folder: email: signature: (pkgs.writeText folder ''
           bind index               zA        collapse-all
           bind index,pager         N         search-opposite
           bind index               <Backtab> previous-new-then-unread
-
 
           # Actions
           # ----------------------------------------------------
@@ -365,13 +333,45 @@ let create-account = folder: email: signature: (pkgs.writeText folder ''
           # forward with all attachments
           # macro index,pager f "<view-attachments>jjjjjjjjjjjjjjjjjjjj<tag-message>k<tag-message>kk<tag-message>kk<tag-message>kk<tag-message>kk<tag-message>kk<tag-message>kk<tag-message>kk<tag-message>kk<tag-message>kk<tag-message>kk<tag-message>kk<tag-message>kk;<forward-message>"
 
-          # Pipe message to xclip with \CY.  pipe_decode will ensure that
+          # Pipe message to xclip with X.  pipe_decode will ensure that
           # unnecessary headers are removed and the message is processed.
-          macro index,pager,attach,compose \CY "<enter-command>set my_pipe_decode=\$pipe_decode pipe_decode<Enter><pipe-message>xclip<Enter><enter-command>set pipe_decode=\$my_pipe_decode; unset my_pipe_decode<Enter>" "copy message to clipboard using xclip"
+
+          macro index,pager,attach,compose X "<enter-command>set my_pipe_decode=\$pipe_decode pipe_decode<Enter><pipe-message>xclip<Enter><enter-command>set pipe_decode=\$my_pipe_decode; unset my_pipe_decode<Enter>" "copy message to clipboard using xclip"
 
           bind index H top-page
           bind index M middle-page
           bind index L bottom-page
+
+          # toggle new
+          bind index U toggle-new
+
+          # Macros for switching accounts
+          macro index,pager <f1> '<sync-mailbox><enter-command>source ${personal}<enter><change-folder>!<enter>'
+          macro index,pager <f2> '<sync-mailbox><enter-command>source ${school}<enter><change-folder>!<enter>'
+
+          # Macros for khard
+          set query_command= "khard email --parsable %s"
+          bind editor <Tab> complete-query
+          bind editor ^T    complete
+
+          macro index,pager A \
+              "<pipe-message>khard add-email<return>" \
+              "add the sender email address to khard"
+
+          # Macros for notmuch
+          # a notmuch query, showing only the results
+          macro index \Cp "<enter-command>unset wait_key<enter><shell-escape>read -p 'notmuch query: ' x; echo \$x >/tmp/mutt_terms<enter><limit>~i \"\`notmuch search --output=messages \$(cat /tmp/mutt_terms) | head -n 600 | perl -le '@a=<>;chomp@a;s/\^id:// for@a;$,=\"|\";print@a'\`\"<enter>" "show only messages matching a notmuch pattern"
+
+          # Fetch mail shortcut
+          unset wait_key
+          macro index r "<shell-escape>mail-sync<enter>" "run mbsync and notmuch to sync all mail"
+
+          set allow_ansi="yes"
+
+          # viewing HTML mail
+          auto_view text/html
+          macro attach 'V' "<pipe-entry>tee /tmp/mutt.html 1>/dev/null && qutebrowser /tmp/mutt.html<enter>"
+          bind attach <return> view-mailcap
 
           # multiple account setup
           source ${personal}
