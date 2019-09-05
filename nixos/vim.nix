@@ -55,24 +55,13 @@
       inoremap <expr><s-tab> pumvisible() ? "\<C-p>" : "\<TAB>"
 
       " Make <CR> smart
-      let g:ulti_expand_res = 0
-      function! Ulti_ExpandOrEnter()
-        " First try to expand a snippet
-        call UltiSnips#ExpandSnippet()
-        if g:ulti_expand_res
-          " if successful, just return
-          return ""
-        elseif pumvisible()
-          " if in completion menu - just close it and leave the cursor at the
-          " end of the completion
-          return deoplete#mappings#close_popup()
-        else
-          " otherwise, just do an "enter"
-          return "\<return>"
-        endif
+      let g:ulti_expand_or_jump_res = 0 "default value, just set once
+      function! Ulti_ExpandOrJump_and_getRes()
+          call UltiSnips#ExpandSnippetOrJump()
+          return g:ulti_expand_or_jump_res
       endfunction
-      inoremap <return> <C-R>=Ulti_ExpandOrEnter()<CR>
 
+      inoremap <CR> <C-R>=(Ulti_ExpandOrJump_and_getRes() > 0)?"":"\n"<CR>
 
       " This is only necessary if you use "set termguicolors".
       set t_8f=^[[38;2;%lu;%lu;%lum

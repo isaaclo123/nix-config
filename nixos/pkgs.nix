@@ -2,9 +2,22 @@
 
 {
   environment.systemPackages =
-    with pkgs; [
+    let
+      wn = (pkgs.writeShellScriptBin "wn" ''
+        NOTE=$(date +%Y-%m-%d)
+
+        for ARG in "$@"
+        do
+            NOTE="$NOTE-$ARG"
+        done
+
+        NOTE+='.md'
+        vim $NOTE
+      '');
+    in with pkgs; [
       # custom packages
       (import ./z.nix)
+      (wn)
       # (import ./xfd.nix)
       # programming
       nodejs
