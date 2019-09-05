@@ -73,7 +73,9 @@ let autostarted-status = "/tmp/autostarted-status.lock"; in
       bspc rule -a ranger_ desktop='^4'
       bspc rule -a neomutt_ desktop='^5'
       bspc rule -a ncmpcpp_ desktop='^6'
+      bspc rule -a weechat_ desktop='^7'
 
+      bspc rule -a mpv state=floating
       bspc rule -a mpv:mpvscratchpad sticky=on state=floating hidden=on border=off
 
       # always autostart
@@ -93,6 +95,7 @@ let autostarted-status = "/tmp/autostarted-status.lock"; in
         termite --class=ranger_ -e ranger &
         termite --class=neomutt_ -e neomutt &
         termite --class=ncmpcpp_ -e ncmpcpp &
+        termite --class=weechat_ -e weechat &
 
         mpv-scratchpad &
 

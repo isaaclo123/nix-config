@@ -111,8 +111,8 @@
           config.bind('m', 'spawn mpv-scratchpad-open {url}')
 
           # mpv normal open
-          config.bind('<', 'hint links spawn ~/bin/mpvopen {hint-url}')
-          config.bind(',', 'spawn ~/bin/mpvopen {url}')
+          config.bind('<', 'hint links spawn mpv-window-open {hint-url}')
+          config.bind(',', 'spawn mpv-window-open {url}')
 
           # pass settings
           c.aliases["qute-pass"] = "spawn --userscript ${pkgs.qutebrowser}/share/qutebrowser/userscripts/qute-pass" # pylint: disable=line-too-long

@@ -6,239 +6,264 @@ let fullscreen-lock = "/tmp/mpv-scratchpad-fullscreen.lock"; in
 
 {
   environment.systemPackages =
-    let mpv-scratchpad = (pkgs.writeShellScriptBin "mpv-scratchpad" ''
-      SOCKET=${mpv-socket}
-      FULLSCREEN=${fullscreen-lock}
-      rm -f $FULLSCREEN
-      mpv --input-ipc-server=$SOCKET --x11-name=mpvscratchpad --title=mpvscratchpad --geometry=512x288-32+62 --no-terminal --force-window --keep-open=yes --idle=yes
-      '');
-    in
-
-    let mpv-scratchpad-toggle = (pkgs.writeShellScriptBin "mpv-scratchpad-toggle" ''
-      VISIBLE_IDS=$(xdotool search --onlyvisible --classname 'mpvscratchpad')
-      ID=$(xdotool search --classname 'mpvscratchpad' | head -n1)
-      FULLSCREEN=${fullscreen-lock}
-
-      # sticky desktop
-      bspc node $ID --flag sticky=on
-
-      # toggle hide
-      bspc node $ID --flag hidden
-
-      ## if hidden, don't do anything
-      # [ -z $VISIBLE_IDS ] && exit 0
-
-      ## else toggle fullscreen
-      if [ -e "$FULLSCREEN" ]; then
-        # is marked fullscreen, so should be fullscreen
-        bspc node $ID --state fullscreen
-        bspc node $ID --flag sticky=off
-        bspc node --focus $ID
-      else
-        # is not marked fullscreen, so should be not marked fullscreen
-        bspc node $ID --state floating
-        bspc node $ID --flag sticky=on
-        [ -z $VISIBLE_IDS ] && bspc node --focus $ID
-        [ -z $VISIBLE_IDS ] && bspc node --focus last
-      fi
-      exit 0
-    ''); in
-
-    let mpv-scratchpad-ctl = (pkgs.writeShellScriptBin "mpv-scratchpad-ctl" ''
-      socket=${mpv-socket}
-
-      command() {
-          # JSON preamble.
-          local tosend='{ "command": ['
-          # adding in the parameters.
-          for arg in "$@"; do
-              tosend="$tosend \"$arg\","
-          done
-          # closing it up.
-          tosend=''${tosend%?}' ] }'
-          # send it along and ignore output.
-          # to print output just remove the redirection to /dev/null
-          # echo $tosend | socat - $socket &> /dev/null
-          echo $tosend | socat - $socket
-      }
-
-      # exit mpv
-      [ "$1" = "stop" ] && command 'stop'
-      # toggle play-pause
-      [ "$1" = "play-pause" ] && command 'cycle' 'pause'
-      # start playing
-      [ "$1" = "pause" ] && command 'set' 'pause' 'yes'
-      # stop playing
-      [ "$1" = "play" ] && command 'set' 'pause' 'no'
-      # play next item in playlist
-      [ "$1" = "next" ] && command 'playlist_next'
-      # play previous item in playlist
-      [ "$1" = "previous" ] && command 'playlist_prev'
-      # seek forward
-      [ "$1" = "forward" ] && command 'seek' "$2" 'relative'
-      # seek backward
-      [ "$1" = "backward" ] && command 'seek' "-$2" 'relative'
-      # restart video
-      [ "$1" = "restart" ] && (command 'seek' "0" 'absolute'; command 'set' 'pause' 'no')
-      # end video
-      [ "$1" = "end" ] && command 'seek' "100" 'absolute-percent+exact'
-      # toggle video status
-      [ "$1" = "video-novideo" ] && command 'cycle' 'video'
-      # video status yes
-      [ "$1" = "video" ] && command 'set' 'video' 'no' && command 'cycle' 'video'
-      # video status no
-      [ "$1" = "novideo" ] && command 'set' 'video' 'no'
-      # add item(s) to playlist
-      [ "$1" = "add" ] && shift &&
-        for video in "$@"; do
-            command 'loadfile' "$video" 'append-play';
-        done;
-      # replace item(s) in playlist
-      [ "$1" = "replace" ] && shift && command 'loadfile' "$1" 'replace';
-    ''); in
-
-    let mpv-scratchpad-open = (pkgs.writeShellScriptBin "mpv-scratchpad-open" ''
-      mpv-scratchpad-ctl replace "$@"
-      mpv-scratchpad-ctl play
-      exit 0
-    ''); in
-
-    let mpv-scratchpad-fullscreen-toggle = (pkgs.writeShellScriptBin "mpv-scratchpad-fullscreen-toggle" ''
-      VISIBLE_IDS=$(xdotool search --onlyvisible --classname 'mpvscratchpad')
-      ID=$(xdotool search --classname 'mpvscratchpad' | head -n1)
-      FULLSCREEN=${fullscreen-lock}
-
-      # move mpv to front
-      bspc node $ID --to-desktop newest
-
-      bspc node $ID --flag hidden=off
-
-      if [ -e "$FULLSCREEN" ]; then
-        # is marked fullscreen, so should unmark (after unfullscreen)
-        bspc node $ID --state floating
-        bspc node $ID --flag sticky=on
-        bspc node --focus $ID
-        bspc node --focus last
+    let
+      mpv-scratchpad = (pkgs.writeShellScriptBin "mpv-scratchpad" ''
+        SOCKET=${mpv-socket}
+        FULLSCREEN=${fullscreen-lock}
         rm -f $FULLSCREEN
-      else
-        # is not marked fullscreen, so should become fullscreen
-        # bspc node $ID --to-desktop newest
-        bspc node $ID --state fullscreen
-        bspc node $ID --flag sticky=off
-        bspc node --focus $ID
-        touch $FULLSCREEN
-      fi
-      exit 0
-    ''); in
+        mpv --input-ipc-server=$SOCKET --x11-name=mpvscratchpad --title=mpvscratchpad --geometry=512x288-32+62 --no-terminal --force-window --keep-open=yes --idle=yes
+        '');
 
-    let mpv-scratchpad-hide = (pkgs.writeShellScriptBin "mpv-scratchpad-hide" ''
-      ID=$(xdotool search --classname 'mpvscratchpad' | head -n1)
+      mpv-scratchpad-toggle = (pkgs.writeShellScriptBin "mpv-scratchpad-toggle" ''
+        VISIBLE_IDS=$(xdotool search --onlyvisible --classname 'mpvscratchpad')
+        ID=$(xdotool search --classname 'mpvscratchpad' | head -n1)
+        FULLSCREEN=${fullscreen-lock}
 
-      mpv-scratchpad-ctl pause
-      bspc node $ID --flag sticky=on
-      bspc node $ID --flag hidden=on
-      exit 0
-    ''); in
+        # sticky desktop
+        bspc node $ID --flag sticky=on
 
-    with pkgs; [
-      (mpv-with-scripts.override {
-        scripts = [
-          # autosave
-          (fetchurl {
-            url = "https://gist.githubusercontent.com/Hakkin/5489e511bd6c8068a0fc09304c9c5a82/raw/7a19f7cdb6dd0b1c6878b41e13b244e2503c15fc/autosave.lua";
-            sha256 = "0jxykk3jis2cplysc0gliv0y961d0in4j5dpd2fabv96pfk6chdd";
-          })
+        # toggle hide
+        bspc node $ID --flag hidden
 
-          # autospeed
-          (fetchurl {
-            url = "https://raw.githubusercontent.com/kevinlekiller/mpv_scripts/master/autospeed/autospeed.lua";
-            sha256 = "18m0lzf0gs3g0mfgwfgih6mz98v5zcciykjl7jmg9rllwsx8syjl";
-          })
+        ## if hidden, don't do anything
+        # [ -z $VISIBLE_IDS ] && exit 0
 
-          # autoloop
-          (fetchurl {
-            url = "https://raw.githubusercontent.com/zc62/mpv-scripts/master/autoloop.lua";
-            sha256 = "1g60h3c85ladx3ksixqnmg2cmpr68li38sgx167jylmgiavfaa6v";
-          })
+        ## else toggle fullscreen
+        if [ -e "$FULLSCREEN" ]; then
+          # is marked fullscreen, so should be fullscreen
+          bspc node $ID --state fullscreen
+          bspc node $ID --flag sticky=off
+          bspc node --focus $ID
+        else
+          # is not marked fullscreen, so should be not marked fullscreen
+          bspc node $ID --state floating
+          bspc node $ID --flag sticky=on
+          [ -z $VISIBLE_IDS ] && bspc node --focus $ID
+          [ -z $VISIBLE_IDS ] && bspc node --focus last
+        fi
+        exit 0
+      '');
 
-          # mpv thumbnail client
-          (fetchurl {
-            url = "https://github.com/TheAMM/mpv_thumbnail_script/releases/download/0.4.2/mpv_thumbnail_script_client_osc.lua";
-            sha256 = "1g8g0l2dfydmbh1rbsxvih8zsyr7r9x630jhw95jwb1s1x8izrr7";
-          })
+      mpv-scratchpad-ctl = (pkgs.writeShellScriptBin "mpv-scratchpad-ctl" ''
+        socket=${mpv-socket}
 
-          # mpv thumbnail server
-          (fetchurl {
-            url = "https://github.com/TheAMM/mpv_thumbnail_script/releases/download/0.4.2/mpv_thumbnail_script_server.lua";
-            sha256 = "12flp0flzgsfvkpk6vx59n9lpqhb85azcljcqg21dy9g8dsihnzg";
-          })
+        command() {
+            # JSON preamble.
+            local tosend='{ "command": ['
+            # adding in the parameters.
+            for arg in "$@"; do
+                tosend="$tosend \"$arg\","
+            done
+            # closing it up.
+            tosend=''${tosend%?}' ] }'
+            # send it along and ignore output.
+            # to print output just remove the redirection to /dev/null
+            # echo $tosend | socat - $socket &> /dev/null
+            echo $tosend | socat - $socket
+        }
 
-          # playback no playback
-          (fetchurl {
-            url = "https://raw.githubusercontent.com/422658476/MPV-EASY-Player/master/portable-data/scripts/playlistnoplayback.lua";
-            sha256 = "035zsm4z349m920b625zly7zaz361972is55mg02xvgpv0awclfl";
-          })
+        # exit mpv
+        [ "$1" = "stop" ] && command 'stop'
+        # toggle play-pause
+        [ "$1" = "play-pause" ] && command 'cycle' 'pause'
+        # start playing
+        [ "$1" = "pause" ] && command 'set' 'pause' 'yes'
+        # stop playing
+        [ "$1" = "play" ] && command 'set' 'pause' 'no'
+        # play next item in playlist
+        [ "$1" = "next" ] && command 'playlist_next'
+        # play previous item in playlist
+        [ "$1" = "previous" ] && command 'playlist_prev'
+        # seek forward
+        [ "$1" = "forward" ] && command 'seek' "$2" 'relative'
+        # seek backward
+        [ "$1" = "backward" ] && command 'seek' "-$2" 'relative'
+        # restart video
+        [ "$1" = "restart" ] && (command 'seek' "0" 'absolute'; command 'set' 'pause' 'no')
+        # end video
+        [ "$1" = "end" ] && command 'seek' "100" 'absolute-percent+exact'
+        # toggle video status
+        [ "$1" = "video-novideo" ] && command 'cycle' 'video'
+        # video status yes
+        [ "$1" = "video" ] && command 'set' 'video' 'no' && command 'cycle' 'video'
+        # video status no
+        [ "$1" = "novideo" ] && command 'set' 'video' 'no'
+        # add item(s) to playlist
+        [ "$1" = "add" ] && shift &&
+          for video in "$@"; do
+              command 'loadfile' "$video" 'append-play';
+          done;
+        # replace item(s) in playlist
+        [ "$1" = "replace" ] && shift && command 'loadfile' "$1" 'replace';
+      '');
 
-          # reload
-          (fetchurl {
-            url = "https://raw.githubusercontent.com/4e6/mpv-reload/2b8a719fe166d6d42b5f1dd64761f97997b54a86/reload.lua";
-            sha256 = "0dyx22rr1883m2lhnaig9jdp7lpjydha0ad7lj9pfwlgdr2zg4b9";
-          })
+      mpv-scratchpad-open = (pkgs.writeShellScriptBin "mpv-scratchpad-open" ''
+        mpv-scratchpad-ctl replace "$@"
+        mpv-scratchpad-ctl play
+        exit 0
+      '');
 
-          # youtube-quality
-          (fetchurl {
-            url = "https://raw.githubusercontent.com/jgreco/mpv-youtube-quality/d03278f07bd8e202845f4a8a5b7761d98ad71878/youtube-quality.lua";
-            sha256 = "0fi1b4r5znp2k2z590jrrbn6wirx7nggjcl1frkcwsv7gmhjl11l";
-          })
+      mpv-scratchpad-fullscreen-toggle = (pkgs.writeShellScriptBin "mpv-scratchpad-fullscreen-toggle" ''
+        VISIBLE_IDS=$(xdotool search --onlyvisible --classname 'mpvscratchpad')
+        ID=$(xdotool search --classname 'mpvscratchpad' | head -n1)
+        FULLSCREEN=${fullscreen-lock}
 
-          # gallery-dl hook
-          (writeText "gallery-dl_hook.lua" ''
-            -- gallery-dl_hook.lua
-            --
-            -- load online image galleries as playlists using gallery-dl
-            -- https://github.com/mikf/gallery-dl
-            --
-            -- to use, prepend the gallery url with: gallery-dl://
-            -- e.g.
-            --     `mpv gallery-dl://https://imgur.com/....`
+        # move mpv to front
+        bspc node $ID --to-desktop newest
 
-            local utils = require 'mp.utils'
-            local msg = require 'mp.msg'
+        bspc node $ID --flag hidden=off
 
-            local function exec(args)
-                local ret = utils.subprocess({args = args})
-                return ret.status, ret.stdout, ret
-            end
+        if [ -e "$FULLSCREEN" ]; then
+          # is marked fullscreen, so should unmark (after unfullscreen)
+          bspc node $ID --state floating
+          bspc node $ID --flag sticky=on
+          bspc node --focus $ID
+          bspc node --focus last
+          rm -f $FULLSCREEN
+        else
+          # is not marked fullscreen, so should become fullscreen
+          # bspc node $ID --to-desktop newest
+          bspc node $ID --state fullscreen
+          bspc node $ID --flag sticky=off
+          bspc node --focus $ID
+          touch $FULLSCREEN
+        fi
+        exit 0
+      '');
 
-            mp.add_hook("on_load", 15, function()
-                local url = mp.get_property("stream-open-filename", "")
-                if (url:find("gallery%-dl://") ~= 1) then
-                    msg.debug("not a gallery-dl:// url: " .. url)
-                    return
-                end
-                local url = string.gsub(url,"gallery%-dl://","")
+      mpv-scratchpad-hide = (pkgs.writeShellScriptBin "mpv-scratchpad-hide" ''
+        ID=$(xdotool search --classname 'mpvscratchpad' | head -n1)
 
-                local es, urls, result = exec({"gallery-dl", "-g", url})
-                if (es < 0) or (urls == nil) or (urls == "") then
-                    msg.debug("failed to get album list.")
-                    urls = url
-                end
+        mpv-scratchpad-ctl pause
+        bspc node $ID --flag sticky=on
+        bspc node $ID --flag hidden=on
+        exit 0
+      '');
 
-                -- mp.commandv("loadlist", "memory://" .. urls)
-                mp.commandv("loadlist", "memory://" .. urls)
-            end)
-          '')
-        ];
-      })
-      (mpv-scratchpad)
-      (mpv-scratchpad-toggle)
-      (mpv-scratchpad-fullscreen-toggle)
-      (mpv-scratchpad-hide)
-      (mpv-scratchpad-open)
-      (mpv-scratchpad-ctl)
-      unstable.gallery-dl
-      mpvc
-    ];
+      mpv-window-open = (pkgs.writeShellScriptBin "mpv-window-open" ''
+        #!/bin/bash
+        # open item in mpv, try different methods
+
+        NOTIFY_MAX_LEN=33
+        url="$1"
+
+        if [ "''${#url}" -gt "$(($NOTIFY_MAX_LEN - 2))" ]; then
+            url="$(echo $1 | cut -c1-$(($NOTIFY_MAX_LEN - 1)))"
+            url+="…"
+        fi
+
+        notify-send "MPV opening" "$url"
+
+        # (mpv --force-window "gallery-dl://$@";
+        #   bspc node --focus last) ||
+        (mpv --force-window "gallery-dl://$@") ||
+        (xdg-open "$@" &&
+            notify-send "Browser opening" "$url") ||
+        notify-send "Error opening" "$url"
+      ''); in
+
+      with pkgs; [
+        (mpv-with-scripts.override {
+          scripts = [
+            # autosave
+            (fetchurl {
+              url = "https://gist.githubusercontent.com/Hakkin/5489e511bd6c8068a0fc09304c9c5a82/raw/7a19f7cdb6dd0b1c6878b41e13b244e2503c15fc/autosave.lua";
+              sha256 = "0jxykk3jis2cplysc0gliv0y961d0in4j5dpd2fabv96pfk6chdd";
+            })
+
+            # autospeed
+            (fetchurl {
+              url = "https://raw.githubusercontent.com/kevinlekiller/mpv_scripts/master/autospeed/autospeed.lua";
+              sha256 = "18m0lzf0gs3g0mfgwfgih6mz98v5zcciykjl7jmg9rllwsx8syjl";
+            })
+
+            # autoloop
+            (fetchurl {
+              url = "https://raw.githubusercontent.com/zc62/mpv-scripts/master/autoloop.lua";
+              sha256 = "1g60h3c85ladx3ksixqnmg2cmpr68li38sgx167jylmgiavfaa6v";
+            })
+
+            # mpv thumbnail client
+            (fetchurl {
+              url = "https://github.com/TheAMM/mpv_thumbnail_script/releases/download/0.4.2/mpv_thumbnail_script_client_osc.lua";
+              sha256 = "1g8g0l2dfydmbh1rbsxvih8zsyr7r9x630jhw95jwb1s1x8izrr7";
+            })
+
+            # mpv thumbnail server
+            (fetchurl {
+              url = "https://github.com/TheAMM/mpv_thumbnail_script/releases/download/0.4.2/mpv_thumbnail_script_server.lua";
+              sha256 = "12flp0flzgsfvkpk6vx59n9lpqhb85azcljcqg21dy9g8dsihnzg";
+            })
+
+            # playback no playback
+            (fetchurl {
+              url = "https://raw.githubusercontent.com/422658476/MPV-EASY-Player/master/portable-data/scripts/playlistnoplayback.lua";
+              sha256 = "035zsm4z349m920b625zly7zaz361972is55mg02xvgpv0awclfl";
+            })
+
+            # reload
+            (fetchurl {
+              url = "https://raw.githubusercontent.com/4e6/mpv-reload/2b8a719fe166d6d42b5f1dd64761f97997b54a86/reload.lua";
+              sha256 = "0dyx22rr1883m2lhnaig9jdp7lpjydha0ad7lj9pfwlgdr2zg4b9";
+            })
+
+            # youtube-quality
+            (fetchurl {
+              url = "https://raw.githubusercontent.com/jgreco/mpv-youtube-quality/d03278f07bd8e202845f4a8a5b7761d98ad71878/youtube-quality.lua";
+              sha256 = "0fi1b4r5znp2k2z590jrrbn6wirx7nggjcl1frkcwsv7gmhjl11l";
+            })
+
+            # gallery-dl hook
+            (writeText "gallery-dl_hook.lua" ''
+              -- gallery-dl_hook.lua
+              --
+              -- load online image galleries as playlists using gallery-dl
+              -- https://github.com/mikf/gallery-dl
+              --
+              -- to use, prepend the gallery url with: gallery-dl://
+              -- e.g.
+              --     `mpv gallery-dl://https://imgur.com/....`
+
+              local utils = require 'mp.utils'
+              local msg = require 'mp.msg'
+
+              local function exec(args)
+                  local ret = utils.subprocess({args = args})
+                  return ret.status, ret.stdout, ret
+              end
+
+              mp.add_hook("on_load", 15, function()
+                  local url = mp.get_property("stream-open-filename", "")
+                  if (url:find("gallery%-dl://") ~= 1) then
+                      msg.debug("not a gallery-dl:// url: " .. url)
+                      return
+                  end
+                  local url = string.gsub(url,"gallery%-dl://","")
+
+                  local es, urls, result = exec({"gallery-dl", "-g", url})
+                  if (es < 0) or (urls == nil) or (urls == "") then
+                      msg.debug("failed to get album list.")
+                      urls = url
+                  end
+
+                  -- mp.commandv("loadlist", "memory://" .. urls)
+                  mp.commandv("loadlist", "memory://" .. urls)
+              end)
+            '')
+          ];
+        })
+
+        (mpv-scratchpad)
+        (mpv-scratchpad-toggle)
+        (mpv-scratchpad-fullscreen-toggle)
+        (mpv-scratchpad-hide)
+        (mpv-scratchpad-open)
+        (mpv-scratchpad-ctl)
+
+        (mpv-window-open)
+        unstable.gallery-dl
+        mpvc
+      ];
 
   home-manager.users.isaac = {
     xdg.configFile = {

@@ -277,8 +277,8 @@ let input-toggle-create = device: script-name: (pkgs.writeShellScriptBin script-
           bspc node @/ --circulate {backward,forward}
 
       # flip
-      super + {_,shift + }s
-          bspc node @/ --flip {horizontal,vertical}
+      super + {_,shift + }v
+          bspc node @/ --flip {vertical,horizontal}
 
       # Make split ratios equal
       super + equal

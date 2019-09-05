@@ -7,6 +7,7 @@
   environment.systemPackages = with pkgs; [
     gnupg
     monkeysphere
+    pinentry_gnome
   ];
 
   environment.shellInit = ''
@@ -27,6 +28,10 @@
         maxCacheTtlSsh = 2147483647;
 
         enableSshSupport = true;
+
+        extraConfig = ''
+          pinentry-program ${pkgs.pinentry_gnome}
+        '';
       };
     };
   };
