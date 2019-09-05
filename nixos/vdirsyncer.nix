@@ -74,6 +74,8 @@ let calcurse-vdirsyncer =
   };
 
   system.userActivationScripts.vdirsyncerSetup = ''
+    #!${pkgs.stdenv.shell}
+
     ${config.system.path}/bin/yes | ${pkgs.vdirsyncer}/bin/vdirsyncer discover
     ${pkgs.vdirsyncer}/bin/vdirsyncer sync
   '';
