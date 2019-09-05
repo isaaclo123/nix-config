@@ -30,7 +30,7 @@
         enableSshSupport = true;
 
         extraConfig = ''
-          pinentry-program ${pkgs.pinentry_gnome}
+          pinentry-program ${pkgs.pinentry_gnome}/bin/pinentry-gtk-2
         '';
       };
     };
