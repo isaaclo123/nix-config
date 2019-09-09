@@ -360,34 +360,15 @@
                 };
               })
 
-              # vim preview pandoc
-              # (let
-              #   async-vim = pkgs.fetchurl {
-              #     url = "https://raw.githubusercontent.com/prabirshrestha/async.vim/627a8c4092df24260d3dc2104bc1d944c78f91ca/autoload/async/job.vim";
-              #     sha256 = "1hig52wipsxvqx65s0z0zs5kljbp5kwgmgv9810f2vshlia5dd1h";
-              #   }; in
-
-              #   pkgs.vimUtils.buildVimPlugin {
-              #     name = "vimpreviewpandoc";
-              #     src = pkgs.fetchFromGitHub {
-              #       owner = "tex";
-              #       repo = "vimpreviewpandoc";
-              #       rev = "3b0a589140abf6cc5d19ad678a7f01822bbee34e";
-              #       sha256 = "15yjr01wfnhaqw1k8bgxk04vvh76y13zfms66irpihw79f9yzxi9";
-              #     };
-
-              #     postInstall = ''
-              #       AUTOLOAD=$out/share/vim-plugins/vimpreviewpandoc/autoload/vimpreviewpandoc.vim
-              #       NEW=$out/share/vim-plugins/vimpreviewpandoc/autoload/vimpreviewpandoc.vim.bak
-              #       cat ${async-vim} $AUTOLOAD > $NEW
-              #       rm $AUTOLOAD
-              #       mv $NEW $AUTOLOAD
-              #       sed 's/async#job/vimpreviewpandoc/g' $AUTOLOAD > $NEW
-
-              #       rm $AUTOLOAD
-              #       mv $NEW $AUTOLOAD
-              #     '';
-              # })
+              (pkgs.vimUtils.buildVimPlugin {
+                name = "deoplete-spell";
+                src = pkgs.fetchFromGitHub {
+                  owner = "deathlyfrantic";
+                  repo = "deoplete-spell";
+                  rev = "e4a3604dc09d0580c66e29421518caf348442291";
+                  sha256 = "1p3hvr6i3wk78628lvnn64abcfhkvvaxskrfgqzlg1mmmpvndh3n";
+                };
+              })
 
               editorconfig-vim
               vim-polyglot

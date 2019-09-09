@@ -116,5 +116,7 @@
       gcc
 
       networkmanagerapplet
+
+      unoconv
     ];
 }

@@ -109,9 +109,6 @@ in
   hardware.opengl.driSupport32Bit = true;
 
   hardware.pulseaudio = {
-    # package = (pkgs.pulseaudioFull.override {
-    #   x11Support = true;
-    # });
     enable = true;
     daemon = {
       config = {
@@ -119,10 +116,6 @@ in
       };
     };
     support32Bit = true;
-    # configFile = pkgs.runCommand "default.pa" {} ''
-    #   sed 's/module-udev-detect$/module-udev-detect tsched=0/' \
-    #     ${pkgs.pulseaudio}/etc/pulse/default.pa > $out
-    # '';
   };
 
   security.rtkit.enable = true;
@@ -231,6 +224,9 @@ in
   # Enable the clipmenu daemon
   services.clipmenu.enable = true;
 
+  # docker
+  virtualisation.docker.enable = true;
+
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
@@ -291,7 +287,7 @@ in
 
   users.users.isaac = {
     createHome = true;
-    extraGroups = [ "uucp" "adbusers" "wheel" "video" "audio" "disk" "networkmanager" "sudo" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "docker" "uucp" "adbusers" "wheel" "video" "audio" "disk" "networkmanager" "sudo" ]; # Enable ‘sudo’ for the user.
     group = "users";
     home = "${homedir}";
     isNormalUser = true;
