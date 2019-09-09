@@ -4,371 +4,432 @@
   programs.vim.defaultEditor = true;
 
   environment.systemPackages =
-    let vimrc = ''
-      set wildmode=longest,list,full
-      set wildmenu
-      set nocp
-      set t_Co=256
-      filetype plugin indent on
-      syntax on
-      " syn sync fromstart
-      syntax sync minlines=200
-      set encoding=utf-8
-      set number
-      set noshowmode
-      set cursorline
-      set hlsearch
-      set incsearch
-      set noim
-      set ic
-      set smartcase
-      set smartindent
-      set lazyredraw
-      set ttyfast
-      set mouse=a
-      set clipboard=unnamed
-      set cmdheight=1
-      set so=999
+    let
+      zathura-async = (pkgs.writeScript "zathura-async.sh" ''
+        #!${pkgs.stdenv.shell}
+        zathura ''${*} &
+      '');
 
-      set tabstop=4
-      set softtabstop=0
-      set expandtab
-      set shiftwidth=4
-      set smarttab
+      vimrc = ''
+        set wildmode=longest,list,full
+        set wildmenu
+        set nocp
+        set t_Co=256
+        filetype plugin indent on
+        syntax on
+        " syn sync fromstart
+        syntax sync minlines=200
+        set encoding=utf-8
+        set number
+        set noshowmode
+        set cursorline
+        set hlsearch
+        set incsearch
+        set noim
+        set ic
+        set smartcase
+        set smartindent
+        set lazyredraw
+        set ttyfast
+        set mouse=a
+        set clipboard=unnamed
+        set cmdheight=1
+        set so=999
 
-      " folding
+        set tabstop=4
+        set softtabstop=0
+        set expandtab
+        set shiftwidth=4
+        set smarttab
 
-      set foldmethod=syntax
-      set foldlevelstart=1
-      let g:vimsyn_folding='af'
-      " set foldnestmax=1
-      " set nofoldenable
+        " folding
 
-      " deoplete
-      let g:deoplete#enable_at_startup = 1
+        set foldmethod=syntax
+        set foldlevelstart=1
+        let g:vimsyn_folding='af'
+        " set foldnestmax=1
+        " set nofoldenable
 
-      let g:UltiSnipsExpandTrigger="<C-j>"
-      let g:UltiSnipsJumpForwardTrigger="<C-j>"
-      let g:UltiSnipsJumpBackwardTrigger="<C-k>"
+        " deoplete
+        let g:deoplete#enable_at_startup = 1
 
-      inoremap <expr><tab> pumvisible() ? "\<C-n>" : "\<TAB>"
-      inoremap <expr><s-tab> pumvisible() ? "\<C-p>" : "\<TAB>"
+        let g:UltiSnipsExpandTrigger="<C-j>"
+        let g:UltiSnipsJumpForwardTrigger="<C-j>"
+        let g:UltiSnipsJumpBackwardTrigger="<C-k>"
 
-      " Make <CR> smart
-      let g:ulti_expand_or_jump_res = 0 "default value, just set once
-      function! Ulti_ExpandOrJump_and_getRes()
-          call UltiSnips#ExpandSnippetOrJump()
-          return g:ulti_expand_or_jump_res
-      endfunction
+        inoremap <expr><tab> pumvisible() ? "\<C-n>" : "\<TAB>"
+        inoremap <expr><s-tab> pumvisible() ? "\<C-p>" : "\<TAB>"
 
-      inoremap <CR> <C-R>=(Ulti_ExpandOrJump_and_getRes() > 0)?"":"\n"<CR>
+        " Make <CR> smart
+        let g:ulti_expand_or_jump_res = 0 "default value, just set once
+        function! Ulti_ExpandOrJump_and_getRes()
+            call UltiSnips#ExpandSnippetOrJump()
+            return g:ulti_expand_or_jump_res
+        endfunction
 
-      " This is only necessary if you use "set termguicolors".
-      set t_8f=^[[38;2;%lu;%lu;%lum
-      set t_8b=^[[48;2;%lu;%lu;%lum
+        inoremap <CR> <C-R>=(Ulti_ExpandOrJump_and_getRes() > 0)?"":"\n"<CR>
 
-      set background=dark
-      colorscheme Atelier_SulphurpoolDark
+        " This is only necessary if you use "set termguicolors".
+        set t_8f=^[[38;2;%lu;%lu;%lum
+        set t_8b=^[[48;2;%lu;%lu;%lum
 
-      set termguicolors
-      if has('nvim')
-        " https://github.com/neovim/neovim/wiki/FAQ
-        set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor
-      endif
+        set background=dark
+        colorscheme Atelier_SulphurpoolDark
 
-      set nocompatible
+        set termguicolors
+        if has('nvim')
+          " https://github.com/neovim/neovim/wiki/FAQ
+          set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor
+        endif
 
-      " disable error sounds
-      set noerrorbells visualbell t_vb=
-      if has('autocmd')
-        autocmd GUIEnter * set visualbell t_vb=
-      endif
+        set nocompatible
 
-      " calcurse markdown
-      autocmd BufRead,BufNewFile /tmp/calcurse* set filetype=markdown
-      autocmd BufRead,BufNewFile ~/.calcurse/notes/* set filetype=markdown
+        " disable error sounds
+        set noerrorbells visualbell t_vb=
+        if has('autocmd')
+          autocmd GUIEnter * set visualbell t_vb=
+        endif
 
-      " nix folding
-      au! BufNewFile,BufReadPost *.{nix} set filetype=nix foldmethod=indent foldlevelstart=0
+        " calcurse markdown
+        autocmd BufRead,BufNewFile /tmp/calcurse* set filetype=markdown
+        autocmd BufRead,BufNewFile ~/.calcurse/notes/* set filetype=markdown
 
-      " mutt mail filetype
-      autocmd BufNewFile,BufRead /tmp/mutt* set noautoindent filetype=mail wm=0 tw=78 colorcolumn=78 fo+=aw
-      autocmd BufNewFile,BufRead ~/.cache/mutt.html set noautoindent filetype=mail wm=0 tw=78 colorcolumn=78 fo+=aw
+        " nix folding
+        au! BufNewFile,BufReadPost *.{nix} set filetype=nix foldmethod=indent foldlevelstart=0
 
-      " omnifunc
-      " set omnifunc=syntaxcomplete#Complete
-      " let b:vcm_tab_complete = 'omni'
+        " mutt mail filetype
+        autocmd BufNewFile,BufRead /tmp/mutt* set noautoindent filetype=mail wm=0 tw=78 colorcolumn=78 fo+=aw
+        autocmd BufNewFile,BufRead ~/.cache/mutt.html set noautoindent filetype=mail wm=0 tw=78 colorcolumn=78 fo+=aw
 
-      " custom keybinds
-      inoremap jk <ESC>
-      let mapleader = "\<Space>"
-      nnoremap <silent> <CR><CR> <Esc>:nohlsearch<CR><Esc>
-      nmap <silent> <Leader><Leader> V
-      nnoremap <Leader>w :update<CR>
-      " nnoremap <Leader>r :e<CR>
-      nnoremap <backspace> :e #<CR>
+        " omnifunc
+        " set omnifunc=syntaxcomplete#Complete
+        " let b:vcm_tab_complete = 'omni'
 
-      " vim easymotion
-      let g:EasyMotion_do_mapping = 0 " Disable default mappings
-      let g:EasyMotion_smartcase = 1 " Turn on case-insensitive feature
-      " let g:EasyMotion_use_smartsign_us = 1 " Smartsign (type `3` and match `3`&`#`)
-      let g:EasyMotion_startofline = 0 " keep cursor column when JK motion
+        " custom keybinds
+        inoremap jk <ESC>
+        let mapleader = "\<Space>"
+        nnoremap <silent> <CR><CR> <Esc>:nohlsearch<CR><Esc>
+        nmap <silent> <Leader><Leader> V
+        nnoremap <Leader>w :update<CR>
+        " nnoremap <Leader>r :e<CR>
+        nnoremap <backspace> :e #<CR>
 
-      " Jump to anywhere you want with minimal keystrokes, with s
-      " `s{char}{label}`
-      nmap s <Plug>(easymotion-overwin-f)
-      " or
-      " `s{char}{char}{label}`
-      " Need one more keystroke, but on average, it may be more comfortable.
-      " nmap s <Plug>(easymotion-overwin-f2)
+        " vim easymotion
+        let g:EasyMotion_do_mapping = 0 " Disable default mappings
+        let g:EasyMotion_smartcase = 1 " Turn on case-insensitive feature
+        " let g:EasyMotion_use_smartsign_us = 1 " Smartsign (type `3` and match `3`&`#`)
+        let g:EasyMotion_startofline = 0 " keep cursor column when JK motion
 
-      " lkjh motions: Line motions
-      map <Leader>l <Plug>(easymotion-lineforward)
-      map <Leader>j <Plug>(easymotion-j)
-      map <Leader>k <Plug>(easymotion-k)
-      map <Leader>h <Plug>(easymotion-linebackward)
+        " Jump to anywhere you want with minimal keystrokes, with s
+        " `s{char}{label}`
+        nmap s <Plug>(easymotion-overwin-f)
+        " or
+        " `s{char}{char}{label}`
+        " Need one more keystroke, but on average, it may be more comfortable.
+        " nmap s <Plug>(easymotion-overwin-f2)
 
-      " Gif config
-      " map  / <Plug>(easymotion-sn)
-      " omap / <Plug>(easymotion-tn)
+        " lkjh motions: Line motions
+        map <Leader>l <Plug>(easymotion-lineforward)
+        map <Leader>j <Plug>(easymotion-j)
+        map <Leader>k <Plug>(easymotion-k)
+        map <Leader>h <Plug>(easymotion-linebackward)
 
-      " These `n` & `N` mappings are options. You do not have to map `n` & `N` to EasyMotion.
-      " Without these mappings, `n` & `N` works fine. (These mappings just provide
-      " different highlight method and have some other features )
-      " map  n <Plug>(easymotion-next)
-      " map  N <Plug>(easymotion-prev)
+        " Gif config
+        " map  / <Plug>(easymotion-sn)
+        " omap / <Plug>(easymotion-tn)
 
-      " spelling
-      " set dictionary+=/usr/share/dict/words
+        " These `n` & `N` mappings are options. You do not have to map `n` & `N` to EasyMotion.
+        " Without these mappings, `n` & `N` works fine. (These mappings just provide
+        " different highlight method and have some other features )
+        " map  n <Plug>(easymotion-next)
+        " map  N <Plug>(easymotion-prev)
 
-      autocmd FileType pandoc set colorcolumn=100
-      autocmd FileType markdown,txt,pandoc,text setlocal complete+=k
-      autocmd FileType markdown,txt,pandoc,text syntax spell toplevel
-      autocmd FileType markdown,txt,pandoc,text let b:table_mode_corner = '+'
-      autocmd FileType markdown,txt,pandoc,text map <silent> <leader>c :TOC<CR>
-      autocmd FileType markdown,txt,pandoc,text map <leader>p :PandocPreview<cr>
-      au BufRead *.md setlocal spell spelllang=en_us
+        " spelling
+        " set dictionary+=/usr/share/dict/words
 
-      hi clear SpellBad
-      hi clear SpellCap
-      hi clear SpellLocal
-      hi clear SpellRare
-      hi SpellBad cterm=underline
-      hi SpellCap cterm=underline
-      hi SpellLocal cterm=underline
-      hi SpellRare cterm=underline
+        autocmd FileType markdown,pandoc setlocal ft=pandoc
 
-      " vim-pandoc
-      let g:tex_conceal="abdgm"
-      " let g:pandoc#syntax#style#underline_special = 1
-      let g:pandoc#folding#fdc = 0
-      let g:pandoc#syntax#conceal#use = 1
-      let g:pandoc#syntax#conceal#urls = 1
-      let g:pandoc#syntax#codeblocks#embeds#use = 1
-      " let g:pandoc#syntax#codeblocks#embeds#langs = ['c', 'html', 'javascript', 'asm', 'python', 'sh', 'java']
-      let g:pandoc#syntax#codeblocks#embeds#langs = ['c', 'cpp', 'python', 'java', 'sh', 'bash=sh']
-      let g:pandoc#formatting#mode = 'ha'
-      let g:pandoc#formatting#textwidth = 99
-      let g:indentLine_fileTypeExclude = ['pandoc']
+        autocmd FileType pandoc set colorcolumn=100
+        autocmd FileType markdown,txt,pandoc,text setlocal complete+=k
+        autocmd FileType markdown,txt,pandoc,text syntax spell toplevel
+        autocmd FileType markdown,txt,pandoc,text let b:table_mode_corner = '+'
+        autocmd FileType markdown,txt,pandoc,text map <silent> <leader>c :TOC<CR>
+        autocmd FileType markdown,txt,pandoc,text map <leader>p :PandocPreview<CR>
+        au BufRead *.md setlocal spell spelllang=en_us
 
-      " vim pandoc preview
-      let g:pandoc_preview_pdf_cmd = "/home/isaac/bin/zathura-async"
+        let g:pandoc_preview_pdf_cmd = "${zathura-async}"
 
-      " python-mode
-      let g:pymode_python = 'python3'
-      let g:pymode_lint_on_write = 0
-      let g:pymode_lint = 0
-      let g:pymode_folding = 1
-      let g:pymode_indent = 1
-      let g:pymode_motion = 1
-      let g:pymode_rope = 0
+        hi clear SpellBad
+        hi clear SpellCap
+        hi clear SpellLocal
+        hi clear SpellRare
+        hi SpellBad cterm=underline
+        hi SpellCap cterm=underline
+        hi SpellLocal cterm=underline
+        hi SpellRare cterm=underline
 
-      " coverage
-      " autocmd FileType python map <silent> <leader>c :HighlightCoverage<CR>
+        " vim-pandoc
+        let g:tex_conceal="abdgm"
+        " let g:pandoc#syntax#style#underline_special = 1
+        let g:pandoc#folding#fdc = 0
+        let g:pandoc#syntax#conceal#use = 1
+        let g:pandoc#syntax#conceal#urls = 1
+        let g:pandoc#syntax#codeblocks#embeds#use = 1
+        " let g:pandoc#syntax#codeblocks#embeds#langs = ['c', 'html', 'javascript', 'asm', 'python', 'sh', 'java']
+        let g:pandoc#syntax#codeblocks#embeds#langs = ['c', 'cpp', 'python', 'java', 'sh', 'bash=sh']
+        let g:pandoc#formatting#mode = 'ha'
+        let g:pandoc#formatting#textwidth = 99
 
-      " ctrlp
-      if executable('rg')
-        set grepprg=rg\ --color=never
-        let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
-        let g:ctrlp_use_caching = 0
-      endif
-      set wildignore+=*/.git/*,*/tmp/*,*.swp
-      " let g:ctrlp_open_new_file = 'v'
-      " let g:ctrlp_open_multiple_files = 'v'
+        let g:pandoc#after#modules#enabled = ["tablemode", "ultisnips"]
 
-      " Vim table mode settings
-      let g:table_mode_corner = '+'
-      let g:table_mode_corner_corner = '+'
-      let g:table_mode_header_fillchar ='='
+        " python-mode
+        let g:pymode_python = 'python3'
+        let g:pymode_lint_on_write = 0
+        let g:pymode_lint = 0
+        let g:pymode_folding = 1
+        let g:pymode_indent = 1
+        let g:pymode_motion = 1
+        let g:pymode_rope = 0
 
-      function! s:isAtStartOfLine(mapping)
-          let text_before_cursor = getline('.')[0 : col('.')-1]
-          let mapping_pattern = '\V' . escape(a:mapping, '\')
-          let comment_pattern = '\V' . escape(substitute(&l:commentstring, '%s.*$', ' ', ' '), '\')
-          return (text_before_cursor =~? '^' . ('\v(' . comment_pattern . '\v)?') . '\s*\v' . mapping_pattern . '\v$')
-      endfunction
+        " coverage
+        " autocmd FileType python map <silent> <leader>c :HighlightCoverage<CR>
 
-      inoreabbrev <expr> <bar><bar>
-                  \ <SID>isAtStartOfLine('\|\|') ?
-                  \ '<c-o>:TableModeEnable<cr><bar><space><bar><left><left>' : '<bar><bar>'
-      inoreabbrev <expr> __
-                  \ <SID>isAtStartOfLine('__') ?
-                  \ '<c-o>:silent! TableModeDisable<cr>' : '__'
+        " ctrlp
+        if executable('rg')
+          set grepprg=rg\ --color=never
+          let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
+          let g:ctrlp_use_caching = 0
+        endif
+        set wildignore+=*/.git/*,*/tmp/*,*.swp
+        " let g:ctrlp_open_new_file = 'v'
+        " let g:ctrlp_open_multiple_files = 'v'
 
-      " airline settings
-      set laststatus=2
-      let g:airline_powerline_fonts = 0
-      let g:airline#extensions#ale#enabled = 1
-      let g:airline#extensions#tabline#enabled = 1
-      let g:airline#extensions#tabline#show_buffers = 0
-      let g:airline_theme='Atelier_SulphurpoolDark'
-      let g:airline#extensions#wordcount#enabled = 1
-      let g:airline#extensions#wordcount#filetypes = ['help', 'markdown', 'rst', 'org', 'text', 'asciidoc', 'tex', 'mail', 'pandoc']
+        " Vim table mode settings
+        let g:table_mode_corner = '+'
+        let g:table_mode_corner_corner = '+'
+        let g:table_mode_header_fillchar ='='
 
-      " ale
+        function! s:isAtStartOfLine(mapping)
+            let text_before_cursor = getline('.')[0 : col('.')-1]
+            let mapping_pattern = '\V' . escape(a:mapping, '\')
+            let comment_pattern = '\V' . escape(substitute(&l:commentstring, '%s.*$', ' ', ' '), '\')
+            return (text_before_cursor =~? '^' . ('\v(' . comment_pattern . '\v)?') . '\s*\v' . mapping_pattern . '\v$')
+        endfunction
 
-      " ale fixers
-      let g:ale_fixers = {
-                  \   '*': ['remove_trailing_lines', 'trim_whitespace'],
-                  \   'javascript': ['eslint'],
-                  \}
+        inoreabbrev <expr> <bar><bar>
+                    \ <SID>isAtStartOfLine('\|\|') ?
+                    \ '<c-o>:TableModeEnable<cr><bar><space><bar><left><left>' : '<bar><bar>'
+        inoreabbrev <expr> __
+                    \ <SID>isAtStartOfLine('__') ?
+                    \ '<c-o>:silent! TableModeDisable<cr>' : '__'
 
-      " let g:ale_lint_on_save = 1
-      " let g:ale_completion_enabled = 1
-      " let g:ale_lint_on_text_changed = 'never'
-      " let g:ale_lint_on_enter = 0
-      "
-      " Set this variable to 1 to fix files when you save them.
-      let g:ale_fix_on_save = 1
-      let g:ale_completion_enabled = 1
-      " let g:ale_lint_on_text_changed = 'never'
-      " let g:ale_lint_on_enter = 0
+        " airline settings
+        set laststatus=2
+        let g:airline_powerline_fonts = 0
+        let g:airline#extensions#ale#enabled = 1
+        let g:airline#extensions#tabline#enabled = 1
+        let g:airline#extensions#tabline#show_buffers = 0
+        let g:airline_theme='Atelier_SulphurpoolDark'
+        let g:airline#extensions#wordcount#enabled = 1
+        let g:airline#extensions#wordcount#filetypes = ['help', 'markdown', 'rst', 'org', 'text', 'asciidoc', 'tex', 'mail', 'pandoc']
 
-      let g:ale_linter_aliases = {
-                  \   'vue': ['vue', 'javascript'],
-                  \   'pandoc': ['markdown', 'pandoc'],
-                  \}
+        " ale
 
-      let g:ale_linters = {
-                  \   'vue': ['eslint'],
-                  \   'html': ['htmlhint'],
-                  \   'ocaml': ['merlin'],
-                  \   'pandoc': ['mdl'],
-                  \   'python': ['pylint'],
-                  \   'cpp': ['cpplint', 'gcc'],
-                  \   'java': ['javac']
-                  \}
+        " ale fixers
+        let g:ale_fixers = {
+                    \   '*': ['remove_trailing_lines', 'trim_whitespace'],
+                    \   'javascript': ['eslint'],
+                    \}
 
-      " let g:ale_cpp_cpplint_options = '--root=..'
+        " let g:ale_lint_on_save = 1
+        " let g:ale_completion_enabled = 1
+        " let g:ale_lint_on_text_changed = 'never'
+        " let g:ale_lint_on_enter = 0
+        "
+        " Set this variable to 1 to fix files when you save them.
+        let g:ale_fix_on_save = 1
+        let g:ale_completion_enabled = 1
+        " let g:ale_lint_on_text_changed = 'never'
+        " let g:ale_lint_on_enter = 0
 
-      " nerdTree settings
-      map <silent> <leader>n :NERDTreeToggle<CR>
-      let g:nerdtree_tabs_focus_on_files = 1
-      let NERDTreeShowBookmarks=1
+        let g:ale_linter_aliases = {
+                    \   'vue': ['vue', 'javascript'],
+                    \   'pandoc': ['markdown', 'pandoc'],
+                    \}
 
-      " swapfile
-      set swapfile
-      set dir=/home/isaac/.swp
+        let g:ale_linters = {
+                    \   'vue': ['eslint'],
+                    \   'html': ['htmlhint'],
+                    \   'ocaml': ['merlin'],
+                    \   'pandoc': ['mdl'],
+                    \   'python': ['pylint'],
+                    \   'cpp': ['cpplint', 'gcc'],
+                    \   'java': ['javac']
+                    \}
 
-      " split navigation
-      " nnoremap <C-j> <C-W><C-J>
-      " nnoremap <C-k> <C-W><C-K>
-      " nnoremap <C-l> <C-W><C-L>
-      " nnoremap <C-h> <C-W><C-H>
+        " let g:ale_cpp_cpplint_options = '--root=..'
 
-      set splitbelow
-      set splitright
+        " nerdTree settings
+        map <silent> <leader>n :NERDTreeToggle<CR>
+        let g:nerdtree_tabs_focus_on_files = 1
+        let NERDTreeShowBookmarks=1
 
-      " recursive pathfinding
-      set path+=**
+        " swapfile
+        set swapfile
+        set dir=/home/isaac/.swp
 
-      " indentLine
-      let g:indentLine_setColors = 1
-      let g:indentLine_char = '▏'
-      " let g:indentLine_char_list = ['|', '¦', '┆', '┊']
-      let g:indentLine_color_term = 18
-      let g:indentLine_color_gui = '#293256'
-      " let g:indentLine_concealcursor = ' '
-      " let g:indentLine_leadingSpaceEnabled = 1
-      " let g:indentLine_leadingSpaceChar = '-'
-    ''; in
+        " split navigation
+        " nnoremap <C-j> <C-W><C-J>
+        " nnoremap <C-k> <C-W><C-K>
+        " nnoremap <C-l> <C-W><C-L>
+        " nnoremap <C-h> <C-W><C-H>
 
-    let system_vim = (pkgs.neovim.override {
-      vimAlias = true;
+        " Smart way to move between panes
+        map <up> <C-w><up>
+        map <down> <C-w><down>
+        map <left> <C-w><left>
+        map <right> <C-w><right>
 
-      configure = {
-        packages.myVimPackage = {
-          start = with pkgs.vimPlugins; [
-            (pkgs.vimUtils.buildVimPlugin {
-              name = "vim-colors_atelier-schemes";
-              src = pkgs.fetchFromGitHub {
-                owner = "atelierbram";
-                repo = "vim-colors_atelier-schemes";
-                rev = "ccdd1558b172da6928db7d27d43da75df0444ed9";
-                sha256 = "14iwc9g88b6p4pjigvc7rd2x8f5xcz1ajd74i7l7i71ys8dpdcga";
-              };
-            })
+        set splitbelow
+        set splitright
 
-            (pkgs.vimUtils.buildVimPlugin {
-              name = "vim-wordmotion";
-              src = pkgs.fetchFromGitHub {
-                owner = "chaoren";
-                repo = "vim-wordmotion";
-                rev = "4c8c4ca0165bc45ec269d1aa300afc36edee0a55";
-                sha256 = "1dnvryzqrf9msr81qlmcdf660csp43h19mbx56dnadpsyzadx6vm";
-              };
-            })
+        " recursive pathfinding
+        set path+=**
 
-            (pkgs.vimUtils.buildVimPlugin {
-              name = "indentLine";
-              src = pkgs.fetchFromGitHub {
-                owner = "Yggdroot";
-                repo = "indentLine";
-                rev = "47648734706fb2cd0e4d4350f12157d1e5f4c465";
-                sha256 = "0739hdvdfa1lm209q4sl75jvmf2k03cvlka7wv1gwnfl00krvszs";
-              };
-            })
+        " indentLine
+        let g:indentLine_setColors = 1
+        let g:indentLine_color_gui = '#5E6687'
+        let g:indentLine_concealcursor = 'inc'
+        let g:indentLine_conceallevel = 2
+        let g:indentLine_fileTypeExclude = ['pandoc']
+        let g:indentLine_char_list = ['|', '¦', '┆', '┊']
 
-            editorconfig-vim
-            vim-polyglot
-            vim-nix
-            ale
-            vim-airline
-            vim-pandoc
-            vim-pandoc-syntax
-            vim-speeddating
-            vim-easymotion
-            vim-css-color
-            nerdtree
-            vim-table-mode
-            auto-pairs
-            python-mode
-            ctrlp
-            deoplete-nvim
-            ansible-vim
-            UltiSnips
-            vim-snippets
-            vim-unimpaired
-            vim-surround
-          ];
+        " let g:indentLine_color_term = 8
+        " let g:indentLine_color_term = 18
+        " let g:indentLine_color_gui = '#293256'
+        " let g:indentLine_char = '▏'
+        " let g:indentLine_char_list = ['|', '¦', '┆', '┊']
+        " let g:indentLine_concealcursor = ' '
+        " let g:indentLine_leadingSpaceEnabled = 1
+        " let g:indentLine_leadingSpaceChar = '-'
+      ''; in
 
-          opt = [ ];
+      let system_vim = (pkgs.neovim.override {
+        vimAlias = true;
+
+        configure = {
+          packages.myVimPackage = {
+            start = with pkgs.vimPlugins; [
+              (pkgs.vimUtils.buildVimPlugin {
+                name = "vim-colors_atelier-schemes";
+                src = pkgs.fetchFromGitHub {
+                  owner = "atelierbram";
+                  repo = "vim-colors_atelier-schemes";
+                  rev = "ccdd1558b172da6928db7d27d43da75df0444ed9";
+                  sha256 = "14iwc9g88b6p4pjigvc7rd2x8f5xcz1ajd74i7l7i71ys8dpdcga";
+                };
+              })
+
+              (pkgs.vimUtils.buildVimPlugin {
+                name = "vim-wordmotion";
+                src = pkgs.fetchFromGitHub {
+                  owner = "chaoren";
+                  repo = "vim-wordmotion";
+                  rev = "4c8c4ca0165bc45ec269d1aa300afc36edee0a55";
+                  sha256 = "1dnvryzqrf9msr81qlmcdf660csp43h19mbx56dnadpsyzadx6vm";
+                };
+              })
+
+              (pkgs.vimUtils.buildVimPlugin {
+                name = "indentLine";
+                src = pkgs.fetchFromGitHub {
+                  owner = "Yggdroot";
+                  repo = "indentLine";
+                  rev = "47648734706fb2cd0e4d4350f12157d1e5f4c465";
+                  sha256 = "0739hdvdfa1lm209q4sl75jvmf2k03cvlka7wv1gwnfl00krvszs";
+                };
+              })
+
+              (pkgs.vimUtils.buildVimPlugin {
+                name = "pandoc-preview";
+                src = pkgs.fetchFromGitHub {
+                  owner = "lingnand";
+                  repo = "pandoc-preview.vim";
+                  rev = "7f3506d3d7037ed8c06303b3fb035cec9f987fa0";
+                  sha256 = "0v5g25cf58lic06ygnm2gr3c9z4wdmzjq6k8h02xwrmwcfp76r6r";
+                };
+              })
+
+              # vim preview pandoc
+              # (let
+              #   async-vim = pkgs.fetchurl {
+              #     url = "https://raw.githubusercontent.com/prabirshrestha/async.vim/627a8c4092df24260d3dc2104bc1d944c78f91ca/autoload/async/job.vim";
+              #     sha256 = "1hig52wipsxvqx65s0z0zs5kljbp5kwgmgv9810f2vshlia5dd1h";
+              #   }; in
+
+              #   pkgs.vimUtils.buildVimPlugin {
+              #     name = "vimpreviewpandoc";
+              #     src = pkgs.fetchFromGitHub {
+              #       owner = "tex";
+              #       repo = "vimpreviewpandoc";
+              #       rev = "3b0a589140abf6cc5d19ad678a7f01822bbee34e";
+              #       sha256 = "15yjr01wfnhaqw1k8bgxk04vvh76y13zfms66irpihw79f9yzxi9";
+              #     };
+
+              #     postInstall = ''
+              #       AUTOLOAD=$out/share/vim-plugins/vimpreviewpandoc/autoload/vimpreviewpandoc.vim
+              #       NEW=$out/share/vim-plugins/vimpreviewpandoc/autoload/vimpreviewpandoc.vim.bak
+              #       cat ${async-vim} $AUTOLOAD > $NEW
+              #       rm $AUTOLOAD
+              #       mv $NEW $AUTOLOAD
+              #       sed 's/async#job/vimpreviewpandoc/g' $AUTOLOAD > $NEW
+
+              #       rm $AUTOLOAD
+              #       mv $NEW $AUTOLOAD
+              #     '';
+              # })
+
+              editorconfig-vim
+              vim-polyglot
+              vim-nix
+              ale
+              vim-airline
+              vim-pandoc
+              vim-pandoc-syntax
+              vim-pandoc-after
+              vim-speeddating
+              vim-easymotion
+              vim-css-color
+              nerdtree
+              vim-table-mode
+              auto-pairs
+              python-mode
+              ctrlp
+              deoplete-nvim
+              ansible-vim
+              UltiSnips
+              vim-snippets
+              vim-unimpaired
+              vim-surround
+            ];
+
+            opt = [ ];
+          };
+
+          customRC = vimrc;
         };
-
-        customRC = vimrc;
-      };
-    }); in
-    let system_vimdiff = (pkgs.writeShellScriptBin "vimdiff" ''
-      vim -d "$@"
-    ''); in
-    with pkgs; [
-      (system_vim)
-      (system_vimdiff)
-      neovim
-      nvi
-      universal-ctags
-      ripgrep
-    ];
+      }); in
+      let system_vimdiff = (pkgs.writeShellScriptBin "vimdiff" ''
+        vim -d "$@"
+      ''); in
+      with pkgs; [
+        (system_vim)
+        (system_vimdiff)
+        neovim
+        nvi
+        universal-ctags
+        ripgrep
+      ];
 
   home-manager.users.isaac = {
     home.file = {

@@ -202,11 +202,12 @@ let input-toggle-create = device: script-name: (pkgs.writeShellScriptBin script-
         rofi-pass
 
       # clipmenu rofi
-      super + x
-        clipmenu-ext
+      super + {_,shift + }c
+          {clipmenu-ext,clipmenu-del}
 
-      super + shift + x
-        clipmenu-del
+      # rofimoji
+      super + e
+      	rofimoji
 
       # mpv toggle
       super + Up
@@ -273,7 +274,7 @@ let input-toggle-create = device: script-name: (pkgs.writeShellScriptBin script-
           bspc node @/ --rotate {90,-90}
 
       # Circulate the leaves of the tree
-      super + {_,shift + }c
+      super + {_,shift + }x
           bspc node @/ --circulate {backward,forward}
 
       # flip

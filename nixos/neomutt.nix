@@ -66,7 +66,7 @@ let create-account = folder: email: signature: (pkgs.writeText folder ''
           set edit_headers = yes
           set autoedit
           set auto_tag = yes
-          set recall=no
+          set recall=ask-yes
           # set postpone=no
 
           ## COLOR START

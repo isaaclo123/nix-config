@@ -1,6 +1,8 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 
 let mpv-socket = "/tmp/mpv-scratchpad-socket"; in
+
+let mpv-thumbs-cache = "/tmp/mpv_thumbs_cache"; in
 
 let fullscreen-lock = "/tmp/mpv-scratchpad-fullscreen.lock"; in
 
@@ -189,7 +191,7 @@ let fullscreen-lock = "/tmp/mpv-scratchpad-fullscreen.lock"; in
               sha256 = "1g8g0l2dfydmbh1rbsxvih8zsyr7r9x630jhw95jwb1s1x8izrr7";
             })
 
-            # mpv thumbnail server
+            # # mpv thumbnail server
             (fetchurl {
               url = "https://github.com/TheAMM/mpv_thumbnail_script/releases/download/0.4.2/mpv_thumbnail_script_server.lua";
               sha256 = "12flp0flzgsfvkpk6vx59n9lpqhb85azcljcqg21dy9g8dsihnzg";
@@ -265,8 +267,53 @@ let fullscreen-lock = "/tmp/mpv-scratchpad-fullscreen.lock"; in
         mpvc
       ];
 
+  systemd.user = {
+    timers.mpv-thumbnail-delete = {
+      wantedBy = [ "timers.target" ];
+      partOf = [ "mpv-thumbnail-delete.service" ];
+      timerConfig = {
+        OnCalendar = "daily";
+      };
+    };
+
+    services.mpv-thumbnail-delete = {
+      description = "Service to delete mpv thumbnails";
+
+      serviceConfig.Type = "oneshot";
+
+      # delete anything older than 1 day
+      script = ''
+        [ -d "${mpv-thumbs-cache}" ] && \
+          find ${mpv-thumbs-cache} -mtime +1 -exec rm {} \;
+        exit 0
+      '';
+
+      path = with pkgs; [
+        config.system.path
+      ];
+    };
+  };
+
   home-manager.users.isaac = {
     xdg.configFile = {
+      "mpv/script-opts/mpv_thumbnail_script.conf".text = ''
+        cache_directory=${mpv-thumbs-cache}
+        autogenerate=yes
+        autogenerate_max_duration=1800
+        prefer_mpv=yes
+        mpv_no_sub=no
+        disable_keybinds=no
+        thumbnail_width=100
+        thumbnail_height=100
+        thumbnail_count=100
+        min_delta=5
+        max_delta=90
+        thumbnail_network=yes
+        remote_thumbnail_count=40
+        remote_min_delta=15
+        remote_max_delta=120
+      '';
+
       "mpv/mpv.conf".text = ''
         # MPV config
 
@@ -448,24 +495,6 @@ let fullscreen-lock = "/tmp/mpv-scratchpad-fullscreen.lock"; in
         loop-file=inf
         [extension.gifv]
         loop-file=inf
-      '';
-
-      "mpv/script-opts/mpv_thumbnail_script.conf".text = ''
-        cache_directory=/tmp/mpv_thumbs_cache
-        autogenerate=yes
-        autogenerate_max_duration=3600
-        prefer_mpv=yes
-        mpv_no_sub=no
-        disable_keybinds=no
-        thumbnail_width=200
-        thumbnail_height=200
-        thumbnail_count=150
-        min_delta=5
-        max_delta=90
-        thumbnail_network=yes
-        remote_thumbnail_count=60
-        remote_min_delta=15
-        remote_max_delta=120
       '';
     };
   };

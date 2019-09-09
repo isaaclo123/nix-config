@@ -181,6 +181,7 @@ in
       };
     };
 
+    enableDefaultFonts = true;
     enableFontDir = true;
   };
 
@@ -355,7 +356,6 @@ in
     };
     # auto optimize
     autoOptimiseStore = true;
-
 
     #   plugin-files = ${pkgs.nix-plugins.override { nix = config.nix.package; }}/lib/nix/plugins/libnix-extra-builtins.so
     #   extra-builtins-file = /etc/nixos/extra-builtins.nix

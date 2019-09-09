@@ -35,7 +35,7 @@ let nixos-weechat = (with import <nixpkgs> {};
 
       weechat_notify_send = (with import <nixpkgs> {};
         stdenv.mkDerivation rec {
-          pname = "weechat-autosort";
+          pname = "weechat-notify-send";
           version = "0.9";
 
           src = pkgs.fetchFromGitHub {
@@ -91,7 +91,7 @@ let nixos-weechat = (with import <nixpkgs> {};
               iset
               perlexec
               pv_info
-              multiline
+              # multiline
             ];
           };
         })
