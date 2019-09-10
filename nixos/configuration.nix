@@ -49,6 +49,7 @@ in
       ./rofi.nix
       ./rofi-pass.nix
       ./python.nix
+      ./r.nix
       ./email.nix
       ./termite.nix
       ./neomutt.nix

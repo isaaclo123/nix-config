@@ -312,6 +312,17 @@
         " let g:indentLine_concealcursor = ' '
         " let g:indentLine_leadingSpaceEnabled = 1
         " let g:indentLine_leadingSpaceChar = '-'
+
+        " Nvim-R
+        autocmd Filetype R,r map <leader>r <Plug>RSendFile
+
+        autocmd Filetype R,r nmap , <Plug>RDSendLine
+        " remapping selection :: send multiple lines
+        autocmd Filetype R,r vmap , <Plug>RDSendSelection
+        " remapping selection :: send multiple lines + echo lines
+        autocmd Filetype R,r vmap ,e <Plug>RESendSelection
+
+        au! BufNewFile,BufReadPost *.{r,R} set filetype=r
       ''; in
 
       let system_vim = (pkgs.neovim.override {
@@ -368,6 +379,15 @@
                   rev = "e4a3604dc09d0580c66e29421518caf348442291";
                   sha256 = "1p3hvr6i3wk78628lvnn64abcfhkvvaxskrfgqzlg1mmmpvndh3n";
                 };
+              })
+
+              (pkgs.vimUtils.buildVimPlugin {
+                name = "Nvim-R";
+                src = pkgs.fetchurl {
+                  url = "https://github.com/jalvesaq/Nvim-R/archive/v0.9.13.tar.gz";
+                  sha256 = "0rz836gwsfp4n1vskcs45z1bign5cp0r1jzw1f6xwfqbg3r35lfl";
+                };
+                buildInputs = with pkgs; [ which vim zip ];
               })
 
               editorconfig-vim
