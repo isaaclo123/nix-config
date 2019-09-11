@@ -27,6 +27,7 @@ let my-python-packages = python-packages:
     conda
     ueberzug
     requests
+    virtualenv
   ];
   python-with-my-packages = python3.withPackages my-python-packages;
 in

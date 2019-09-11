@@ -2,9 +2,11 @@
 
 {
   environment.systemPackages = with pkgs; [
+    (zathura.override {
+      useMupdf = true;
+    })
     pandoc
     texlive.combined.scheme-full
-    zathura
   ];
 
   home-manager.users.isaac = {

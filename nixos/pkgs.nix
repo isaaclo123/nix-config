@@ -24,12 +24,31 @@
         mpv --no-config --loop=inf "$song"
       '');
 
+      vmware-horizon = (pkgs.writeShellScriptBin "vmware-horizon" ''
+        export HOME=/home/isaac
+        export USER=isaac
+
+        xhost +local:root
+
+        docker run -it \
+                    --privileged \
+                    -v /tmp/.X11-unix:/tmp/.X11-unix \
+                    -v ''${HOME}/.vmware:/root/.vmware/ \
+                    -v /etc/localtime:/etc/localtime:ro \
+                    -v /dev/bus/usb:/dev/bus/usb \
+                    -e DISPLAY=$DISPLAY \
+                    --device /dev/snd \
+                    exotime/vmware-horizon-docker
+      '');
+
     in with pkgs; [
       # custom packages
       (import ./z.nix)
       (import ./rofimoji.nix)
+      # (import ./vmware-horizon.nix)
       (wn)
       (alarm)
+      (vmware-horizon)
       # (import ./xfd.nix)
       # programming
       nodejs
@@ -118,5 +137,7 @@
       networkmanagerapplet
 
       unoconv
+
+      xorg.xhost
     ];
 }

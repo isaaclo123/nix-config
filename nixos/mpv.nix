@@ -162,11 +162,29 @@ let fullscreen-lock = "/tmp/mpv-scratchpad-fullscreen.lock"; in
         (xdg-open "$@" &&
             notify-send "Browser opening" "$url") ||
         notify-send "Error opening" "$url"
-      ''); in
+      '');
+
+      # this is a plugin
+      mpv-image-viewer = (pkgs.fetchFromGitHub {
+        owner = "occivink";
+        repo = "mpv-image-viewer";
+        rev = "0b1ea8efa965d40c11396d4e75f4ffbc2b1dccaf";
+        sha256 = "1dqwylbvy4c40sjbzwk99vvx7sjj8vs1vsdhhks3vblj4yhfa8pd";
+      });
+
+    in
 
       with pkgs; [
         (mpv-with-scripts.override {
           scripts = [
+            # mpv-image-viewer
+            "${mpv-image-viewer}/scripts/detect-image.lua"
+            "${mpv-image-viewer}/scripts/freeze-window.lua"
+            "${mpv-image-viewer}/scripts/image-positioning.lua"
+            "${mpv-image-viewer}/scripts/minimap.lua"
+            "${mpv-image-viewer}/scripts/ruler.lua"
+            "${mpv-image-viewer}/scripts/status-line.lua"
+
             # autosave
             (fetchurl {
               url = "https://gist.githubusercontent.com/Hakkin/5489e511bd6c8068a0fc09304c9c5a82/raw/7a19f7cdb6dd0b1c6878b41e13b244e2503c15fc/autosave.lua";
@@ -183,18 +201,6 @@ let fullscreen-lock = "/tmp/mpv-scratchpad-fullscreen.lock"; in
             (fetchurl {
               url = "https://raw.githubusercontent.com/zc62/mpv-scripts/master/autoloop.lua";
               sha256 = "1g60h3c85ladx3ksixqnmg2cmpr68li38sgx167jylmgiavfaa6v";
-            })
-
-            # mpv thumbnail client
-            (fetchurl {
-              url = "https://github.com/TheAMM/mpv_thumbnail_script/releases/download/0.4.2/mpv_thumbnail_script_client_osc.lua";
-              sha256 = "1g8g0l2dfydmbh1rbsxvih8zsyr7r9x630jhw95jwb1s1x8izrr7";
-            })
-
-            # # mpv thumbnail server
-            (fetchurl {
-              url = "https://github.com/TheAMM/mpv_thumbnail_script/releases/download/0.4.2/mpv_thumbnail_script_server.lua";
-              sha256 = "12flp0flzgsfvkpk6vx59n9lpqhb85azcljcqg21dy9g8dsihnzg";
             })
 
             # playback no playback
@@ -296,6 +302,34 @@ let fullscreen-lock = "/tmp/mpv-scratchpad-fullscreen.lock"; in
 
   home-manager.users.isaac = {
     xdg.configFile = {
+      "mpv/scripts/mpv_thumbnail_client-1.lua".source =
+        (pkgs.fetchurl {
+          # mpv thumbnail client
+          url = "https://github.com/TheAMM/mpv_thumbnail_script/releases/download/0.4.2/mpv_thumbnail_script_client_osc.lua";
+          sha256 = "1g8g0l2dfydmbh1rbsxvih8zsyr7r9x630jhw95jwb1s1x8izrr7";
+        });
+
+      "mpv/scripts/mpv_thumbnail_server.lua".source =
+        (pkgs.fetchurl {
+          # mpv thumbnail server
+          url = "https://github.com/TheAMM/mpv_thumbnail_script/releases/download/0.4.2/mpv_thumbnail_script_server.lua";
+          sha256 = "12flp0flzgsfvkpk6vx59n9lpqhb85azcljcqg21dy9g8dsihnzg";
+        });
+
+      "mpv/script-opts/status_line.conf".text = ''
+        # whether to show by default
+        enabled=no
+        # its position, possible values: (bottom|top)-(left|right)
+        position=bottom-left
+        # its font size
+        size=36
+        # the text to be expanded
+        # see property expansion: https://mpv.io/manual/master/#property-expansion
+        # \N can be used for line breaks
+        # you can also use ass tags, see here: http://docs.aegisub.org/3.2/ASS_Tags/
+        text=''${filename} [''${playlist-pos-1}/''${playlist-count}]
+      '';
+
       "mpv/script-opts/mpv_thumbnail_script.conf".text = ''
         cache_directory=${mpv-thumbs-cache}
         autogenerate=yes
@@ -312,6 +346,80 @@ let fullscreen-lock = "/tmp/mpv-scratchpad-fullscreen.lock"; in
         remote_thumbnail_count=40
         remote_min_delta=15
         remote_max_delta=120
+      '';
+
+      "mpv/input.conf".text = ''
+        # mouse-centric bindings
+        # MBTN_RIGHT script-binding drag-to-pan
+        # MBTN_LEFT  script-binding pan-follows-cursor
+        # WHEEL_UP   script-message cursor-centric-zoom 0.1
+        # WHEEL_DOWN script-message cursor-centric-zoom -0.1
+
+        # panning with the keyboard:
+        # pan-image takes the following arguments
+        # pan-image AXIS AMOUNT ZOOM_INVARIANT IMAGE_CONSTRAINED
+
+        ctrl+j repeatable script-message pan-image y -0.1 yes yes
+        ctrl+k repeatable script-message pan-image y +0.1 yes yes
+        ctrl+l repeatable script-message pan-image x -0.1 yes yes
+        ctrl+h repeatable script-message pan-image x +0.1 yes yes
+
+        # now with more precision
+        alt+j   repeatable script-message pan-image y -0.01 yes yes
+        alt+k     repeatable script-message pan-image y +0.01 yes yes
+        alt+l  repeatable script-message pan-image x -0.01 yes yes
+        alt+h   repeatable script-message pan-image x +0.01 yes yes
+
+        # replace at will with h,j,k,l if you prefer vim-style bindings
+
+        # on a trackpad you may want to use these
+        WHEEL_UP    repeatable script-message pan-image y -0.02 yes yes
+        WHEEL_DOWN  repeatable script-message pan-image y +0.02 yes yes
+        WHEEL_LEFT  repeatable script-message pan-image x -0.02 yes yes
+        WHEEL_RIGHT repeatable script-message pan-image x +0.02 yes yes
+
+        # align the border of the image to the border of the window
+        # align-border takes the following arguments:
+        # align-border ALIGN_X ALIGN_Y
+        # any value for ALIGN_* is accepted, -1 and 1 map to the border of the window
+        ctrl+shift+l script-message align-border -1 ""
+        ctrl+shift+h  script-message align-border 1 ""
+        ctrl+shift+j  script-message align-border "" -1
+        ctrl+shift+k    script-message align-border "" 1
+
+        # reset the image
+        ctrl+0  no-osd set video-pan-x 0; no-osd set video-pan-y 0; no-osd set video-zoom 0
+
+        + add video-zoom 0.5
+        - add video-zoom -0.5; script-message reset-pan-if-visible
+        = no-osd set video-zoom 0; script-message reset-pan-if-visible
+
+        # sxiv compatibility
+        w no-osd set video-unscaled yes; keypress =
+        e no-osd set video-unscaled no; keypress =
+
+        h no-osd vf toggle hflip; show-text "Horizontal flip"
+        v no-osd vf toggle vflip; show-text "Vertical flip"
+
+        r script-message rotate-video 90; show-text "Clockwise rotation"
+        R script-message rotate-video -90; show-text "Counter-clockwise rotation"
+        alt+r no-osd set video-rotate 0; show-text "Reset rotation"
+
+        d script-message ruler
+
+        # Toggling between pixel-exact reproduction and interpolation
+        a cycle-values scale nearest ewa_lanczossharp
+
+        # Toggle color management on or off
+        c cycle icc-profile-auto
+
+        # Screenshot of the window output
+        S screenshot window
+
+        # Toggle aspect ratio information on and off
+        A cycle-values video-aspect "-1" "no"
+
+        p script-message force-print-filename
       '';
 
       "mpv/mpv.conf".text = ''

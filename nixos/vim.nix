@@ -412,6 +412,7 @@
               vim-snippets
               vim-unimpaired
               vim-surround
+              direnv-vim
             ];
 
             opt = [ ];

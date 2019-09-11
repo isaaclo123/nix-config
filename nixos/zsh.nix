@@ -4,6 +4,7 @@
   environment.systemPackages = with pkgs; [
     zsh
     oh-my-zsh
+    direnv
   ];
 
   programs.zsh.enable = true;
@@ -52,7 +53,6 @@
     # source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
     source ${pkgs.zsh-syntax-highlighting}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
     source ${pkgs.zsh-history-substring-search}/share/zsh-history-substring-search/zsh-history-substring-search.zsh
-
     # z.sh
     . ${import ./z.nix}/bin/z
   '';
@@ -87,18 +87,14 @@
     bindkey -M menuselect '^[[Z' reverse-menu-complete
 
     # unset XDG_CONFIG_HOME for termite
-    unset XDG_CONFIG_HOME
+    # unset XDG_CONFIG_HOME
+
+    eval "$(${pkgs.direnv}/bin/direnv hook zsh)"
   '';
 
   programs.zsh.shellAliases = with pkgs; {
     c = "clear";
   };
-
-  # environment.shellInit = ''
-  #   gpg-connect-agent /bye
-  #   export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
-  #   echo UPDATESTARTUPTTY | gpg-connect-agent &> /dev/null
-  # '';
 
   # environment.variables = {
   #   # NOTMUCH_CONFIG = "/home/isaac/.config/notmuch/notmuchrc";

@@ -6,9 +6,22 @@
 # qute://help/settings.html
 
 {
-  environment.systemPackages = with pkgs; [
-    unstable.qutebrowser
-  ];
+  environment.systemPackages =
+    let qutebrowser-derivation =
+      (with import <nixpkgs> {};
+        stdenv.lib.overrideDerivation pkgs.unstable.qutebrowser (oldAttrs : {
+          patches = oldAttrs.patches ++ [
+            (pkgs.fetchurl {
+              # https://gist.github.com/isaaclo123/c73221c39dbfc0bacd72dd5d5a692973
+              # qutebrowser-qwerty-tab.patch
+              url = "https://gist.githubusercontent.com/isaaclo123/c73221c39dbfc0bacd72dd5d5a692973/raw/b855be4387a35237878d2e60ac04fb784bda4db4/qutebrowser-qwerty-tab.patch";
+              sha256 = "09h0fr5r9ajpzd3j9ndgagxb8nigp8h039fy7lag8x98lfjf8wzr";
+            })
+          ];
+      })); in
+    with pkgs; [
+      (qutebrowser-derivation)
+    ];
 
   home-manager.users.isaac = {
     xdg.configFile = {
