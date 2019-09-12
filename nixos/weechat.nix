@@ -28,8 +28,12 @@ let nixos-weechat = (with import <nixpkgs> {};
             sha256 = "0bcfd7mnwcij746221a4b50hj11b24kl1ggyqj72gg8v4vqh9f71";
           };
         };
-        notify_send = attrs: {
-          language = "python";
+
+        vimode = attrs: {
+          src = pkgs.fetchurl {
+            url = "https://raw.githubusercontent.com/GermainZ/weechat-vimode/6412084ae263a75790b8ea6fb36c75a7eb06c16b/vimode.py";
+            sha256 = "1v8144b4ijc26p8mqvw6rs6m6s1kawphjfbp0fh9r72xyg1xh69g";
+          };
         };
       };
 

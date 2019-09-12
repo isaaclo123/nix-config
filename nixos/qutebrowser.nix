@@ -12,10 +12,10 @@
         stdenv.lib.overrideDerivation pkgs.unstable.qutebrowser (oldAttrs : {
           patches = oldAttrs.patches ++ [
             (pkgs.fetchurl {
-              # https://gist.github.com/isaaclo123/c73221c39dbfc0bacd72dd5d5a692973
+              # https://gist.githubusercontent.com/isaaclo123/c73221c39dbfc0bacd72dd5d5a692973/raw/8e40d724a8cafe350a26d79a2e686c3074537b02/qutebrowser-qwerty-tab.patch
               # qutebrowser-qwerty-tab.patch
-              url = "https://gist.githubusercontent.com/isaaclo123/c73221c39dbfc0bacd72dd5d5a692973/raw/b855be4387a35237878d2e60ac04fb784bda4db4/qutebrowser-qwerty-tab.patch";
-              sha256 = "09h0fr5r9ajpzd3j9ndgagxb8nigp8h039fy7lag8x98lfjf8wzr";
+              url = "https://gist.githubusercontent.com/isaaclo123/c73221c39dbfc0bacd72dd5d5a692973/raw/8e40d724a8cafe350a26d79a2e686c3074537b02/qutebrowser-qwerty-tab.patch";
+              sha256 = "1lvvw32ab955j8la5xyxd7lxdmfjqab1wn7wga4i9g3c2j3np5jk";
             })
           ];
       })); in
@@ -116,6 +116,8 @@
             config.bind(';I', 'hint --rapid links run :open --private {hint-url}')
 
             # buffer change keybinds
+            config.bind('<Alt-9>', 'buffer 9')
+            config.bind('<Alt-0>', 'buffer 10')
             config.bind('<Alt-q>', 'buffer 11')
             config.bind('<Alt-w>', 'buffer 12')
             config.bind('<Alt-e>', 'buffer 13')

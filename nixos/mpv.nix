@@ -18,17 +18,18 @@ let fullscreen-lock = "/tmp/mpv-scratchpad-fullscreen.lock"; in
 
       mpv-scratchpad-toggle = (pkgs.writeShellScriptBin "mpv-scratchpad-toggle" ''
         VISIBLE_IDS=$(xdotool search --onlyvisible --classname 'mpvscratchpad')
+        ALL_IDS=$(xdotool search --classname 'mpvscratchpad')
         ID=$(xdotool search --classname 'mpvscratchpad' | head -n1)
         FULLSCREEN=${fullscreen-lock}
+
+        # if hidden, don't do anything
+        [ -z $ALL_IDS ] && exit 0
 
         # sticky desktop
         bspc node $ID --flag sticky=on
 
         # toggle hide
         bspc node $ID --flag hidden
-
-        ## if hidden, don't do anything
-        # [ -z $VISIBLE_IDS ] && exit 0
 
         ## else toggle fullscreen
         if [ -e "$FULLSCREEN" ]; then
@@ -107,8 +108,12 @@ let fullscreen-lock = "/tmp/mpv-scratchpad-fullscreen.lock"; in
 
       mpv-scratchpad-fullscreen-toggle = (pkgs.writeShellScriptBin "mpv-scratchpad-fullscreen-toggle" ''
         VISIBLE_IDS=$(xdotool search --onlyvisible --classname 'mpvscratchpad')
+        ALL_IDS=$(xdotool search --classname 'mpvscratchpad')
         ID=$(xdotool search --classname 'mpvscratchpad' | head -n1)
         FULLSCREEN=${fullscreen-lock}
+
+        # if hidden, don't do anything
+        [ -z $ALL_IDS ] && exit 0
 
         # move mpv to front
         bspc node $ID --to-desktop newest
@@ -179,7 +184,7 @@ let fullscreen-lock = "/tmp/mpv-scratchpad-fullscreen.lock"; in
           scripts = [
             # mpv-image-viewer
             "${mpv-image-viewer}/scripts/detect-image.lua"
-            "${mpv-image-viewer}/scripts/freeze-window.lua"
+            # "${mpv-image-viewer}/scripts/freeze-window.lua"
             "${mpv-image-viewer}/scripts/image-positioning.lua"
             "${mpv-image-viewer}/scripts/minimap.lua"
             "${mpv-image-viewer}/scripts/ruler.lua"
@@ -222,42 +227,10 @@ let fullscreen-lock = "/tmp/mpv-scratchpad-fullscreen.lock"; in
             })
 
             # gallery-dl hook
-            (writeText "gallery-dl_hook.lua" ''
-              -- gallery-dl_hook.lua
-              --
-              -- load online image galleries as playlists using gallery-dl
-              -- https://github.com/mikf/gallery-dl
-              --
-              -- to use, prepend the gallery url with: gallery-dl://
-              -- e.g.
-              --     `mpv gallery-dl://https://imgur.com/....`
-
-              local utils = require 'mp.utils'
-              local msg = require 'mp.msg'
-
-              local function exec(args)
-                  local ret = utils.subprocess({args = args})
-                  return ret.status, ret.stdout, ret
-              end
-
-              mp.add_hook("on_load", 15, function()
-                  local url = mp.get_property("stream-open-filename", "")
-                  if (url:find("gallery%-dl://") ~= 1) then
-                      msg.debug("not a gallery-dl:// url: " .. url)
-                      return
-                  end
-                  local url = string.gsub(url,"gallery%-dl://","")
-
-                  local es, urls, result = exec({"gallery-dl", "-g", url})
-                  if (es < 0) or (urls == nil) or (urls == "") then
-                      msg.debug("failed to get album list.")
-                      urls = url
-                  end
-
-                  -- mp.commandv("loadlist", "memory://" .. urls)
-                  mp.commandv("loadlist", "memory://" .. urls)
-              end)
-            '')
+            (fetchurl {
+              url = "https://gist.githubusercontent.com/isaaclo123/47993f6de088bb55de27fd126f722f2a/raw/6f8fadcce9eab90a4ce3973f6b660e9e7802bcc2/gallery-dl_hook.lua";
+              sha256 = "1nsmxjapq1jgpsjn7xsxf5g7kxal3mkpavc7cqrj24609di619iv";
+            })
           ];
         })
 

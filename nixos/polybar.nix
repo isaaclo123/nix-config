@@ -60,6 +60,8 @@
         radius = 0
         fixed-center = true
 
+        pseudo-transparency = true
+
         ; override-redirect = true
         wm-restack = bspwm
 
