@@ -28,6 +28,7 @@ in
 
       ./hardware-configuration.nix
       ./bspwm.nix
+      ./compton.nix
       ./sxhkd.nix
       ./vim.nix
       ./zsh.nix
@@ -136,49 +137,6 @@ in
   #   defaultLocale = "en_US.UTF-8";
   # };
 
-  fonts = {
-    fonts = with pkgs; [
-      # noto-fonts-emoji
-      unifont
-      unifont_upper
-      gohufont
-      font-awesome_4
-      # dejavu_fonts
-    ];
-
-    fontconfig = {
-      enable = true;
-      allowBitmaps = true;
-      useEmbeddedBitmaps = true;
-      antialias = true;
-
-      hinting = {
-        enable = true;
-      };
-
-      defaultFonts = {
-        monospace = [
-          "GohuFont"
-          # "Unifont"
-          # "Unifont Upper"
-        ];
-        sansSerif = [
-          "GohuFont"
-        ];
-        serif = [
-          "GohuFont"
-        ];
-      };
-
-      ultimate = {
-        enable = false;
-      };
-    };
-
-    enableDefaultFonts = true;
-    enableFontDir = true;
-  };
-
   # Set your time zone.
   time.timeZone = "America/Chicago";
 
@@ -196,25 +154,6 @@ in
   # };
 
   # List services that you want to enable:
-
-  # compton
-  services.compton = {
-    enable = true;
-    backend = "glx";
-
-    shadow = true;
-    shadowOffsets = [ (-6) (-6) ];
-    shadowOpacity = "0.3";
-    shadowExclude = [
-      "name != 'mpvscratchpad'"
-    ];
-
-    vSync = "drm";
-    extraOptions = ''
-      shadow-radius = 4;
-      paint-on-overlay = true;
-    '';
-  };
 
   # adb
   programs.adb.enable = true;

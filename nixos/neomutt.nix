@@ -42,7 +42,7 @@ let create-account = folder: email: signature: (pkgs.writeText folder ''
       '';
 
       ".urlview".text = ''
-        COMMAND qutebrowser
+        COMMAND xdg-open
       '';
 
       ".muttrc".text =

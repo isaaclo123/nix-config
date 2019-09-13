@@ -139,5 +139,7 @@
       unoconv
 
       xorg.xhost
+
+      firefox
     ];
 }

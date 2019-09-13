@@ -3,6 +3,30 @@
 with import <nixpkgs> {};
 
 {
+  fonts = {
+    fonts = with pkgs; [
+      unifont
+      unifont_upper
+      gohufont
+      font-awesome_4
+    ];
+
+    fontconfig = {
+      defaultFonts = {
+        monospace = [ "GohuFont" ];
+        sansSerif = [ "GohuFont" ];
+        serif = [ "GohuFont" ];
+      };
+
+      ultimate.enable = false;
+
+      useEmbeddedBitmaps = true;
+    };
+
+    enableDefaultFonts = true;
+    enableFontDir = true;
+  };
+
   home-manager.users.isaac = {
     gtk = {
       enable = true;

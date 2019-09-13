@@ -407,6 +407,10 @@ let fullscreen-lock = "/tmp/mpv-scratchpad-fullscreen.lock"; in
         # Video output
 
         osc=no # disable osc for custom osc
+        # vo=xv # simpler rendering for reducing tearing
+        x11-bypass-compositor=yes # bypass compositor
+        demuxer-thread=yes
+
         script-opts=osc-layout=slimbox
         profile=opengl-hq
         scale=ewa_lanczossharp
