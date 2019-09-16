@@ -101,7 +101,11 @@ let fullscreen-lock = "/tmp/mpv-scratchpad-fullscreen.lock"; in
       '');
 
       mpv-scratchpad-open = (pkgs.writeShellScriptBin "mpv-scratchpad-open" ''
-        mpv-scratchpad-ctl replace "$@"
+        mpv-scratchpad-ctl add "$@"
+        for i in {1 ... 50}
+          do
+            mpv-scratchpad-ctl next
+        done
         mpv-scratchpad-ctl play
         exit 0
       '');

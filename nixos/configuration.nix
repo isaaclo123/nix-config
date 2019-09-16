@@ -230,7 +230,7 @@ in
 
   users.users.isaac = {
     createHome = true;
-    extraGroups = [ "docker" "uucp" "adbusers" "wheel" "video" "audio" "disk" "networkmanager" "sudo" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "wireshark" "docker" "uucp" "adbusers" "wheel" "video" "audio" "disk" "networkmanager" "sudo" ]; # Enable ‘sudo’ for the user.
     group = "users";
     home = "${homedir}";
     isNormalUser = true;

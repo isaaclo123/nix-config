@@ -313,7 +313,7 @@ let input-toggle-create = device: script-name: (pkgs.writeShellScriptBin script-
       #
 
       # set the window state
-      super + {t,s,space,f}
+      super + {t,shift + t,s,f}
           bspc node -t {tiled,pseudo_tiled,floating,fullscreen}
 
       # set the node flags
@@ -327,6 +327,10 @@ let input-toggle-create = device: script-name: (pkgs.writeShellScriptBin script-
       # focus the node in the given direction
       super + {_,shift + }{h,j,k,l}
           bspc node -{f,s} {west,south,north,east}
+
+      # Navigate layouts
+      super + {_,shift + }space
+          bspc node -f {next,prev}.local
 
       # focus the node for the given path jump
       # super + {p,b,comma,period}

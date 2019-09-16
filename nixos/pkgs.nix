@@ -139,7 +139,9 @@
       unoconv
 
       xorg.xhost
+      xorg.xdpyinfo
 
-      firefox
+      # firefox
+      wireshark
     ];
 }

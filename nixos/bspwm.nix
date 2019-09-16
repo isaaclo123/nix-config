@@ -67,6 +67,7 @@ let autostarted-status = "/tmp/autostarted-status.lock"; in
 
       bspc rule -a Rofi state=floating
       bspc rule -a Zathura state=tiled
+      bspc rule -a Libreoffice state=tiled
 
       bspc rule -a termite_ desktop='^2'
       bspc rule -a vim_ desktop='^3'

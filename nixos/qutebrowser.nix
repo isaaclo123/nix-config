@@ -27,41 +27,27 @@
     xdg.configFile = {
       "qutebrowser/config.py".text =
         let
-          jblock = pkgs.fetchgit {
-            url = "https://gitlab.com/jgkamat/jblock";
-            rev = "d7d3a0f3a06f76154ec3f86386a692cc19bf1f0f";
-            sha256 = "0xmf0vrl0ap4dncnqfyzyaxa2xsvkrq4h58cs1kv69m3lgx015ap";
-          };
-
           userContentCss = pkgs.fetchurl {
             url = "https://www.floppymoose.com/userContent.css";
             sha256 = "0bmlm6aslvgczzwpy1ijbi6h6f0n1qva4453ls5gv7x40c3qg8mq";
           }; in ''
-            # jblock
-            import sys, os
+            c = c # pylint: disable=undefined-variable,invalid-name
+            config = config # pylint: disable=undefined-variable,invalid-name
 
-            sys.path.append("${jblock}")
-            config.source("${jblock}/jblock/integrations/qutebrowser.py")
+            # Uncomment this to still load settings configured via autoconfig.yml
+            # config.load_autoconfig()
 
-            # Disable qutebrowser (host-based) adblock.
+            # Enable qutebrowser (host-based) adblock.
             # Type: Bool
-            config.set('content.host_blocking.enabled', False)
+            config.set('content.host_blocking.enabled', True)
 
             # Adblock lists.
             # Type: List
-            config.set('content.host_blocking.lists', [
-              "https://easylist.to/easylist/easylist.txt",
-              "https://easylist.to/easylist/easyprivacy.txt",
-              "https://raw.githubusercontent.com/abp-filters/abp-filters-anti-cv/master/english.txt",
-              "https://easylist.to/easylist/fanboy-annoyance.txt"
-            ])
+            config.set('content.host_blocking.lists', ["https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/gambling-porn/hosts"]) # pylint: disable=line-too-long
 
             # User stylesheet (add floppymoose css rules http://www.floppymoose.com/)
             # Type: List
             config.set('content.user_stylesheets', ["${userContentCss}"]) # pylint: disable=line-too-long
-
-            # Uncomment this to still load settings configured via autoconfig.yml
-            # config.load_autoconfig()
 
             # Change editor.
             # Type: List

@@ -12,6 +12,8 @@ with import <nixpkgs> {};
     ];
 
     fontconfig = {
+      # dpi = 96;
+
       defaultFonts = {
         monospace = [ "GohuFont" ];
         sansSerif = [ "GohuFont" ];
@@ -19,6 +21,7 @@ with import <nixpkgs> {};
       };
 
       ultimate.enable = false;
+      penultimate.enable = true;
 
       useEmbeddedBitmaps = true;
     };
