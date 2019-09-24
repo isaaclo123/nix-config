@@ -13,7 +13,7 @@ let autostarted-status = "/tmp/autostarted-status.lock"; in
 
     let reload-desktop = (pkgs.writeShellScriptBin "reload-desktop" ''
       pkill -USR1 -x sxhkd
-      pkill -USR1 -x compton
+      # pkill -USR1 -x compton
       systemctl --user restart polybar
       bspc wm -r
     ''); in
@@ -67,7 +67,7 @@ let autostarted-status = "/tmp/autostarted-status.lock"; in
 
       bspc rule -a Rofi state=floating
       bspc rule -a Zathura state=tiled
-      bspc rule -a Libreoffice state=tiled
+      bspc rule -a libreoffice state=tiled
 
       bspc rule -a termite_ desktop='^2'
       bspc rule -a vim_ desktop='^3'
@@ -96,7 +96,7 @@ let autostarted-status = "/tmp/autostarted-status.lock"; in
         termite --class=ranger_ -e ranger &
         termite --class=neomutt_ -e neomutt &
         termite --class=ncmpcpp_ -e ncmpcpp &
-        termite --class=weechat_ -e weechat &
+        (sleep 30 && termite --class=weechat_ -e weechat) &
 
         mpv-scratchpad &
 

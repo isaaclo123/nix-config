@@ -50,6 +50,7 @@ in
       ./rofi.nix
       ./rofi-pass.nix
       ./python.nix
+      ./haskell.nix
       ./r.nix
       ./email.nix
       ./termite.nix

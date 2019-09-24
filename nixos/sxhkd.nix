@@ -178,7 +178,7 @@ let input-toggle-create = device: script-name: (pkgs.writeShellScriptBin script-
       super + Print
         screenshot
 
-      super + shift + Print
+      @super + shift + Print
         screenshot -s
 
       # lock and suspend

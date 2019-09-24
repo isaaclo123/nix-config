@@ -24,6 +24,7 @@ let bat-syntax-map-string = syntax-map:
           ".ignore"=".gitignore";
           cfg="ini";
           conf="ini";
+          scss="css";
         }; in ''
         # Set the theme to "TwoDark"
         --theme="${bat-theme-name}"

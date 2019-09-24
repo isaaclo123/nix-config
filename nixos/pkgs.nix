@@ -24,37 +24,23 @@
         mpv --no-config --loop=inf "$song"
       '');
 
-      vmware-horizon = (pkgs.writeShellScriptBin "vmware-horizon" ''
-        export HOME=/home/isaac
-        export USER=isaac
-
-        xhost +local:root
-
-        docker run -it \
-                    --privileged \
-                    -v /tmp/.X11-unix:/tmp/.X11-unix \
-                    -v ''${HOME}/.vmware:/root/.vmware/ \
-                    -v /etc/localtime:/etc/localtime:ro \
-                    -v /dev/bus/usb:/dev/bus/usb \
-                    -e DISPLAY=$DISPLAY \
-                    --device /dev/snd \
-                    exotime/vmware-horizon-docker
+      ppt-to-pdf = (pkgs.writeShellScriptBin "ppt-to-pdf.sh" ''
+        unoconv -f pdf *.{ppt,pptx}
+        rm *.{ppt,pptx}
       '');
 
     in with pkgs; [
       # custom packages
       (import ./z.nix)
       (import ./rofimoji.nix)
-      # (import ./vmware-horizon.nix)
       (wn)
       (alarm)
-      (vmware-horizon)
+      (ppt-to-pdf)
       # (import ./xfd.nix)
-      # programming
-      nodejs
 
       # office
       libreoffice
+      unoconv
 
       # nix
       nix-prefetch-scripts
@@ -66,7 +52,7 @@
 
       # desktop
       # i3lock-pixeled
-
+      networkmanagerapplet
       feh
 
       # password
@@ -86,6 +72,7 @@
       neofetch
       scrot
       gimp
+      bc
 
       # unclutter
       autocutsel
@@ -107,41 +94,40 @@
       xdotool
 
       # development tools
+      # c
       gnumake
       clang
       pkg-config
       gdb
+      gcc
+      # node
+      nodejs
+      # network
+      wireshark
 
+      # storage
       jmtpfs
+      squashfsTools
+      go-mtpfs
+      rclone
 
+      # video
       openshot-qt
+
+      # themes
       gtk-engine-murrine
       gtk_engines
       lxappearance
 
-      squashfsTools
-
+      # ansible/ssh
       ansible
       sshpass
 
-      bc
-
-      bfg-repo-cleaner
-
-      go-mtpfs
-
+      # games
       steam
 
-      gcc
-
-      networkmanagerapplet
-
-      unoconv
-
+      # xorg
       xorg.xhost
       xorg.xdpyinfo
-
-      # firefox
-      wireshark
     ];
 }

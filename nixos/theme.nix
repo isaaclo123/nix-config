@@ -7,6 +7,7 @@ with import <nixpkgs> {};
     fonts = with pkgs; [
       unifont
       unifont_upper
+      dejavu_fonts
       gohufont
       font-awesome_4
     ];
@@ -16,8 +17,8 @@ with import <nixpkgs> {};
 
       defaultFonts = {
         monospace = [ "GohuFont" ];
-        sansSerif = [ "GohuFont" ];
-        serif = [ "GohuFont" ];
+        sansSerif = [ "DejaVu Sans" ];
+        serif = [ "DejaVu Serif" ];
       };
 
       ultimate.enable = false;

@@ -25,12 +25,11 @@
         format.outputdate=%D
         format.dayheading=%B %-d, %Y
         general.autogc=yes
-        # general.autosave=yes
         general.autosave=no
         general.confirmdelete=yes
         general.confirmquit=no
         general.firstdayofweek=monday
-        general.periodicsave=2
+        general.periodicsave=0
         general.progressbar=yes
         general.systemdialogs=no
         notification.command=calcurse --next | xargs -0 notify-send "Appointment"

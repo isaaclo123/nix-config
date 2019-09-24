@@ -145,17 +145,17 @@
         " map  N <Plug>(easymotion-prev)
 
         " spelling
-        " set dictionary+=/usr/share/dict/words
+        set dictionary+=${pkgs.scowl}/share/dict/words.txt
 
         autocmd FileType markdown,pandoc setlocal ft=pandoc
 
         autocmd FileType pandoc set colorcolumn=100
+        autocmd FileType markdown,txt,pandoc,text setlocal spell spelllang=en_us
         autocmd FileType markdown,txt,pandoc,text setlocal complete+=k
         autocmd FileType markdown,txt,pandoc,text syntax spell toplevel
         autocmd FileType markdown,txt,pandoc,text let b:table_mode_corner = '+'
         autocmd FileType markdown,txt,pandoc,text map <silent> <leader>c :TOC<CR>
         autocmd FileType markdown,txt,pandoc,text map <leader>p :PandocPreview<CR>
-        au BufRead *.md setlocal spell spelllang=en_us
 
         let g:pandoc_preview_pdf_cmd = "${zathura-async}"
 
@@ -167,6 +167,10 @@
         hi SpellCap cterm=underline
         hi SpellLocal cterm=underline
         hi SpellRare cterm=underline
+        hi SpellBad gui=undercurl
+        hi SpellCap gui=undercurl
+        hi SpellLocal gui=underline
+        hi SpellRare gui=underline
 
         " vim-pandoc
         let g:tex_conceal="abdgm"
@@ -413,6 +417,10 @@
               vim-unimpaired
               vim-surround
               direnv-vim
+
+              haskell-vim
+              vim-hindent
+              vim-stylish-haskell
             ];
 
             opt = [ ];
@@ -431,6 +439,7 @@
         nvi
         universal-ctags
         ripgrep
+        scowl
       ];
 
   home-manager.users.isaac = {

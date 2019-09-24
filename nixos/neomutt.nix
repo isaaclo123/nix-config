@@ -34,7 +34,7 @@ let create-account = folder: email: signature: (pkgs.writeText folder ''
   home-manager.users.isaac = {
     home.file = {
       ".mailcap".text = ''
-        text/html; elinks -dump -no-references; copiousoutput;
+        text/html; elinks -dump -no-numbering -no-references; copiousoutput;
         auto_view text/html
 
         image/*; sxiv %s; test=test -n "$DISPLAY";

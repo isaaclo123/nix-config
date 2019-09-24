@@ -43,7 +43,7 @@
   # zshrc (start)
   programs.zsh.enableGlobalCompInit = true;
 
-  environment.interactiveShellInit = ''
+  programs.zsh.interactiveShellInit = ''
     # disable ctrl-d EOF
     stty eof undef
 

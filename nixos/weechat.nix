@@ -101,8 +101,6 @@ let nixos-weechat = (with import <nixpkgs> {};
         })
 
         aspell
-        aspellDicts.en
-        aspellDicts.en-computers
-        aspellDicts.en-science
+        scowl
       ];
 }

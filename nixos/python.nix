@@ -28,6 +28,7 @@ let my-python-packages = python-packages:
     ueberzug
     requests
     virtualenv
+    pylint
   ];
   python-with-my-packages = python3.withPackages my-python-packages;
 in
@@ -35,5 +36,6 @@ in
 {
   environment.systemPackages = with pkgs; [
     python-with-my-packages
+    python2nix
   ];
 }
