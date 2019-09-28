@@ -63,6 +63,9 @@ let calcurse-vdirsyncer =
 
         [ -z "$CALENDAR_DIR" ] && exit 1
 
+        # test if server reachable
+        ping -c1 -W1 ${dav-url} || exit 1
+
         ${calcurse-vdirsyncer}/bin/calcurse-vdirsyncer $CALENDAR_DIR
       '';
 
@@ -75,6 +78,9 @@ let calcurse-vdirsyncer =
 
   system.userActivationScripts.vdirsyncerSetup = ''
     #!${pkgs.stdenv.shell}
+
+    # test if server reachable
+    ping -c1 -W1 ${dav-url} || exit 1
 
     ${config.system.path}/bin/yes | ${pkgs.vdirsyncer}/bin/vdirsyncer discover
     ${pkgs.vdirsyncer}/bin/vdirsyncer sync

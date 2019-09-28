@@ -73,7 +73,9 @@ let nixos-weechat = (with import <nixpkgs> {};
               autojoin
               autosort
               bitlbee_completion
+              auto_away
               buffer_autoclose
+              bitlbee_typing_notice
               colorize_nicks
               go
               screen_away
@@ -85,7 +87,7 @@ let nixos-weechat = (with import <nixpkgs> {};
               vimode
               zerotab
               zncnotice
-              zncplayback
+              # zncplayback
               grep
               weechat_notify_send
 

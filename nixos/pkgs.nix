@@ -95,6 +95,7 @@
 
       # development tools
       # c
+      manpages
       gnumake
       clang
       pkg-config

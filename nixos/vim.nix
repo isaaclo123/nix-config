@@ -17,8 +17,7 @@
         set t_Co=256
         filetype plugin indent on
         syntax on
-        " syn sync fromstart
-        syntax sync minlines=200
+        syn sync fromstart
         set encoding=utf-8
         set number
         set noshowmode
@@ -43,14 +42,11 @@
         set smarttab
 
         " folding
-
         set foldmethod=syntax
         set foldlevelstart=1
         let g:vimsyn_folding='af'
-        " set foldnestmax=1
-        " set nofoldenable
 
-        " deoplete
+        " deoplete/ultisnip
         let g:deoplete#enable_at_startup = 1
 
         let g:UltiSnipsExpandTrigger="<C-j>"
@@ -90,20 +86,24 @@
           autocmd GUIEnter * set visualbell t_vb=
         endif
 
-        " calcurse markdown
-        autocmd BufRead,BufNewFile /tmp/calcurse* set filetype=markdown
-        autocmd BufRead,BufNewFile ~/.calcurse/notes/* set filetype=markdown
-
         " nix folding
-        au! BufNewFile,BufReadPost *.{nix} set filetype=nix foldmethod=indent foldlevelstart=0
+        augroup vim_nix
+          au!
+          au BufNewFile,BufFilePre,BufRead  *.nix setlocal filetype=nix foldmethod=indent foldlevelstart=0
+        augroup END
 
         " mutt mail filetype
-        autocmd BufNewFile,BufRead /tmp/mutt* set noautoindent filetype=mail wm=0 tw=78 colorcolumn=78 fo+=aw
-        autocmd BufNewFile,BufRead ~/.cache/mutt.html set noautoindent filetype=mail wm=0 tw=78 colorcolumn=78 fo+=aw
+        augroup vim_mutt
+          au!
+          au FileType mail setlocal noautoindent filetype=mail wm=0 tw=78 colorcolumn=78 fo+=aw
+        augroup END
 
-        " omnifunc
-        " set omnifunc=syntaxcomplete#Complete
-        " let b:vcm_tab_complete = 'omni'
+        " calcurse filetype
+        augroup vim_calcurse
+          au!
+          au BufNewFile,BufFilePre,BufRead /tmp/calcurse* set filetype=pandoc
+          au BufNewFile,BufFilePre,BufRead ~/.calcurse/notes/* set filetype=pandoc
+        augroup END
 
         " custom keybinds
         inoremap jk <ESC>
@@ -111,22 +111,16 @@
         nnoremap <silent> <CR><CR> <Esc>:nohlsearch<CR><Esc>
         nmap <silent> <Leader><Leader> V
         nnoremap <Leader>w :update<CR>
-        " nnoremap <Leader>r :e<CR>
         nnoremap <backspace> :e #<CR>
 
         " vim easymotion
         let g:EasyMotion_do_mapping = 0 " Disable default mappings
         let g:EasyMotion_smartcase = 1 " Turn on case-insensitive feature
-        " let g:EasyMotion_use_smartsign_us = 1 " Smartsign (type `3` and match `3`&`#`)
         let g:EasyMotion_startofline = 0 " keep cursor column when JK motion
 
         " Jump to anywhere you want with minimal keystrokes, with s
         " `s{char}{label}`
         nmap s <Plug>(easymotion-overwin-f)
-        " or
-        " `s{char}{char}{label}`
-        " Need one more keystroke, but on average, it may be more comfortable.
-        " nmap s <Plug>(easymotion-overwin-f2)
 
         " lkjh motions: Line motions
         map <Leader>l <Plug>(easymotion-lineforward)
@@ -134,28 +128,21 @@
         map <Leader>k <Plug>(easymotion-k)
         map <Leader>h <Plug>(easymotion-linebackward)
 
-        " Gif config
-        " map  / <Plug>(easymotion-sn)
-        " omap / <Plug>(easymotion-tn)
+        " text pandoc
 
-        " These `n` & `N` mappings are options. You do not have to map `n` & `N` to EasyMotion.
-        " Without these mappings, `n` & `N` works fine. (These mappings just provide
-        " different highlight method and have some other features )
-        " map  n <Plug>(easymotion-next)
-        " map  N <Plug>(easymotion-prev)
+        augroup vim_pandoc
+          au!
+          au BufNewFile,BufFilePre,BufRead *.md set filetype=pandoc
+          au FileType markdown,pandoc set filetype=pandoc
 
-        " spelling
-        set dictionary+=${pkgs.scowl}/share/dict/words.txt
-
-        autocmd FileType markdown,pandoc setlocal ft=pandoc
-
-        autocmd FileType pandoc set colorcolumn=100
-        autocmd FileType markdown,txt,pandoc,text setlocal spell spelllang=en_us
-        autocmd FileType markdown,txt,pandoc,text setlocal complete+=k
-        autocmd FileType markdown,txt,pandoc,text syntax spell toplevel
-        autocmd FileType markdown,txt,pandoc,text let b:table_mode_corner = '+'
-        autocmd FileType markdown,txt,pandoc,text map <silent> <leader>c :TOC<CR>
-        autocmd FileType markdown,txt,pandoc,text map <leader>p :PandocPreview<CR>
+          au FileType markdown,txt,pandoc,text setlocal colorcolumn=100
+          au FileType markdown,txt,pandoc,text setlocal dictionary+=${pkgs.scowl}/share/dict/wamerican.txt
+          au FileType markdown,txt,pandoc,text setlocal spell spelllang=en_us
+          au FileType markdown,txt,pandoc,text setlocal complete+=k
+          au FileType markdown,txt,pandoc,text syntax spell toplevel
+          au FileType markdown,txt,pandoc,text map <silent> <leader>c :TOC<CR>
+          au FileType markdown,txt,pandoc,text map <leader>p :PandocPreview<CR>
+        augroup END
 
         let g:pandoc_preview_pdf_cmd = "${zathura-async}"
 
@@ -179,7 +166,6 @@
         let g:pandoc#syntax#conceal#use = 1
         let g:pandoc#syntax#conceal#urls = 1
         let g:pandoc#syntax#codeblocks#embeds#use = 1
-        " let g:pandoc#syntax#codeblocks#embeds#langs = ['c', 'html', 'javascript', 'asm', 'python', 'sh', 'java']
         let g:pandoc#syntax#codeblocks#embeds#langs = ['c', 'cpp', 'python', 'java', 'sh', 'bash=sh']
         let g:pandoc#formatting#mode = 'ha'
         let g:pandoc#formatting#textwidth = 99
@@ -205,8 +191,6 @@
           let g:ctrlp_use_caching = 0
         endif
         set wildignore+=*/.git/*,*/tmp/*,*.swp
-        " let g:ctrlp_open_new_file = 'v'
-        " let g:ctrlp_open_multiple_files = 'v'
 
         " Vim table mode settings
         let g:table_mode_corner = '+'
@@ -245,17 +229,6 @@
                     \   'javascript': ['eslint'],
                     \}
 
-        " let g:ale_lint_on_save = 1
-        " let g:ale_completion_enabled = 1
-        " let g:ale_lint_on_text_changed = 'never'
-        " let g:ale_lint_on_enter = 0
-        "
-        " Set this variable to 1 to fix files when you save them.
-        let g:ale_fix_on_save = 1
-        let g:ale_completion_enabled = 1
-        " let g:ale_lint_on_text_changed = 'never'
-        " let g:ale_lint_on_enter = 0
-
         let g:ale_linter_aliases = {
                     \   'vue': ['vue', 'javascript'],
                     \   'pandoc': ['markdown', 'pandoc'],
@@ -280,13 +253,7 @@
 
         " swapfile
         set swapfile
-        set dir=/home/isaac/.swp
-
-        " split navigation
-        " nnoremap <C-j> <C-W><C-J>
-        " nnoremap <C-k> <C-W><C-K>
-        " nnoremap <C-l> <C-W><C-L>
-        " nnoremap <C-h> <C-W><C-H>
+        set dir=/tmp
 
         " Smart way to move between panes
         map <up> <C-w><up>
@@ -308,25 +275,19 @@
         let g:indentLine_fileTypeExclude = ['pandoc']
         let g:indentLine_char_list = ['|', '¦', '┆', '┊']
 
-        " let g:indentLine_color_term = 8
-        " let g:indentLine_color_term = 18
-        " let g:indentLine_color_gui = '#293256'
-        " let g:indentLine_char = '▏'
-        " let g:indentLine_char_list = ['|', '¦', '┆', '┊']
-        " let g:indentLine_concealcursor = ' '
-        " let g:indentLine_leadingSpaceEnabled = 1
-        " let g:indentLine_leadingSpaceChar = '-'
-
         " Nvim-R
-        autocmd Filetype R,r map <leader>r <Plug>RSendFile
 
-        autocmd Filetype R,r nmap , <Plug>RDSendLine
-        " remapping selection :: send multiple lines
-        autocmd Filetype R,r vmap , <Plug>RDSendSelection
-        " remapping selection :: send multiple lines + echo lines
-        autocmd Filetype R,r vmap ,e <Plug>RESendSelection
+        augroup nvim_r
+          au!
+          au BufNewFile,BufFilePre,BufRead *.{r,R} set filetype=r
 
-        au! BufNewFile,BufReadPost *.{r,R} set filetype=r
+          au Filetype R,r map <leader>r <Plug>RSendFile
+          au Filetype R,r nmap , <Plug>RDSendLine
+          " remapping selection :: send multiple lines
+          au Filetype R,r vmap , <Plug>RDSendSelection
+          " remapping selection :: send multiple lines + echo lines
+          au Filetype R,r vmap ,e <Plug>RESendSelection
+        augroup END
       ''; in
 
       let system_vim = (pkgs.neovim.override {
@@ -394,12 +355,22 @@
                 buildInputs = with pkgs; [ which vim zip ];
               })
 
+              # (pkgs.vimUtils.buildVimPlugin {
+              #   name = "vim-pandoc";
+              #   src = pkgs.fetchFromGitHub {
+              #     owner = "vim-pandoc";
+              #     repo = "vim-pandoc";
+              #     rev = "53f14ea43997e46c2c4686a1d89bcebfec1c8c50";
+              #     sha256 = "1qcng9hszv4fcqhzdq7sfvdhl0x4zv91blk328n2jrqp831c0ds1";
+              #   };
+              # })
+
               editorconfig-vim
               vim-polyglot
               vim-nix
               ale
               vim-airline
-              vim-pandoc
+              # vim-pandoc
               vim-pandoc-syntax
               vim-pandoc-after
               vim-speeddating

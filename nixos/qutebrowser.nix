@@ -43,7 +43,7 @@
 
             # Adblock lists.
             # Type: List
-            config.set('content.host_blocking.lists', ["https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/gambling-porn/hosts"]) # pylint: disable=line-too-long
+            config.set('content.host_blocking.lists', ["https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts"]) # pylint: disable=line-too-long
 
             # User stylesheet (add floppymoose css rules http://www.floppymoose.com/)
             # Type: List

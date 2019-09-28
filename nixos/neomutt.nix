@@ -50,8 +50,7 @@ let create-account = folder: email: signature: (pkgs.writeText folder ''
 
           Isaac Lo
 
-          220 Delaware Street
-          Minneapolis, MN 55455
+          Intern Software Developer, COUNTRY Financial
           1(650)-503-1253
         ''); in
 
