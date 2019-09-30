@@ -1,12 +1,30 @@
 { pkgs, ... }:
 
+let toggle-lock = "/tmp/termite-scratchpad-toggle.lock"; in
+
 {
   environment.systemPackages =
     let termite-open = (pkgs.writeShellScriptBin "termite-open" ''
       termite -e "$*"
     ''); in
+
+    let termite-scratchpad = (pkgs.writeShellScriptBin "termite-scratchpad" ''
+      termite --class=termitescratchpad
+    ''); in
+
+    let termite-scratchpad-toggle = (pkgs.writeShellScriptBin "termite-scratchpad-toggle" ''
+      ID=$(xdotool search --class 'termitescratchpad' | head -n1)
+      VISIBLE_IDS=$(xdotool search --onlyvisible --classname 'termitescratchpad')
+
+      [ -z $ID ] && exit 0
+
+      bspc node $ID --flag hidden
+      bspc node --focus $ID
+    ''); in
     with pkgs; [
       (termite-open)
+      (termite-scratchpad)
+      (termite-scratchpad-toggle)
       termite
     ];
 

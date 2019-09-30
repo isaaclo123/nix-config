@@ -59,7 +59,7 @@ let autostarted-status = "/tmp/autostarted-status.lock"; in
       bspc config presel_feedback_color \#6679cc
 
       bspc config split_ratio          0.52
-      bspc config borderless_monocle   true
+      # bspc config borderless_monocle   true
       bspc config gapless_monocle      false
       bspc config focus_follows_pointer false
 
@@ -78,6 +78,8 @@ let autostarted-status = "/tmp/autostarted-status.lock"; in
 
       bspc rule -a mpv state=floating
       bspc rule -a mpv:mpvscratchpad sticky=on state=floating hidden=on border=off
+
+      bspc rule -a termitescratchpad sticky=on state=floating hidden=on
 
       # always autostart
       killall -q dunst && (dunst &)
@@ -99,6 +101,7 @@ let autostarted-status = "/tmp/autostarted-status.lock"; in
         (sleep 30 && termite --class=weechat_ -e weechat) &
 
         mpv-scratchpad &
+        termite-scratchpad &
 
         NOTIFY=off bluetooth-toggle off &
         NOTIFY=off touchpad-toggle off &

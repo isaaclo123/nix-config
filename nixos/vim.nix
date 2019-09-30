@@ -132,16 +132,19 @@
 
         augroup vim_pandoc
           au!
-          au BufNewFile,BufFilePre,BufRead *.md set filetype=pandoc
-          au FileType markdown,pandoc set filetype=pandoc
+          au BufNewFile,BufFilePre,BufRead *.md setlocal filetype=pandoc
+          au FileType markdown,pandoc setlocal filetype=pandoc
+          au FileType markdown,pandoc setlocal concealcursor=""
+          au FileType markdown,txt,pandoc,text map <silent> <leader>c :TOC<CR>
+          au FileType markdown,txt,pandoc,text map <leader>p :PandocPreview<CR>
+        augroup END
 
+        augroup vim_text
+          au!
           au FileType markdown,txt,pandoc,text setlocal colorcolumn=100
           au FileType markdown,txt,pandoc,text setlocal dictionary+=${pkgs.scowl}/share/dict/wamerican.txt
           au FileType markdown,txt,pandoc,text setlocal spell spelllang=en_us
-          au FileType markdown,txt,pandoc,text setlocal complete+=k
           au FileType markdown,txt,pandoc,text syntax spell toplevel
-          au FileType markdown,txt,pandoc,text map <silent> <leader>c :TOC<CR>
-          au FileType markdown,txt,pandoc,text map <leader>p :PandocPreview<CR>
         augroup END
 
         let g:pandoc_preview_pdf_cmd = "${zathura-async}"
@@ -160,14 +163,12 @@
         hi SpellRare gui=underline
 
         " vim-pandoc
-        let g:tex_conceal="abdgm"
-        " let g:pandoc#syntax#style#underline_special = 1
         let g:pandoc#folding#fdc = 0
         let g:pandoc#syntax#conceal#use = 1
         let g:pandoc#syntax#conceal#urls = 1
         let g:pandoc#syntax#codeblocks#embeds#use = 1
         let g:pandoc#syntax#codeblocks#embeds#langs = ['c', 'cpp', 'python', 'java', 'sh', 'bash=sh']
-        let g:pandoc#formatting#mode = 'ha'
+        let g:pandoc#formatting#mode = 'hA'
         let g:pandoc#formatting#textwidth = 99
 
         let g:pandoc#after#modules#enabled = ["tablemode", "ultisnips"]
@@ -272,7 +273,7 @@
         let g:indentLine_color_gui = '#5E6687'
         let g:indentLine_concealcursor = 'inc'
         let g:indentLine_conceallevel = 2
-        let g:indentLine_fileTypeExclude = ['pandoc']
+        let g:indentLine_fileTypeExclude = ['markdown', 'pandoc']
         let g:indentLine_char_list = ['|', '¦', '┆', '┊']
 
         " Nvim-R
@@ -355,15 +356,15 @@
                 buildInputs = with pkgs; [ which vim zip ];
               })
 
-              # (pkgs.vimUtils.buildVimPlugin {
-              #   name = "vim-pandoc";
-              #   src = pkgs.fetchFromGitHub {
-              #     owner = "vim-pandoc";
-              #     repo = "vim-pandoc";
-              #     rev = "53f14ea43997e46c2c4686a1d89bcebfec1c8c50";
-              #     sha256 = "1qcng9hszv4fcqhzdq7sfvdhl0x4zv91blk328n2jrqp831c0ds1";
-              #   };
-              # })
+              (pkgs.vimUtils.buildVimPlugin {
+                name = "vim-pandoc";
+                src = pkgs.fetchFromGitHub {
+                  owner = "vim-pandoc";
+                  repo = "vim-pandoc";
+                  rev = "53f14ea43997e46c2c4686a1d89bcebfec1c8c50";
+                  sha256 = "1qcng9hszv4fcqhzdq7sfvdhl0x4zv91blk328n2jrqp831c0ds1";
+                };
+              })
 
               editorconfig-vim
               vim-polyglot
