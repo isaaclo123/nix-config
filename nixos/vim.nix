@@ -168,8 +168,8 @@
         let g:pandoc#syntax#conceal#urls = 1
         let g:pandoc#syntax#codeblocks#embeds#use = 1
         let g:pandoc#syntax#codeblocks#embeds#langs = ['c', 'cpp', 'python', 'java', 'sh', 'bash=sh']
-        let g:pandoc#formatting#mode = 'hA'
-        let g:pandoc#formatting#textwidth = 99
+        let g:pandoc#formatting#mode = 'h'
+        let g:pandoc#formatting#textwidth = 100
 
         let g:pandoc#after#modules#enabled = ["tablemode", "ultisnips"]
 
@@ -257,10 +257,10 @@
         set dir=/tmp
 
         " Smart way to move between panes
-        map <up> <C-w><up>
-        map <down> <C-w><down>
-        map <left> <C-w><left>
-        map <right> <C-w><right>
+        map <M-k> <C-w><up>
+        map <M-j> <C-w><down>
+        map <M-h> <C-w><left>
+        map <M-l> <C-w><right>
 
         set splitbelow
         set splitright
@@ -366,13 +366,23 @@
                 };
               })
 
+              (pkgs.vimUtils.buildVimPlugin {
+                name = "vim-pandoc-syntax";
+                src = pkgs.fetchFromGitHub {
+                  owner = "vim-pandoc-syntax";
+                  repo = "vim-pandoc";
+                  rev = "6710d46c8b772f77248f30d650c83f90c68f37ab";
+                  sha256 = "1dir9h6s63lr10ffaxlpjar0xfmmjr3nhhgijsaa0vgnghc00r7x";
+                };
+              })
+
               editorconfig-vim
               vim-polyglot
               vim-nix
               ale
               vim-airline
               # vim-pandoc
-              vim-pandoc-syntax
+              # vim-pandoc-syntax
               vim-pandoc-after
               vim-speeddating
               vim-easymotion
