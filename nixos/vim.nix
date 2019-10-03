@@ -168,7 +168,7 @@
         let g:pandoc#syntax#conceal#urls = 1
         let g:pandoc#syntax#codeblocks#embeds#use = 1
         let g:pandoc#syntax#codeblocks#embeds#langs = ['c', 'cpp', 'python', 'java', 'sh', 'bash=sh']
-        let g:pandoc#formatting#mode = 'h'
+        let g:pandoc#formatting#mode = 'ha'
         let g:pandoc#formatting#textwidth = 100
 
         let g:pandoc#after#modules#enabled = ["tablemode", "ultisnips"]
