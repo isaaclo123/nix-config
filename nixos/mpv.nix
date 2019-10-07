@@ -194,53 +194,65 @@ let fullscreen-lock = "/tmp/mpv-scratchpad-fullscreen.lock"; in
             "${mpv-image-viewer}/scripts/ruler.lua"
             "${mpv-image-viewer}/scripts/status-line.lua"
 
+            # autosave
             (fetchurl {
-              name = "autosave.lua";
               url = "https://gist.githubusercontent.com/Hakkin/5489e511bd6c8068a0fc09304c9c5a82/raw/7a19f7cdb6dd0b1c6878b41e13b244e2503c15fc/autosave.lua";
               sha256 = "0jxykk3jis2cplysc0gliv0y961d0in4j5dpd2fabv96pfk6chdd";
             })
 
+            # autospeed
             (fetchurl {
-              name = "autospeed.lua";
               url = "https://raw.githubusercontent.com/kevinlekiller/mpv_scripts/master/autospeed/autospeed.lua";
               sha256 = "18m0lzf0gs3g0mfgwfgih6mz98v5zcciykjl7jmg9rllwsx8syjl";
             })
 
+            # autoloop
             (fetchurl {
-              name = "autoloop.lua";
               url = "https://raw.githubusercontent.com/zc62/mpv-scripts/master/autoloop.lua";
               sha256 = "1g60h3c85ladx3ksixqnmg2cmpr68li38sgx167jylmgiavfaa6v";
             })
 
+            # playlistnoplayback
             (fetchurl {
-              name = "playlistnoplayback.lua";
               url = "https://raw.githubusercontent.com/422658476/MPV-EASY-Player/master/portable-data/scripts/playlistnoplayback.lua";
               sha256 = "035zsm4z349m920b625zly7zaz361972is55mg02xvgpv0awclfl";
             })
 
+            # reload
             (fetchurl {
-              name = "reload.lua";
               url = "https://raw.githubusercontent.com/4e6/mpv-reload/2b8a719fe166d6d42b5f1dd64761f97997b54a86/reload.lua";
               sha256 = "0dyx22rr1883m2lhnaig9jdp7lpjydha0ad7lj9pfwlgdr2zg4b9";
             })
 
+            # youtube-quality
             (fetchurl {
-              name = "youtube-quality.lua";
               url = "https://raw.githubusercontent.com/jgreco/mpv-youtube-quality/d03278f07bd8e202845f4a8a5b7761d98ad71878/youtube-quality.lua";
               sha256 = "0fi1b4r5znp2k2z590jrrbn6wirx7nggjcl1frkcwsv7gmhjl11l";
             })
 
+            # gallery-dl_hook
             (fetchurl {
-              name = "gallery-dl_hook.lua";
               url = "https://gist.githubusercontent.com/isaaclo123/47993f6de088bb55de27fd126f722f2a/raw/1cac024adbffb0d6334bfd3666dea1d56bb4a525/gallery-dl_hook.lua";
               sha256 = "0rc81bclfydpyil7xjpi560fmsajfc6ixmlsmchmhbb4ajxxavrs";
             })
 
+            # peerflix-hook
             (fetchurl {
-              name = "peerflix-hook.lua";
               url = "https://gist.githubusercontent.com/ekisu/bba287693830055a6bad90081c1ad4e2/raw/65a97c59b9dcfc9de94864160124fbe5eb5f3aa3/peerflix-hook.lua";
               sha256 = "08h6wzrhrp1i1pbzzrim8rwa1bkvjxdvs7rqqsnj6s4b77rg1x48";
             })
+
+            # show_filename (shift enter)
+            (fetchurl {
+              url = "https://raw.githubusercontent.com/yuukidach/mpv-scripts/cbcd5b799e37b479aa55cbb8d3bb851e28f39630/show_filename.lua";
+              sha256 = "1h976qymbal199f5z7sz1hban2g2mr4jb1v8zg96g5c537fix8zy";
+            })
+
+            # change-OSD-media-title
+            # (fetchurl {
+            #   url = "https://raw.githubusercontent.com/nmoorthy524/mpv-Change-OSD-Media-Title/62a916ea95da680bad9219313fe7fc102fd85d94/change-OSD-media-title.lua";
+            #   sha256 = "11iyxkpq9nkdmr7zkscnfw5v391dzvcbjdc908snr1d77dr79n9b";
+            # })
           ];
         })
 
@@ -423,7 +435,8 @@ let fullscreen-lock = "/tmp/mpv-scratchpad-fullscreen.lock"; in
         x11-bypass-compositor=yes # bypass compositor
         demuxer-thread=yes
 
-        script-opts=osc-layout=slimbox
+        #script-opts=osc-layout=bottombar
+        osc-layout=bottombar
         profile=opengl-hq
         scale=ewa_lanczossharp
         #scale=haasnsoft
@@ -506,14 +519,7 @@ let fullscreen-lock = "/tmp/mpv-scratchpad-fullscreen.lock"; in
         #user agent for playback
         user-agent = "Mozilla/5.0"
 
-        # osd shit
-        #osd-font-size=20
-        #osd-color="#ffffffff"
-        #osd-border-color="#ff151515"
-        #osd-border-size=2
-        #osd-shadow-offset=1
-        #osd-shadow-color="#11000000"
-        #osd-fractions
+        # osd
         osd-on-seek=bar
 
         # SUBTITLES
@@ -527,8 +533,6 @@ let fullscreen-lock = "/tmp/mpv-scratchpad-fullscreen.lock"; in
 
         sub-scale-by-window=yes
 
-
-        # Makes .srt not shit
         #1
         # sub-font='Montara'
         # sub-font-size=54
@@ -565,7 +569,7 @@ let fullscreen-lock = "/tmp/mpv-scratchpad-fullscreen.lock"; in
         # ytdl-format=0/(bestvideo[vcodec=vp9]/bestvideo[height>720]/bestvideo[height<=1080]/bestvideo[fps>30])[tbr<13000]+(bestaudio[acodec=vorbis]/bestaudio)/best
         # ytdl-format=0/(bestvideo[vcodec=vp9]/bestvideo[height>720]/bestvideo[height<=1080]/bestvideo[fps>30])[tbr<13000]+(bestaudio[acodec=vorbis]/bestaudio)/best
         ytdl-format=bestvideo[height<=?720][fps<=?30][vcodec!=?vp9]+bestaudio/best
-        # protocol shit
+        # protocol config
         [protocol.http]
         force-window=immediate
         [protocol.https]
@@ -579,7 +583,7 @@ let fullscreen-lock = "/tmp/mpv-scratchpad-fullscreen.lock"; in
         no-video
         ytdl-format=bestaudio/best
 
-        # Extension shit, mostly for .webm loop
+        # Extension config, mostly for .webm loop
         [extension.webm]
         loop-file=inf
         [extension.gif]

@@ -1,5 +1,7 @@
 { pkgs, ... }:
 
+let homedir = "/home/isaac"; in
+
 {
   programs.vim.defaultEditor = true;
 
@@ -137,6 +139,8 @@
           au FileType markdown,pandoc setlocal concealcursor=""
           au FileType markdown,txt,pandoc,text map <silent> <leader>c :TOC<CR>
           au FileType markdown,txt,pandoc,text map <leader>p :PandocPreview<CR>
+
+          au FileType markdown,txt,pandoc,text let g:table_mode_corner='+'
         augroup END
 
         augroup vim_text
@@ -196,7 +200,7 @@
         " Vim table mode settings
         let g:table_mode_corner = '+'
         let g:table_mode_corner_corner = '+'
-        let g:table_mode_header_fillchar ='='
+        let g:table_mode_header_fillchar = '='
 
         function! s:isAtStartOfLine(mapping)
             let text_before_cursor = getline('.')[0 : col('.')-1]
@@ -224,28 +228,30 @@
 
         " ale
 
+        let g:ale_fix_on_save = 1
+        let g:ale_completion_enabled = 0
+        let g:ale_completion_tsserver_autoimport = 1
+
         " ale fixers
         let g:ale_fixers = {
-                    \   '*': ['remove_trailing_lines', 'trim_whitespace'],
-                    \   'javascript': ['eslint'],
-                    \}
+        \   '*': ['remove_trailing_lines', 'trim_whitespace'],
+        \   'javascript': ['eslint'],
+        \}
 
         let g:ale_linter_aliases = {
-                    \   'vue': ['vue', 'javascript'],
-                    \   'pandoc': ['markdown', 'pandoc'],
-                    \}
+        \   'vue': ['vue', 'javascript'],
+        \   'pandoc': ['markdown', 'pandoc'],
+        \}
 
         let g:ale_linters = {
-                    \   'vue': ['eslint'],
-                    \   'html': ['htmlhint'],
-                    \   'ocaml': ['merlin'],
-                    \   'pandoc': ['mdl'],
-                    \   'python': ['pylint'],
-                    \   'cpp': ['cpplint', 'gcc'],
-                    \   'java': ['javac']
-                    \}
-
-        " let g:ale_cpp_cpplint_options = '--root=..'
+        \   'vue': ['eslint'],
+        \   'html': ['htmlhint'],
+        \   'ocaml': ['merlin'],
+        \   'pandoc': ['mdl'],
+        \   'python': ['pylint'],
+        \   'cpp': ['cpplint', 'gcc'],
+        \   'java': ['javac']
+        \}
 
         " nerdTree settings
         map <silent> <leader>n :NERDTreeToggle<CR>
@@ -356,33 +362,33 @@
                 buildInputs = with pkgs; [ which vim zip ];
               })
 
-              (pkgs.vimUtils.buildVimPlugin {
-                name = "vim-pandoc";
-                src = pkgs.fetchFromGitHub {
-                  owner = "vim-pandoc";
-                  repo = "vim-pandoc";
-                  rev = "53f14ea43997e46c2c4686a1d89bcebfec1c8c50";
-                  sha256 = "1qcng9hszv4fcqhzdq7sfvdhl0x4zv91blk328n2jrqp831c0ds1";
-                };
-              })
+              # (pkgs.vimUtils.buildVimPlugin {
+              #   name = "vim-pandoc";
+              #   src = pkgs.fetchFromGitHub {
+              #     owner = "vim-pandoc";
+              #     repo = "vim-pandoc";
+              #     rev = "53f14ea43997e46c2c4686a1d89bcebfec1c8c50";
+              #     sha256 = "1qcng9hszv4fcqhzdq7sfvdhl0x4zv91blk328n2jrqp831c0ds1";
+              #   };
+              # })
 
-              (pkgs.vimUtils.buildVimPlugin {
-                name = "vim-pandoc-syntax";
-                src = pkgs.fetchFromGitHub {
-                  owner = "vim-pandoc-syntax";
-                  repo = "vim-pandoc";
-                  rev = "6710d46c8b772f77248f30d650c83f90c68f37ab";
-                  sha256 = "1dir9h6s63lr10ffaxlpjar0xfmmjr3nhhgijsaa0vgnghc00r7x";
-                };
-              })
+              # (pkgs.vimUtils.buildVimPlugin {
+              #   name = "vim-pandoc-syntax";
+              #   src = pkgs.fetchFromGitHub {
+              #     owner = "vim-pandoc-syntax";
+              #     repo = "vim-pandoc";
+              #     rev = "6710d46c8b772f77248f30d650c83f90c68f37ab";
+              #     sha256 = "1dir9h6s63lr10ffaxlpjar0xfmmjr3nhhgijsaa0vgnghc00r7x";
+              #   };
+              # })
 
               editorconfig-vim
               vim-polyglot
               vim-nix
               ale
               vim-airline
-              # vim-pandoc
-              # vim-pandoc-syntax
+              vim-pandoc
+              vim-pandoc-syntax
               vim-pandoc-after
               vim-speeddating
               vim-easymotion
@@ -422,6 +428,9 @@
         universal-ctags
         ripgrep
         scowl
+
+        mdl
+        nodePackages.prettier
       ];
 
   home-manager.users.isaac = {
@@ -468,8 +477,26 @@
         [**.min.js]
         indent_style = ignore
         insert_final_newline = ignore
+      '';
 
-        '';
+      ".mdlrc".text = ''
+        style "${homedir}/.mdl_style.rb"
+      '';
+
+      ".mdl_style.rb".text = ''
+        all
+        exclude_rule 'MD007'
+        exclude_rule 'MD009'
+        exclude_rule 'MD024'
+        exclude_rule 'MD029'
+        exclude_rule 'MD036'
+        exclude_rule 'MD041'
+        exclude_rule 'MD011'
+        exclude_rule 'MD034'
+        exclude_rule 'MD039'
+
+        rule 'MD013', :line_length => 100
+      '';
     };
   };
 }
