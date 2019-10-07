@@ -435,8 +435,7 @@ let fullscreen-lock = "/tmp/mpv-scratchpad-fullscreen.lock"; in
         x11-bypass-compositor=yes # bypass compositor
         demuxer-thread=yes
 
-        #script-opts=osc-layout=bottombar
-        osc-layout=bottombar
+        osc-layout=slimbox
         profile=opengl-hq
         scale=ewa_lanczossharp
         #scale=haasnsoft

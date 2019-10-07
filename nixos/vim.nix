@@ -458,6 +458,7 @@ let homedir = "/home/isaac"; in
         [*.md]
         indent-style = space
         indent_size = 4
+        max_line_length = 100
 
         [*.{ml,li}]
         indent-style = space
