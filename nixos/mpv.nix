@@ -334,8 +334,8 @@ let fullscreen-lock = "/tmp/mpv-scratchpad-fullscreen.lock"; in
         prefer_mpv=yes
         mpv_no_sub=no
         disable_keybinds=no
-        thumbnail_width=100
-        thumbnail_height=100
+        thumbnail_width=150
+        thumbnail_height=150
         thumbnail_count=100
         min_delta=5
         max_delta=90
@@ -435,7 +435,7 @@ let fullscreen-lock = "/tmp/mpv-scratchpad-fullscreen.lock"; in
         x11-bypass-compositor=yes # bypass compositor
         demuxer-thread=yes
 
-        osc-layout=slimbox
+        script-opts=osc-layout=slimbox
         profile=opengl-hq
         scale=ewa_lanczossharp
         #scale=haasnsoft
