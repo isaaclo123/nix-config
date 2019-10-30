@@ -12,7 +12,7 @@ let home-manager = builtins.fetchGit {
   ref = "release-18.09";
 }; in
 
-let hardware-configuration =
+let nixos-hardware =
   fetchTarball https://github.com/NixOS/nixos-hardware/archive/master.tar.gz;
 in
 
@@ -23,7 +23,8 @@ in
 {
   imports =
     [ # Include the results of the hardware scan.
-      "${hardware-configuration}/lenovo/thinkpad/t480s"
+      # "${nixos-hardware}/lenovo/thinkpad/t480s"
+      <nixos-hardware/lenovo/thinkpad/t480s>
       "${home-manager}/nixos"
 
       ./hardware-configuration.nix
@@ -282,6 +283,10 @@ in
     allowUnfree = true;
     packageOverrides = pkgs: {
       unstable = import unstable {
+        config = config.nixpkgs.config;
+      };
+
+      nixos-hardware = import nixos-hardware {
         config = config.nixpkgs.config;
       };
     };

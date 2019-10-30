@@ -17,15 +17,15 @@
 
       alarm = (pkgs.writeShellScriptBin "alarm" ''
         song=$(find ~/Music -iname "*.mp3" -o -iname "*.wav" -o -iname "*.m4a" -o -iname "*.ogg" | shuf | head -n1)
-        date=''${*}
+        date="$@"
         echo Okay! Will ring you on $(date --date="$date").
         sleep $(( $(date --date="$date" +%s) - $(date +%s) ));
         echo Wake up!
-        mpv --no-config --loop=inf "$song"
+        mpv --no-video --no-config --loop=inf "$song"
       '');
 
       ppt-to-pdf = (pkgs.writeShellScriptBin "ppt-to-pdf.sh" ''
-        unoconv -f pdf *.{ppt,pptx}
+        unoconv -f pdf *.{ppt,pptx} &&
         rm *.{ppt,pptx}
       '');
 
@@ -105,6 +105,7 @@
       nodejs
       # network
       wireshark
+      simplehttp2server
 
       # storage
       jmtpfs

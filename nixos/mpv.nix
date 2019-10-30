@@ -84,7 +84,7 @@ let fullscreen-lock = "/tmp/mpv-scratchpad-fullscreen.lock"; in
         # restart video
         [ "$1" = "restart" ] && (command 'seek' "0" 'absolute'; command 'set' 'pause' 'no')
         # end video
-        [ "$1" = "end" ] && command 'seek' "100" 'absolute-percent+exact'
+        [ "$1" = "end" ] && (command 'seek' "100" 'absolute-percent+exact'; command 'set' 'pause' 'no')
         # toggle video status
         [ "$1" = "video-novideo" ] && command 'cycle' 'video'
         # video status yes

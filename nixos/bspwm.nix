@@ -100,8 +100,8 @@ let autostarted-status = "/tmp/autostarted-status.lock"; in
         termite --class=ncmpcpp_ -e ncmpcpp &
         (sleep 30 && termite --class=weechat_ -e weechat) &
 
-        mpv-scratchpad &
         termite-scratchpad &
+        mpv-scratchpad &
 
         NOTIFY=off bluetooth-toggle off &
         NOTIFY=off touchpad-toggle off &

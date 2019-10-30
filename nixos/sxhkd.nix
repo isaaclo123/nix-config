@@ -248,11 +248,6 @@ let input-toggle-create = device: script-name: (pkgs.writeShellScriptBin script-
       super + Next
         mpv-scratchpad-ctl backward 1
 
-
-      # termite scratchpad
-      super + grave
-        termite-scratchpad-toggle
-
       # restart
       super + shift + Prior
         mpv-scratchpad-ctl restart
@@ -260,6 +255,10 @@ let input-toggle-create = device: script-name: (pkgs.writeShellScriptBin script-
       # end
       super + shift + Next
         mpv-scratchpad-ctl end
+
+      # termite scratchpad
+      super + grave
+        termite-scratchpad-toggle
 
       #
       # bspwm hotkeys

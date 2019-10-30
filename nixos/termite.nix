@@ -5,15 +5,15 @@ let toggle-lock = "/tmp/termite-scratchpad-toggle.lock"; in
 {
   environment.systemPackages =
     let termite-open = (pkgs.writeShellScriptBin "termite-open" ''
-      termite -e "$*"
+      ${pkgs.termite}/bin/termite -e "$*"
     ''); in
 
     let termite-scratchpad = (pkgs.writeShellScriptBin "termite-scratchpad" ''
-      termite --class=termitescratchpad
+      ${pkgs.termite}/bin/termite --class="termitescratchpad"
     ''); in
 
     let termite-scratchpad-toggle = (pkgs.writeShellScriptBin "termite-scratchpad-toggle" ''
-      ID=$(xdotool search --class 'termitescratchpad' | head -n1)
+      ID=$(xdotool search --class 'termitescratchpad' | tail -n1)
       VISIBLE_IDS=$(xdotool search --onlyvisible --classname 'termitescratchpad')
 
       [ -z $ID ] && exit 0

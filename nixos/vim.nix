@@ -97,7 +97,7 @@ let homedir = "/home/isaac"; in
         " mutt mail filetype
         augroup vim_mutt
           au!
-          au FileType mail setlocal noautoindent filetype=mail wm=0 tw=78 colorcolumn=78 fo+=aw
+          au FileType mail setlocal noautoindent filetype=mail wm=0 tw=78 colorcolumn=78 fo+=aw spell spelllang=en_us
         augroup END
 
         " calcurse filetype
@@ -260,7 +260,7 @@ let homedir = "/home/isaac"; in
 
         " swapfile
         set swapfile
-        set dir=/tmp
+        set dir=${homedir}/.swp
 
         " Smart way to move between panes
         map <M-k> <C-w><up>
