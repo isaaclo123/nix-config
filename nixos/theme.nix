@@ -10,6 +10,8 @@ with import <nixpkgs> {};
       dejavu_fonts
       gohufont
       font-awesome_4
+      corefonts
+      vistafonts
     ];
 
     fontconfig = {
@@ -24,7 +26,7 @@ with import <nixpkgs> {};
       ultimate.enable = false;
       penultimate.enable = true;
 
-      useEmbeddedBitmaps = true;
+      # useEmbeddedBitmaps = true;
     };
 
     enableDefaultFonts = true;

@@ -189,7 +189,10 @@ let create-account = folder: email: signature: (pkgs.writeText folder ''
 
           set sleep_time = 0
 
+          # email settings
           set realname   = "Isaac Lo"
+          set use_from=yes
+          set envelope_from=yes
 
           unset move           # gmail does that
           set delete           # don't ask, just do

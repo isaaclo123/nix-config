@@ -174,7 +174,6 @@ let homedir = "/home/isaac"; in
         let g:pandoc#syntax#codeblocks#embeds#langs = ['c', 'cpp', 'python', 'java', 'sh', 'bash=sh']
         let g:pandoc#formatting#mode = 'ha'
         let g:pandoc#formatting#textwidth = 100
-
         let g:pandoc#after#modules#enabled = ["tablemode", "ultisnips"]
 
         " python-mode
@@ -283,7 +282,6 @@ let homedir = "/home/isaac"; in
         let g:indentLine_char_list = ['|', '¦', '┆', '┊']
 
         " Nvim-R
-
         augroup nvim_r
           au!
           au BufNewFile,BufFilePre,BufRead *.{r,R} set filetype=r
@@ -295,6 +293,14 @@ let homedir = "/home/isaac"; in
           " remapping selection :: send multiple lines + echo lines
           au Filetype R,r vmap ,e <Plug>RESendSelection
         augroup END
+
+        " Bullets.vim
+        " let g:bullets_enabled_file_types = [
+        "   \ 'markdown',
+        "   \ 'pandoc',
+        "   \ 'text',
+        "   \ 'gitcommit'
+        "   \]
       ''; in
 
       let system_vim = (pkgs.neovim.override {
@@ -363,22 +369,22 @@ let homedir = "/home/isaac"; in
               })
 
               # (pkgs.vimUtils.buildVimPlugin {
-              #   name = "vim-pandoc";
+              #   name = "bullets.vim";
               #   src = pkgs.fetchFromGitHub {
-              #     owner = "vim-pandoc";
-              #     repo = "vim-pandoc";
-              #     rev = "53f14ea43997e46c2c4686a1d89bcebfec1c8c50";
-              #     sha256 = "1qcng9hszv4fcqhzdq7sfvdhl0x4zv91blk328n2jrqp831c0ds1";
+              #     owner = "dkarter";
+              #     repo = "bullets.vim";
+              #     rev = "2ef160a46c94908249a900377f499f8de5cbf143";
+              #     sha256 = "1vl38mqjl8msya37yfcjb0k89ky4d6l0cb2pypk4y8vrjf3wi6n7";
               #   };
               # })
 
               # (pkgs.vimUtils.buildVimPlugin {
-              #   name = "vim-pandoc-syntax";
+              #   name = "vim-pandoc";
               #   src = pkgs.fetchFromGitHub {
-              #     owner = "vim-pandoc-syntax";
+              #     owner = "vim-pandoc";
               #     repo = "vim-pandoc";
-              #     rev = "6710d46c8b772f77248f30d650c83f90c68f37ab";
-              #     sha256 = "1dir9h6s63lr10ffaxlpjar0xfmmjr3nhhgijsaa0vgnghc00r7x";
+              #     rev = "4f1d28c7c10376b8f03ea89e31be71419549fbb9";
+              #     sha256 = "1wc7fcamblpjym4vs38spdlpj58r0lm33c1fxzbrl107yj4902w3";
               #   };
               # })
 
