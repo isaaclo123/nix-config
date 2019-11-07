@@ -117,7 +117,7 @@
             config.bind('<Alt-g>', 'set-cmd-text -s :buffer')
 
             # tor settings
-            c.aliases["tor-cycle"] = "config-cycle -t -p content.proxy socks://0.0.0.0:9050/ system" # pylint: disable=line-too-long
+            c.aliases["tor-cycle"] = "config-cycle -t -p content.proxy http://0.0.0.0:8118/ system" # pylint: disable=line-too-long
             config.bind('tt', 'tor-cycle')
 
             # mpv settings

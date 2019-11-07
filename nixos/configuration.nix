@@ -157,6 +157,12 @@ in
 
   # List services that you want to enable:
 
+  # tor
+  services.tor = {
+    enable = true;
+    client.enable = true;
+  };
+
   # adb
   programs.adb.enable = true;
 
