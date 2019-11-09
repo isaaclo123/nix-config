@@ -4,6 +4,8 @@ let mpv-socket = "/tmp/mpv-scratchpad-socket"; in
 
 let mpv-thumbs-cache = "/tmp/mpv_thumbs_cache"; in
 
+let mpv-gallery-thumb-dir = "/tmp/mpv_gallery_cache"; in
+
 let fullscreen-lock = "/tmp/mpv-scratchpad-fullscreen.lock"; in
 
 {
@@ -13,6 +15,9 @@ let fullscreen-lock = "/tmp/mpv-scratchpad-fullscreen.lock"; in
         SOCKET=${mpv-socket}
         FULLSCREEN=${fullscreen-lock}
         rm -f $FULLSCREEN
+
+        mkdir -p ${mpv-gallery-thumb-dir}
+
         mpv --input-ipc-server=$SOCKET --x11-name=mpvscratchpad --title=mpvscratchpad --geometry=512x288-32+62 --no-terminal --force-window --keep-open=yes --idle=yes
         '');
 
@@ -195,10 +200,10 @@ let fullscreen-lock = "/tmp/mpv-scratchpad-fullscreen.lock"; in
             "${mpv-image-viewer}/scripts/status-line.lua"
 
             # autosave
-            (fetchurl {
-              url = "https://gist.githubusercontent.com/Hakkin/5489e511bd6c8068a0fc09304c9c5a82/raw/7a19f7cdb6dd0b1c6878b41e13b244e2503c15fc/autosave.lua";
-              sha256 = "0jxykk3jis2cplysc0gliv0y961d0in4j5dpd2fabv96pfk6chdd";
-            })
+            # (fetchurl {
+            #   url = "https://gist.githubusercontent.com/Hakkin/5489e511bd6c8068a0fc09304c9c5a82/raw/7a19f7cdb6dd0b1c6878b41e13b244e2503c15fc/autosave.lua";
+            #   sha256 = "0jxykk3jis2cplysc0gliv0y961d0in4j5dpd2fabv96pfk6chdd";
+            # })
 
             # autospeed
             (fetchurl {
@@ -288,6 +293,10 @@ let fullscreen-lock = "/tmp/mpv-scratchpad-fullscreen.lock"; in
       script = ''
         [ -d "${mpv-thumbs-cache}" ] && \
           find ${mpv-thumbs-cache} -mtime +1 -exec rm {} \;
+
+        [ -d "${mpv-gallery-thumb-dir}" ] && \
+          find ${mpv-gallery-thumb-dir} -mtime +1 -exec rm {} \;
+
         exit 0
       '';
 
@@ -298,304 +307,387 @@ let fullscreen-lock = "/tmp/mpv-scratchpad-fullscreen.lock"; in
   };
 
   home-manager.users.isaac = {
-    xdg.configFile = {
-      "mpv/scripts/mpv_thumbnail_client-1.lua".source =
-        (pkgs.fetchurl {
-          # mpv thumbnail client
-          url = "https://github.com/TheAMM/mpv_thumbnail_script/releases/download/0.4.2/mpv_thumbnail_script_client_osc.lua";
-          sha256 = "1g8g0l2dfydmbh1rbsxvih8zsyr7r9x630jhw95jwb1s1x8izrr7";
+    xdg.configFile =
+      # mpv-gallery-view
+      let
+        mpv-gallery-view = (pkgs.fetchFromGitHub {
+          owner = "occivink";
+          repo = "mpv-gallery-view";
+          rev = "4ecf6d72523b1385f4122d69b9045b447dfbb4f8";
+          sha256 = "0mwkmy95f1jl6cli0arvp6xh02rdp41ylal5pg9cdrvfrnjvqn67";
         });
+      in
 
-      "mpv/scripts/mpv_thumbnail_server.lua".source =
-        (pkgs.fetchurl {
-          # mpv thumbnail server
-          url = "https://github.com/TheAMM/mpv_thumbnail_script/releases/download/0.4.2/mpv_thumbnail_script_server.lua";
-          sha256 = "12flp0flzgsfvkpk6vx59n9lpqhb85azcljcqg21dy9g8dsihnzg";
-        });
+      {
+        # mpv-gallery-view
+        "mpv/scripts/lib".source = "${mpv-gallery-view}/scripts/lib";
+        "mpv/scripts/gallery-thumbgen.lua".source = "${mpv-gallery-view}/scripts/gallery-thumbgen.lua";
+        "mpv/scripts/playlist-view.lua".source = "${mpv-gallery-view}/scripts/playlist-view.lua";
 
-      "mpv/script-opts/status_line.conf".text = ''
-        # whether to show by default
-        enabled=no
-        # its position, possible values: (bottom|top)-(left|right)
-        position=bottom-left
-        # its font size
-        size=36
-        # the text to be expanded
-        # see property expansion: https://mpv.io/manual/master/#property-expansion
-        # \N can be used for line breaks
-        # you can also use ass tags, see here: http://docs.aegisub.org/3.2/ASS_Tags/
-        text=''${filename} [''${playlist-pos-1}/''${playlist-count}]
-      '';
+        "mpv/scripts/mpv_thumbnail_client-1.lua".source =
+          (pkgs.fetchurl {
+            # mpv thumbnail client
+            url = "https://github.com/TheAMM/mpv_thumbnail_script/releases/download/0.4.2/mpv_thumbnail_script_client_osc.lua";
+            sha256 = "1g8g0l2dfydmbh1rbsxvih8zsyr7r9x630jhw95jwb1s1x8izrr7";
+          });
 
-      "mpv/script-opts/mpv_thumbnail_script.conf".text = ''
-        cache_directory=${mpv-thumbs-cache}
-        autogenerate=yes
-        autogenerate_max_duration=1800
-        prefer_mpv=yes
-        mpv_no_sub=no
-        disable_keybinds=no
-        thumbnail_width=150
-        thumbnail_height=150
-        thumbnail_count=100
-        min_delta=5
-        max_delta=90
-        thumbnail_network=yes
-        remote_thumbnail_count=40
-        remote_min_delta=15
-        remote_max_delta=120
-      '';
+        "mpv/scripts/mpv_thumbnail_server.lua".source =
+          (pkgs.fetchurl {
+            # mpv thumbnail server
+            url = "https://github.com/TheAMM/mpv_thumbnail_script/releases/download/0.4.2/mpv_thumbnail_script_server.lua";
+            sha256 = "12flp0flzgsfvkpk6vx59n9lpqhb85azcljcqg21dy9g8dsihnzg";
+          });
 
-      "mpv/input.conf".text = ''
-        # mouse-centric bindings
-        # MBTN_RIGHT script-binding drag-to-pan
-        # MBTN_LEFT  script-binding pan-follows-cursor
-        # WHEEL_UP   script-message cursor-centric-zoom 0.1
-        # WHEEL_DOWN script-message cursor-centric-zoom -0.1
+        "mpv/script-opts/status_line.conf".text = ''
+          # whether to show by default
+          enabled=no
+          # its position, possible values: (bottom|top)-(left|right)
+          position=bottom-left
+          # its font size
+          size=36
+          # the text to be expanded
+          # see property expansion: https://mpv.io/manual/master/#property-expansion
+          # \N can be used for line breaks
+          # you can also use ass tags, see here: http://docs.aegisub.org/3.2/ASS_Tags/
+          text=''${filename} [''${playlist-pos-1}/''${playlist-count}]
+        '';
 
-        # panning with the keyboard:
-        # pan-image takes the following arguments
-        # pan-image AXIS AMOUNT ZOOM_INVARIANT IMAGE_CONSTRAINED
+        "mpv/script-opts/mpv_thumbnail_script.conf".text = ''
+          cache_directory=${mpv-thumbs-cache}
+          autogenerate=yes
+          autogenerate_max_duration=1800
+          prefer_mpv=yes
+          mpv_no_sub=no
+          disable_keybinds=no
+          thumbnail_width=150
+          thumbnail_height=150
+          thumbnail_count=100
+          min_delta=5
+          max_delta=90
+          thumbnail_network=yes
+          remote_thumbnail_count=40
+          remote_min_delta=15
+          remote_max_delta=120
+        '';
 
-        ctrl+j repeatable script-message pan-image y -0.1 yes yes
-        ctrl+k repeatable script-message pan-image y +0.1 yes yes
-        ctrl+l repeatable script-message pan-image x -0.1 yes yes
-        ctrl+h repeatable script-message pan-image x +0.1 yes yes
+        "mpv/script-opts/gallery_worker.conf".text = ''
+          ytdl_exclude=
+        '';
 
-        # now with more precision
-        alt+j   repeatable script-message pan-image y -0.01 yes yes
-        alt+k     repeatable script-message pan-image y +0.01 yes yes
-        alt+l  repeatable script-message pan-image x -0.01 yes yes
-        alt+h   repeatable script-message pan-image x +0.01 yes yes
+        "mpv/script-opts/playlist_view.conf".text = ''
+          thumbs_dir=${mpv-gallery-thumb-dir}
 
-        # replace at will with h,j,k,l if you prefer vim-style bindings
+          generate_thumbnails_with_mpv=yes
 
-        # on a trackpad you may want to use these
-        WHEEL_UP    repeatable script-message pan-image y -0.02 yes yes
-        WHEEL_DOWN  repeatable script-message pan-image y +0.02 yes yes
-        WHEEL_LEFT  repeatable script-message pan-image x -0.02 yes yes
-        WHEEL_RIGHT repeatable script-message pan-image x +0.02 yes yes
+          gallery_position={ (ww - gw) / 2, (wh - gh) / 2 }
+          gallery_size={ 9 * ww / 10, 9 * wh / 10 }
+          min_spacing={ 15, 15 }
+          thumbnail_size=(ww * wh <= 1366 * 768) and {192, 108} or {288, 162}
 
-        # align the border of the image to the border of the window
-        # align-border takes the following arguments:
-        # align-border ALIGN_X ALIGN_Y
-        # any value for ALIGN_* is accepted, -1 and 1 map to the border of the window
-        ctrl+shift+l script-message align-border -1 ""
-        ctrl+shift+h  script-message align-border 1 ""
-        ctrl+shift+j  script-message align-border "" -1
-        ctrl+shift+k    script-message align-border "" 1
+          max_thumbnails=64
 
-        # reset the image
-        ctrl+0  no-osd set video-pan-x 0; no-osd set video-pan-y 0; no-osd set video-zoom 0
+          take_thumbnail_at=20%
 
-        + add video-zoom 0.5
-        - add video-zoom -0.5; script-message reset-pan-if-visible
-        = no-osd set video-zoom 0; script-message reset-pan-if-visible
+          load_file_on_toggle_off=no
+          close_on_load_file=yes
+          pause_on_start=yes
+          resume_on_stop=only-if-did-pause
+          start_on_mpv_startup=no
+          start_on_file_end=no
+          follow_playlist_position=yes
+          remember_time_position=yes
 
-        # sxiv compatibility
-        w no-osd set video-unscaled yes; keypress =
-        e no-osd set video-unscaled no; keypress =
+          show_text=yes
+          show_title=yes
+          strip_directory=yes
+          strip_extension=yes
+          text_size=28
 
-        h no-osd vf toggle hflip; show-text "Horizontal flip"
-        v no-osd vf toggle vflip; show-text "Vertical flip"
+          background_color=333333
+          background_opacity=33
+          normal_border_color=BBBBBB
+          normal_border_size=1
+          selected_border_color=DDDDDD
+          selected_border_size=6
+          flagged_border_color=5B9769
+          flagged_border_size=4
+          selected_flagged_border_color=BAFFCA
+          placeholder_color=222222
 
-        r script-message rotate-video 90; show-text "Clockwise rotation"
-        R script-message rotate-video -90; show-text "Counter-clockwise rotation"
-        alt+r no-osd set video-rotate 0; show-text "Reset rotation"
+          command_on_open=
+          command_on_close=
 
-        d script-message ruler
+          mouse_support=yes
+          UP=UP
+          DOWN=DOWN
+          LEFT=LEFT
+          RIGHT=RIGHT
+          PAGE_UP=PGUP
+          PAGE_DOWN=PGDWN
+          FIRST=HOME
+          LAST=END
+          RANDOM=r
+          ACCEPT=ENTER
+          CANCEL=ESC
+          # this only removes entries from the playlist, not the underlying file
+          REMOVE=DEL
+          FLAG=SPACE
+        '';
 
-        # Toggling between pixel-exact reproduction and interpolation
-        a cycle-values scale nearest ewa_lanczossharp
+        "mpv/input.conf".text = ''
+          # mouse-centric bindings
+          # MBTN_RIGHT script-binding drag-to-pan
+          # MBTN_LEFT  script-binding pan-follows-cursor
+          # WHEEL_UP   script-message cursor-centric-zoom 0.1
+          # WHEEL_DOWN script-message cursor-centric-zoom -0.1
 
-        # Toggle color management on or off
-        c cycle icc-profile-auto
+          # panning with the keyboard:
+          # pan-image takes the following arguments
+          # pan-image AXIS AMOUNT ZOOM_INVARIANT IMAGE_CONSTRAINED
 
-        # Screenshot of the window output
-        S screenshot window
+          ctrl+j repeatable script-message pan-image y -0.1 yes yes
+          ctrl+k repeatable script-message pan-image y +0.1 yes yes
+          ctrl+l repeatable script-message pan-image x -0.1 yes yes
+          ctrl+h repeatable script-message pan-image x +0.1 yes yes
 
-        # Toggle aspect ratio information on and off
-        A cycle-values video-aspect "-1" "no"
+          # now with more precision
+          alt+j   repeatable script-message pan-image y -0.01 yes yes
+          alt+k     repeatable script-message pan-image y +0.01 yes yes
+          alt+l  repeatable script-message pan-image x -0.01 yes yes
+          alt+h   repeatable script-message pan-image x +0.01 yes yes
 
-        p script-message force-print-filename
-      '';
+          # replace at will with h,j,k,l if you prefer vim-style bindings
 
-      "mpv/mpv.conf".text = ''
-        # MPV config
+          # on a trackpad you may want to use these
+          WHEEL_UP    repeatable script-message pan-image y -0.02 yes yes
+          WHEEL_DOWN  repeatable script-message pan-image y +0.02 yes yes
+          WHEEL_LEFT  repeatable script-message pan-image x -0.02 yes yes
+          WHEEL_RIGHT repeatable script-message pan-image x +0.02 yes yes
 
-        # Every possible settings are explained here:
-        # https://github.com/mpv-player/mpv/tree/master/DOCS/man
+          # align the border of the image to the border of the window
+          # align-border takes the following arguments:
+          # align-border ALIGN_X ALIGN_Y
+          # any value for ALIGN_* is accepted, -1 and 1 map to the border of the window
+          ctrl+shift+l script-message align-border -1 ""
+          ctrl+shift+h  script-message align-border 1 ""
+          ctrl+shift+j  script-message align-border "" -1
+          ctrl+shift+k    script-message align-border "" 1
 
-        ##################
-        # VIDEO
-        ##################
-        # Video output
+          # reset the image
+          ctrl+0  no-osd set video-pan-x 0; no-osd set video-pan-y 0; no-osd set video-zoom 0
 
-        osc=no # disable osc for custom osc
-        # vo=xv # simpler rendering for reducing tearing
-        x11-bypass-compositor=yes # bypass compositor
-        demuxer-thread=yes
+          + add video-zoom 0.5
+          - add video-zoom -0.5; script-message reset-pan-if-visible
+          = no-osd set video-zoom 0; script-message reset-pan-if-visible
 
-        script-opts=osc-layout=slimbox
-        profile=opengl-hq
-        scale=ewa_lanczossharp
-        #scale=haasnsoft
-        scale-radius=3
-        cscale=ewa_lanczossoft
-        opengl-pbo=yes
-        fbo-format=rgba16f
-        #opengl-shaders="~/.mpv/shaders/SSimSuperRes.glsl"
-        #opengl-shaders="~/.mpv/shaders/SSimSuperRes.glsl,~/.mpv/shaders/adaptive-sharpen-2pass.glsl"
-        #opengl-shaders="~/.mpv/shaders/adaptive-sharpen-2pass.glsl"
-        icc-profile-auto=yes
-        icc-cache-dir=/tmp/mpv-icc
-        # target-brightness=100
-        interpolation
-        tscale=oversample
-        hwdec=no
-        video-sync=display-resample
-        deband-iterations=2
-        deband-range=12
-        #no-deband
-        temporal-dither=yes
-        # no-border                               # no window title bar
-        msg-module                              # prepend module name to log messages
-        msg-color                               # color log messages on terminal
-        # term-osd-bar                            # display a progress bar on the terminal
-        use-filedir-conf                        # look for additional config files in the directory of the opened file                        # 'auto' does not imply interlacing-detection
-        cursor-autohide-fs-only                 # don't autohide the cursor in window mode, only fullscreen
-        cursor-autohide=1000                    # autohide the curser after 1s
-        # fs-black-out-screens
-        keep-open=yes
+          # sxiv compatibility
+          w no-osd set video-unscaled yes; keypress =
+          e no-osd set video-unscaled no; keypress =
 
-        # Video filters
-        #vf=vapoursynth=~/.config/mpv/scripts/mvtools.vpy
+          h no-osd vf toggle hflip; show-text "Horizontal flip"
+          v no-osd vf toggle vflip; show-text "Vertical flip"
 
-        # Start in fullscreen
-        # fullscreen
+          r script-message rotate-video 90; show-text "Clockwise rotation"
+          R script-message rotate-video -90; show-text "Counter-clockwise rotation"
+          alt+r no-osd set video-rotate 0; show-text "Reset rotation"
 
-        # Activate autosync
-        autosync=30
+          d script-message ruler
 
-        # Skip some frames to maintain A/V sync on slow systems
-        framedrop=vo
+          # Toggling between pixel-exact reproduction and interpolation
+          a cycle-values scale nearest ewa_lanczossharp
 
-        # Force starting with centered window
-        geometry=50%:50%
-        autofit-larger=60%x60%
-        autofit-smaller=10%x10%
+          # Toggle color management on or off
+          c cycle icc-profile-auto
 
-        # Keep the player window on top of all other windows.
-        ontop=yes
+          # Screenshot of the window output
+          S screenshot window
 
-        # Disable screensaver
-        stop-screensaver=yes
+          # Toggle aspect ratio information on and off
+          A cycle-values video-aspect "-1" "no"
 
-        # save position on quit
-        # save-position-on-quit
+          p script-message force-print-filename
 
-        # Enable hardware decoding if available.
-        #hwdec=cuda
+          # playlist view
+          g script-message playlist-view-toggle
+        '';
 
-        # Screenshot format
-        screenshot-format=png
-        screenshot-png-compression=0
-        screenshot-png-filter=0
-        screenshot-tag-colorspace=yes
-        screenshot-high-bit-depth=yes
-        screenshot-directory=~/Pictures/Screenshots
+        "mpv/mpv.conf".text = ''
+          # MPV config
+
+          # Every possible settings are explained here:
+          # https://github.com/mpv-player/mpv/tree/master/DOCS/man
+
+          ##################
+          # VIDEO
+          ##################
+          # Video output
+
+          osc=no # disable osc for custom osc
+          # vo=xv # simpler rendering for reducing tearing
+          x11-bypass-compositor=yes # bypass compositor
+          demuxer-thread=yes
+
+          script-opts=osc-layout=slimbox
+          profile=opengl-hq
+          scale=ewa_lanczossharp
+          #scale=haasnsoft
+          scale-radius=3
+          cscale=ewa_lanczossoft
+          opengl-pbo=yes
+          fbo-format=rgba16f
+          #opengl-shaders="~/.mpv/shaders/SSimSuperRes.glsl"
+          #opengl-shaders="~/.mpv/shaders/SSimSuperRes.glsl,~/.mpv/shaders/adaptive-sharpen-2pass.glsl"
+          #opengl-shaders="~/.mpv/shaders/adaptive-sharpen-2pass.glsl"
+          icc-profile-auto=yes
+          icc-cache-dir=/tmp/mpv-icc
+          # target-brightness=100
+          interpolation
+          tscale=oversample
+          hwdec=no
+          video-sync=display-resample
+          deband-iterations=2
+          deband-range=12
+          #no-deband
+          temporal-dither=yes
+          # no-border                               # no window title bar
+          msg-module                              # prepend module name to log messages
+          msg-color                               # color log messages on terminal
+          # term-osd-bar                            # display a progress bar on the terminal
+          use-filedir-conf                        # look for additional config files in the directory of the opened file                        # 'auto' does not imply interlacing-detection
+          cursor-autohide-fs-only                 # don't autohide the cursor in window mode, only fullscreen
+          cursor-autohide=1000                    # autohide the curser after 1s
+          # fs-black-out-screens
+          keep-open=yes
+
+          # Video filters
+          #vf=vapoursynth=~/.config/mpv/scripts/mvtools.vpy
+
+          # Start in fullscreen
+          # fullscreen
+
+          # Activate autosync
+          autosync=30
+
+          # Skip some frames to maintain A/V sync on slow systems
+          framedrop=vo
+
+          # Force starting with centered window
+          geometry=50%:50%
+          autofit-larger=60%x60%
+          autofit-smaller=10%x10%
+
+          # Keep the player window on top of all other windows.
+          ontop=yes
+
+          # Disable screensaver
+          stop-screensaver=yes
+
+          # save position on quit
+          # save-position-on-quit
+
+          # Enable hardware decoding if available.
+          #hwdec=cuda
+
+          # Screenshot format
+          screenshot-format=png
+          screenshot-png-compression=0
+          screenshot-png-filter=0
+          screenshot-tag-colorspace=yes
+          screenshot-high-bit-depth=yes
+          screenshot-directory=~/Pictures/Screenshots
 
 
-        # AUDIO
-        alsa-resample=no
-        audio-channels=2
-        af=format=channels=2
-        # volume=100
-        # volume-max=230
-        audio-pitch-correction=yes
-        # audio-normalize-downmix=yes
-        audio-display=no
+          # AUDIO
+          alsa-resample=no
+          audio-channels=2
+          af=format=channels=2
+          # volume=100
+          # volume-max=230
+          audio-pitch-correction=yes
+          # audio-normalize-downmix=yes
+          audio-display=no
 
-        #user agent for playback
-        user-agent = "Mozilla/5.0"
+          #user agent for playback
+          user-agent = "Mozilla/5.0"
 
-        # osd
-        osd-on-seek=bar
+          # osd
+          osd-on-seek=bar
 
-        # SUBTITLES
+          # SUBTITLES
 
-        demuxer-mkv-subtitle-preroll            # try to correctly show embedded subs when seeking
-        sub-auto=fuzzy                          # external subs don't have to match the file name exactly to autoload
-        sub-file-paths=ass:srt:sub:subs:subtitles    # search for external subs in the listed subdirectories
-        embeddedfonts=yes                       # use embedded fonts for SSA/ASS subs
-        sub-fix-timing=no                       # do not try to fix gaps (which might make it worse in some cases)
-        sub-ass-force-style=Kerning=yes             # allows you to override style parameters of ASS scripts
+          demuxer-mkv-subtitle-preroll            # try to correctly show embedded subs when seeking
+          sub-auto=fuzzy                          # external subs don't have to match the file name exactly to autoload
+          sub-file-paths=ass:srt:sub:subs:subtitles    # search for external subs in the listed subdirectories
+          embeddedfonts=yes                       # use embedded fonts for SSA/ASS subs
+          sub-fix-timing=no                       # do not try to fix gaps (which might make it worse in some cases)
+          sub-ass-force-style=Kerning=yes             # allows you to override style parameters of ASS scripts
 
-        sub-scale-by-window=yes
+          sub-scale-by-window=yes
 
-        #1
-        # sub-font='Montara'
-        # sub-font-size=54
-        # sub-margin-y=45
-        # sub-color="#ffffffff"
-        # sub-border-color="#000000"
-        # sub-border-size=2.4
-        # sub-shadow-offset=0
-        # sub-shadow-color="#000000"
-        #2
-        # sub-text-font='PT Sans Tight'
-        # sub-text-bold=yes
-        sub-font-size=45
-        # sub-text-margin-y=40
-        ## sub-text-margin-x=160
-        sub-color="#ffffffff"
-        sub-border-color="#000000"
-        sub-border-size=3.0
-        sub-shadow-offset=0.5
-        sub-shadow-color="#000000"
+          #1
+          # sub-font='Montara'
+          # sub-font-size=54
+          # sub-margin-y=45
+          # sub-color="#ffffffff"
+          # sub-border-color="#000000"
+          # sub-border-size=2.4
+          # sub-shadow-offset=0
+          # sub-shadow-color="#000000"
+          #2
+          # sub-text-font='PT Sans Tight'
+          # sub-text-bold=yes
+          sub-font-size=45
+          # sub-text-margin-y=40
+          ## sub-text-margin-x=160
+          sub-color="#ffffffff"
+          sub-border-color="#000000"
+          sub-border-size=3.0
+          sub-shadow-offset=0.5
+          sub-shadow-color="#000000"
 
-        # Change subtitle encoding. For Arabic subtitles use 'cp1256'.
-        # If the file seems to be valid UTF-8, prefer UTF-8.
-        sub-codepage=utf8
+          # Change subtitle encoding. For Arabic subtitles use 'cp1256'.
+          # If the file seems to be valid UTF-8, prefer UTF-8.
+          sub-codepage=utf8
 
-        # Languages
+          # Languages
 
-        slang=en,eng,enm,de,deu,ger             # automatically select these subtitles (decreasing priority)
-        alang=en,eng,de,deu,ger       # automatically select these audio tracks (decreasing priority)
+          slang=en,eng,enm,de,deu,ger             # automatically select these subtitles (decreasing priority)
+          alang=en,eng,de,deu,ger       # automatically select these audio tracks (decreasing priority)
 
-        # ytdl
-        ytdl=yes
-        hls-bitrate=max                         # use max quality for HLS streams
-        # ytdl-format=0/(bestvideo[vcodec=vp9]/bestvideo[height>720]/bestvideo[height<=1080]/bestvideo[fps>30])[tbr<13000]+(bestaudio[acodec=vorbis]/bestaudio)/best
-        # ytdl-format=0/(bestvideo[vcodec=vp9]/bestvideo[height>720]/bestvideo[height<=1080]/bestvideo[fps>30])[tbr<13000]+(bestaudio[acodec=vorbis]/bestaudio)/best
-        ytdl-format=bestvideo[height<=?720][fps<=?30][vcodec!=?vp9]+bestaudio/best
-        # protocol config
-        [protocol.http]
-        force-window=immediate
-        [protocol.https]
-        #profile=protocol.http
-        [protocol.ytdl]
-        profile=protocol.http
+          # ytdl
+          ytdl=yes
+          hls-bitrate=max                         # use max quality for HLS streams
+          # ytdl-format=0/(bestvideo[vcodec=vp9]/bestvideo[height>720]/bestvideo[height<=1080]/bestvideo[fps>30])[tbr<13000]+(bestaudio[acodec=vorbis]/bestaudio)/best
+          # ytdl-format=0/(bestvideo[vcodec=vp9]/bestvideo[height>720]/bestvideo[height<=1080]/bestvideo[fps>30])[tbr<13000]+(bestaudio[acodec=vorbis]/bestaudio)/best
+          ytdl-format=bestvideo[height<=?720][fps<=?30][vcodec!=?vp9]+bestaudio/best
+          # protocol config
+          [protocol.http]
+          force-window=immediate
+          [protocol.https]
+          #profile=protocol.http
+          [protocol.ytdl]
+          profile=protocol.http
 
-        # Audio-only content
-        [audio]
-        force-window=no
-        no-video
-        ytdl-format=bestaudio/best
+          # Audio-only content
+          [audio]
+          force-window=no
+          no-video
+          ytdl-format=bestaudio/best
 
-        # Extension config, mostly for .webm loop
-        [extension.webm]
-        loop-file=inf
-        [extension.gif]
-        loop-file=inf
-        [extension.jpeg]
-        loop-file=inf
-        [extension.png]
-        loop-file=inf
-        [extension.jpg]
-        loop-file=inf
-        [extension.gifv]
-        loop-file=inf
-      '';
+          # Extension config, mostly for .webm loop
+          [extension.webm]
+          loop-file=inf
+          [extension.gif]
+          loop-file=inf
+          [extension.jpeg]
+          loop-file=inf
+          [extension.png]
+          loop-file=inf
+          [extension.jpg]
+          loop-file=inf
+          [extension.gifv]
+          loop-file=inf
+        '';
     };
   };
 }
