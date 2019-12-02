@@ -48,6 +48,7 @@ let toggle-lock = "/tmp/termite-scratchpad-toggle.lock"; in
           font = Unifont Upper 14px
           font = Unifont 14px
           font = GohuFont 14px
+          fullscreen = false
         '';
     };
   };
