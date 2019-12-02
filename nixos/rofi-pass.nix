@@ -1,12 +1,14 @@
 { pkgs, ... }:
 
+let username = (import ./settings.nix).username; in
+
 {
   environment.systemPackages = with pkgs; [
     rofi-pass
     diceware
   ];
 
-  home-manager.users.isaac = {
+  home-manager.users."${username}" = {
     xdg.configFile = {
       "rofi-pass/config".text = ''
         # permanently set alternative root dir. Use ":" to separate multiple roots

@@ -1,5 +1,7 @@
 { pkgs, ... }:
 
+let username = (import ./settings.nix).username; in
+
 let toggle-lock = "/tmp/termite-scratchpad-toggle.lock"; in
 
 {
@@ -28,7 +30,7 @@ let toggle-lock = "/tmp/termite-scratchpad-toggle.lock"; in
       termite
     ];
 
-  home-manager.users.isaac = {
+  home-manager.users."${username}" = {
     gtk.gtk3.extraCss = ''
       .termite {
         padding: 14px;

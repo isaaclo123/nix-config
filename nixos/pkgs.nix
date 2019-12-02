@@ -106,6 +106,7 @@
       # network
       wireshark
       simplehttp2server
+      heroku
 
       # storage
       jmtpfs
@@ -126,10 +127,15 @@
       sshpass
 
       # games
-      steam
+      unstable.steam
+      unstable.lutris
 
       # xorg
       xorg.xhost
       xorg.xdpyinfo
+
+      # aws
+      aws
+      awscli
     ];
 }

@@ -1,13 +1,16 @@
 { pkgs, ... }:
 
-let homedir = "/home/isaac"; in
+let
+  homedir = (import ./settings.nix).homedir;
+  username = (import ./settings.nix).username;
+in
 
 {
   environment.systemPackages = with pkgs; [
     khard
   ];
 
-  home-manager.users.isaac = {
+  home-manager.users."${username}" = {
     xdg.configFile = {
       "khard/khard.conf".text = ''
         [addressbooks]

@@ -1,8 +1,10 @@
 { config, lib, pkgs, ... }:
 
-let homedir = "/home/isaac"; in
-
-let dav-url = "https://vps.myrdd.info/radicale/isaac/"; in
+let
+  homedir = (import ./settings.nix).homedir;
+  username = (import ./settings.nix).username;
+  dav-url= (import ./settings.nix).dav-url;
+in
 
 let calcurse-vdirsyncer =
   (with import <nixpkgs> {};
@@ -64,7 +66,7 @@ let calcurse-vdirsyncer =
         [ -z "$CALENDAR_DIR" ] && exit 1
 
         # test if server reachable
-        ping -c1 -W1 ${dav-url} || exit 1
+        ${pkgs.curl}/bin/curl -s --head --request GET ${dav-url} | grep "404" && exit 1
 
         ${calcurse-vdirsyncer}/bin/calcurse-vdirsyncer $CALENDAR_DIR
       '';
@@ -76,21 +78,23 @@ let calcurse-vdirsyncer =
     };
   };
 
-  system.userActivationScripts.vdirsyncerSetup = ''
-    #!${pkgs.stdenv.shell}
+  system.userActivationScripts.vdirsyncerSetup = {
+    text = ''
+      # test if server reachable
+      ${pkgs.curl}/bin/curl -s --head --request GET ${dav-url} | grep "404" && exit 1
 
-    # test if server reachable
-    ping -c1 -W1 ${dav-url} || exit 1
+      ${config.system.path}/bin/yes | ${pkgs.vdirsyncer}/bin/vdirsyncer discover
+      ${pkgs.vdirsyncer}/bin/vdirsyncer sync
+    '';
 
-    ${config.system.path}/bin/yes | ${pkgs.vdirsyncer}/bin/vdirsyncer discover
-    ${pkgs.vdirsyncer}/bin/vdirsyncer sync
-  '';
+    deps = [ ];
+  };
 
-  home-manager.users.isaac = {
+  home-manager.users."${username}" = {
     home.file = {
       ".config/vdirsyncer/config".text =
         let vdirsyncer-getpass-sh = (pkgs.writeShellScriptBin "getpass.sh" ''
-          ${pkgs.pass}/bin/pass show vps.myrdd.info/radicale/isaac | ${config.system.path}/bin/head -n1
+          ${pkgs.pass}/bin/pass show vps.isaaclo.site/radicale/isaac | ${config.system.path}/bin/head -n1
         ''); in ''
           [general]
           status_path = "~/.vdirsyncer/status/"

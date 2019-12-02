@@ -1,6 +1,9 @@
 { pkgs, ... }:
 
-let homedir = "/home/isaac"; in
+let
+  homedir = (import ./settings.nix).homedir;
+  username = (import ./settings.nix).username;
+in
 
 {
   environment.systemPackages = with pkgs; [
@@ -8,7 +11,7 @@ let homedir = "/home/isaac"; in
     mpc_cli
   ];
 
-  home-manager.users.isaac = {
+  home-manager.users."${username}" = {
     services.mpd = {
       enable = true;
       dataDir = "${homedir}/.mpd";

@@ -1,6 +1,9 @@
 { pkgs, ... }:
 
-let homedir = "/home/isaac"; in
+let
+  homedir = (import ./settings.nix).homedir;
+  username = (import ./settings.nix).username;
+in
 
 # take a folder name and email to produce a sourcable account file
 let create-account = folder: email: signature: (pkgs.writeText folder ''
@@ -31,7 +34,7 @@ let create-account = folder: email: signature: (pkgs.writeText folder ''
     xclip
   ];
 
-  home-manager.users.isaac = {
+  home-manager.users."${username}" = {
     home.file = {
       ".mailcap".text = ''
         text/html; elinks -dump -no-numbering -no-references; copiousoutput;

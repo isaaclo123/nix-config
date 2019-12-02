@@ -1,6 +1,9 @@
 { pkgs, ... }:
 
-let homedir = "/home/isaac"; in
+let
+  homedir = (import ./settings.nix).homedir;
+  username = (import ./settings.nix).username;
+in
 
 let notmuch-config = "${homedir}/.config/notmuch/notmuchrc"; in
 
@@ -17,7 +20,7 @@ let notmuch-config = "${homedir}/.config/notmuch/notmuchrc"; in
     NOTMUCH_CONFIG = notmuch-config;
   };
 
-  home-manager.users.isaac = {
+  home-manager.users."${username}" = {
     accounts.email = {
       maildirBasePath = "${homedir}/.mail";
       accounts = {

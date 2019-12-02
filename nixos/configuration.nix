@@ -4,20 +4,21 @@
 
 { config, pkgs, ... }:
 
-let homedir = "/home/isaac"; in
+let
+  homedir = (import ./settings.nix).homedir;
+  username = (import ./settings.nix).username;
 
-let home-manager = builtins.fetchGit {
-  url = "https://github.com/rycee/home-manager.git";
-  rev = "dd94a849df69fe62fe2cb23a74c2b9330f1189ed"; # CHANGEME
-  ref = "release-18.09";
-}; in
+  home-manager = builtins.fetchGit {
+    url = "https://github.com/rycee/home-manager.git";
+    rev = "dd94a849df69fe62fe2cb23a74c2b9330f1189ed"; # CHANGEME
+    ref = "release-18.09";
+  };
 
-let nixos-hardware =
-  fetchTarball https://github.com/NixOS/nixos-hardware/archive/master.tar.gz;
-in
+  nixos-hardware =
+    fetchTarball https://github.com/NixOS/nixos-hardware/archive/master.tar.gz;
 
-let unstable =
-  fetchTarball https://github.com/NixOS/nixpkgs-channels/archive/nixos-unstable.tar.gz;
+  unstable =
+    fetchTarball https://github.com/NixOS/nixpkgs-channels/archive/nixos-unstable.tar.gz;
 in
 
 {
@@ -87,30 +88,19 @@ in
   sound = {
     enable = true;
     enableOSSEmulation = true;
-    # extraConfig = ''
-    #   # pcm.rear cards.pcm.default
-    #   # pcm.center_life cards.pcm.default
-    #   # pcm.side cards.pcm.default
-
-    #   pcm.!default {
-    #     type hw
-    #     card 0
-    #   }
-    # '';
   };
-  # sound.extraConfig = ''
-  #   pcm.!default {
-  #     type hw
-  #     card 1
-  #   }
 
-  #   ctl.!default {
-  #     type hw
-  #     card 0
-  #   }
-  # '';
+  hardware.trackpoint = {
+    enable = true;
+    device = "ETPS/2 Elantech TrackPoint";
+    sensitivity = 255;
+    speed = 255;
+  };
 
-  hardware.opengl.driSupport32Bit = true;
+  hardware.opengl = {
+    driSupport32Bit = true;
+    extraPackages32 = with pkgs.pkgsi686Linux; [ libva ];
+  };
 
   hardware.pulseaudio = {
     enable = true;
@@ -198,7 +188,7 @@ in
     displayManager = {
       lightdm.autoLogin = {
         enable = true;
-        user = "isaac";
+        user = "${username}";
       };
       xpra.pulseaudio = true;
     };
@@ -215,7 +205,7 @@ in
     enable = true;
     configDir = "${homedir}/.config/syncthing";
     dataDir = "${homedir}";
-    user = "isaac";
+    user = "${username}";
     # group = "isaac";
   };
 
@@ -236,7 +226,7 @@ in
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.defaultUserShell = pkgs.zsh;
 
-  users.users.isaac = {
+  users.users."${username}" = {
     createHome = true;
     extraGroups = [ "wireshark" "docker" "uucp" "adbusers" "wheel" "video" "audio" "disk" "networkmanager" "sudo" ]; # Enable ‘sudo’ for the user.
     group = "users";
@@ -245,7 +235,7 @@ in
     uid = 1000;
   };
 
-  home-manager.users.isaac = {
+  home-manager.users."${username}" = {
     # xsession.pointerCursor = {
     #   name = "Vanilla-DMZ";
     #   package = pkgs.vanilla-dmz;

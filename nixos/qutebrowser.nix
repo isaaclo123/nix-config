@@ -1,5 +1,7 @@
 { pkgs, ... }:
 
+let username = (import ./settings.nix).username; in
+
 # Qutebrowser config.py
 # Documentation:
 # qute://help/configuring.html
@@ -23,7 +25,7 @@
       (qutebrowser-derivation)
     ];
 
-  home-manager.users.isaac = {
+  home-manager.users."${username}" = {
     xdg.configFile = {
       "qutebrowser/config.py".text =
         let
@@ -76,6 +78,9 @@
             # Enable JavaScript.
             # Type: Bool
             config.set('content.javascript.enabled', True, 'qute://*/*')
+
+            # Allow javascript to open tabs
+            config.set('content.javascript.can_open_tabs_automatically', True)
 
             # Bindings for normal mode
             config.unbind('d')

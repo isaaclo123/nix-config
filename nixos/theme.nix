@@ -2,6 +2,8 @@
 
 with import <nixpkgs> {};
 
+let username = (import ./settings.nix).username; in
+
 {
   fonts = {
     fonts = with pkgs; [
@@ -33,7 +35,7 @@ with import <nixpkgs> {};
     enableFontDir = true;
   };
 
-  home-manager.users.isaac = {
+  home-manager.users."${username}" = {
     gtk = {
       enable = true;
 

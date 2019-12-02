@@ -1,11 +1,13 @@
 { pkgs, ... }:
 
+let username = (import ./settings.nix).username; in
+
 {
   environment.systemPackages = with pkgs; [
     rofi
   ];
 
-  home-manager.users.isaac = {
+  home-manager.users."${username}" = {
     xdg.configFile = {
       "rofi/config".text = ''
         /*

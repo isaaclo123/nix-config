@@ -1,5 +1,10 @@
 { pkgs, lib, ... }:
 
+let
+  username = (import ./settings.nix).username;
+  homedir = (import ./settings.nix).homedir;
+in
+
 let todo-map-string = config-map:
   lib.concatMapStringsSep "\n"
     (key: "export ${key}=\"${builtins.getAttr key config-map}\"")
@@ -22,10 +27,10 @@ let todo-map-string = config-map:
     }
   '';
 
-  home-manager.users.isaac = {
+  home-manager.users."${username}" = {
     home.file = {
       ".todo/config".text =
-        "export TODO_DIR=$HOME/Documents/todo\n" +
+        "export TODO_DIR=${homedir}/Documents/todo\n" +
         (todo-map-string {
           TODO_FILE="$TODO_DIR/todo.txt";
           DONE_FILE="$TODO_DIR/done.txt";

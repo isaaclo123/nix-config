@@ -1,11 +1,13 @@
 { pkgs, ... }:
 
+let username = (import ./settings.nix).username; in
+
 {
   environment.systemPackages = with pkgs; [
     unstable.calcurse
   ];
 
-  home-manager.users.isaac = {
+  home-manager.users."${username}" = {
     home.file = {
       ".calcurse/conf".text = ''
         appearance.calendarview=monthly

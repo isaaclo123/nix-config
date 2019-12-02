@@ -4,7 +4,7 @@ with import <nixpkgs> {};
 
 let create-eval-funct = script: args:
   let eval-run = (pkgs.writeScript "eval-run.sh" ''
-    #!/usr/bin/env bash
+    #!${pkgs.bash}/bin/bash
 
     set -euo pipefail
 
@@ -19,7 +19,7 @@ in
 {
   pass =
     let nix-pass = (pkgs.writeScript "nix-pass.sh" ''
-      #!/usr/bin/env bash
+    #!${pkgs.bash}/bin/bash
 
       pass show "$1" | head -n1
     ''); in
@@ -27,7 +27,7 @@ in
 
   firstdir =
     let nix-firstdir = (pkgs.writeScript "nix-firstdir.sh" ''
-      #!/usr/bin/env bash
+      #!${pkgs.bash}/bin/bash
 
       ls -d "$1"* | head -n1
     ''); in

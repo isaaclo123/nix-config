@@ -1,7 +1,9 @@
 { pkgs, ... }:
 
+let username = (import ./settings.nix).username; in
+
 {
-  home-manager.users.isaac = {
+  home-manager.users."${username}" = {
     services.polybar = {
       enable = true;
 

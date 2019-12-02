@@ -1,5 +1,7 @@
 { pkgs, ... }:
 
+let username = (import ./settings.nix).username; in
+
 {
   environment.systemPackages = with pkgs; [
     (zathura.override {
@@ -9,7 +11,7 @@
     texlive.combined.scheme-full
   ];
 
-  home-manager.users.isaac = {
+  home-manager.users."${username}" = {
     xdg.configFile = {
       "zathura/zathurarc".text = ''
         set recolor-darkcolor "#ffffff"

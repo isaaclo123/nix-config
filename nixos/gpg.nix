@@ -1,5 +1,7 @@
 { pkgs, ... }:
 
+let username = (import ./settings.nix).username; in
+
 # monkeysphere g to generate ssh key
 # monkeysphere s to add ssh key
 
@@ -18,7 +20,7 @@
     fi
   '';
 
-  home-manager.users.isaac = {
+  home-manager.users."${username}" = {
     services = {
       gpg-agent = {
         enable = true;

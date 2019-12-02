@@ -1,12 +1,18 @@
 { config, pkgs, ... }:
 
-let mpv-socket = "/tmp/mpv-scratchpad-socket"; in
+let
+  username = (import ./settings.nix).username;
+in
 
-let mpv-thumbs-cache = "/tmp/mpv_thumbs_cache"; in
+let
+  mpv-socket = "/tmp/mpv-scratchpad-socket";
 
-let mpv-gallery-thumb-dir = "/tmp/mpv_gallery_cache"; in
+  mpv-thumbs-cache = "/tmp/mpv_thumbs_cache";
 
-let fullscreen-lock = "/tmp/mpv-scratchpad-fullscreen.lock"; in
+  mpv-gallery-thumb-dir = "/tmp/mpv_gallery_cache";
+
+  fullscreen-lock = "/tmp/mpv-scratchpad-fullscreen.lock";
+in
 
 {
   environment.systemPackages =
@@ -306,7 +312,7 @@ let fullscreen-lock = "/tmp/mpv-scratchpad-fullscreen.lock"; in
     };
   };
 
-  home-manager.users.isaac = {
+  home-manager.users."${username}" = {
     xdg.configFile =
       # mpv-gallery-view
       let
@@ -484,8 +490,8 @@ let fullscreen-lock = "/tmp/mpv-scratchpad-fullscreen.lock"; in
           w no-osd set video-unscaled yes; keypress =
           e no-osd set video-unscaled no; keypress =
 
-          h no-osd vf toggle hflip; show-text "Horizontal flip"
-          v no-osd vf toggle vflip; show-text "Vertical flip"
+          # h no-osd vf toggle hflip; show-text "Horizontal flip"
+          # v no-osd vf toggle vflip; show-text "Vertical flip"
 
           r script-message rotate-video 90; show-text "Clockwise rotation"
           R script-message rotate-video -90; show-text "Counter-clockwise rotation"

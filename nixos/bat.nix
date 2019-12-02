@@ -1,5 +1,7 @@
 { pkgs, lib, ... }:
 
+let username = (import ./settings.nix).username; in
+
 let bat-theme-name = "base16-atelier-sulphurpool"; in
 
 let bat-syntax-map-string = syntax-map:
@@ -16,7 +18,7 @@ let bat-syntax-map-string = syntax-map:
     ${pkgs.bat}/bin/bat cache --build
   '';
 
-  home-manager.users.isaac = {
+  home-manager.users."${username}" = {
     xdg.configFile = {
       "bat/config".text =
         let bat-syntax-map = {

@@ -1,6 +1,9 @@
 { pkgs, ... }:
 
-let homedir = "/home/isaac"; in
+let
+  homedir = (import ./settings.nix).homedir;
+  username = (import ./settings.nix).username;
+in
 
 {
   programs.vim.defaultEditor = true;
@@ -171,7 +174,7 @@ let homedir = "/home/isaac"; in
         let g:pandoc#syntax#conceal#use = 1
         let g:pandoc#syntax#conceal#urls = 1
         let g:pandoc#syntax#codeblocks#embeds#use = 1
-        let g:pandoc#syntax#codeblocks#embeds#langs = ['c', 'cpp', 'python', 'java', 'sh', 'bash=sh']
+        let g:pandoc#syntax#codeblocks#embeds#langs = ['c', 'cpp', 'python', 'java', 'sh', 'bash=sh', 'sql']
         let g:pandoc#formatting#mode = 'ha'
         let g:pandoc#formatting#textwidth = 100
         let g:pandoc#after#modules#enabled = ["tablemode", "ultisnips"]
@@ -439,7 +442,7 @@ let homedir = "/home/isaac"; in
         nodePackages.prettier
       ];
 
-  home-manager.users.isaac = {
+  home-manager.users."${username}" = {
     home.file = {
       ".editorconfig".text = ''
         root = true

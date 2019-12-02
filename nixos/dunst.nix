@@ -1,5 +1,7 @@
 { pkgs, ... }:
 
+let username = (import ./settings.nix).username; in
+
 {
   environment.systemPackages = with pkgs; [
     # notifications
@@ -7,7 +9,7 @@
     libnotify
   ];
 
-  home-manager.users.isaac = {
+  home-manager.users."${username}" = {
     services.dunst = {
       enable = true;
       settings = {
