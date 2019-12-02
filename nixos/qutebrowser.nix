@@ -27,14 +27,28 @@ let username = (import ./settings.nix).username; in
 
   home-manager.users."${username}" = {
     xdg.configFile = {
+      "qutebrowser/jmatrix-rules".source =
+        (pkgs.fetchurl {
+          url = "https://gist.githubusercontent.com/isaaclo123/dddcc8ed99e9ddcab7222fd8e3be6785/raw/122d399bc4db44cff299866e56205debe5631e47/rules.txt";
+          sha256 = "1rijk27l51bbvwll1dir0v39d22hkrracg4lqqxickj49cid63x1";
+        });
+
       "qutebrowser/config.py".text =
         let
+          jmatrix = pkgs.fetchgit {
+            url = "https://gitlab.com/jgkamat/jmatrix";
+            rev = "1f9c348558aa8520e8a23c08272fd0a6dc4fb023";
+            sha256 = "02r28rf4n6d2q67vqw0fi1x0p1c0sdqf8w579pnb6ld7343a2dbv";
+          };
+
           userContentCss = pkgs.fetchurl {
             url = "https://www.floppymoose.com/userContent.css";
             sha256 = "0bmlm6aslvgczzwpy1ijbi6h6f0n1qva4453ls5gv7x40c3qg8mq";
           }; in ''
-            c = c # pylint: disable=undefined-variable,invalid-name
-            config = config # pylint: disable=undefined-variable,invalid-name
+            import sys, os
+
+            sys.path.append("${jmatrix}")
+            config.source("${jmatrix}/jmatrix/integrations/qutebrowser.py")
 
             # Uncomment this to still load settings configured via autoconfig.yml
             # config.load_autoconfig()
