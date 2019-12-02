@@ -50,6 +50,9 @@ let username = (import ./settings.nix).username; in
             sys.path.append("${jmatrix}")
             config.source("${jmatrix}/jmatrix/integrations/qutebrowser.py")
 
+            # toggle jmatrix
+            config.bind('tj', 'jmatrix-toggle')
+
             # Uncomment this to still load settings configured via autoconfig.yml
             # config.load_autoconfig()
 
