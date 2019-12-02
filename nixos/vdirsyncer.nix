@@ -66,7 +66,7 @@ let calcurse-vdirsyncer =
         [ -z "$CALENDAR_DIR" ] && exit 1
 
         # test if server reachable
-        ${pkgs.curl}/bin/curl -s --head --request GET ${dav-url} | grep "404" && exit 1
+        ${pkgs.curl}/bin/curl -m 3 -s -o /dev/null -w "%{http_code}" ${dav-url} | grep 403 || exit 1
 
         ${calcurse-vdirsyncer}/bin/calcurse-vdirsyncer $CALENDAR_DIR
       '';
@@ -81,7 +81,7 @@ let calcurse-vdirsyncer =
   system.userActivationScripts.vdirsyncerSetup = {
     text = ''
       # test if server reachable
-      ${pkgs.curl}/bin/curl -s --head --request GET ${dav-url} | grep "404" && exit 1
+      ${pkgs.curl}/bin/curl -m 3 -s -o /dev/null -w "%{http_code}" ${dav-url} | grep -e "404" -e "000" && exit 1
 
       ${config.system.path}/bin/yes | ${pkgs.vdirsyncer}/bin/vdirsyncer discover
       ${pkgs.vdirsyncer}/bin/vdirsyncer sync
