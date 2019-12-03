@@ -27,11 +27,29 @@ let username = (import ./settings.nix).username; in
 
   home-manager.users."${username}" = {
     xdg.configFile = {
-      "qutebrowser/jmatrix-rules".source =
-        (pkgs.fetchurl {
-          url = "https://gist.githubusercontent.com/isaaclo123/dddcc8ed99e9ddcab7222fd8e3be6785/raw/122d399bc4db44cff299866e56205debe5631e47/rules.txt";
-          sha256 = "1rijk27l51bbvwll1dir0v39d22hkrracg4lqqxickj49cid63x1";
-        });
+      "qutebrowser/jmatrix-rules".text =
+        let rules-txt =
+          (builtins.readFile (pkgs.fetchurl {
+            url = "https://gist.githubusercontent.com/isaaclo123/dddcc8ed99e9ddcab7222fd8e3be6785/raw/122d399bc4db44cff299866e56205debe5631e47/rules.txt";
+            sha256 = "1rijk27l51bbvwll1dir0v39d22hkrracg4lqqxickj49cid63x1";
+          }));
+        in
+      ''
+        matrix-off: discordapp.com true
+        matrix-off: umn.edu true
+
+        ${rules-txt}
+
+        discordapp.com 127.0.0.1 xhr allow
+        discordapp.com discord.gg * allow
+        discordapp.com gateway.discord.gg xhr allow
+        discordapp.com google.com * allow
+        discordapp.com gstatic.com * allow
+        discordapp.com ytimg.com * allow
+        discordservers.com ajax.cloudflare.com script allow
+        discordservers.com cloudflare.com cookie allow
+        discordservers.com discordapp.com cookie allow
+      '';
 
       "qutebrowser/config.py".text =
         let
