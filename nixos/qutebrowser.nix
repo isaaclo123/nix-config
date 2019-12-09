@@ -30,9 +30,9 @@ in
 
   home-manager.users."${username}" = {
     home.file = {
-      ".local/share/qutebrowser/greasemonkey/aak-cont-script-notubo.user.js".source = pkgs.fetchurl {
-        url = "https://gitlab.com/xuhaiyang1234/AAK-Cont/raw/master/FINAL_BUILD/aak-cont-script-notubo.user.js";
-        sha256 = "1biwyg2pyh54zig06p74y4yasbv9il6hqnz3fn8f3m97vykx65zz";
+      ".local/share/qutebrowser/greasemonkey/anti-adblock-killer.user.js".source = pkgs.fetchurl {
+            url = "https://raw.githubusercontent.com/reek/anti-adblock-killer/9a933f417f0fd074935b23ef2d8ad0fa0c62631c/anti-adblock-killer.user.js";
+            sha256 = "0way11wrl9lpmi4s8l99is8s2vfnm0r8358zs769x9pfbjahxqp2";
       };
     };
 
@@ -106,6 +106,7 @@ in
               "https://easylist-downloads.adblockplus.org/antiadblockfilters.txt",
 
               # anti adblock killer cont.
+              "https://raw.githubusercontent.com/reek/anti-adblock-killer/master/anti-adblock-killer-filters.txt",
               "https://gitlab.com/xuhaiyang1234/AAK-Cont/raw/master/FINAL_BUILD/aak-cont-list-notubo.txt",
             ])
 
