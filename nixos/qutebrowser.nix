@@ -106,9 +106,9 @@ in
 
               # anti adblock
               "https://easylist-downloads.adblockplus.org/antiadblockfilters.txt",
-              # "https://raw.githubusercontent.com/abp-filters/abp-filters-anti-cv/master/english.txt",
+              "https://raw.githubusercontent.com/abp-filters/abp-filters-anti-cv/master/english.txt",
 
-              # anti adblock killer cont
+              # anti adblock killer cont.
               "https://gitlab.com/xuhaiyang1234/AAK-Cont/raw/master/FINAL_BUILD/aak-cont-list-notubo.txt",
             ])
 
