@@ -250,7 +250,7 @@ in
         \   'html': ['htmlhint'],
         \   'ocaml': ['merlin'],
         \   'pandoc': ['mdl'],
-        \   'python': ['pylint'],
+        \   'python': ['flake8'],
         \   'cpp': ['cpplint', 'gcc'],
         \   'java': ['javac']
         \}
@@ -295,6 +295,14 @@ in
           au Filetype R,r vmap , <Plug>RDSendSelection
           " remapping selection :: send multiple lines + echo lines
           au Filetype R,r vmap ,e <Plug>RESendSelection
+        augroup END
+
+        " typescript
+        let g:typescript_indent_disable = 1
+
+        augroup tsx
+          au!
+          au FileType typescript setlocal indentkeys+=0
         augroup END
 
         " Bullets.vim
@@ -418,6 +426,8 @@ in
               haskell-vim
               vim-hindent
               vim-stylish-haskell
+
+              typescript-vim
             ];
 
             opt = [ ];
@@ -479,7 +489,7 @@ in
         indent_size = 2
         max_line_length = 80
 
-        [*.{js,css,scss,html,json,jsx}]
+        [*.{js,css,scss,html,json,jsx,tsx,ts}]
         max_line_length = 100
         indent-style = space
         indent_size = 2

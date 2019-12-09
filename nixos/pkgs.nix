@@ -115,7 +115,7 @@
       rclone
 
       # video
-      openshot-qt
+      unstable.openshot-qt
 
       # themes
       gtk-engine-murrine

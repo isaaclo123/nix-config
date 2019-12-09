@@ -1,6 +1,9 @@
 { pkgs, ... }:
 
-let username = (import ./settings.nix).username; in
+let
+  username = (import ./settings.nix).username;
+  homedir = (import ./settings.nix).homedir;
+in
 
 # Qutebrowser config.py
 # Documentation:
@@ -26,6 +29,13 @@ let username = (import ./settings.nix).username; in
     ];
 
   home-manager.users."${username}" = {
+    home.file = {
+      ".local/share/qutebrowser/greasemonkey/aak-cont-script-notubo.user.js".source = pkgs.fetchurl {
+        url = "https://gitlab.com/xuhaiyang1234/AAK-Cont/raw/master/FINAL_BUILD/aak-cont-script-notubo.user.js";
+        sha256 = "1biwyg2pyh54zig06p74y4yasbv9il6hqnz3fn8f3m97vykx65zz";
+      };
+    };
+
     xdg.configFile = {
       "qutebrowser/jmatrix-rules".text =
         let rules-txt =
@@ -53,17 +63,26 @@ let username = (import ./settings.nix).username; in
 
       "qutebrowser/config.py".text =
         let
+          jblock = pkgs.fetchgit {
+            url = "https://gitlab.com/jgkamat/jblock";
+            rev = "a3613d86dc1c91f431755942f62e7c8844a8a60c";
+            sha256 = "0nalh7swnfqmqvj1x8cgxp3h8z5h28xmk7jyrgmaj1c8lzjff6l7";
+          };
+
           jmatrix = pkgs.fetchgit {
             url = "https://gitlab.com/jgkamat/jmatrix";
             rev = "1f9c348558aa8520e8a23c08272fd0a6dc4fb023";
             sha256 = "02r28rf4n6d2q67vqw0fi1x0p1c0sdqf8w579pnb6ld7343a2dbv";
           };
 
-          userContentCss = pkgs.fetchurl {
+          user-content-css = pkgs.fetchurl {
             url = "https://www.floppymoose.com/userContent.css";
             sha256 = "0bmlm6aslvgczzwpy1ijbi6h6f0n1qva4453ls5gv7x40c3qg8mq";
           }; in ''
             import sys, os
+
+            # Uncomment this to still load settings configured via autoconfig.yml
+            # config.load_autoconfig()
 
             sys.path.append("${jmatrix}")
             config.source("${jmatrix}/jmatrix/integrations/qutebrowser.py")
@@ -71,20 +90,31 @@ let username = (import ./settings.nix).username; in
             # toggle jmatrix
             config.bind('tj', 'jmatrix-toggle')
 
-            # Uncomment this to still load settings configured via autoconfig.yml
-            # config.load_autoconfig()
+            sys.path.append("${jblock}")
+            config.source("${jblock}/jblock/integrations/qutebrowser.py")
 
-            # Enable qutebrowser (host-based) adblock.
+            # Disable qutebrowser (host-based) adblock.
             # Type: Bool
-            config.set('content.host_blocking.enabled', True)
+            config.set('content.host_blocking.enabled', False)
 
             # Adblock lists.
             # Type: List
-            config.set('content.host_blocking.lists', ["https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling-porn/hosts"]) # pylint: disable=line-too-long
+            config.set('content.host_blocking.lists', [
+              "https://easylist.to/easylist/easylist.txt",
+              "https://easylist.to/easylist/easyprivacy.txt",
+              # "https://easylist.to/easylist/fanboy-annoyance.txt",
+
+              # anti adblock
+              "https://easylist-downloads.adblockplus.org/antiadblockfilters.txt",
+              # "https://raw.githubusercontent.com/abp-filters/abp-filters-anti-cv/master/english.txt",
+
+              # anti adblock killer cont
+              "https://gitlab.com/xuhaiyang1234/AAK-Cont/raw/master/FINAL_BUILD/aak-cont-list-notubo.txt",
+            ])
 
             # User stylesheet (add floppymoose css rules http://www.floppymoose.com/)
             # Type: List
-            config.set('content.user_stylesheets', ["${userContentCss}"]) # pylint: disable=line-too-long
+            config.set('content.user_stylesheets', ["${user-content-css}"])
 
             # Change editor.
             # Type: List

@@ -87,7 +87,7 @@ let nixos-weechat = (with import <nixpkgs> {};
               vimode
               zerotab
               zncnotice
-              # zncplayback
+              zncplayback
               grep
               weechat_notify_send
 
