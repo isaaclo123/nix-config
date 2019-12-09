@@ -102,11 +102,8 @@ in
             config.set('content.host_blocking.lists', [
               "https://easylist.to/easylist/easylist.txt",
               "https://easylist.to/easylist/easyprivacy.txt",
-              # "https://easylist.to/easylist/fanboy-annoyance.txt",
-
-              # anti adblock
+              "https://easylist.to/easylist/fanboy-annoyance.txt",
               "https://easylist-downloads.adblockplus.org/antiadblockfilters.txt",
-              "https://raw.githubusercontent.com/abp-filters/abp-filters-anti-cv/master/english.txt",
 
               # anti adblock killer cont.
               "https://gitlab.com/xuhaiyang1234/AAK-Cont/raw/master/FINAL_BUILD/aak-cont-list-notubo.txt",
