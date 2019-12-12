@@ -90,6 +90,15 @@ in
     enableOSSEmulation = true;
   };
 
+  hardware.bluetooth = {
+    enable = true;
+    package = pkgs.bluez5;
+    extraConfig = ''
+      [General]
+      Enable=Source,Sink,Media,Socket
+    '';
+  };
+
   hardware.trackpoint = {
     enable = true;
     device = "ETPS/2 Elantech TrackPoint";
@@ -104,12 +113,19 @@ in
 
   hardware.pulseaudio = {
     enable = true;
+    package = pkgs.pulseaudioFull;
+    extraModules = [ pkgs.pulseaudio-modules-bt ];
+
     daemon = {
       config = {
         realtime-scheduling = "yes";
       };
     };
     support32Bit = true;
+
+    extraConfig = ''
+      unload-module module-suspend-on-idle
+    '';
   };
 
   security.rtkit.enable = true;

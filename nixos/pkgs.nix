@@ -137,5 +137,9 @@
       # aws
       aws
       awscli
+
+      # bluetooth
+      bluez-alsa
+      blueman
     ];
 }

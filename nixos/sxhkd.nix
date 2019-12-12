@@ -135,11 +135,6 @@ let input-toggle-create = device: script-name: (pkgs.writeShellScriptBin script-
       XF86AudioMicMute
         pactl set-source-mute 1 toggle
 
-      # XF86AudioPrev
-      # XF86AudioNext
-      # XF86AudioPlay
-      # XF86AudioStop
-
       XF86MonBrightnessUp
         brightnessctl set +5%
 
@@ -174,6 +169,18 @@ let input-toggle-create = device: script-name: (pkgs.writeShellScriptBin script-
 
       super + Insert
         mpc next
+
+      XF86AudioPrev
+        mpc prev
+
+      XF86AudioNext
+        mpc next
+
+      XF86AudioPlay
+        mpc play
+
+      XF86AudioPause
+        mpc pause
 
       super + Print
         screenshot

@@ -88,7 +88,7 @@ in
             config.source("${jmatrix}/jmatrix/integrations/qutebrowser.py")
 
             # toggle jmatrix
-            config.bind('tj', 'jmatrix-toggle')
+            config.bind('tm', 'jmatrix-toggle')
 
             sys.path.append("${jblock}")
             config.source("${jblock}/jblock/integrations/qutebrowser.py")
