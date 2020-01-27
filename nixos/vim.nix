@@ -91,6 +91,14 @@ in
           autocmd GUIEnter * set visualbell t_vb=
         endif
 
+        " rainbow parenthesis
+        let g:rainbow_active = 1
+
+        let g:rainbow_conf = {
+        \	'guifgs': ['#c94922', '#ac9739', '#c08b30', '#3d8fd1', '#6679cc', '#22a2c9', '#c76b29', '#9c637a'],
+        \	'ctermfgs': ['1', '2', '3', '4', '5', '6', '16', '17'],
+        \}
+
         " nix folding
         augroup vim_nix
           au!
@@ -231,22 +239,27 @@ in
         " ale
 
         let g:ale_fix_on_save = 1
-        let g:ale_completion_enabled = 0
+        let g:ale_completion_enabled = 1
         let g:ale_completion_tsserver_autoimport = 1
 
         " ale fixers
         let g:ale_fixers = {
         \   '*': ['remove_trailing_lines', 'trim_whitespace'],
-        \   'javascript': ['eslint'],
+        \   'javascript': ['prettier', 'eslint'],
+        \   'typescript': ['prettier', 'eslint'],
+        \   'vue': ['prettier', 'eslint'],
         \}
 
         let g:ale_linter_aliases = {
         \   'vue': ['vue', 'javascript'],
+        \   'typescript': ['typescript', 'javascript'],
         \   'pandoc': ['markdown', 'pandoc'],
         \}
 
         let g:ale_linters = {
         \   'vue': ['eslint'],
+        \   'typescript': ['eslint'],
+        \   'javascript': ['eslint'],
         \   'html': ['htmlhint'],
         \   'ocaml': ['merlin'],
         \   'pandoc': ['mdl'],
@@ -262,6 +275,7 @@ in
 
         " swapfile
         set swapfile
+        set backupdir=${homedir}/.bkp
         set dir=${homedir}/.swp
 
         " Smart way to move between panes
@@ -422,6 +436,7 @@ in
               vim-unimpaired
               vim-surround
               direnv-vim
+              rainbow
 
               haskell-vim
               vim-hindent
@@ -449,7 +464,10 @@ in
         scowl
 
         mdl
+
         nodePackages.prettier
+        nodePackages.javascript-typescript-langserver
+        # nodePackages.eslint
       ];
 
   home-manager.users."${username}" = {

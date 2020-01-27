@@ -41,6 +41,8 @@ in
       ./sxiv.nix
       ./weechat.nix
 
+      # ./vpn.nix
+
       # home-manager
       ./polybar.nix
       ./dunst.nix
@@ -92,10 +94,15 @@ in
 
   hardware.bluetooth = {
     enable = true;
-    package = pkgs.bluez5;
+    package = pkgs.bluezFull;
     extraConfig = ''
       [General]
       Enable=Source,Sink,Media,Socket
+      AutoConnectTimeout = 0
+      IdleTimeout=0
+      DiscoverableTimeout = 0
+      PairableTimeout = 0
+      PageTimeout = 8192
     '';
   };
 
@@ -124,7 +131,11 @@ in
     support32Bit = true;
 
     extraConfig = ''
-      unload-module module-suspend-on-idle
+      .ifexists module-udev-detect.so
+        load-module module-udev-detect tsched=0
+      .else
+
+      #load-module module-suspend-on-idle timeout=30
     '';
   };
 
@@ -132,7 +143,12 @@ in
 
   networking.hostName = "client1"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-  networking.networkmanager.enable = true;  # Enables wireless support via wpa_supplicant.
+  networking.networkmanager = {
+    enable = true;  # Enables wireless support via wpa_supplicant.
+    packages = with pkgs; [
+      networkmanager-openvpn
+    ];
+  };
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
@@ -162,6 +178,11 @@ in
   # };
 
   # List services that you want to enable:
+
+  # fwupd
+  services.fwupd = {
+    enable = true;
+  };
 
   # tor
   services.tor = {
@@ -239,6 +260,15 @@ in
 
   security.sudo.wheelNeedsPassword = false;
 
+  # security.wrappers = {
+  #   audacity = {
+  #     source  = "${pkgs.audacity.out}/bin/audacity";
+  #     owner   = "nobody";
+  #     group   = "nogroup";
+  #     capabilities = "cap_net_raw+ep";
+  #   };
+  # };
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.defaultUserShell = pkgs.zsh;
 
@@ -289,7 +319,7 @@ in
   # compatible, in order to avoid breaking some software such as database
   # servers. You should change this only after NixOS release notes say you
   # should.
-  system.stateVersion = "19.03"; # Did you read the comment?
+  system.stateVersion = "19.09"; # Did you read the comment?
   nixpkgs.config = {
     # pulseaudio = true;
     allowUnfree = true;

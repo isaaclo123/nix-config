@@ -48,8 +48,8 @@ let input-toggle-create = device: script-name: (pkgs.writeShellScriptBin script-
     let bluetooth-toggle = (pkgs.writeShellScriptBin "bluetooth-toggle" ''
       #!/bin/bash
 
-      BT=bluetooth
-      BT_STATE=$(sudo rfkill list $BT | grep "Soft blocked: yes")
+      BT=$(rfkill list | grep tpacpi_bluetooth_sw | head -c 1)
+      BT_STATE=$(rfkill list $BT | grep "Soft blocked: yes")
 
       NOTIFY_VAL=''${NOTIFY:-on}
 

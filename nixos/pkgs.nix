@@ -3,6 +3,10 @@
 {
   environment.systemPackages =
     let
+      display-toggle = (pkgs.writeShellScriptBin "display-toggle" ''
+        sleep 0.5 && xset dpms force off
+      '');
+
       wn = (pkgs.writeShellScriptBin "wn" ''
         NOTE=$(date +%Y-%m-%d)
 
@@ -29,13 +33,59 @@
         rm *.{ppt,pptx}
       '');
 
+      backup = (pkgs.writeShellScriptBin "backup.sh" ''
+        #!${pkgs.bash}/bin/bash
+
+        BACKUP="/run/media/isaac/TOSHIBA EXT"
+
+        if [[ $UID != 0 ]]; then
+            echo "Please run this script with sudo:"
+            echo "sudo $0 $*"
+            exit 1
+        fi
+
+        DATE=`date +%Y-%m-%d`
+        BACKUP_NAME="''${DATE}-backup"
+        BACKUP_DIR_NAME="''${BACKUP}/''${BACKUP_NAME}"
+
+        declare -a folders=(
+            # "/home/isaac/.local/share/buku"
+            "/home/isaac/.calendars"
+            "/home/isaac/.contacts"
+            "/home/isaac/.weechat"
+
+            "/home/isaac/.password-store"
+            "/home/isaac/.gnupg"
+            "/home/isaac/buku"
+            "/home/isaac/DCIM"
+            "/home/isaac/Documents"
+            "/etc/nixos"
+            "/home/isaac/Pictures"
+            "/home/isaac/Music"
+            "/home/isaac/Videos"
+        )
+
+        mkdir "$BACKUP_DIR_NAME"
+
+        # get length of an array
+        arraylength=''${#folders[@]}
+
+        # use for loop to read all values and indexes
+        for (( i=1; i<''${arraylength}+1; i++ ));
+        do
+            rsync -ah --progress "''${folders[$i-1]}" "$BACKUP_DIR_NAME"
+        done
+      '');
+
     in with pkgs; [
       # custom packages
       (import ./z.nix)
       (import ./rofimoji.nix)
       (wn)
       (alarm)
+      (display-toggle)
       (ppt-to-pdf)
+      (backup)
       # (import ./xfd.nix)
 
       # office
@@ -103,10 +153,17 @@
       gcc
       # node
       nodejs
+      nodePackages.node2nix
+      jupyter
+
       # network
       wireshark
       simplehttp2server
       heroku
+      httpie
+      insomnia
+
+      binutils-unwrapped
 
       # storage
       jmtpfs
@@ -115,7 +172,7 @@
       rclone
 
       # video
-      unstable.openshot-qt
+      openshot-qt
 
       # themes
       gtk-engine-murrine
@@ -141,5 +198,12 @@
       # bluetooth
       bluez-alsa
       blueman
+
+      # audacity
+      audacity
+
+      # system
+      # busybox
+      pciutils
     ];
 }
