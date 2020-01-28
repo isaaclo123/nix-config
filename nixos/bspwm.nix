@@ -82,7 +82,7 @@ let autostarted-status = "/tmp/autostarted-status.lock"; in
       bspc rule -a termitescratchpad sticky=on state=floating hidden=on
 
       # always autostart
-      xinput set-prop "ETPS/2 Elantech TrackPoint" "libinput Accel Speed" 0.8
+      xinput set-prop "ETPS/2 Elantech TrackPoint" "libinput Accel Speed" 0.7
       xinput set-prop "ETPS/2 Elantech Touchpad" "libinput Accel Speed" 0.45
       killall -q dunst && (dunst &)
       feh --bg-scale /etc/nixos/wallpaper.jpg

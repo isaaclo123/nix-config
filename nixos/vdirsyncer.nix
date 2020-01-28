@@ -6,40 +6,40 @@ let
   dav-url= (import ./settings.nix).dav-url;
 in
 
-let calcurse-vdirsyncer =
-  (with import <nixpkgs> {};
-    stdenv.mkDerivation rec {
-      name = "calcurse-vdirsyncer";
-
-      src = pkgs.fetchFromGitHub {
-        owner = "lfos";
-        repo = "calcurse";
-        rev = "61d3667899881b8ca17c35b1dbb718c723ecab8e";
-        sha256 = "1iw1w5cz1f7p8fc2i89sbbxxmjbxsw8q5jr9r9l1mjlk7kb8v2zd";
-        fetchSubmodules = false;
-      };
-
-      patches = [
-        (pkgs.fetchurl {
-          # https://gist.github.com/isaaclo123/f8f46730cf01363aec926206f7524c61
-          name = "calcurse-vdirsyncer-fix";
-          url = "https://gist.githubusercontent.com/isaaclo123/f8f46730cf01363aec926206f7524c61/raw/93853866e320c67524ef9fea8af300d00135e0d6/calcurse-vdirsyncer-fix.patch";
-          sha256 = "1zicfl3qhq53ipbs7xih2p8praswzvqwr7xcmkjczvw6lzmvfvah";
-        })
-      ];
-
-      dontBuild = true;
-
-      installPhase = ''
-        mkdir -p $out/bin
-        cp ./contrib/vdir/calcurse-vdirsyncer $out/bin/
-        chmod +x $out/bin/calcurse-vdirsyncer
-      '';
-    }); in
+# let calcurse-vdirsyncer =
+#   (with import <nixpkgs> {};
+#     stdenv.mkDerivation rec {
+#       name = "calcurse-vdirsyncer";
+#
+#       src = pkgs.fetchFromGitHub {
+#         owner = "lfos";
+#         repo = "calcurse";
+#         rev = "12863ff7c05e4abe601890157b222eaee9737ad5";
+#         sha256 = "0bb98d6z3s5nymx67sj6z2gd76xj6x0n8kwi0mmv09k37yfda237";
+#         fetchSubmodules = false;
+#       };
+#
+#       # patches = [
+#       #   (pkgs.fetchurl {
+#       #     # https://gist.github.com/isaaclo123/f8f46730cf01363aec926206f7524c61
+#       #     name = "calcurse-vdirsyncer-fix";
+#       #     url = "https://gist.githubusercontent.com/isaaclo123/f8f46730cf01363aec926206f7524c61/raw/93853866e320c67524ef9fea8af300d00135e0d6/calcurse-vdirsyncer-fix.patch";
+#       #     sha256 = "1zicfl3qhq53ipbs7xih2p8praswzvqwr7xcmkjczvw6lzmvfvah";
+#       #   })
+#       # ];
+#
+#       dontBuild = true;
+#
+#       installPhase = ''
+#         mkdir -p $out/bin
+#         cp ./contrib/vdir/calcurse-vdirsyncer $out/bin/
+#         chmod +x $out/bin/calcurse-vdirsyncer
+#       '';
+#     }); in
 
 {
   environment.systemPackages = with pkgs; [
-    (calcurse-vdirsyncer)
+    # (calcurse-vdirsyncer)
     vdirsyncer
   ];
 
@@ -60,6 +60,7 @@ let calcurse-vdirsyncer =
 
       serviceConfig.Type = "oneshot";
 
+      # ${calcurse-vdirsyncer}/bin/calcurse-vdirsyncer $CALENDAR_DIR
       script = ''
         CALENDAR_DIR=${(import ./extra-builtins.nix {}).firstdir "${homedir}/.calendars/"}
 
@@ -68,7 +69,9 @@ let calcurse-vdirsyncer =
         # test if server reachable
         ${pkgs.curl}/bin/curl -m 3 -s -o /dev/null -w "%{http_code}" ${dav-url} | grep 403 || exit 1
 
-        ${calcurse-vdirsyncer}/bin/calcurse-vdirsyncer $CALENDAR_DIR
+        ${pkgs.unstable.calcurse}/bin/calcurse-vdir export $CALENDAR_DIR -D "${homedir}/.calcurse" &&
+        ${pkgs.vdirsyncer}/bin/vdirsyncer sync &&
+        ${pkgs.unstable.calcurse}/bin/calcurse-vdir import $CALENDAR_DIR -D "${homedir}/.calcurse"
       '';
 
       path = with pkgs; [
