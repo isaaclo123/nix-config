@@ -65,14 +65,14 @@ in
         let
           jblock = pkgs.fetchgit {
             url = "https://gitlab.com/jgkamat/jblock";
-            rev = "a3613d86dc1c91f431755942f62e7c8844a8a60c";
-            sha256 = "0nalh7swnfqmqvj1x8cgxp3h8z5h28xmk7jyrgmaj1c8lzjff6l7";
+            rev = "efd8d5b065d7b6bd8908aa082c8013c02486c8f4";
+            sha256 = "1drh4rmvr5gp9byfqwish78vwm4shmwn1lqhfzrfxg903yk2c7iy";
           };
 
           jmatrix = pkgs.fetchgit {
             url = "https://gitlab.com/jgkamat/jmatrix";
-            rev = "1f9c348558aa8520e8a23c08272fd0a6dc4fb023";
-            sha256 = "02r28rf4n6d2q67vqw0fi1x0p1c0sdqf8w579pnb6ld7343a2dbv";
+            rev = "f69a3155ba5de29c7e107a5abcc504632a97ceee";
+            sha256 = "1iry9qp2nrf42ckf8zwq4g5a58b9yjam5y7hssrmyvl27wm3qldd";
           };
 
           user-content-css = pkgs.fetchurl {

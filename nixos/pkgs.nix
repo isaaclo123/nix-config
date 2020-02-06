@@ -150,7 +150,7 @@
       clang
       pkg-config
       gdb
-      gcc
+      gcc6
       # node
       nodejs
       nodePackages.node2nix

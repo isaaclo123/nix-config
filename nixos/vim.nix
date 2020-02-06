@@ -15,6 +15,17 @@ in
         zathura ''${*} &
       '');
 
+      vlime = (pkgs.fetchFromGitHub {
+          owner = "vlime";
+          repo = "vlime";
+          rev = "64e6220fc8c4c243ce57e503ab598c3eed62f42c";
+          sha256 = "12fq43r2930sbpd5c0iw6dlwj67nqwqvzv5m8jffb1ilp3ha45fj";
+        });
+
+      start-vlime = (pkgs.writeShellScriptBin "start-vlime" ''
+        ${pkgs.sbcl}/bin/sbcl --load ${pkgs.lispPackages.quicklisp}/lib/common-lisp/quicklisp/setup.lisp --load ${vlime}/lisp/start-vlime.lisp
+      '');
+
       vimrc = ''
         set wildmode=longest,list,full
         set wildmenu
@@ -45,6 +56,9 @@ in
         set expandtab
         set shiftwidth=4
         set smarttab
+
+        " vim context
+        " let g:context_enabled = 1
 
         " folding
         set foldmethod=syntax
@@ -384,6 +398,16 @@ in
                 };
               })
 
+              # (pkgs.vimUtils.buildVimPlugin {
+              #   name = "context-vim";
+              #   src = pkgs.fetchFromGitHub {
+              #     owner = "wellle";
+              #     repo = "context.vim";
+              #     rev = "3c7153d932106a9ada84cb2cb5f904559ddcf1a3";
+              #     sha256 = "0aj05r1hz4f8zs2w284l9zxscp0i03dzcgn9z6m2q51dz4la3l6g";
+              #   };
+              # })
+
               (pkgs.vimUtils.buildVimPlugin {
                 name = "Nvim-R";
                 src = pkgs.fetchurl {
@@ -391,6 +415,12 @@ in
                   sha256 = "0rz836gwsfp4n1vskcs45z1bign5cp0r1jzw1f6xwfqbg3r35lfl";
                 };
                 buildInputs = with pkgs; [ which vim zip ];
+              })
+
+              (pkgs.vimUtils.buildVimPlugin {
+                name = "vlime";
+                src = vlime;
+                buildInputs = with pkgs; [ sbcl lispPackages.quicklisp ];
               })
 
               # (pkgs.vimUtils.buildVimPlugin {
@@ -455,6 +485,7 @@ in
         vim -d "$@"
       ''); in
       with pkgs; [
+        (start-vlime)
         (system_vim)
         (system_vimdiff)
         neovim

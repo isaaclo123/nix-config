@@ -24,11 +24,15 @@ let my-python-packages = python-packages:
     doCheck = false;
   }; in
   with python-packages; [
+    cython
+    opencv
     conda
     ueberzug
     requests
     virtualenv
     flake8
+    tensorflow
+    numpy
   ];
   python-with-my-packages = python3.withPackages my-python-packages;
 in
@@ -36,7 +40,9 @@ in
 {
   environment.systemPackages = with pkgs; [
     python-with-my-packages
-    python2nix
+    pypi2nix
     pipenv
+    opencv
+    pkg-config
   ];
 }

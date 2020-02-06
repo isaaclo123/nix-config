@@ -8,11 +8,8 @@ let
   homedir = (import ./settings.nix).homedir;
   username = (import ./settings.nix).username;
 
-  home-manager = builtins.fetchGit {
-    url = "https://github.com/rycee/home-manager.git";
-    rev = "dd94a849df69fe62fe2cb23a74c2b9330f1189ed"; # CHANGEME
-    ref = "release-18.09";
-  };
+  home-manager =
+    fetchTarball https://github.com/rycee/home-manager/archive/release-19.09.tar.gz;
 
   nixos-hardware =
     fetchTarball https://github.com/NixOS/nixos-hardware/archive/master.tar.gz;
@@ -55,6 +52,7 @@ in
       ./rofi-pass.nix
       ./python.nix
       ./haskell.nix
+      ./lisp.nix
       ./r.nix
       ./email.nix
       ./termite.nix

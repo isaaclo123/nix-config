@@ -31,8 +31,22 @@ let nixos-weechat = (with import <nixpkgs> {};
 
         vimode = attrs: {
           src = pkgs.fetchurl {
-            url = "https://raw.githubusercontent.com/GermainZ/weechat-vimode/6412084ae263a75790b8ea6fb36c75a7eb06c16b/vimode.py";
-            sha256 = "1v8144b4ijc26p8mqvw6rs6m6s1kawphjfbp0fh9r72xyg1xh69g";
+            url = "https://raw.githubusercontent.com/GermainZ/weechat-vimode/4e926c39bd21de15c146e2a0bea1b85684ef08f2/vimode.py";
+            sha256 = "0wjvh08rdlpxfm1k770hpi2f7qkfm8vszcm4qk7hag63crpd78kp";
+          };
+        };
+
+        urlbuf = attrs: {
+          src = pkgs.fetchurl {
+            url = "https://weechat.org/files/scripts/urlbuf.py";
+            sha256 = "0zfmjknz9fx82vz682na3xv5f972grga67mgk3wsjrljyn1j2svn";
+          };
+        };
+
+        url_hint = attrs: {
+          src = pkgs.fetchurl {
+            url = "https://weechat.org/files/scripts/url_hint.py";
+            sha256 = "0aw59kq74yqh0qbdkldfl6l83d0bz833232xr2w4741szck43kss";
           };
         };
       };
@@ -45,8 +59,8 @@ let nixos-weechat = (with import <nixpkgs> {};
           src = pkgs.fetchFromGitHub {
             owner = "s3rvac";
             repo = "weechat-notify-send";
-            rev = "dc248f442925b6e8ab787c6e39812d41236d7459";
-            sha256 = "0bq5r89ahv0ppw35qw2npzrgw58ifr9bkkn6kxs719i3yzs64k7m";
+            rev = "b491e6acc1fe00fd1b91409444f9904587b2e588";
+            sha256 = "1f9558a78ismd645c9v6p3lgda6hkgn3f63i8s4y5r8zdymx08d0";
           };
 
           passthru.scripts = [ "notify_send.py" ];
@@ -60,7 +74,7 @@ let nixos-weechat = (with import <nixpkgs> {};
       }; in
 
       with pkgs; [
-        (weechat.override {
+        (unstable.weechat.override {
           configure = { availablePlugins, ... }: {
             plugins = builtins.attrValues availablePlugins;
 
