@@ -10,8 +10,10 @@ let notmuch-config = "${homedir}/.config/notmuch/notmuchrc"; in
 {
   environment.systemPackages = with pkgs;
     let mail-sync= (writeShellScriptBin "mail-sync" ''
-      mbsync -a &&
-      notmuch --config=${notmuch-config} new
+      notify-send "Mail Syncing"
+      mbsync -a &> /dev/null
+      notmuch --config=${notmuch-config} new &> /dev/null
+      notify-send "Mail Sync Done!"
     ''); in [
       (mail-sync)
     ];

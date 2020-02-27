@@ -30,23 +30,23 @@ let create-account = folder: email: signature: (pkgs.writeText folder ''
   environment.systemPackages = with pkgs; [
     neomutt
     elinks
-    urlview
+    urlscan
     xclip
   ];
 
   home-manager.users."${username}" = {
     home.file = {
       ".mailcap".text = ''
-        text/html; elinks -dump -no-numbering -no-references; copiousoutput;
+        text/html; elinks -dump -dump-color-mode 1 -no-numbering -no-references; copiousoutput;
         auto_view text/html
 
         image/*; sxiv %s; test=test -n "$DISPLAY";
         application/pdf; zathura %s; test=test -n "$DISPLAY"
       '';
 
-      ".urlview".text = ''
-        COMMAND xdg-open
-      '';
+      # ".urlview".text = ''
+      #   COMMAND xdg-open
+      # '';
 
       ".muttrc".text =
         let signature = (pkgs.writeText "sig" ''
@@ -289,8 +289,8 @@ let create-account = folder: email: signature: (pkgs.writeText folder ''
           bind  pager          tt  tag-message
           macro pager          tat "<exit><mark-message>q<enter><tag-thread>'q<display-message>"    "tag-thread"
 
-          macro index,pager    gx  "<pipe-message>urlview<Enter>"                                   "call urlview to extract URLs out of a message"
-          macro attach,compose gx  "<pipe-entry>urlview<Enter>"                                     "call urlview to extract URLs out of a message"
+          macro index,pager    gx  "<pipe-message>urlscan<Enter>"                                   "call urlscan to extract URLs out of a message"
+          macro attach,compose gx  "<pipe-entry>urlscan<Enter>"                                     "call urlscan to extract URLs out of a message"
 
           # bind pager           gg top
           # bind generic         gg first-entry
@@ -369,7 +369,7 @@ let create-account = folder: email: signature: (pkgs.writeText folder ''
 
           # Fetch mail shortcut
           unset wait_key
-          macro index r "<shell-escape>termite -e mail-sync &<enter>" "run mbsync and notmuch to sync all mail"
+          macro index r "<shell-escape>mail-sync &<enter>" "run mbsync and notmuch to sync all mail"
 
           set allow_ansi="yes"
 
