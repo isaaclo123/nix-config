@@ -7,8 +7,6 @@ let username = (import ./settings.nix).username; in
     (zathura.override {
       useMupdf = true;
     })
-    pandoc
-    texlive.combined.scheme-full
   ];
 
   home-manager.users."${username}" = {

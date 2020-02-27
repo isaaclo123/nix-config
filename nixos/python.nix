@@ -33,6 +33,7 @@ let my-python-packages = python-packages:
     flake8
     tensorflow
     numpy
+    scikitlearn
   ];
   python-with-my-packages = python3.withPackages my-python-packages;
 in

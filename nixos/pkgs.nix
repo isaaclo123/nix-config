@@ -124,6 +124,14 @@
       gimp
       bc
 
+      # pandoc
+      pandoc
+      haskellPackages.pandoc-citeproc
+      texlive.combined.scheme-full
+
+      # dot
+      graphviz
+
       # unclutter
       autocutsel
 
@@ -141,9 +149,12 @@
       python
       unrar
       unzip
+      zip
       xdotool
 
       # development tools
+      firejail
+
       # c
       manpages
       gnumake
@@ -155,6 +166,7 @@
       nodejs
       nodePackages.node2nix
       jupyter
+      jetbrains.jdk
 
       # network
       wireshark
@@ -186,6 +198,7 @@
       # games
       unstable.steam
       unstable.lutris
+      unstable.multimc
 
       # xorg
       xorg.xhost
@@ -205,5 +218,6 @@
       # system
       # busybox
       pciutils
+      unstable.skype
     ];
 }

@@ -369,7 +369,7 @@ let create-account = folder: email: signature: (pkgs.writeText folder ''
 
           # Fetch mail shortcut
           unset wait_key
-          macro index r "<shell-escape>mail-sync<enter>" "run mbsync and notmuch to sync all mail"
+          macro index r "<shell-escape>termite -e mail-sync &<enter>" "run mbsync and notmuch to sync all mail"
 
           set allow_ansi="yes"
 

@@ -47,6 +47,7 @@ in
       ''
         matrix-off: discordapp.com true
         matrix-off: umn.edu true
+        matrix-off: countryfinancial.com true
 
         ${rules-txt}
 
@@ -59,6 +60,25 @@ in
         discordservers.com ajax.cloudflare.com script allow
         discordservers.com cloudflare.com cookie allow
         discordservers.com discordapp.com cookie allow
+
+        bandcamp.com s4.bcbits.com script allow
+        bandcamp.com t4.bcbits.com media allow
+
+        soundcloud.com a-v2.sndcdn.com script allow
+        soundcloud.com a-v2.sndcdn.com xhr allow
+        soundcloud.com cf-hls-media.sndcdn.com xhr allow
+        soundcloud.com i1.sndcdn.com xhr allow
+        soundcloud.com style.sndcdn.com xhr allow
+        soundcloud.com wis.sndcdn.com xhr allow
+
+        vimeo.com player.vimeo.com frame allow
+        vimeo.com player.vimeo.com script allow
+        vimeo.com player.vimeo.com xhr allow
+        vimeo.com vimeocdn.com frame allow
+        vimeo.com vimeocdn.com other allow
+        vimeo.com vimeocdn.com plugin allow
+        vimeo.com vimeocdn.com script allow
+        vimeo.com vimeocdn.com xhr allow
       '';
 
       "qutebrowser/config.py".text =
@@ -108,6 +128,15 @@ in
               # anti adblock killer cont.
               "https://raw.githubusercontent.com/reek/anti-adblock-killer/master/anti-adblock-killer-filters.txt",
               "https://gitlab.com/xuhaiyang1234/AAK-Cont/raw/master/FINAL_BUILD/aak-cont-list-notubo.txt",
+
+              # "https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/filters.txt",
+              # "https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/annoyances.txt",
+              # "https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/badware.txt",
+              # "https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/privacy.txt",
+              # "https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/resource-abuse.txt",
+              # "https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/unbreak.txt",
+              # "https://www.malwaredomainlist.com/hostslist/hosts.txt",
+              # "https://pgl.yoyo.org/adservers/serverlist.php?hostformat=hosts&showintro=1&mimetype=plaintext",
             ])
 
             # User stylesheet (add floppymoose css rules http://www.floppymoose.com/)
@@ -467,7 +496,7 @@ in
             # c.colors.webpage.bg = BASE00
 
             # Font
-            c.fonts.monospace = "GohuFont"
+            c.fonts.default_family = "GohuFont"
             c.fonts.completion.category = "bold 14px monospace"
             c.fonts.completion.entry = "14px monospace"
             c.fonts.debug_console = "14px monospace"

@@ -195,7 +195,7 @@ in
     in
 
       with pkgs; [
-        (mpv-with-scripts.override {
+        (unstable.mpv-with-scripts.override {
           scripts = [
             # mpv-image-viewer
             "${mpv-image-viewer}/scripts/detect-image.lua"
@@ -237,7 +237,7 @@ in
 
             # youtube-quality
             (fetchurl {
-              url = "https://raw.githubusercontent.com/jgreco/mpv-youtube-quality/d03278f07bd8e202845f4a8a5b7761d98ad71878/youtube-quality.lua";
+              url = "https://raw.githubusercontent.com/jgreco/mpv-youtube-quality/1f8c31457459ffc28cd1c3f3c2235a53efad7148/youtube-quality.lua";
               sha256 = "0fi1b4r5znp2k2z590jrrbn6wirx7nggjcl1frkcwsv7gmhjl11l";
             })
 
@@ -277,6 +277,7 @@ in
         (mpv-window-open)
         unstable.gallery-dl
         mpvc
+        ffmpeg-full
 
         nodePackages.peerflix
       ];
@@ -319,8 +320,8 @@ in
         mpv-gallery-view = (pkgs.fetchFromGitHub {
           owner = "occivink";
           repo = "mpv-gallery-view";
-          rev = "4ecf6d72523b1385f4122d69b9045b447dfbb4f8";
-          sha256 = "0mwkmy95f1jl6cli0arvp6xh02rdp41ylal5pg9cdrvfrnjvqn67";
+          rev = "da97cc6142a7cd566414f007df8fb30a46115568";
+          sha256 = "1fwlz37k93n046dx56d0iaka8bzbkap76xkw4anh2hlgnbx7rq2j";
         });
       in
 
@@ -362,7 +363,7 @@ in
           cache_directory=${mpv-thumbs-cache}
           autogenerate=yes
           autogenerate_max_duration=1800
-          prefer_mpv=yes
+          prefer_mpv=no
           mpv_no_sub=no
           disable_keybinds=no
           thumbnail_width=150
