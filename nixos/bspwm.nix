@@ -106,7 +106,7 @@ let autostarted-status = "/tmp/autostarted-status.lock"; in
         mpv-scratchpad &
 
         NOTIFY=off bluetooth-toggle off &
-        NOTIFY=off touchpad-toggle off &
+        # NOTIFY=off touchpad-toggle off &
         NOTIFY=off touchscreen-toggle off &
 
         # create autostarted status file

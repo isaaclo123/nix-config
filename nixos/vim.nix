@@ -105,6 +105,10 @@ in
           autocmd GUIEnter * set visualbell t_vb=
         endif
 
+        " polyglot
+
+        let g:polyglot_disabled = ['py', 'md']
+
         " rainbow parenthesis
         let g:rainbow_active = 1
 
@@ -433,24 +437,34 @@ in
               #   };
               # })
 
-              # (pkgs.vimUtils.buildVimPlugin {
-              #   name = "vim-pandoc";
-              #   src = pkgs.fetchFromGitHub {
-              #     owner = "vim-pandoc";
-              #     repo = "vim-pandoc";
-              #     rev = "4f1d28c7c10376b8f03ea89e31be71419549fbb9";
-              #     sha256 = "1wc7fcamblpjym4vs38spdlpj58r0lm33c1fxzbrl107yj4902w3";
-              #   };
-              # })
+              (pkgs.vimUtils.buildVimPlugin {
+                name = "vim-pandoc";
+                src = pkgs.fetchFromGitHub {
+                  owner = "vim-pandoc";
+                  repo = "vim-pandoc";
+                  rev = "c473c298d570622d520f455698a95356e55d6dcf";
+                  sha256 = "1j4plsm7md6yhis8bmgznwln12gnnm0lg9wvxgydqd6wxrc6hfnd";
+                };
+              })
+
+              (pkgs.vimUtils.buildVimPlugin {
+                name = "vim-pandoc-syntax";
+                src = pkgs.fetchFromGitHub {
+                  owner = "vim-pandoc";
+                  repo = "vim-pandoc-syntax";
+                  rev = "0d1129e5cf1b0e3a90e923c3b5f40133bf153f7c";
+                  sha256 = "162l2p8md8lfyfjxzlmlz5ky5kvvr6wjmdk8r8lk6ygpkl2b51f7";
+                };
+              })
 
               editorconfig-vim
               vim-polyglot
               vim-nix
               ale
               vim-airline
-              vim-pandoc
-              vim-pandoc-syntax
+
               vim-pandoc-after
+
               vim-speeddating
               vim-easymotion
               vim-css-color

@@ -154,6 +154,7 @@
 
       # development tools
       firejail
+      patchelf
 
       # c
       manpages
@@ -199,6 +200,8 @@
       unstable.steam
       unstable.lutris
       unstable.multimc
+      unstable.logmein-hamachi
+      ngrok
 
       # xorg
       xorg.xhost
@@ -218,6 +221,5 @@
       # system
       # busybox
       pciutils
-      unstable.skype
     ];
 }

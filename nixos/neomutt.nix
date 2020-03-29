@@ -30,7 +30,7 @@ let create-account = folder: email: signature: (pkgs.writeText folder ''
   environment.systemPackages = with pkgs; [
     neomutt
     elinks
-    urlscan
+    unstable.urlscan
     xclip
   ];
 
@@ -62,14 +62,17 @@ let create-account = folder: email: signature: (pkgs.writeText folder ''
         let school = create-account "School" "loxxx298@umn.edu" signature; in ''
           # editor settings
 
-          set folder = ~/.mail
           # set editor="vim \"+set spell colorcolumn=80\" +/^$/ -c \"noh\" -c \"+set tw=80\""
+          # set postpone=no
+
+          set folder = ~/.mail
           set editor="vim"
           set edit_headers = yes
           set autoedit
           set auto_tag = yes
           set recall=ask-yes
-          # set postpone=no
+          set text_flowed=yes
+          set send_charset="us-ascii:utf-8"
 
           ## COLOR START
 
@@ -384,6 +387,150 @@ let create-account = folder: email: signature: (pkgs.writeText folder ''
           folder-hook Personal/* source ${personal}
           folder-hook School/*   source ${school}
         '';
+    };
+
+    xdg.configFile = {
+      "urlscan/config.json".text = ''
+        {
+            "palettes": {
+                "default": [
+                    [
+                        "header",
+                        "dark magenta",
+                        "black",
+                        "standout"
+                    ],
+                    [
+                        "footer",
+                        "white",
+                        "black",
+                        "standout"
+                    ],
+                    [
+                        "search",
+                        "black",
+                        "brown",
+                        "standout"
+                    ],
+                    [
+                        "msgtext",
+                        "",
+                        ""
+                    ],
+                    [
+                        "msgtext:ellipses",
+                        "light gray",
+                        "black"
+                    ],
+                    [
+                        "urlref:number:braces",
+                        "light gray",
+                        "black"
+                    ],
+                    [
+                        "urlref:number",
+                        "yellow",
+                        "black",
+                        "standout"
+                    ],
+                    [
+                        "urlref:url",
+                        "white",
+                        "black",
+                        "standout"
+                    ],
+                    [
+                        "url:sel",
+                        "light cyan",
+                        "black",
+                        "bold"
+                    ]
+                ],
+                "bw": [
+                    [
+                        "header",
+                        "black",
+                        "light gray",
+                        "standout"
+                    ],
+                    [
+                        "footer",
+                        "black",
+                        "light gray",
+                        "standout"
+                    ],
+                    [
+                        "search",
+                        "black",
+                        "light gray",
+                        "standout"
+                    ],
+                    [
+                        "msgtext",
+                        "",
+                        ""
+                    ],
+                    [
+                        "msgtext:ellipses",
+                        "white",
+                        "black"
+                    ],
+                    [
+                        "urlref:number:braces",
+                        "white",
+                        "black"
+                    ],
+                    [
+                        "urlref:number",
+                        "white",
+                        "black",
+                        "standout"
+                    ],
+                    [
+                        "urlref:url",
+                        "white",
+                        "black",
+                        "standout"
+                    ],
+                    [
+                        "url:sel",
+                        "black",
+                        "light gray",
+                        "bold"
+                    ]
+                ]
+            },
+            "keys": {
+                "/": "search_key",
+                "0": "digits",
+                "1": "digits",
+                "2": "digits",
+                "3": "digits",
+                "4": "digits",
+                "5": "digits",
+                "6": "digits",
+                "7": "digits",
+                "8": "digits",
+                "9": "digits",
+                "C": "clipboard",
+                "c": "context",
+                "ctrl l": "clear_screen",
+                "f1": "help_menu",
+                "G": "bottom",
+                "g": "top",
+                "j": "down",
+                "k": "up",
+                "P": "clipboard_pri",
+                "l": "link_handler",
+                "p": "palette",
+                "Q": "quit",
+                "q": "quit",
+                "S": "all_shorten",
+                "s": "shorten",
+                "u": "all_escape"
+            }
+        }
+      '';
     };
   };
 }

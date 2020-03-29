@@ -51,6 +51,8 @@ in
 
         ${rules-txt}
 
+        xda-developers.com xda-cdn.com script allow
+
         discordapp.com 127.0.0.1 xhr allow
         discordapp.com discord.gg * allow
         discordapp.com gateway.discord.gg xhr allow
@@ -79,6 +81,10 @@ in
         vimeo.com vimeocdn.com plugin allow
         vimeo.com vimeocdn.com script allow
         vimeo.com vimeocdn.com xhr allow
+
+        #eBay
+        ebay.com ebayrtm.com script allow
+        ebay.com ebaystatic.com script allow
       '';
 
       "qutebrowser/config.py".text =

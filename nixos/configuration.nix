@@ -160,7 +160,7 @@ in
   # };
 
   # Set your time zone.
-  time.timeZone = "America/Chicago";
+  time.timeZone = "America/Los_Angeles";
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -207,7 +207,7 @@ in
   networking.firewall.allowedTCPPorts = [ ];
   networking.firewall.allowedUDPPorts = [ ];
   # Or disable the firewall altogether.
-  networking.firewall.enable = true;
+  networking.firewall.enable = false;
 
   # Enable CUPS to print documents.
   services.printing.enable = true;

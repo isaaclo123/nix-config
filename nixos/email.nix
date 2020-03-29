@@ -13,6 +13,7 @@ let notmuch-config = "${homedir}/.config/notmuch/notmuchrc"; in
       notify-send "Mail Syncing"
       mbsync -a &> /dev/null
       notmuch --config=${notmuch-config} new &> /dev/null
+      afew -t -n
       notify-send "Mail Sync Done!"
     ''); in [
       (mail-sync)
@@ -127,11 +128,24 @@ let notmuch-config = "${homedir}/.config/notmuch/notmuchrc"; in
       mbsync = {
         enable = true;
         frequency = "*:0/30";
-        postExec = "${pkgs.notmuch}/bin/notmuch --config=${notmuch-config} new";
+        postExec = ''
+          ${pkgs.notmuch}/bin/notmuch --config=${notmuch-config} new;
+          ${pkgs.afew}/bin/afew -t -n
+        '';
       };
     };
 
     programs = {
+      afew = {
+        enable = true;
+        extraConfig = ''
+          [SpamFilter]
+          [KillThreadsFilter]
+          [ArchiveSentMailsFilter]
+          [InboxFilter]
+        '';
+      };
+
       notmuch = {
         enable = true;
         new.tags = [ "new" "unread" ];

@@ -40,9 +40,10 @@ in
 
 {
   environment.systemPackages = with pkgs; [
+    unstable.pipenv
+
     python-with-my-packages
     pypi2nix
-    pipenv
     opencv
     pkg-config
   ];

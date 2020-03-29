@@ -13,6 +13,7 @@ let todo-map-string = config-map:
 {
   environment.systemPackages = with pkgs; [
     todo-txt-cli
+    grc
   ];
 
   programs.zsh.promptInit = ''
@@ -20,9 +21,9 @@ let todo-map-string = config-map:
     t () {
         if [ -z "$1" ]
         then
-            todo.sh -ls -c -N -t -a
+            todo.sh -ls -c -N -t -A | grcat conf.todo
         else
-            todo.sh -c -N -t -a $@
+            todo.sh -c -N -t -A $@ | grcat conf.todo
         fi
     }
   '';
@@ -38,6 +39,18 @@ let todo-map-string = config-map:
           TMP_FILE="/tmp/todo.tmp";
           TODOTXT_DEFAULT_ACTION="ls";
           TODOTXT_SORT_COMMAND="env LC_COLLATE=C sort -k 2,2 -k 1,1n";
+
+          PRI_A="$NONE";
+          PRI_B="$NONE";
+          PRI_C="$NONE";
+          PRI_D="$NONE";
+          PRI_X="$NONE";
+          COLOR_DONE="$NONE";
+        });
+
+        ".grc/conf.todo".source = (pkgs.fetchurl {
+          url = "https://raw.githubusercontent.com/sceox/todo.txt-color/master/conf.todo";
+          sha256 = "1szwwin6kkbmdj92qjr5lx5zb9brh3jbxi4qgsnmiqqkm7k1y9ax";
         });
     };
   };

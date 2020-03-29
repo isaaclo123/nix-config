@@ -363,7 +363,7 @@ in
           cache_directory=${mpv-thumbs-cache}
           autogenerate=yes
           autogenerate_max_duration=1800
-          prefer_mpv=no
+          prefer_mpv=yes
           mpv_no_sub=no
           disable_keybinds=no
           thumbnail_width=150

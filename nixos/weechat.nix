@@ -31,8 +31,8 @@ let nixos-weechat = (with import <nixpkgs> {};
 
         vimode = attrs: {
           src = pkgs.fetchurl {
-            url = "https://raw.githubusercontent.com/GermainZ/weechat-vimode/4e926c39bd21de15c146e2a0bea1b85684ef08f2/vimode.py";
-            sha256 = "0wjvh08rdlpxfm1k770hpi2f7qkfm8vszcm4qk7hag63crpd78kp";
+            url = "https://raw.githubusercontent.com/GermainZ/weechat-vimode/f31f445368be36bd5bdd856076a39fc9df5b7d39/vimode.py";
+            sha256 = "0hpamwza1kwscxa05jh45haf2cnwf5hx8jcnyw64dnxiqph9l5y4";
           };
         };
 
@@ -83,11 +83,10 @@ let nixos-weechat = (with import <nixpkgs> {};
               apply_corrections
               auto_away
               # autoconf
-              autoconnect
+              # autoconnect
               autojoin
               autosort
               bitlbee_completion
-              auto_away
               buffer_autoclose
               bitlbee_typing_notice
               colorize_nicks
