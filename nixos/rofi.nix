@@ -1,6 +1,9 @@
 { pkgs, ... }:
 
-let username = (import ./settings.nix).username; in
+let
+  username = (import ./settings.nix).username;
+  font = (import ./settings.nix).font;
+in
 
 {
   environment.systemPackages = with pkgs; [
@@ -9,22 +12,24 @@ let username = (import ./settings.nix).username; in
 
   home-manager.users."${username}" = {
     xdg.configFile = {
-      "rofi/config".text = ''
-        /*
-        ! ------------------------------------------------------------------------------
-        ! ROFI Color theme
-        ! ------------------------------------------------------------------------------
-        rofi.font: Gohu Font 14px
-        rofi.scrollbar-width: 0px
-        rofi.bw: 4px
-        rofi.padding: 12px
-        rofi.color-enabled: true
-        ! State:           'bg',    'fg',    'bgalt', 'hlbg',  'hlfg'
-        rofi.color-window: #202746, #6679cc, #202746
-        rofi.color-normal: #202746, #979db4, #202746, #6679cc, #f5f7ff
-        rofi.color-active: #202746, #22a2c9, #f5f7ff, #22a2c9, #f5f7ff
-        rofi.color-urgent: #202746, #3d8fd1, #202746, #3d8fd1, #f5f7ff
-        */
+      "rofi/gruvbox-common.rasi".source =
+        (pkgs.fetchurl {
+          url = "https://raw.githubusercontent.com/bardisty/gruvbox-rofi/0b4cf703087e2150968826b7508cf119437eba7a/gruvbox-common.rasi";
+          sha256= "1y7xrgm3443pag3nm287g9pdzcqynh8zpys7l6wiyhx2frv6dl8k";
+        });
+
+      "rofi/gruvbox-dark-hard.rasi".source =
+        (pkgs.fetchurl {
+          url = "https://raw.githubusercontent.com/bardisty/gruvbox-rofi/0b4cf703087e2150968826b7508cf119437eba7a/gruvbox-dark-hard.rasi";
+          sha256= "1w59bc6amhdyyznvznwbzj445dy214mrl3zx5h74x4h1p47jsx4b";
+        });
+
+      "rofi/config.rasi".text = ''
+        window {
+          font: "${font.mono} ${toString font.size}";
+        }
+
+        @import "gruvbox-dark-hard.rasi"
       '';
     };
   };

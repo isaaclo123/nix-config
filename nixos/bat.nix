@@ -1,8 +1,11 @@
 { pkgs, lib, ... }:
 
-let username = (import ./settings.nix).username; in
+let
+  username = (import ./settings.nix).username;
+  theme = (import ./settings.nix).theme;
+in
 
-let bat-theme-name = "base16-atelier-sulphurpool"; in
+let bat-theme-name = theme.name; in
 
 let bat-syntax-map-string = syntax-map:
   lib.concatMapStringsSep "\n"
@@ -53,8 +56,8 @@ let bat-syntax-map-string = syntax-map:
 
       "bat/themes/${bat-theme-name}/${bat-theme-name}.tmTheme".source =
         (pkgs.fetchurl {
-          url = "https://raw.githubusercontent.com/chriskempson/base16-textmate/cab66929126a14acafe37cf9c24c9e700716cd5a/Themes/base16-atelier-sulphurpool.tmTheme";
-          sha256= "01zi9kpylbkvd9anwqgqjad8qc6nnyaqbmjacfy9vaz5fvm9ki3j";
+          url = "https://raw.githubusercontent.com/peaceant/gruvbox/e3db74d0e5de7bc09cab76377723ccf6bcc64e8c/gruvbox.tmTheme";
+          sha256= "1lwjyd2x25csr1ssamjjrj042dkjziy2v7yp579x3ps1bym43zs3";
         });
 
       "bat/syntaxes/vue-syntax-highlight".source =

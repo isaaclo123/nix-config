@@ -2,33 +2,37 @@
 
 with import <nixpkgs> {};
 
-let username = (import ./settings.nix).username; in
+let
+  username = (import ./settings.nix).username;
+  font = (import ./settings.nix).font;
+in
 
 {
   fonts = {
     fonts = with pkgs; [
       unifont
       unifont_upper
-      dejavu_fonts
-      gohufont
-      font-awesome_4
+      latinmodern-math
+      symbola
       corefonts
       vistafonts
+      nerdfonts
     ];
 
     fontconfig = {
       # dpi = 96;
 
       defaultFonts = {
-        monospace = [ "GohuFont" ];
-        sansSerif = [ "DejaVu Sans" ];
-        serif = [ "DejaVu Serif" ];
+        monospace = [ font.mono ];
+        # sansSerif = [ font.sansSerif ];
+        # serif = [ font.serif ];
       };
 
-      ultimate.enable = false;
-      penultimate.enable = true;
+      ultimate.enable = true;
+      penultimate.enable = false;
 
-      # useEmbeddedBitmaps = true;
+      allowBitmaps = true;
+      useEmbeddedBitmaps = true;
     };
 
     enableDefaultFonts = true;
@@ -40,46 +44,45 @@ let username = (import ./settings.nix).username; in
       enable = true;
 
       font = {
-        name = "GohuFont 14";
-        package = pkgs.gohufont;
+        name = "${font.mono} ${toString font.size}";
       };
 
       theme = {
-        name = "oomox-sulphurpool";
+        name = "gruvbox-dark-gtk";
         package =
           (stdenv.mkDerivation rec {
-            name = "oomox-sulphurpool";
+            name = "gruvbox-dark-gtk";
             src = pkgs.fetchFromGitHub {
-              owner = "isaaclo123";
-              repo = "oomox-sulphurpool-theme";
-              rev = "fdac1d11b5c7dd01ef483fdac6096e84e43ed7ed";
-              sha256 = "1x6c7hg8bq3zy7py0sj75inmypxx2psgc73myipgqx1bx01qml1g";
+              owner = "jmattheis";
+              repo = "gruvbox-dark-gtk";
+              rev = "a02c2286855a7fea3d5f17e2257c78f961afc944";
+              sha256 = "1j6080bvhk5ajmj7rc8sdllzz81iyafqic185nrqsmlngvjrs83h";
             };
 
             dontBuild = true;
             installPhase = ''
-              mkdir -p $out/share/themes/oomox-sulphurpool/
-              cp -r . $out/share/themes/oomox-sulphurpool/
+              mkdir -p $out/share/themes/gruvbox-dark-gtk/
+              cp -r . $out/share/themes/gruvbox-dark-gtk/
             '';
           });
       };
 
       iconTheme = {
-        name = "oomox-sulphurpool";
+        name = "gruvbox-dark-icons-gtk";
         package =
           (stdenv.mkDerivation rec {
-            name = "oomox-sulphurpool";
+            name = "gruvbox-dark-icons-gtk";
             src = pkgs.fetchFromGitHub {
-              owner = "isaaclo123";
-              repo = "oomox-sulphurpool-icons";
-              rev = "99c8b56dddb889d3ee6f9821d8294136c4e8d535";
-              sha256 = "183y5j9342vwh2h6fmcfs2zsqskni87f1p7n4grjx9yd6a1fdgr7";
+              owner = "jmattheis";
+              repo = "gruvbox-dark-icons-gtk";
+              rev = "4a247a56c78575e19b0e1a4e212b7afcb46499cc";
+              sha256 = "1fks2rrrb62ybzn8gqan5swcgksrb579vk37bx4xpwkc552dz2z2";
             };
 
             dontBuild = true;
             installPhase = ''
-              mkdir -p $out/share/icons/oomox-sulphurpool/
-              cp -r . $out/share/icons/oomox-sulphurpool/
+              mkdir -p $out/share/icons/gruvbox-dark-icons-gtk/
+              cp -r . $out/share/icons/gruvbox-dark-icons-gtk/
             '';
           });
       };

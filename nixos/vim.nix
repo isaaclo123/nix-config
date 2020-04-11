@@ -3,7 +3,13 @@
 let
   homedir = (import ./settings.nix).homedir;
   username = (import ./settings.nix).username;
+  theme = (import ./settings.nix).theme;
+  color = (import ./settings.nix).color;
 in
+
+# let
+#   indentline-color = "#504945";
+# in
 
 {
   programs.vim.defaultEditor = true;
@@ -88,8 +94,11 @@ in
         set t_8f=^[[38;2;%lu;%lu;%lum
         set t_8b=^[[48;2;%lu;%lu;%lum
 
-        set background=dark
-        colorscheme Atelier_SulphurpoolDark
+        let g:gruvbox_contrast_dark = 'hard'
+        let g:gruvbox_italic=1
+
+        set background=${theme.background}
+        colorscheme ${theme.name}
 
         set termguicolors
         if has('nvim')
@@ -113,8 +122,8 @@ in
         let g:rainbow_active = 1
 
         let g:rainbow_conf = {
-        \	'guifgs': ['#c94922', '#ac9739', '#c08b30', '#3d8fd1', '#6679cc', '#22a2c9', '#c76b29', '#9c637a'],
-        \	'ctermfgs': ['1', '2', '3', '4', '5', '6', '16', '17'],
+        \	'guifgs': ['${color.red}', '${color.green}', '${color.yellow}', '${color.blue}', '${color.purple}', '${color.cyan}'],
+        \	'ctermfgs': ['1', '2', '3', '4', '5', '6'],
         \}
 
         " nix folding
@@ -250,7 +259,7 @@ in
         let g:airline#extensions#ale#enabled = 1
         let g:airline#extensions#tabline#enabled = 1
         let g:airline#extensions#tabline#show_buffers = 0
-        let g:airline_theme='Atelier_SulphurpoolDark'
+        let g:airline_theme='${theme.name}'
         let g:airline#extensions#wordcount#enabled = 1
         let g:airline#extensions#wordcount#filetypes = ['help', 'markdown', 'rst', 'org', 'text', 'asciidoc', 'tex', 'mail', 'pandoc']
 
@@ -259,6 +268,9 @@ in
         let g:ale_fix_on_save = 1
         let g:ale_completion_enabled = 1
         let g:ale_completion_tsserver_autoimport = 1
+
+        nmap <silent> [l <Plug>(ale_previous_wrap)
+        nmap <silent> ]l <Plug>(ale_next_wrap)
 
         " ale fixers
         let g:ale_fixers = {
@@ -310,7 +322,7 @@ in
 
         " indentLine
         let g:indentLine_setColors = 1
-        let g:indentLine_color_gui = '#5E6687'
+        let g:indentLine_color_gui = '${color.gray}'
         let g:indentLine_concealcursor = 'inc'
         let g:indentLine_conceallevel = 2
         let g:indentLine_fileTypeExclude = ['markdown', 'pandoc']
@@ -352,15 +364,15 @@ in
         configure = {
           packages.myVimPackage = {
             start = with pkgs.vimPlugins; [
-              (pkgs.vimUtils.buildVimPlugin {
-                name = "vim-colors_atelier-schemes";
-                src = pkgs.fetchFromGitHub {
-                  owner = "atelierbram";
-                  repo = "vim-colors_atelier-schemes";
-                  rev = "ccdd1558b172da6928db7d27d43da75df0444ed9";
-                  sha256 = "14iwc9g88b6p4pjigvc7rd2x8f5xcz1ajd74i7l7i71ys8dpdcga";
-                };
-              })
+              # (pkgs.vimUtils.buildVimPlugin {
+              #   name = "gruvbox";
+              #   src = pkgs.fetchFromGitHub {
+              #     owner = "morhetz";
+              #     repo = "gruvbox";
+              #     rev = "040138616bec342d5ea94d4db296f8ddca17007a";
+              #     sha256 = "0qk2mqs04qlxkc1ldgjbiv1yisi2xl2b8svmjz0hdp9y2l5vfccw";
+              #   };
+              # })
 
               (pkgs.vimUtils.buildVimPlugin {
                 name = "vim-wordmotion";
@@ -456,6 +468,8 @@ in
                   sha256 = "162l2p8md8lfyfjxzlmlz5ky5kvvr6wjmdk8r8lk6ygpkl2b51f7";
                 };
               })
+
+              gruvbox
 
               editorconfig-vim
               vim-polyglot

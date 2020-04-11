@@ -1,6 +1,10 @@
 { pkgs, ... }:
 
-let username = (import ./settings.nix).username; in
+let
+  username = (import ./settings.nix).username;
+  font = (import ./settings.nix).font;
+  spacing = (import ./settings.nix).spacing;
+in
 
 let toggle-lock = "/tmp/termite-scratchpad-toggle.lock"; in
 
@@ -27,29 +31,76 @@ let toggle-lock = "/tmp/termite-scratchpad-toggle.lock"; in
       (termite-open)
       (termite-scratchpad)
       (termite-scratchpad-toggle)
-      termite
+      unstable.termite
     ];
 
   home-manager.users."${username}" = {
     gtk.gtk3.extraCss = ''
       .termite {
-        padding: 14px;
+        padding: ${toString spacing.padding}px;
       }
     '';
 
     xdg.configFile = {
       "termite/config".text =
-        (builtins.readFile (pkgs.fetchurl {
-          url = "https://raw.githubusercontent.com/khamer/base16-termite/8f34cab45ebcd73f23321f82204532353edf581f/themes/base16-atelier-sulphurpool.config";
-          sha256 = "0kab000aj67sip821rj2aka80jrphh9k125k7gc88mqz3ac7i33r";
-        })) + ''
+        # (builtins.readFile (pkgs.fetchurl {
+        #   url = "https://raw.githubusercontent.com/morhetz/gruvbox-contrib/master/termite/gruvbox-dark";
+        #   sha256 = "0pza2d78jqq0cssyirgsxwb4lvgzcp6m64q57ghi3qmhqgswcyp9";
+        # }))
+        # hard contrast
+        # background = #282828
+        # soft contrast: background = #32302f
+        ''
+          [colors]
+          background = #1d2021
+          foreground = #ebdbb2
+          foreground_bold = #ebdbb2
+
+          # dark0 + gray
+          color0 = #1d2021
+          color8 = #928374
+
+          # neutral_red + bright_red
+          color1 = #cc241d
+          color9 = #fb4934
+
+          # neutral_green + bright_green
+          color2 = #98971a
+          color10 = #b8bb26
+
+          # neutral_yellow + bright_yellow
+          color3 = #d79921
+          color11 = #fabd2f
+
+          # neutral_blue + bright_blue
+          color4 = #458588
+          color12 = #83a598
+
+          # neutral_purple + bright_purple
+          color5 = #b16286
+          color13 = #d3869b
+
+          # neutral_aqua + faded_aqua
+          color6 = #689d6a
+          color14 = #8ec07c
+
+          # light4 + light1
+          color7 = #a89984
+          color15 = #ebdbb2
+
+          color16 = #3c3836
+
+          # vim: ft=dosini cms=#%s
+
           [options]
-          font = FontAwesome 9px
-          font = Unifont Upper 14px
-          font = Unifont 14px
-          font = GohuFont 14px
+          font = Unifont Upper ${toString font.size}
+          font = Unifont ${toString font.size}
+          font = Symbola ${toString font.size}
+          font = Latin Modern Math ${toString font.size}
+          font = ${font.mono} ${toString font.size}
           fullscreen = false
         '';
+        # font = Unifont ${toString font.size}
     };
   };
 }

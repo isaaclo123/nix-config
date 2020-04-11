@@ -3,6 +3,7 @@
 let
   username = (import ./settings.nix).username;
   homedir = (import ./settings.nix).homedir;
+  font = (import ./settings.nix).font;
 in
 
 # Qutebrowser config.py
@@ -31,8 +32,8 @@ in
   home-manager.users."${username}" = {
     home.file = {
       ".local/share/qutebrowser/greasemonkey/anti-adblock-killer.user.js".source = pkgs.fetchurl {
-            url = "https://raw.githubusercontent.com/reek/anti-adblock-killer/9a933f417f0fd074935b23ef2d8ad0fa0c62631c/anti-adblock-killer.user.js";
-            sha256 = "0way11wrl9lpmi4s8l99is8s2vfnm0r8358zs769x9pfbjahxqp2";
+        url = "https://raw.githubusercontent.com/reek/anti-adblock-killer/9a933f417f0fd074935b23ef2d8ad0fa0c62631c/anti-adblock-killer.user.js";
+        sha256 = "0way11wrl9lpmi4s8l99is8s2vfnm0r8358zs769x9pfbjahxqp2";
       };
     };
 
@@ -89,10 +90,15 @@ in
 
       "qutebrowser/config.py".text =
         let
+          theme = pkgs.fetchurl {
+            url = "https://raw.githubusercontent.com/theova/base16-qutebrowser/c5da33b3d50cd30f18a50beac8bb2219c11213d9/themes/minimal/base16-gruvbox-dark-hard.config.py";
+            sha256 = "1b1klfpgg0afg1jgpycx87d3f002ccv391nbkz0jz6grnbq79n2s";
+          };
+
           jblock = pkgs.fetchgit {
             url = "https://gitlab.com/jgkamat/jblock";
-            rev = "efd8d5b065d7b6bd8908aa082c8013c02486c8f4";
-            sha256 = "1drh4rmvr5gp9byfqwish78vwm4shmwn1lqhfzrfxg903yk2c7iy";
+            rev = "7e2779336bdffeb72184a559d8366dd2c73ca98f";
+            sha256 = "0ykcg3fzdn944r674q8bk8wciz0ags8pssfmf6j6db9qpv9c6rvy";
           };
 
           jmatrix = pkgs.fetchgit {
@@ -106,6 +112,14 @@ in
             sha256 = "0bmlm6aslvgczzwpy1ijbi6h6f0n1qva4453ls5gv7x40c3qg8mq";
           }; in ''
             import sys, os
+
+            # START THEME
+
+            ${builtins.readFile theme}
+
+            c.colors.webpage.bg = base07
+
+            # END THEME
 
             # Uncomment this to still load settings configured via autoconfig.yml
             # config.load_autoconfig()
@@ -180,6 +194,11 @@ in
             # Allow javascript to open tabs
             config.set('content.javascript.can_open_tabs_automatically', True)
 
+            # hiding tab bindings
+            config.bind('xx', 'config-cycle statusbar.hide ;; config-cycle tabs.show always switching')
+            config.bind('xt', 'config-cycle tabs.show always switching')
+            config.bind('xb', 'config-cycle statusbar.hide')
+
             # Bindings for normal mode
             config.unbind('d')
             config.unbind('D')
@@ -244,277 +263,20 @@ in
             # c.aliases["password-fill"] = "spawn --userscript ${pkgs.qutebrowser}/share/qutebrowser/userscripts/password_fill" # pylint: disable=line-too-long
             # config.bind('<z><z>', 'password-fill')
 
-            # Base16-qutebrowser (https://github.com/theova/base16-qutebrowser)
-            # Base16 qutebrowser template by theova
-            # Atelier Sulphurpool scheme by Bram de Haan (http://atelierbramdehaan.nl)
-
-            BASE00 = "#202746"
-            BASE01 = "#293256"
-            BASE02 = "#5e6687"
-            BASE03 = "#6b7394"
-            BASE04 = "#898ea4"
-            BASE05 = "#979db4"
-            BASE06 = "#dfe2f1"
-            BASE07 = "#f5f7ff"
-            BASE08 = "#c94922"
-            BASE09 = "#c76b29"
-            BASE0A = "#c08b30"
-            BASE0B = "#ac9739"
-            BASE0C = "#22a2c9"
-            BASE0D = "#3d8fd1"
-            BASE0E = "#6679cc"
-            BASE0F = "#9c637a"
-
-            # set qutebrowser colors
-
-            # Text color of the completion widget. May be a single color to use for
-            # all columns or a list of three colors, one for each column.
-            c.colors.completion.fg = BASE05
-
-            # Background color of the completion widget for odd rows.
-            c.colors.completion.odd.bg = BASE00
-
-            # Background color of the completion widget for even rows.
-            c.colors.completion.even.bg = BASE00
-
-            # Foreground color of completion widget category headers.
-            c.colors.completion.category.fg = BASE07
-
-            # Background color of the completion widget category headers.
-            c.colors.completion.category.bg = BASE01
-
-            # Top border color of the completion widget category headers.
-            c.colors.completion.category.border.top = BASE01
-
-            # Bottom border color of the completion widget category headers.
-            c.colors.completion.category.border.bottom = BASE01
-
-            # Foreground color of the selected completion item.
-            c.colors.completion.item.selected.fg = BASE07
-
-            # Background color of the selected completion item.
-            c.colors.completion.item.selected.bg = BASE0E
-
-            # Top border color of the completion widget category headers.
-            c.colors.completion.item.selected.border.top = BASE0E
-
-            # Bottom border color of the selected completion item.
-            c.colors.completion.item.selected.border.bottom = BASE0E
-
-            # Foreground color of the matched text in the completion.
-            c.colors.completion.match.fg = BASE07
-
-            # Color of the scrollbar handle in the completion view.
-            c.colors.completion.scrollbar.fg = BASE00
-
-            # Color of the scrollbar in the completion view.
-            c.colors.completion.scrollbar.bg = BASE00
-
-            # Background color for the download bar.
-            c.colors.downloads.bar.bg = BASE01
-
-            # Color gradient start for download text.
-            c.colors.downloads.start.fg = BASE00
-
-            # Color gradient start for download backgrounds.
-            c.colors.downloads.start.bg = BASE0D
-
-            # Color gradient end for download text.
-            c.colors.downloads.stop.fg = BASE00
-
-            # Color gradient stop for download backgrounds.
-            c.colors.downloads.stop.bg = BASE0C
-
-            # Foreground color for downloads with errors.
-            c.colors.downloads.error.fg = BASE09
-
-            # Font color for hints.
-            c.colors.hints.fg = BASE07
-
-            # Background color for hints. Note that you can use a `rgba(...)` value
-            # for transparency.
-            c.colors.hints.bg = BASE0E
-
-            # Font color for the matched part of hints.
-            c.colors.hints.match.fg = BASE06
-
-            # border color for the matched part of hints.
-            # c.hints.border = BASE0E
-            config.set('hints.border', '1px solid {}'.format(BASE06))
-
-            # Text color for the keyhint widget.
-            c.colors.keyhint.fg = BASE05
-
-            # Highlight color for keys to complete the current keychain.
-            c.colors.keyhint.suffix.fg = BASE07
-
-            # Background color of the keyhint widget.
-            c.colors.keyhint.bg = BASE01
-
-            # Foreground color of an error message.
-            c.colors.messages.error.fg = BASE00
-
-            # Background color of an error message.
-            c.colors.messages.error.bg = BASE09
-
-            # Border color of an error message.
-            c.colors.messages.error.border = BASE09
-
-            # Foreground color of a warning message.
-            c.colors.messages.warning.fg = BASE00
-
-            # Background color of a warning message.
-            c.colors.messages.warning.bg = BASE0E
-
-            # Border color of a warning message.
-            c.colors.messages.warning.border = BASE0E
-
-            # Foreground color of an info message.
-            c.colors.messages.info.fg = BASE05
-
-            # Background color of an info message.
-            c.colors.messages.info.bg = BASE00
-
-            # Border color of an info message.
-            c.colors.messages.info.border = BASE00
-
-            # Foreground color for prompts.
-            c.colors.prompts.fg = BASE05
-
-            # Border used around UI elements in prompts.
-            c.colors.prompts.border = BASE00
-
-            # Background color for prompts.
-            c.colors.prompts.bg = BASE00
-
-            # Background color for the selected item in filename prompts.
-            c.colors.prompts.selected.bg = BASE0A
-
-            # Foreground color of the statusbar.
-            c.colors.statusbar.normal.fg = BASE0B
-
-            # Background color of the statusbar.
-            c.colors.statusbar.normal.bg = BASE01
-
-            # Foreground color of the statusbar in insert mode.
-            c.colors.statusbar.insert.fg = BASE00
-
-            # Background color of the statusbar in insert mode.
-            c.colors.statusbar.insert.bg = BASE0D
-
-            # Foreground color of the statusbar in passthrough mode.
-            c.colors.statusbar.passthrough.fg = BASE00
-
-            # Background color of the statusbar in passthrough mode.
-            c.colors.statusbar.passthrough.bg = BASE0C
-
-            # Foreground color of the statusbar in private browsing mode.
-            c.colors.statusbar.private.fg = BASE07
-
-            # Background color of the statusbar in private browsing mode.
-            c.colors.statusbar.private.bg = BASE02
-
-            # Foreground color of the statusbar in command mode.
-            c.colors.statusbar.command.fg = BASE05
-
-            # Background color of the statusbar in command mode.
-            c.colors.statusbar.command.bg = BASE01
-
-            # Foreground color of the statusbar in private browsing + command mode.
-            c.colors.statusbar.command.private.fg = BASE07
-
-            # Background color of the statusbar in private browsing + command mode.
-            c.colors.statusbar.command.private.bg = BASE02
-
-            # Foreground color of the statusbar in caret mode.
-            c.colors.statusbar.caret.fg = BASE00
-
-            # Background color of the statusbar in caret mode.
-            c.colors.statusbar.caret.bg = BASE0E
-
-            # Foreground color of the statusbar in caret mode with a selection.
-            c.colors.statusbar.caret.selection.fg = BASE00
-
-            # Background color of the statusbar in caret mode with a selection.
-            c.colors.statusbar.caret.selection.bg = BASE0D
-
-            # Background color of the progress bar.
-            c.colors.statusbar.progress.bg = BASE0D
-
-            # Default foreground color of the URL in the statusbar.
-            c.colors.statusbar.url.fg = BASE05
-
-            # Foreground color of the URL in the statusbar on error.
-            c.colors.statusbar.url.error.fg = BASE09
-
-            # Foreground color of the URL in the statusbar for hovered links.
-            c.colors.statusbar.url.hover.fg = BASE05
-
-            # Foreground color of the URL in the statusbar on successful load
-            # (http).
-            c.colors.statusbar.url.success.http.fg = BASE0C
-
-            # Foreground color of the URL in the statusbar on successful load
-            # (https).
-            c.colors.statusbar.url.success.https.fg = BASE0B
-
-            # Foreground color of the URL in the statusbar when there's a warning.
-            c.colors.statusbar.url.warn.fg = BASE0E
-
-            # Background color of the tab bar.
-            c.colors.tabs.bar.bg = BASE01
-
-            # Color gradient start for the tab indicator.
-            c.colors.tabs.indicator.start = BASE0D
-
-            # Color gradient end for the tab indicator.
-            c.colors.tabs.indicator.stop = BASE0C
-
-            # Color for the tab indicator on errors.
-            c.colors.tabs.indicator.error = BASE09
-
-            # Foreground color of unselected odd tabs.
-            c.colors.tabs.odd.fg = BASE05
-
-            # Background color of unselected odd tabs.
-            c.colors.tabs.odd.bg = BASE01
-
-            # Foreground color of unselected even tabs.
-            c.colors.tabs.even.fg = BASE05
-
-            # Background color of unselected even tabs.
-            c.colors.tabs.even.bg = BASE01
-
-            # Foreground color of selected odd tabs.
-            c.colors.tabs.selected.odd.fg = BASE07
-
-            # Background color of selected odd tabs.
-            c.colors.tabs.selected.odd.bg = BASE0E
-
-            # Foreground color of selected even tabs.
-            c.colors.tabs.selected.even.fg = BASE07
-
-            # Background color of selected even tabs.
-            c.colors.tabs.selected.even.bg = BASE0E
-
-            # Background color for webpages if unset (or empty to use the theme's
-            # color).
-            # c.colors.webpage.bg = BASE00
-
             # Font
-            c.fonts.default_family = "GohuFont"
-            c.fonts.completion.category = "bold 14px monospace"
-            c.fonts.completion.entry = "14px monospace"
-            c.fonts.debug_console = "14px monospace"
-            c.fonts.downloads = "14px monospace"
-            c.fonts.hints = "bold 14px monospace"
-            c.fonts.keyhint = "14px monospace"
-            c.fonts.messages.error = "14px monospace"
-            c.fonts.messages.info = "14px monospace"
-            c.fonts.messages.warning = "14px monospace"
-            c.fonts.prompts = "14px monospace"
-            c.fonts.statusbar = "14px monospace"
-            c.fonts.tabs = "14px monospace"
+            c.fonts.default_family = "${font.mono}"
+            c.fonts.completion.category = "bold ${toString font.size}.0pt ${font.mono}"
+            c.fonts.completion.entry = "${toString font.size}.0pt ${font.mono}"
+            c.fonts.debug_console = "${toString font.size}.0pt ${font.mono}"
+            c.fonts.downloads = "${toString font.size}.0pt ${font.mono}"
+            c.fonts.hints = "bold ${toString font.size}.0pt ${font.mono}"
+            c.fonts.keyhint = "${toString font.size}.0pt ${font.mono}"
+            c.fonts.messages.error = "${toString font.size}.0pt ${font.mono}"
+            c.fonts.messages.info = "${toString font.size}.0pt ${font.mono}"
+            c.fonts.messages.warning = "${toString font.size}.0pt ${font.mono}"
+            c.fonts.prompts = "${toString font.size}.0pt ${font.mono}"
+            c.fonts.statusbar = "${toString font.size}.0pt ${font.mono}"
+            c.fonts.tabs = "${toString font.size}.0pt ${font.mono}"
           '';
         };
   };

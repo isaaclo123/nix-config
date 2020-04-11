@@ -13,10 +13,10 @@
       "name != 'mpvscratchpad'"
     ];
 
-    vSync = "drm";
-    extraOptions = ''
+    vSync = true;
+    settings = {
       shadow-radius = 4;
       paint-on-overlay = true;
-    '';
+    };
   };
 }

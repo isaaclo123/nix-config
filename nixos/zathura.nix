@@ -1,6 +1,9 @@
 { pkgs, ... }:
 
-let username = (import ./settings.nix).username; in
+let
+  username = (import ./settings.nix).username;
+  color = (import ./settings.nix).color;
+in
 
 {
   environment.systemPackages = with pkgs; [
@@ -12,13 +15,13 @@ let username = (import ./settings.nix).username; in
   home-manager.users."${username}" = {
     xdg.configFile = {
       "zathura/zathurarc".text = ''
-        set recolor-darkcolor "#ffffff"
-        set recolor-lightcolor "#202746"
+        set recolor-darkcolor "${color.fg}"
+        set recolor-lightcolor "${color.bg}"
         set recolor true
 
         # colors
-        set statusbar-fg "#f5f7ff"
-        set statusbar-bg "#293256"
+        set statusbar-fg "${color.gray}"
+        set statusbar-bg "${color.darkgray}"
 
         # keybindings
         map [fullscreen] a adjust_window best-fit

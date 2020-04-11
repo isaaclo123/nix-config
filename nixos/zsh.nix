@@ -25,12 +25,12 @@
     plugins = [
       "git"
       "sudo"
-      "ssh"
+      # "ssh-agent"
       "vi-mode"
       "colored-man-pages"
       "history-substring-search"
     ];
-    theme = "clean";
+    theme = "bira";
     # cacheDir = "/tmp/.ohmyzsh-$USER";
     customPkgs = with pkgs;
       [ pkgs.zsh-completions pkgs.nix-zsh-completions ];

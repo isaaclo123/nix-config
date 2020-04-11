@@ -1,318 +1,431 @@
 { pkgs, ... }:
 
-let username = (import ./settings.nix).username; in
+let
+  username = (import ./settings.nix).username;
+  color = (import ./settings.nix).color;
+  font = (import ./settings.nix).font;
+  spacing = (import ./settings.nix).spacing;
+
+  theme-name = "polybar-8";
+  theme-icon = "material";
+in
+
+let
+  polybar-themes = (pkgs.fetchFromGitHub {
+    owner = "adi1090x";
+    repo = "polybar-themes";
+    rev = "243058f04961009481cdd059ab1591be2509e018";
+    sha256 = "0ha2hrdz97vj4xwy5hj2ic92pw0cimn6g7iwfnqjs3ya0z3hhh2v";
+  });
+
+  themes-folder = "${polybar-themes}/${theme-name}/source/${theme-icon}";
+in
 
 {
   home-manager.users."${username}" = {
-    services.polybar = {
-      enable = true;
-
-      package = pkgs.polybar.override {
-        # alsaSupport = true;
-        # githubSupport = false;
-        # iwSupport = true;
-        # nlSupport = true;
-        pulseSupport = true;
-        mpdSupport = true;
-        i3Support = false;
+      xdg.configFile = {
+          "polybar/scripts".source = "${themes-folder}/scripts";
       };
 
-      script = ''
-        #!/usr/bin/env sh
-        systemctl --user daemon-reload
-        polybar default &
-      '';
-
-      extraConfig = ''
-        ;==========================================================
-        ;
-        ;      Polybar setup by Isaac Lo
-        ;
-        ;==========================================================
-
-        [colors]
-        base00 = #202746
-        base01 = #293256
-        base02 = #5e6687
-        base03 = #6b7394
-        base04 = #898ea4
-        base05 = #979db4
-        base06 = #dfe2f1
-        base07 = #f5f7ff
-        base08 = #c94922
-        base09 = #c76b29
-        base0A = #c08b30
-        base0B = #ac9739
-        base0C = #22a2c9
-        base0D = #3d8fd1
-        base0E = #6679cc
-        base0F = #9c637a
-
-        background = #00xFFF
-        foreground = ''${colors.base07}
-        foreground-alt = ''${colors.base0E}
-        alert = ''${colors.base09}
-
-        [bar/default]
-        ; monitor = ''${env:MONITOR:eDP1}
-        width = 100%
-        height = 22
-        ;offset-x = 1%
-        ;offset-y = 1%
-        radius = 0
-        fixed-center = true
-
-        pseudo-transparency = true
-
-        ; override-redirect = true
-        wm-restack = bspwm
-
-        background = ''${colors.background}
-        foreground = ''${colors.foreground}
-
-        border-top-size = 14
-        border-bottom-size = -6
-
-        padding-left = 3
-        padding-right = 3
-
-        module-margin-left = 1
-        module-margin-right = 1
-        module-padding-right = 2
-
-        font-0 = Gohu Font:pixelsize=14px:antialiasing=false;0
-        font-1 = FontAwesome:style=Regular:pixelsize=9px;0
-        ; font-2 = Weather Icons:pixelsize=9px;1
-        ; font-3 = Unifont:pixelsize=14px;antialiasing=false;2
-
-        modules-left = mpd
-        modules-center = bspwm
-        ;modules-right = pulseaudio openweathermap-simple mail isrunning-bluetooth vpn network-status battery time
-        modules-right = pulseaudio wlan eth battery date time
-
-        tray-position =
-
-        cursor-click = pointer
-        cursor-scroll = ns-resize
-
-        [module/i3]
-        type = internal/i3
-        format = <label-state><label-mode>
-        index-sort = true
-        wrapping-scroll = false
-
-        ; Only show workspaces on the same output as the bar
-        ;pin-workspaces = true
-
-        label-mode = "%mode%"
-        label-mode-padding = 2
-        label-mode-foreground = ''${colors.foreground}
-        label-mode-background = ''${colors.background}
-
-        ; focused = Active workspace on focused monitor
-        label-focused = %index%
-        label-focused-background = ''${colors.background}
-        label-focused-foreground = ''${colors.foreground}
-        label-focused-padding = 2
-
-        ; unfocused = Inactive workspace on any monitor
-        label-unfocused = %index%
-        label-unfocused-foreground = ''${colors.base0E}
-        label-unfocused-padding = 2
-
-        ; visible = Active workspace on unfocused monitor
-        label-visible = %index%
-        label-visible-background = ''${colors.background}
-        label-visible-padding = 2
-
-        ; urgent = Workspace with urgency hint set
-        label-urgent = %index%
-        label-urgent-foreground = ''${colors.alert}
-        label-urgent-padding = 2
-
-        [module/bspwm]
-        type = internal/bspwm
-
-        label-focused = 
-        ; label-focused-background = ''${colors.primary}
-        ; label-focused-underline= ''${colors.primary}
-        label-focused-padding = 1
-
-        label-occupied = 
-        label-occupied-padding = 1
-
-        label-urgent = 
-        ; label-urgent-background = ''${colors.alert}
-        label-urgent-foreground = ''${colors.alert}
-        label-urgent-padding = 1
-
-        label-empty = 
-        ; label-empty-background = ''${colors.foreground}
-        ; label-empty-foreground = ''${colors.background}
-        label-empty-padding = 1
-
-        ; Separator in between workspaces
-        ; label-separator = |
-
-
-        [module/mpd]
-        type = internal/mpd
-        ; format-online = %{F#6679cc}<toggle>%{F-} <label-song>
-        format-online = %{F#6679cc}%{F-}  <label-song>  %{F#6679cc}<icon-prev>  <toggle>  <icon-next>%{F-}
-        format-stopped = %{F#6679cc}  MPD Stopped%{F-}
-        format-offline = %{F#6679cc}  MPD Offline%{F-}
-
-        label-font = 4
-        ; label-song-maxlen = 40
-        label-song-ellipsis = false
-        label-song = %artist:0:20:…% - %title:0:30:…%
-
-        ; Only applies if <icon-X> is used
-        icon-prev = 
-        icon-play = 
-        icon-pause = 
-        icon-next = 
-        icon-stop = 
-        icon-seekb = 
-        icon-seekf = 
-        icon-random = 
-        icon-consume = 
-        icon-repeat = 
-        icon-repeatone = 
-
-        [module/wlan]
-        type = internal/network
-        interface = wlp61s0
-        interval = 5.0
-
-        format-connected = <label-connected>
-        format-connected-prefix = " "
-        format-connected-prefix-foreground = ''${colors.foreground-alt}
-        label-connected = %essid%
-
-        format-disconnected =
-
-        [module/eth]
-        type = internal/network
-        interface = enp0s31f6
-        interval = 5.0
-
-        label-connected = %local_ip%
-        format-connected-prefix = " "
-        format-connected-prefix-foreground = ''${colors.foreground-alt}
-
-        format-disconnected =
-
-        [module/date]
-        type = internal/date
-        interval = 5.0
-
-        date = %Y-%m-%d
-
-        format-prefix = " "
-        format-prefix-foreground = ''${colors.foreground-alt}
-
-        label = %date%
-
-        [module/time]
-        type = internal/date
-        interval = 5.0
-
-        date = %y-%m-%d%
-
-        time = %H:%M
-
-        format-prefix = " "
-        format-prefix-foreground = ''${colors.foreground-alt}
-
-        label = %time%
-
-        [module/pulseaudio]
-        type = internal/pulseaudio
-
-        format-volume = <ramp-volume> <label-volume>%
-        label-volume = %percentage%
-        label-volume-foreground = ''${colors.foreground}
-
-        format-muted = <label-muted>
-        format-muted-foreground = ''${colors.foreground-alt}
-        label-muted =  MUT
-
-        ramp-volume-0 = 
-        ramp-volume-1 = 
-        ramp-volume-foreground = ''${colors.foreground-alt}
-
-        [module/battery]
-        type = internal/battery
-        battery = BAT0
-        adapter = AC
-        full-at = 98
-
-        format-charging = <label-charging>
-        format-discharging = <ramp-capacity> <label-discharging>
-
-        format-full-prefix = " "
-        format-full-prefix-foreground = ''${colors.foreground-alt}
-
-        ramp-capacity-0 = 
-        ramp-capacity-1 = 
-        ramp-capacity-2 = 
-        ramp-capacity-foreground = ''${colors.foreground-alt}
-
-        format-charging-prefix = " "
-        format-charging-prefix-foreground = ''${colors.foreground-alt}
-
-        [module/mail]
-        type = custom/script
-
-        format-prefix = " "
-        format-prefix-foreground = ''${colors.foreground-alt}
-
-        ; Available tokens:
-        ;   %counter%
-        ; Command to be executed (using "/usr/bin/env sh -c [command]")
-        exec = ~/bin/mail-count
-        exec-if = expr $(~/bin/mail-count) \> 0
-
-        ; Will the script output continous content?
-        ; Default: false
-        tail = false
-
-        ; Seconds to sleep between updates
-        ; Default: 5 (0 if `tail = true`)
-        interval = 10
-
-        [module/openweathermap-simple]
-        type = custom/script
-        exec = ~/bin/openweathermap-simple.sh
-        interval = 600
-
-        label-font = 3
-        label-font-foregound = ''${colors.foreground-alt}
-
-        [module/vpn]
-        type = custom/script
-        exec = ~/bin/vpn-openvpn-isrunning.sh
-        exec-if = ~/bin/vpn-openvpn-isrunning.sh
-        interval = 5
-        format-prefix = " "
-        format-prefix-foreground = ''${colors.foreground-alt}
-
-        [module/network-status]
-        type = custom/script
-        exec = ~/bin/network-status.sh
-        exec-if = ~/bin/network-status.sh
-        interval = 5
-        label-font-foreground = ''${colors.foreground-alt}
-
-        [module/isrunning-bluetooth]
-        type = custom/script
-        exec = ~/bin/isrunning-bluetooth.sh
-        interval = 5
-
-        format-prefix = " "
-        format-prefix-foreground = ''${colors.foreground-alt}
-      '';
+      services.polybar = {
+        enable = true;
+
+        package = pkgs.polybar.override {
+          # alsaSupport = true;
+          # githubSupport = false;
+          # iwSupport = true;
+          # nlSupport = true;
+          pulseSupport = true;
+          mpdSupport = true;
+          i3Support = false;
+        };
+
+        script = ''
+          #!/usr/bin/env sh
+          systemctl --user daemon-reload
+          polybar main &
+        '';
+
+        config =
+          let
+            bar-color = {
+              bg = color.bg;
+              fg = color.bg;
+              fg-alt = color.fg;
+              mf = color.fg;
+              ac = color.green; # accent
+
+              # bars
+              bn = color.green;
+              bm = color.yellow;
+              bd = color.red;
+
+              trans = "#00000000";
+              white = "#FFFFFF";
+              black = "#000000";
+
+              red = color.red;
+              purple = color.purple;
+              blue = color.blue;
+              cyan = color.cyan;
+              green = color.green;
+              yellow = color.yellow;
+              orange = color.yellow;
+              grey = color.gray;
+
+              # temp
+              pink = color.red;
+              teal = color.cyan;
+              lime = color.green;
+              amber = color.yellow;
+              brown = color.green;
+              indigo = color.purple;
+              blue-gray = color.darkgray;
+            };
+          in {
+            "color" = bar-color;
+
+            "global/wm" = {
+              margin-bottom = 0;
+              margin-top = 0;
+
+              # include-file = "${themes-folder}/colors.ini";
+              include-file = "${themes-folder}/modules.ini\ninclude-file=${themes-folder}/user_modules.ini\ninclude-file=${themes-folder}/bars.ini";
+            };
+
+            "bar/main" = {
+              wm-restack = "bspwm";
+              monitor-fallback = "";
+              monitor-strict = false;
+              override-redirect = false;
+              bottom = false;
+              fixed-center = true;
+
+              width = "100%";
+              height = 2 * spacing.border + font.size + 2;
+              offset-x = 0;
+              offset-y = 0;
+
+              background = color.bg;
+              foreground = color.fg;
+
+              radius-top = "0.0";
+              radius-bottom = "0.0";
+
+              overline-size = 2;
+              overline-color = bar-color.ac;
+
+              border-size = spacing.border;
+              border-color = bar-color.bg;
+
+              padding = 1;
+              module-margin-left = 0;
+              module-margin-right = 0;
+
+              font-0 = "${font.mono}:size=${toString font.size};2";
+              font-1 = "${font.mono}:size=${toString font.size};2";
+              # font-1 = "Material Icons:size=${toString (font.size + 2)};2";
+              # font-2 = "xos4 Terminus:size=${toString (font.size + 2)};2";
+
+              # Available modules
+              #
+              # alsa backlight battery
+              # bspwm cpu date
+              # filesystem github i3
+              # memory mpd wired-network
+              # network pulseaudio temperature
+              # keyboard title workspaces
+
+              modules-left = "bspwm separator my_mpd_bar_i my_mpd_bar separator";
+              modules-center = "my_title";
+              modules-right = "my_pulseaudio_i my_pulseaudio separator my_network_i my_network separator my_battery_i my_battery separator my_date_i my_date";
+              #  separator network_i network separator date_i date
+
+              # Opacity value between 0.0 and 1.0 used on fade in/out
+              dim-value = "1.0";
+
+              # Locale used to localize various module data (e.g. date)
+              # Expects a valid libc locale, for example: sv_SE.UTF-8
+              # locale =
+
+              tray-position = "none";
+              tray-detached = false;
+              tray-maxsize = 16;
+              tray-background = color.bg;
+              tray-offset-x = 0;
+              tray-offset-y = 0;
+              tray-padding = 0;
+              tray-scale = "1.0";
+              enable-ipc = true;
+
+              # cursor-click =
+              # cursor-scroll =
+
+              scroll-up = "bspwm-deskprev";
+              scroll-down = "bspwm-desknext";
+              # scroll-up = "bspc desktop -f prev.local";
+              # scroll-down = "bspc desktop -f next.local";
+            };
+
+            "settings" = {
+              throttle-output = 5;
+              throttle-output-for = 10;
+              throttle-input-for = 30;
+              screenchange-reload = false;
+              compositing-background = "source";
+              compositing-foreground = "over";
+              compositing-overline = "over";
+              compositing-underline = "over";
+              compositing-border = "over";
+
+              pseudo-transparency = true;
+
+              format-foreground = color.black;
+              format-background = color.white;
+              format-underline = color.white;
+            };
+
+            "module/bspwm" = {
+              type = "internal/bspwm";
+
+              pin-workspaces = true;
+              strip-wsnumbers = true;
+              index-sort = true;
+
+              enable-click = true;
+              enable-scroll = true;
+
+              wrapping-scroll = false;
+              reverse-scroll = false;
+
+              format = "<label-state> <label-mode>";
+              label-focused = "%index%";
+              label-focused-foreground = color.black;
+              label-focused-background = bar-color.ac;
+              label-focused-underline = bar-color.ac;
+              label-focused-padding = 1;
+
+              label-occupied = "%index%";
+              label-occupied-foreground = color.black;
+              label-occupied-background = color.white;
+              label-occupied-underline = color.white;
+              label-occupied-padding = 1;
+
+              label-empty = "";
+
+              label-mode = "%mode%";
+              label-mode-padding = 2;
+              label-mode-foreground = color.black;
+              label-mode-background = bar-color.ac;
+
+              label-urgent = "%index%";
+              label-urgent-foreground = color.black;
+              label-urgent-background = color.red;
+              label-urgent-padding = 1;
+            };
+
+            "module/my_title" = {
+              "inherit" = "module/title";
+              format-background = color.black;
+              format-foreground = color.white;
+
+              label = " %title%";
+              label-maxlen = 35;
+            };
+
+            "module/my_mpd_bar" = {
+              "inherit "= "module/mpd_bar";
+
+              format-online = "<label-song> <icon-next>";
+              format-online-background = color.white;
+              format-online-foreground = color.black;
+              format-online-padding = 1;
+
+              label-song =  "%artist% - %title%";
+              label-song-maxlen = 25;
+              label-song-ellipsis = true;
+
+              label-offline = "MPD is offline";
+
+              icon-play = "契";
+              icon-pause = "";
+              icon-stop = "栗";
+              icon-prev = "玲";
+              icon-next = "怜";
+            };
+
+            "module/my_mpd_bar_i" = {
+              "inherit" = "module/mpd_bar_i";
+
+              format-online-background = color.red;
+              format-online-foreground = color.black;
+              icon-play = "契";
+              icon-pause = "";
+            };
+
+            "module/my_pulseaudio" = {
+              "inherit" = "module/pulseaudio";
+            };
+
+            "module/my_pulseaudio_i" = {
+              type = "internal/pulseaudio";
+
+              format-volume = "<ramp-volume>";
+              format-muted-background = color.blue;
+              format-volume-background = color.blue;
+              format-volume-padding = 1;
+
+              label-muted = "ﱝ";
+              format-muted-padding = 1;
+              # label-muted-foreground = color.black;
+
+              ramp-volume-0 = "奄";
+              ramp-volume-1 = "奔";
+              ramp-volume-2 = "墳";
+            };
+
+            "module/my_network" = {
+              "inherit" = "module/network";
+              interface = "wlp61s0";
+            };
+
+            "module/my_network_i" = {
+              "inherit" = "module/network_i";
+              interface = "wlp61s0";
+
+              label-disconnected = "睊";
+              ramp-signal-0 = "直";
+              ramp-signal-1 = "直";
+              ramp-signal-2 = "直";
+              ramp-signal-3 = "直";
+              ramp-signal-4 = "直";
+            };
+
+            "module/my_battery" = {
+              "inherit" = "module/battery";
+
+              full-at = 98;
+              battery = "BAT0";
+              adapter = "AC";
+            };
+
+            "module/my_battery_i" = {
+              type = "internal/battery";
+
+              full-at = 98;
+              battery = "BAT0";
+              adapter = "AC";
+
+              poll-interval = 2;
+              time-format = "%H:%M";
+
+              format-charging = "<animation-charging>";
+              format-charging-background = color.green;
+              format-charging-foreground = color.black;
+              format-charging-padding = 1;
+
+              format-discharging = "<ramp-capacity>";
+              format-discharging-background = color.red;
+              format-discharging-foreground = color.black;
+              format-discharging-padding = 1;
+
+              label-charging = "%percentage%%";
+              label-discharging = "%percentage%%";
+
+              label-full = "";
+              label-full-background = color.green;
+              label-full-foreground = color.black;
+              label-full-padding = 1;
+
+              ramp-capacity-0 = "";
+              ramp-capacity-1 = "";
+              ramp-capacity-2 = "";
+              ramp-capacity-3 = "";
+              ramp-capacity-4 = "";
+              ramp-capacity-5 = "";
+              ramp-capacity-6 = "";
+              ramp-capacity-7 = "";
+              ramp-capacity-8 = "";
+              ramp-capacity-9 = "";
+
+              animation-charging-0 = "";
+              animation-charging-1 = "";
+              animation-charging-2 = "";
+              animation-charging-3 = "";
+              animation-charging-4 = "";
+              animation-charging-5 = "";
+              animation-charging-6 = "";
+
+              animation-charging-framerate = 750;
+            };
+
+            "module/my_date" = {
+              "inherit" = "module/date";
+
+              time = "%Y-%m-%d %H:%M";
+              # time-alt = "%Y-%m-%d%";
+              time-alt = "";
+            };
+
+            "module/my_date_i" = {
+              "inherit" = "module/date_i";
+
+              time = "";
+              # time-alt = "";
+              time-alt = "";
+            };
+
+            # "settings" = {
+            #   # format-background = "${color.bg}";
+            #   format-padding = 2;
+            #   format-spacing= 2;
+            #   radius = "4.0";
+            # };
+
+            # "bar/default" = {
+            #   background = color.bg;
+            #   foreground = color.fg;
+
+            #   fixed-center = true;
+
+            #   width = "100%";
+            #   height = 22;
+
+            #   font-0 = "${font.mono}:pixelsize=${toString font.size}px:antialiasing=false;0";
+            #   font-1 = "FontAwesome:style=Regular:pixelsize=${toString font.size}px;0";
+            #   font-2 = "Weather Icons:pixelsize=9px;1";
+            #   font-3 = "Unifont:pixelsize=${toString font.size};antialiasing=false;2";
+
+            #   border-top-size = 0;
+            #   border-bottom-size = 0;
+
+            #   padding-left = spacing.border;
+            #   padding-right = spacing.border;
+
+            #   module-margin-left = 0;
+            #   module-margin-right = 0;
+
+            #   tray-position = "";
+
+            #   cursor-click = "pointer";
+            #   cursor-scroll = "ns-resize";
+
+            #   # modules-left = "mpd";
+            #   modules-center = "bspwm";
+            #   # "modules-right" = pulseaudio openweathermap-simple mail isrunning-bluetooth vpn network-status battery time
+            #   modules-right = "date";
+            #   # modules-right = "pulseaudio wlan eth battery date time";
+            # };
+
+
+            # "module/date" = {
+            #   type = "internal/date";
+            #   internal = 5;
+            #   date = "%Y-%m-%d";
+            #   time = "%H:%M";
+            #   label = "%date% %time%";
+            # };
+          };
+      };
     };
-  };
 }

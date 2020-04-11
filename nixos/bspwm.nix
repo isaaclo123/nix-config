@@ -1,5 +1,10 @@
 { pkgs, lib, ... }:
 
+let
+  color = (import ./settings.nix).color;
+  spacing = (import ./settings.nix).spacing;
+in
+
 let autostarted-status = "/tmp/autostarted-status.lock"; in
 
 {
@@ -50,13 +55,13 @@ let autostarted-status = "/tmp/autostarted-status.lock"; in
       done
       # bspc monitor -d 1 2 3 4 5 6 7 8 9 10
 
-      bspc config border_width         4
-      bspc config window_gap          14
+      bspc config border_width ${toString spacing.border}
+      bspc config window_gap ${toString spacing.padding}
 
-      bspc config focused_border_color \#6679cc
-      bspc config active_border_color \#c76b29
-      bspc config normal_border_color \#293256
-      bspc config presel_feedback_color \#6679cc
+      bspc config focused_border_color \${color.white}
+      bspc config active_border_color \${color.yellow}
+      bspc config normal_border_color \${color.darkgray}
+      bspc config presel_feedback_color \${color.cyan}
 
       bspc config split_ratio          0.52
       # bspc config borderless_monocle   true

@@ -3,6 +3,7 @@
 let
   homedir = (import ./settings.nix).homedir;
   username = (import ./settings.nix).username;
+  fullname = (import ./settings.nix).fullname;
 in
 
 # take a folder name and email to produce a sourcable account file
@@ -29,7 +30,8 @@ let create-account = folder: email: signature: (pkgs.writeText folder ''
 {
   environment.systemPackages = with pkgs; [
     neomutt
-    elinks
+    # elinks
+    w3m-full
     unstable.urlscan
     xclip
   ];
@@ -37,7 +39,8 @@ let create-account = folder: email: signature: (pkgs.writeText folder ''
   home-manager.users."${username}" = {
     home.file = {
       ".mailcap".text = ''
-        text/html; elinks -dump -dump-color-mode 1 -no-numbering -no-references; copiousoutput;
+        # text/html; elinks -dump -dump-color-mode 1 -no-numbering -no-references -dump-width 100; copiousoutput;
+        text/html; w3m -I %{charset} -T text/html; copiousoutput;
         auto_view text/html
 
         image/*; sxiv %s; test=test -n "$DISPLAY";
@@ -58,8 +61,10 @@ let create-account = folder: email: signature: (pkgs.writeText folder ''
         ''); in
 
         # accounts
-        let personal = create-account "Personal" "isaaclo123@gmail.com" signature; in
-        let school = create-account "School" "loxxx298@umn.edu" signature; in ''
+        let
+          personal = create-account "Personal" "isaaclo123@gmail.com" signature;
+          school = create-account "School" "loxxx298@umn.edu" signature;
+        in ''
           # editor settings
 
           # set editor="vim \"+set spell colorcolumn=80\" +/^$/ -c \"noh\" -c \"+set tw=80\""
@@ -76,127 +81,44 @@ let create-account = folder: email: signature: (pkgs.writeText folder ''
 
           ## COLOR START
 
-          # base16-mutt: base16-shell support for mutt
-          #
-          # These depend on mutt compiled with s-lang, not ncurses. Check by running `mutt -v`
-          # Details this configuration may be found in the mutt manual:
-          # §3 Patterns <http://www.mutt.org/doc/manual/#patterns>
-          # §9 Using color and mono video attributes <http://www.mutt.org/doc/manual/#color>
+          # cancel theme colors
+          color index color15 color0 ~Q
+          color index color15 color0 ~P
+          color index color15 color0 ~T
+          color index color15 color0 ~O
+          color index color15 color0 ~F
+          color index color15 color0 ~N
 
-          # https://www.neomutt.org/guide/configuration.html#color
-          # base00 : color00 - Default Background
-          # base01 : color18 - Lighter Background (Used for status bars)
-          # base02 : color19 - Selection Background
-          # base03 : color08 - Comments, Invisibles, Line Highlighting
+          # add some nice custom coloring to the message list
+          # thanks to new neomutt features
+          # http://www.mutt.org/doc/manual/#patterns
+          # https://neomutt.org/feature/index-color
 
-          # base04 : color20 - Dark Foreground (Used for status bars)
-          # base05 : color07 - Default Foreground, Caret, Delimiters, Operators
-          # base06 : color21 - Light Foreground (Not often used)
-          # base07 : color15 - Light Background (Not often used)
-
-          # base08 : color01 - Index Item: Deleted.
-          # base09 : color16 - Message: URL.
-          # base0A : color03 - Search Text Background. Message: Bold.
-          # base0B : color02 - Message: Code. Index Item: Tagged.
-          # base0C : color06 - Message: Subject, Quotes. Index Item: Trusted.
-          # base0D : color04 - Message: Headings.
-          # base0E : color05 - Message: Italic, Underline. Index Item: Flagged.
-          # base0F : color17 - Deprecated, Opening/Closing Embedded Language Tags e.g.
-
-          ## Base
-          color normal      color07  color00 # softer, bold
-
-          ## Weak
-          color tilde       color08  color00  # `~` padding at the end of pager
-          color attachment  color08  color00
-          color tree        color08  color00  # arrow in threads
-          color signature   color08  color00
-          color markers     color08  color00  # `+` wrap indicator in pager
-
-          ## Strong
-          color bold        color21  color00
-          color underline   color21  color00
-
-          ## Highlight
-          color error       color01  color00
-          color message     color04  color00  # informational messages
-          color search      color08  color03
-          color status      color20  color19
-          color indicator   color21  color19  # inverse, brighter
-
-
-          # Message Index ----------------------------------------------------------------
-
-          ## Weak
-          color index  color08  color00  "~R"        # read messages
-          color index  color08  color00  "~d >45d"   # older than 45 days
-          color index  color08  color00  "~v~(!~N)"  # collapsed thread with no unread
-          color index  color08  color00  "~Q"        # messages that have been replied to
-
-          ## Strong
-          color index  color21  color00  "(~U|~N|~O)"     # unread, new, old messages
-          color index  color21  color00  "~v~(~U|~N|~O)"  # collapsed thread with unread
-
-          ## Highlight
-          ### Trusted
-          color index  color06  color00  "~g"  # PGP signed messages
-          color index  color06  color00  "~G"  # PGP encrypted messages
-          ### Odd
-          color index  color01  color00  "~E"  # past Expires: header date
-          color index  color01  color00  "~="  # duplicated
-          color index  color01  color00  "~S"  # marked by Supersedes: header
-          ### Flagged
-          color index  color05  color00  "~F"       # flagged messages
-          color index  color02  color00  "~v~(~F)"  # collapsed thread with flagged inside
-
-          # Selection
-          color index  color02  color18   "~T"  # tagged messages
-          color index  color01  color18   "~D"  # deleted messages
-
-          ### Message Headers ----------------------------------------------------
-
-          # Base
-          color hdrdefault  color07  color00
-          color header      color07  color00  "^"
-          # Strong
-          color header      color21  color00  "^(From)"
-          # Highlight
-          color header      color04  color00  "^(Subject)"
-
-          ### Message Body -------------------------------------------------------
-          # When possible, these regular expressions attempt to match http://spec.commonmark.org/
-          ## Weak
-          # ~~~ Horizontal rules ~~~
-          color body  color08  color00  "([[:space:]]*[-+=#*~_]){3,}[[:space:]]*"
-          ## Strong
-          # *Bold* span
-          color body  color03  color00  "(^|[[:space:][:punct:]])\\*[^*]+\\*([[:space:][:punct:]]|$)"
-          # _Underline_ span
-          color body  color05  color00  "(^|[[:space:][:punct:]])_[^_]+_([[:space:][:punct:]]|$)"
-          # /Italic/ span (Sometimes gets directory names)
-          color body  color05  color00  "(^|[[:space:][:punct:]])/[^/]+/([[:space:][:punct:]]|$)"
-          # ATX
+          color index_subject color12 color0 "~P !~T !~D"
+          color index_author color12 color0 "~P !~T !~D"
+          color index_subject color243 color0 "~Q !~T !~D"
+          color index_author color243 color0 "~Q !~T !~D"
+          color index_subject brightcolor2 color0 "~N !~T !~D"
+          color index_author  brightcolor2 color0 "~N !~T !~D"
+          color index_subject color2 color0 "~O !~T !~D"
+          color index_author color2 color0 "~O !~T !~D"
+          color index_subject color3 color0 "~F !~T !~D"
+          color index_author color3 color0 "~F !~T !~D"
+          color index_subject brightcolor3 color0 "~F ~N !~T !~D"
+          color index_author  brightcolor3 color0 "~F ~N !~T !~D"
+          color index_subject color1 color0 "~= !~T !~D"
+          color index_author color1 color0 "~= !~T !~D"
+          color index_subject brightcolor12 color0 "~P ~N !~T !~D"
+          color index_author brightcolor12 color0 "~P ~N !~T !~D"
+          color index color0 color15 "~T"
+          color index color15 color1 "~D"
 
           ## COLOR END
-
-          # Theme
-          color status color07 color18 # status bar
-
-          color index  color04  color00  "~F"       # flagged messages
-          color index  color04  color18  "~v~(~F)"  # collapsed thread with flagged inside
-
-          color indicator   color15  color19  # inverse, brighter
-          color tree   color02  color00  # arrow in threads
-
-          color index  color08  color18  "~v~(!~N)"  # collapsed thread with no unread
-
-          color index  color15  color00  "(~U|~N|~O)"     # unread, new, old messages
-          color index  color15  color18  "~v~(~U|~N|~O)"  # collapsed thread with unread
 
           set sleep_time = 0
 
           # email settings
-          set realname   = "Isaac Lo"
+          set realname   = "${fullname}"
           set use_from=yes
           set envelope_from=yes
 

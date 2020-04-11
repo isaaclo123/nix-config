@@ -192,7 +192,7 @@ in
   programs.adb.enable = true;
 
   # flatpak
-  services.flatpak.enable = true;
+  # services.flatpak.enable = true;
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
@@ -202,6 +202,15 @@ in
 
   # docker
   virtualisation.docker.enable = true;
+
+  # virtualbox
+  virtualisation.virtualbox = {
+    guest.enable = true;
+    host = {
+      enable = true;
+      enableExtensionPack = true;
+    };
+  };
 
   # Open ports in the firewall.
   networking.firewall.allowedTCPPorts = [ ];
@@ -221,10 +230,12 @@ in
     desktopManager.xterm.enable = false;
 
     displayManager = {
-      lightdm.autoLogin = {
+      slim = {
         enable = true;
-        user = "${username}";
+        autoLogin = true;
+        defaultUser = "${username}";
       };
+
       xpra.pulseaudio = true;
     };
 
@@ -244,9 +255,10 @@ in
     # group = "isaac";
   };
 
+  location.provider = "geoclue2";
+
   services.redshift = {
     enable = true;
-    provider = "geoclue2";
     temperature = {
       day = 6000;
       night = 3000;

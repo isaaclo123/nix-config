@@ -25,7 +25,7 @@ let my-python-packages = python-packages:
   }; in
   with python-packages; [
     cython
-    opencv
+    # opencv
     conda
     ueberzug
     requests

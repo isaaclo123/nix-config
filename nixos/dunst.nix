@@ -1,10 +1,14 @@
 { pkgs, ... }:
 
-let username = (import ./settings.nix).username; in
+let
+  username = (import ./settings.nix).username;
+  color = (import ./settings.nix).color;
+  spacing = (import ./settings.nix).spacing;
+  font = (import ./settings.nix).font;
+in
 
 {
   environment.systemPackages = with pkgs; [
-    # notifications
     dunst
     libnotify
   ];
@@ -14,7 +18,7 @@ let username = (import ./settings.nix).username; in
       enable = true;
       settings = {
         global = {
-          font = "GohuFont 14px";
+          font = "${font.mono} ${toString font.size}";
 
           # Allow a small subset of html markup:
           #   <b>bold</b>
@@ -129,13 +133,13 @@ let username = (import ./settings.nix).username; in
           # Draw a line of "separatpr_height" pixel height between two
           # notifications.
           # Set to 0 to disable.
-          separator_height = 4;
+          separator_height = spacing.border;
 
           # Padding between text and separator.
-          padding = 14;
+          padding = spacing.padding;
 
           # Horizontal padding.
-          horizontal_padding = 14;
+          horizontal_padding = spacing.padding;
 
           # Define a color for the separator.
           # possible values are:
@@ -157,13 +161,13 @@ let username = (import ./settings.nix).username; in
           browser = "qutebrowser";
 
           # Align icons left/right/off
-          icon_position = "off";
+          icon_position = "left";
 
           # Paths to default icons.
           # icon_path = "/usr/share/icons/gnome/16x16/status/:/usr/share/icons/gnome/16x16/devices/";
 
           frame_width = 4;
-          frame_color = "#6679cc";
+          frame_color = "${color.fg}";
         };
 
         shortcuts = {
@@ -190,20 +194,20 @@ let username = (import ./settings.nix).username; in
         urgency_low = {
           # IMPORTANT: colors have to be defined in quotation marks.
           # Otherwise the "#" and following would be interpreted as a comment.
-          background = "#202746";
-          foreground = "#6679cc";
+          background = "${color.bg}";
+          foreground = "${color.green}";
           timeout = 5;
         };
 
         urgency_normal = {
-          background = "#202746";
-          foreground = "#979db4";
+          background = "${color.bg}";
+          foreground = "${color.fg}";
           timeout = 5;
         };
 
         urgency_critical = {
-          background = "#202746";
-          foreground = "#c76b29";
+          background = "${color.bg}";
+          foreground = "${color.yellow}";
           timeout = 5;
         };
       };
