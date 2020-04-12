@@ -5,6 +5,7 @@ let
   color = (import ./settings.nix).color;
   spacing = (import ./settings.nix).spacing;
   font = (import ./settings.nix).font;
+  opacity = (import ./settings.nix).opacity;
 in
 
 {
@@ -92,7 +93,7 @@ in
           # The transparency of the window.  Range: [0; 100].
           # This option will only work if a compositing windowmanager is
           # present (e.g. xcompmgr, compiz, etc.).
-          transparency = 0;
+          transparency = toString ((1 - opacity.inactive) * 100);
 
           # Don't remove messages, if the user is idle (no mouse or keyboard input)
           # for longer than idle_threshold seconds.

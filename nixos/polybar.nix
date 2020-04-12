@@ -106,7 +106,7 @@ in
               offset-x = 0;
               offset-y = 0;
 
-              background = color.bg;
+              background = "#f21d2021";
               foreground = color.fg;
 
               radius-top = "0.0";

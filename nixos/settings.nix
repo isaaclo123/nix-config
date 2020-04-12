@@ -19,6 +19,11 @@
     border = 4;
   };
 
+  opacity = {
+    inactive = 0.90;
+    active = 0.96;
+  };
+
   color = rec {
     # red = "#cc241d";
     # green = "#98971a";

@@ -2,6 +2,7 @@
 
 let
   username = (import ./settings.nix).username;
+  opacity = (import ./settings.nix).opacity;
 in
 
 {
@@ -19,9 +20,9 @@ in
             };
 
             buildInputs = oldAttrs.buildInputs ++ (with pkgs; [
-              # dbus.Lib
               dbus-glib.dev
             ]);
+
             postPatch = null;
         })); in {
           enable = true;
@@ -30,28 +31,30 @@ in
           package = compton-animated;
 
           shadow = true;
-          shadowOffsets = [ (-6) (-6) ];
-          shadowOpacity = "0.3";
-          shadowExclude = [
-            "name != 'mpvscratchpad'"
-          ];
+          shadowOffsets = [ (-9) (-9) ];
+          shadowOpacity = "0.4";
+
+          activeOpacity = toString opacity.active;
+          inactiveOpacity = toString opacity.inactive;
+
+          blur = true;
+          fade = true;
+          fadeDelta = 3;
 
           vSync = "drm";
 
-          # transition-length length of animation in milliseconds (default: 300)
-          # transition-pow-x animation easing on the x-axis (default: 1.5)
-          # transition-pow-y animation easing on the y-axis (default: 1.5)
-          # transition-pow-w animation easing on the window width (default: 1.5)
-          # transition-pow-h animation easing on the window height (default: 1.5)
-          # size-transition whether to animate window size changes (default: true)
-          # spawn-center-screen whether to animate new windows from the center of the screen (default: false)
-          # spawn-center whether to animate new windows from their own center (default: true)
-          # no-scale-down
-
           extraOptions = ''
-            transition-length = 50;
+            transition-pow-x = 1.0;
+            transition-pow-y = 1.0;
+            transition-pow-w = 1.0;
+            transition-pow-h = 1.0;
+            size-transition = true;
+            spawn-center-screen = false;
+            spawn-center = false;
+            no-scale-down = false;
 
-            shadow-radius = 4;
+            shadow-radius = 6;
+            transition-length = 65;
             paint-on-overlay = true;
           '';
         };

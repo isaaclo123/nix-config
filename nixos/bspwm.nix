@@ -61,7 +61,7 @@ let autostarted-status = "/tmp/autostarted-status.lock"; in
 
       bspc config focused_border_color \${color.white}
       bspc config active_border_color \${color.yellow}
-      bspc config normal_border_color \${color.darkgray}
+      bspc config normal_border_color \${color.black}
       bspc config presel_feedback_color \${color.cyan}
 
       bspc config split_ratio          0.52
