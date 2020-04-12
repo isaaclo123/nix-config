@@ -10,10 +10,10 @@ in
 {
   fonts = {
     fonts = with pkgs; [
+      symbola
       unifont
       unifont_upper
       latinmodern-math
-      symbola
       corefonts
       vistafonts
       nerdfonts
@@ -24,18 +24,19 @@ in
 
       defaultFonts = {
         monospace = [ font.mono ];
-        # sansSerif = [ font.sansSerif ];
-        # serif = [ font.serif ];
+        emoji = [ "Unifont" "Unifont Upper" "Symbola" "Latin Modern Math" font.mono ];
+        sansSerif = [ font.mono ];
+        serif = [ font.mono ];
       };
 
       ultimate.enable = true;
       penultimate.enable = false;
 
       allowBitmaps = true;
-      useEmbeddedBitmaps = true;
+      useEmbeddedBitmaps = false;
     };
 
-    enableDefaultFonts = true;
+    enableDefaultFonts = false;
     enableFontDir = true;
   };
 

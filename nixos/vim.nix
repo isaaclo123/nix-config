@@ -269,9 +269,6 @@ in
         let g:ale_completion_enabled = 1
         let g:ale_completion_tsserver_autoimport = 1
 
-        nmap <silent> [l <Plug>(ale_previous_wrap)
-        nmap <silent> ]l <Plug>(ale_next_wrap)
-
         " ale fixers
         let g:ale_fixers = {
         \   '*': ['remove_trailing_lines', 'trim_whitespace'],

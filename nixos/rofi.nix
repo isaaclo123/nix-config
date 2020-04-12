@@ -21,7 +21,7 @@ in
       "rofi/gruvbox-dark-hard.rasi".source =
         (pkgs.fetchurl {
           url = "https://raw.githubusercontent.com/bardisty/gruvbox-rofi/0b4cf703087e2150968826b7508cf119437eba7a/gruvbox-dark-hard.rasi";
-          sha256= "1w59bc6amhdyyznvznwbzj445dy214mrl3zx5h74x4h1p47jsx4b";
+          sha256 = "1w59bc6amhdyyznvznwbzj445dy214mrl3zx5h74x4h1p47jsx4b";
         });
 
       "rofi/config.rasi".text = ''

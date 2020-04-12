@@ -332,7 +332,7 @@ in
               label-charging = "%percentage%%";
               label-discharging = "%percentage%%";
 
-              label-full = "";
+              label-full = "";
               label-full-background = color.green;
               label-full-foreground = color.black;
               label-full-padding = 1;

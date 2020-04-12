@@ -20,6 +20,7 @@ let autostarted-status = "/tmp/autostarted-status.lock"; in
       pkill -USR1 -x sxhkd
       # pkill -USR1 -x compton
       systemctl --user restart polybar
+      systemctl --user restart compton
       bspc wm -r
     ''); in
 
