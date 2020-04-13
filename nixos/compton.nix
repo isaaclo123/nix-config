@@ -44,10 +44,10 @@ in
           vSync = "drm";
 
           extraOptions = ''
-            transition-pow-x = 1.0;
-            transition-pow-y = 1.0;
-            transition-pow-w = 1.0;
-            transition-pow-h = 1.0;
+            transition-pow-x = 0.75;
+            transition-pow-y = 0.75;
+            transition-pow-w = 0.75;
+            transition-pow-h = 0.75;
             size-transition = true;
             spawn-center-screen = false;
             spawn-center = false;

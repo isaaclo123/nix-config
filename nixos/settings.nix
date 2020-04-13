@@ -21,7 +21,7 @@
 
   opacity = {
     inactive = 0.90;
-    active = 0.96;
+    active = 1.0;
   };
 
   color = rec {
