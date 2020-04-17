@@ -22,10 +22,10 @@ in
   #       rofi.padding: ${toString spacing.padding}
   #       rofi.color-enabled: true
   #       ! State:           'bg',           'fg',           'bgalt',        'hlbg',        'hlfg'
-  #       rofi.color-window: ${color.black}, ${color.white}, ${color.black}
-  #       rofi.color-normal: ${color.black}, ${color.white}, ${color.black}, ${color.blue}, ${color.black}
-  #       rofi.color-active: ${color.black}, ${color.yellow},${color.black}, ${color.yellow},${color.black}
-  #       rofi.color-urgent: ${color.black}, ${color.red},   ${color.black}, ${color.red},  ${color.black}
+  #       rofi.color-window: #${color.black}, #${color.white}, #${color.black}
+  #       rofi.color-normal: #${color.black}, #${color.white}, #${color.black}, #${color.blue}, #${color.black}
+  #       rofi.color-active: #${color.black}, #${color.yellow},#${color.black}, #${color.yellow},#${color.black}
+  #       rofi.color-urgent: #${color.black}, #${color.red},   #${color.black}, #${color.red},  #${color.black}
   #     '';
   #   };
   # };
@@ -42,43 +42,43 @@ in
       colors = {
         rows = {
           normal = {
-            background = color.black;
-            foreground = color.white;
-            backgroundAlt = color.black;
+            background = "#${color.black}";
+            foreground = "#${color.white}";
+            backgroundAlt = "#${color.black}";
 
             highlight = {
-              background = color.blue;
-              foreground = color.black;
+              background = "#${color.blue}";
+              foreground = "#${color.black}";
             };
           };
 
           active = {
-            background = color.black;
-            foreground = color.yellow;
-            backgroundAlt = color.black;
+            background = "#${color.black}";
+            foreground = "#${color.yellow}";
+            backgroundAlt = "#${color.black}";
 
             highlight = {
-              background = color.yellow;
-              foreground = color.black;
+              background = "#${color.yellow}";
+              foreground = "#${color.black}";
             };
           };
 
           urgent = {
-            background = color.black;
-            foreground = color.red;
-            backgroundAlt = color.black;
+            background = "#${color.black}";
+            foreground = "#${color.red}";
+            backgroundAlt = "#${color.black}";
 
             highlight = {
-              background = color.red;
-              foreground = color.black;
+              background = "#${color.red}";
+              foreground = "#${color.black}";
             };
           };
         };
 
         window = {
-          separator = color.black;
-          background = color.black;
-          border = color.white;
+          separator = "#${color.black}";
+          background = "#${color.black}";
+          border = "#${color.white}";
         };
       };
 

@@ -36,6 +36,7 @@ in
 
           activeOpacity = toString opacity.active;
           inactiveOpacity = toString opacity.inactive;
+          menuOpacity = toString opacity.inactive;
 
           blur = true;
           fade = true;
@@ -56,6 +57,10 @@ in
             shadow-radius = 6;
             transition-length = 65;
             paint-on-overlay = true;
+
+            focus-exclude = [
+              "name = 'i3lock'"
+            ];
           '';
         };
   };

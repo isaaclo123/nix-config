@@ -95,19 +95,11 @@ let input-toggle-create = device: script-name: (pkgs.writeShellScriptBin script-
       scrot "$@" $SCREENSHOT -e 'notify-send "Screenshot Saved" "$f"'
     ''); in
 
-    let lock = (pkgs.writeShellScriptBin "lock" ''
-      #!/bin/bash
-
-      mpc pause &>/dev/null
-      sleep 0.5 && slock "$@"
-    ''); in
-
     with pkgs; [
       (touchscreen-toggle)
       (touchpad-toggle)
       (bluetooth-toggle)
       (screenshot)
-      (lock)
       (clipmenu-ext)
       (clipmenu-del)
       sxhkd
@@ -155,7 +147,7 @@ let input-toggle-create = device: script-name: (pkgs.writeShellScriptBin script-
 
       # lock
       super + F11
-        lock
+        lock -l blur
 
       XF86Favorites
         sleep 0.5 && xset dpms force off
@@ -190,7 +182,7 @@ let input-toggle-create = device: script-name: (pkgs.writeShellScriptBin script-
 
       # lock and suspend
       super + Delete
-        lock systemctl suspend -i
+        lock -s blur
 
       # terminal emulator
       super + Return

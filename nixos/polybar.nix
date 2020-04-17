@@ -49,38 +49,38 @@ in
         config =
           let
             bar-color = {
-              bg = color.bg;
-              fg = color.bg;
-              fg-alt = color.fg;
-              mf = color.fg;
-              ac = color.green; # accent
+              bg = "#${color.bg}";
+              fg = "#${color.bg}";
+              fg-alt = "#${color.fg}";
+              mf = "#${color.fg}";
+              ac = "#${color.green}";
 
               # bars
-              bn = color.green;
-              bm = color.yellow;
-              bd = color.red;
+              bn = "#${color.green}";
+              bm = "#${color.yellow}";
+              bd = "#${color.red}";
 
               trans = "#00000000";
               white = "#FFFFFF";
               black = "#000000";
 
-              red = color.red;
-              purple = color.purple;
-              blue = color.blue;
-              cyan = color.cyan;
-              green = color.green;
-              yellow = color.yellow;
-              orange = color.yellow;
-              grey = color.gray;
+              red = "#${color.red}";
+              purple = "#${color.purple}";
+              blue = "#${color.blue}";
+              cyan = "#${color.cyan}";
+              green = "#${color.green}";
+              yellow = "#${color.yellow}";
+              orange = "#${color.yellow}";
+              grey = "#${color.gray}";
 
               # temp
-              pink = color.red;
-              teal = color.cyan;
-              lime = color.green;
-              amber = color.yellow;
-              brown = color.green;
-              indigo = color.purple;
-              blue-gray = color.darkgray;
+              pink = "#${color.red}";
+              teal = "#${color.cyan}";
+              lime = "#${color.green}";
+              amber = "#${color.yellow}";
+              brown = "#${color.green}";
+              indigo = "#${color.purple}";
+              blue-gray = "#${color.darkgray}";
             };
           in {
             "color" = bar-color;
@@ -106,8 +106,8 @@ in
               offset-x = 0;
               offset-y = 0;
 
-              background = "#f21d2021";
-              foreground = color.fg;
+              background = "#e6${color.black}"; # 90 percent opacity
+              foreground = "#${color.fg}";
 
               radius-top = "0.0";
               radius-bottom = "0.0";
@@ -151,7 +151,7 @@ in
               tray-position = "none";
               tray-detached = false;
               tray-maxsize = 16;
-              tray-background = color.bg;
+              tray-background = "#${color.bg}";
               tray-offset-x = 0;
               tray-offset-y = 0;
               tray-padding = 0;
@@ -180,9 +180,9 @@ in
 
               pseudo-transparency = true;
 
-              format-foreground = color.black;
-              format-background = color.white;
-              format-underline = color.white;
+              format-foreground = "#${color.black}";
+              format-background = "#${color.white}";
+              format-underline = "#${color.white}";
             };
 
             "module/bspwm" = {
@@ -200,34 +200,34 @@ in
 
               format = "<label-state> <label-mode>";
               label-focused = "%index%";
-              label-focused-foreground = color.black;
+              label-focused-foreground = "#${color.black}";
               label-focused-background = bar-color.ac;
               label-focused-underline = bar-color.ac;
               label-focused-padding = 1;
 
               label-occupied = "%index%";
-              label-occupied-foreground = color.black;
-              label-occupied-background = color.white;
-              label-occupied-underline = color.white;
+              label-occupied-foreground = "#${color.black}";
+              label-occupied-background = "#${color.white}";
+              label-occupied-underline = "#${color.white}";
               label-occupied-padding = 1;
 
               label-empty = "";
 
               label-mode = "%mode%";
               label-mode-padding = 2;
-              label-mode-foreground = color.black;
+              label-mode-foreground = "#${color.black}";
               label-mode-background = bar-color.ac;
 
               label-urgent = "%index%";
-              label-urgent-foreground = color.black;
-              label-urgent-background = color.red;
+              label-urgent-foreground = "#${color.black}";
+              label-urgent-background = "#${color.red}";
               label-urgent-padding = 1;
             };
 
             "module/my_title" = {
               "inherit" = "module/title";
-              format-background = color.black;
-              format-foreground = color.white;
+              format-background = "#${color.black}";
+              format-foreground = "#${color.white}";
 
               label = " %title%";
               label-maxlen = 35;
@@ -237,8 +237,8 @@ in
               "inherit "= "module/mpd_bar";
 
               format-online = "<label-song> <icon-next>";
-              format-online-background = color.white;
-              format-online-foreground = color.black;
+              format-online-background = "#${color.white}";
+              format-online-foreground = "#${color.black}";
               format-online-padding = 1;
 
               label-song =  "%artist% - %title%";
@@ -257,8 +257,8 @@ in
             "module/my_mpd_bar_i" = {
               "inherit" = "module/mpd_bar_i";
 
-              format-online-background = color.red;
-              format-online-foreground = color.black;
+              format-online-background = "#${color.red}";
+              format-online-foreground = "#${color.black}";
               icon-play = "契";
               icon-pause = "";
             };
@@ -271,13 +271,13 @@ in
               type = "internal/pulseaudio";
 
               format-volume = "<ramp-volume>";
-              format-muted-background = color.blue;
-              format-volume-background = color.blue;
+              format-muted-background = "#${color.blue}";
+              format-volume-background = "#${color.blue}";
               format-volume-padding = 1;
 
               label-muted = "ﱝ";
               format-muted-padding = 1;
-              # label-muted-foreground = color.black;
+              # label-muted-foreground = "#${color.black}";
 
               ramp-volume-0 = "奄";
               ramp-volume-1 = "奔";
@@ -320,21 +320,21 @@ in
               time-format = "%H:%M";
 
               format-charging = "<animation-charging>";
-              format-charging-background = color.green;
-              format-charging-foreground = color.black;
+              format-charging-background = "#${color.green}";
+              format-charging-foreground = "#${color.black}";
               format-charging-padding = 1;
 
               format-discharging = "<ramp-capacity>";
-              format-discharging-background = color.red;
-              format-discharging-foreground = color.black;
+              format-discharging-background = "#${color.red}";
+              format-discharging-foreground = "#${color.black}";
               format-discharging-padding = 1;
 
               label-charging = "%percentage%%";
               label-discharging = "%percentage%%";
 
               label-full = "";
-              label-full-background = color.green;
-              label-full-foreground = color.black;
+              label-full-background = "#${color.green}";
+              label-full-foreground = "#${color.black}";
               label-full-padding = 1;
 
               ramp-capacity-0 = "";
@@ -376,15 +376,15 @@ in
             };
 
             # "settings" = {
-            #   # format-background = "${color.bg}";
+            #   # format-background = "#${color.bg}";
             #   format-padding = 2;
             #   format-spacing= 2;
             #   radius = "4.0";
             # };
 
             # "bar/default" = {
-            #   background = color.bg;
-            #   foreground = color.fg;
+            #   background = "#${color.bg}";
+            #   foreground = "#${color.fg}";
 
             #   fixed-center = true;
 

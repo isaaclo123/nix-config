@@ -231,7 +231,6 @@
       # node
       nodejs
       nodePackages.node2nix
-      jupyter
       jetbrains.jdk
 
       # network

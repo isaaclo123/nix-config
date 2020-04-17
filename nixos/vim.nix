@@ -122,7 +122,7 @@ in
         let g:rainbow_active = 1
 
         let g:rainbow_conf = {
-        \	'guifgs': ['${color.red}', '${color.green}', '${color.yellow}', '${color.blue}', '${color.purple}', '${color.cyan}'],
+        \	'guifgs': ['#${color.red}', '#${color.green}', '#${color.yellow}', '#${color.blue}', '#${color.purple}', '#${color.cyan}'],
         \	'ctermfgs': ['1', '2', '3', '4', '5', '6'],
         \}
 
@@ -319,7 +319,7 @@ in
 
         " indentLine
         let g:indentLine_setColors = 1
-        let g:indentLine_color_gui = '${color.gray}'
+        let g:indentLine_color_gui = '#${color.gray}'
         let g:indentLine_concealcursor = 'inc'
         let g:indentLine_conceallevel = 2
         let g:indentLine_fileTypeExclude = ['markdown', 'pandoc']

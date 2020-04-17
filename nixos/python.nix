@@ -1,5 +1,9 @@
 { pkgs, ... }:
 
+let
+  homedir = (import ./settings.nix).homedir;
+in
+
 with import <nixpkgs> {};
 
 let my-python-packages = python-packages:
@@ -34,11 +38,32 @@ let my-python-packages = python-packages:
     tensorflow
     numpy
     scikitlearn
+    ipykernel
   ];
   python-with-my-packages = python3.withPackages my-python-packages;
 in
 
 {
+  services.jupyter = {
+    enable = true;
+    group = "users";
+    kernels = {
+      python3 = {
+        displayName = "Python 3";
+        argv = [
+          "${python-with-my-packages.interpreter}"
+          "-m"
+          "ipykernel_launcher"
+          "-f"
+          "{connection_file}"
+        ];
+        language = "python";
+      };
+    };
+    notebookDir = homedir;
+    password = "sha1:1b961dc713fb:88483270a63e57d18d43cf337e629539de1436ba"; # test
+  };
+
   environment.systemPackages = with pkgs; [
     unstable.pipenv
 

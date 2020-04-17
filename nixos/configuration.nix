@@ -31,7 +31,7 @@ in
       ./sxhkd.nix
       ./vim.nix
       ./zsh.nix
-      ./slock.nix
+      ./lock.nix
       ./pkgs.nix
 
       ./bat.nix

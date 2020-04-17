@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ config, pkgs, lib, ... }:
 
 let
   username = (import ./settings.nix).username;
@@ -17,9 +17,12 @@ let bat-syntax-map-string = syntax-map:
     bat
   ];
 
-  system.userActivationScripts.batSetup = ''
-    ${pkgs.bat}/bin/bat cache --build
-  '';
+  # system.userActivationScripts.batSetup = {
+  #   text = ''
+  #     ${pkgs.bat}/bin/bat cache --build
+  #   '';
+  #   deps = [ ];
+  # };
 
   home-manager.users."${username}" = {
     xdg.configFile = {

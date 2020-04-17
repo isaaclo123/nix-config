@@ -168,7 +168,7 @@ in
           # icon_path = "/usr/share/icons/gnome/16x16/status/:/usr/share/icons/gnome/16x16/devices/";
 
           frame_width = 4;
-          frame_color = "${color.fg}";
+          frame_color = "#${color.fg}";
         };
 
         shortcuts = {
@@ -195,20 +195,20 @@ in
         urgency_low = {
           # IMPORTANT: colors have to be defined in quotation marks.
           # Otherwise the "#" and following would be interpreted as a comment.
-          background = "${color.bg}";
-          foreground = "${color.green}";
+          background = "#${color.bg}";
+          foreground = "#${color.green}";
           timeout = 5;
         };
 
         urgency_normal = {
-          background = "${color.bg}";
-          foreground = "${color.fg}";
+          background = "#${color.bg}";
+          foreground = "#${color.fg}";
           timeout = 5;
         };
 
         urgency_critical = {
-          background = "${color.bg}";
-          foreground = "${color.yellow}";
+          background = "#${color.bg}";
+          foreground = "#${color.yellow}";
           timeout = 5;
         };
       };

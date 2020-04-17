@@ -2,6 +2,7 @@
 
 let
   color = (import ./settings.nix).color;
+  theme = (import ./settings.nix).theme;
   spacing = (import ./settings.nix).spacing;
 in
 
@@ -59,10 +60,10 @@ let autostarted-status = "/tmp/autostarted-status.lock"; in
       bspc config border_width ${toString spacing.border}
       bspc config window_gap ${toString spacing.padding}
 
-      bspc config focused_border_color \${color.white}
-      bspc config active_border_color \${color.yellow}
-      bspc config normal_border_color \${color.black}
-      bspc config presel_feedback_color \${color.cyan}
+      bspc config focused_border_color \#${color.white}
+      bspc config active_border_color \#${color.yellow}
+      bspc config normal_border_color \#${color.black}
+      bspc config presel_feedback_color \#${color.cyan}
 
       bspc config split_ratio          0.52
       # bspc config borderless_monocle   true
@@ -91,7 +92,7 @@ let autostarted-status = "/tmp/autostarted-status.lock"; in
       xinput set-prop "ETPS/2 Elantech TrackPoint" "libinput Accel Speed" 0.7
       xinput set-prop "ETPS/2 Elantech Touchpad" "libinput Accel Speed" 0.45
       killall -q dunst && (dunst &)
-      feh --bg-scale /etc/nixos/wallpaper.jpg
+      feh --bg-scale "${theme.wallpaper}"
       calcurse --daemon
 
       # only autostart on beginning
@@ -114,6 +115,9 @@ let autostarted-status = "/tmp/autostarted-status.lock"; in
         NOTIFY=off bluetooth-toggle off &
         # NOTIFY=off touchpad-toggle off &
         NOTIFY=off touchscreen-toggle off &
+
+        betterlockscreen -u ${theme.wallpaper} -b &
+        bat cache --build &
 
         # create autostarted status file
         touch ${autostarted-status}
