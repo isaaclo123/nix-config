@@ -6,6 +6,7 @@ let
   spacing = (import ./settings.nix).spacing;
   font = (import ./settings.nix).font;
   opacity = (import ./settings.nix).opacity;
+  theme = (import ./settings.nix).theme;
 in
 
 {
@@ -17,6 +18,13 @@ in
   home-manager.users."${username}" = {
     services.dunst = {
       enable = true;
+
+      iconTheme = {
+        name = "Numix";
+        package = pkgs.numix-icon-theme;
+        size = "48x48";
+      };
+
       settings = {
         global = {
           font = "${font.mono} ${toString font.size}";
@@ -84,7 +92,7 @@ in
           # the top and down respectevly.
           # The width can be negative.  In this case the actual width is the
           # screen width minus the Width defined in within the geometry option.
-          geometry = "300x6-34-34";
+          geometry = "310x6-34-34";
 
           # Shrink window if it's smaller than the width.  Will be ignored if
           # width is 0.
@@ -164,8 +172,10 @@ in
           # Align icons left/right/off
           icon_position = "left";
 
+          max_icon_size = 48;
+
           # Paths to default icons.
-          # icon_path = "/usr/share/icons/gnome/16x16/status/:/usr/share/icons/gnome/16x16/devices/";
+          # icon_path = "${pkgs.numix-icon-theme}/share/icons/gnome/16x16/status/:${pkgs.numix-icon-theme}/share/icons/gnome/16x16/devices/";
 
           frame_width = 4;
           frame_color = "#${color.fg}";

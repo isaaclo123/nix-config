@@ -230,10 +230,11 @@ in
     desktopManager.xterm.enable = false;
 
     displayManager = {
-      slim = {
-        enable = true;
-        autoLogin = true;
-        defaultUser = "${username}";
+      lightdm = {
+        autoLogin = {
+          enable = true;
+          user = username;
+        };
       };
 
       xpra.pulseaudio = true;
@@ -256,6 +257,20 @@ in
   };
 
   location.provider = "geoclue2";
+
+  services.geoclue2 = {
+    enable = true;
+    enable3G = false;
+    enableCDMA = false;
+    enableDemoAgent = false;
+    enableModemGPS = false;
+    enableNmea = false;
+    enableWifi = true;
+  };
+
+  services.avahi = {
+    enable = true;
+  };
 
   services.redshift = {
     enable = true;

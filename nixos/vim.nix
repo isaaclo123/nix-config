@@ -466,6 +466,7 @@ in
                 };
               })
 
+              vim-startify
               gruvbox
 
               editorconfig-vim

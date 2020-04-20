@@ -286,7 +286,6 @@
       # busybox
       pciutils
 
-      axel
-      apktool
+      ncdu
     ];
 }

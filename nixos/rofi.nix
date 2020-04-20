@@ -8,9 +8,11 @@ let
 in
 
 {
-  # environment.systemPackages = with pkgs; [
-  #   rofi
-  # ];
+  environment.systemPackages = with pkgs; [
+    (pkgs.writeShellScriptBin "rofi-wrapper" ''
+      ${pkgs.rofi}/bin/rofi -theme-str '#textbox-prompt-colon { str: ""; }' "$@"
+    '')
+  ];
 
   # home-manager.users."${username}" = {
   #   xdg.configFile = {
@@ -33,6 +35,7 @@ in
   home-manager.users."${username}" = {
     programs.rofi = {
       enable = true;
+      # package =
       font = "${font.mono} ${toString font.size}";
       scrollbar = false;
       padding = spacing.padding;
@@ -82,9 +85,15 @@ in
         };
       };
 
-      # extraConfig = ''
-      #   rofi.terminal: termite
-      # '';
+      extraConfig = ''
+        theme-str: '#textbox-prompt-colon { str: ""; }'
+        rofi.display-run: 
+        rofi.display-window: 类
+        rofi.display-ssh: ﯱ
+        rofi.display-drun: 
+        rofi.display-combi: 
+        rofi.display-keys: 
+      '';
     };
   };
 }

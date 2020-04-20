@@ -8,8 +8,8 @@
 
   font = {
     mono = "Iosevka Nerd Font";
-    sansSerif = "Iosevka Nerd Font";
-    serif = "Iosevka Nerd Font";
+    sansSerif = "DejaVu Sans";
+    serif = "DejaVu Serif";
 
     size = 10;
   };

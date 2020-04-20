@@ -17,7 +17,7 @@ let username = (import ./settings.nix).username; in
 
         # rofi command. Make sure to have "$@" as last argument
         _rofi () {
-          rofi -i -no-auto-select "$@"
+          rofi-wrapper -i -p "" -no-auto-select "$@"
         }
 
         # default command to generate passwords

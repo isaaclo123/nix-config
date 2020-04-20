@@ -81,7 +81,7 @@ let input-toggle-create = device: script-name: (pkgs.writeShellScriptBin script-
     ''); in
 
     let clipmenu-ext = (pkgs.writeShellScriptBin "clipmenu-ext" ''
-      CM_HISTLENGTH=20 CM_LAUNCHER=rofi clipmenu -p clipmenu
+      CM_HISTLENGTH=20 CM_LAUNCHER=rofi-wrapper clipmenu -p clipmenu
     ''); in
 
     let clipmenu-del = (pkgs.writeShellScriptBin "clipmenu-del" ''
@@ -194,7 +194,7 @@ let input-toggle-create = device: script-name: (pkgs.writeShellScriptBin script-
 
       # program launcher
       super + d
-        rofi -show run
+        rofi-wrapper -show run
 
       # rofi pass
       super + p
