@@ -33,6 +33,13 @@ in
   # };
 
   home-manager.users."${username}" = {
+
+    # xdg.configFile = {
+    #   "rofi/bin".source = "${themes-folder}/bin";
+    #   "rofi/launchers".source = "${themes-folder}/launchers";
+    #   "rofi/launchers-git".source = "${themes-folder}/launchers-git";
+    #   "rofi/scripts".source = "${themes-folder}/scripts";
+    # };
     programs.rofi = {
       enable = true;
       # package =

@@ -24,7 +24,7 @@ in
 {
   home-manager.users."${username}" = {
       xdg.configFile = {
-          "polybar/scripts".source = "${themes-folder}/scripts";
+        "polybar/scripts".source = "${themes-folder}/scripts";
       };
 
       services.polybar = {
@@ -48,11 +48,23 @@ in
 
         config =
           let
+            icon-fg = color.black;
+            icon-bg = color.white;
+            fg = color.white;
+            bg = color.darkgray;
+
+            bar-background = "e6${color.black}";
+
             bar-color = {
-              bg = "#${color.bg}";
-              fg = "#${color.bg}";
-              fg-alt = "#${color.fg}";
-              mf = "#${color.fg}";
+              bg = "#${fg}";
+              fg = "#${fg}";
+              fg-alt = "#${bg}";
+              mf = "#${bg}";
+
+              # bg = "#${color.bg}";
+              # fg = "#${color.bg}";
+              # fg-alt = "#${color.fg}";
+              # mf = "#${color.fg}";
               ac = "#${color.green}";
 
               # bars
@@ -93,6 +105,15 @@ in
               include-file = "${themes-folder}/modules.ini\ninclude-file=${themes-folder}/user_modules.ini\ninclude-file=${themes-folder}/bars.ini";
             };
 
+            "module/sep" = {
+              type = "custom/text";
+              content = "|";
+
+              content-background = "#${bar-background}";
+              content-foregorund = "#${bar-background}";
+              content-padding = "0.5";
+            };
+
             "bar/main" = {
               wm-restack = "bspwm";
               monitor-fallback = "";
@@ -106,7 +127,7 @@ in
               offset-x = 0;
               offset-y = 0;
 
-              background = "#e6${color.black}"; # 90 percent opacity
+              background = "#${bar-background}"; # 90 percent opacity
               foreground = "#${color.fg}";
 
               radius-top = "0.0";
@@ -116,7 +137,7 @@ in
               overline-color = bar-color.ac;
 
               border-size = spacing.border;
-              border-color = bar-color.bg;
+              border-color = "#${bar-background}";
 
               padding = 1;
               module-margin-left = 0;
@@ -136,9 +157,9 @@ in
               # network pulseaudio temperature
               # keyboard title workspaces
 
-              modules-left = "bspwm separator my_mpd_bar_i my_mpd_bar separator";
+              modules-left = "bspwm sep my_mpd_bar_i my_mpd_bar sep";
               modules-center = "my_title";
-              modules-right = "my_pulseaudio_i my_pulseaudio separator my_network_i my_network separator my_battery_i my_battery separator my_date_i my_date";
+              modules-right = "my_pulseaudio_i my_pulseaudio sep my_network_i my_network sep my_battery_i my_battery sep my_date_i my_date";
               #  separator network_i network separator date_i date
 
               # Opacity value between 0.0 and 1.0 used on fade in/out
@@ -181,8 +202,8 @@ in
               pseudo-transparency = true;
 
               format-foreground = "#${color.black}";
-              format-background = "#${color.white}";
-              format-underline = "#${color.white}";
+              format-background = "#${color.darkgray}";
+              format-underline = "#${color.darkgray}";
             };
 
             "module/bspwm" = {
@@ -193,10 +214,18 @@ in
               index-sort = true;
 
               enable-click = true;
-              enable-scroll = true;
+              enable-scroll = false;
 
               wrapping-scroll = false;
               reverse-scroll = false;
+
+              ws-icon-0 = "1;h";
+              ws-icon-1 = "2;";
+              ws-icon-2 = "3;";
+              ws-icon-3 = "4;";
+              ws-icon-4 = "5;";
+              ws-icon-5 = "6;ﱘ";
+              ws-icon-6 = "7;";
 
               format = "<label-state> <label-mode>";
               label-focused = "%index%";
@@ -206,9 +235,9 @@ in
               label-focused-padding = 1;
 
               label-occupied = "%index%";
-              label-occupied-foreground = "#${color.black}";
-              label-occupied-background = "#${color.white}";
-              label-occupied-underline = "#${color.white}";
+              label-occupied-foreground = "#${fg}";
+              label-occupied-background = "#${bg}";
+              label-occupied-underline = "#${bg}";
               label-occupied-padding = 1;
 
               label-empty = "";
@@ -237,8 +266,8 @@ in
               "inherit "= "module/mpd_bar";
 
               format-online = "<label-song> <icon-next>";
-              format-online-background = "#${color.white}";
-              format-online-foreground = "#${color.black}";
+              format-online-background = "#${bg}";
+              format-online-foreground = "#${fg}";
               format-online-padding = 1;
 
               label-song =  "%artist% - %title%";
@@ -292,6 +321,9 @@ in
             "module/my_network_i" = {
               "inherit" = "module/network_i";
               interface = "wlp61s0";
+
+              format-connected-foreground = "#${icon-fg}";
+              format-disconnected-foreground = "#${icon-fg}";
 
               label-disconnected = "睊";
               ramp-signal-0 = "直";
@@ -370,61 +402,11 @@ in
             "module/my_date_i" = {
               "inherit" = "module/date_i";
 
+              format-foreground = "#${icon-fg}";
               time = "";
               # time-alt = "";
               time-alt = "";
             };
-
-            # "settings" = {
-            #   # format-background = "#${color.bg}";
-            #   format-padding = 2;
-            #   format-spacing= 2;
-            #   radius = "4.0";
-            # };
-
-            # "bar/default" = {
-            #   background = "#${color.bg}";
-            #   foreground = "#${color.fg}";
-
-            #   fixed-center = true;
-
-            #   width = "100%";
-            #   height = 22;
-
-            #   font-0 = "${font.mono}:pixelsize=${toString font.size}px:antialiasing=false;0";
-            #   font-1 = "FontAwesome:style=Regular:pixelsize=${toString font.size}px;0";
-            #   font-2 = "Weather Icons:pixelsize=9px;1";
-            #   font-3 = "Unifont:pixelsize=${toString font.size};antialiasing=false;2";
-
-            #   border-top-size = 0;
-            #   border-bottom-size = 0;
-
-            #   padding-left = spacing.border;
-            #   padding-right = spacing.border;
-
-            #   module-margin-left = 0;
-            #   module-margin-right = 0;
-
-            #   tray-position = "";
-
-            #   cursor-click = "pointer";
-            #   cursor-scroll = "ns-resize";
-
-            #   # modules-left = "mpd";
-            #   modules-center = "bspwm";
-            #   # "modules-right" = pulseaudio openweathermap-simple mail isrunning-bluetooth vpn network-status battery time
-            #   modules-right = "date";
-            #   # modules-right = "pulseaudio wlan eth battery date time";
-            # };
-
-
-            # "module/date" = {
-            #   type = "internal/date";
-            #   internal = 5;
-            #   date = "%Y-%m-%d";
-            #   time = "%H:%M";
-            #   label = "%date% %time%";
-            # };
           };
       };
     };

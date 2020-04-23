@@ -467,6 +467,7 @@ in
               })
 
               vim-startify
+              vim-devicons
               gruvbox
 
               editorconfig-vim

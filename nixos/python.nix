@@ -39,11 +39,18 @@ let my-python-packages = python-packages:
     numpy
     scikitlearn
     ipykernel
+    matplotlib
   ];
   python-with-my-packages = python3.withPackages my-python-packages;
 in
 
 {
+  environment.variables = {
+    SOURCE_DATE_EPOCH="$(date +%s)";
+    PYTHONEXECUTABLE="${python-with-my-packages}/bin/python3.7";
+    PYTHONPATH="${python-with-my-packages}/lib/python3.7/site-packages";
+  };
+
   services.jupyter = {
     enable = true;
     group = "users";

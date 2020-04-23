@@ -4,18 +4,19 @@ let username = (import ./settings.nix).username; in
 
 {
   environment.systemPackages =
-    let ranger-derivation =
-      (with import <nixpkgs> {};
-        stdenv.lib.overrideDerivation pkgs.ranger (oldAttrs : {
-          src = fetchFromGitHub {
-            owner = "ranger";
-            repo = "ranger";
-            rev = "ee344c896e85f92f91d097a95e88ae4ead786c7b";
-            sha256 = "1j621vsjg8s221raf8v2x3db35zqlfwksqlv6wgq2krpmi729p35";
-          };
-      })); in
+    # let ranger-derivation =
+    #   (with import <nixpkgs> {};
+    #     stdenv.lib.overrideDerivation pkgs.ranger (oldAttrs : {
+    #       src = fetchFromGitHub {
+    #         owner = "ranger";
+    #         repo = "ranger";
+    #         rev = "ee344c896e85f92f91d097a95e88ae4ead786c7b";
+    #         sha256 = "1j621vsjg8s221raf8v2x3db35zqlfwksqlv6wgq2krpmi729p35";
+    #       };
+    #   })); in
       with pkgs; [
-        (ranger-derivation)
+        # (ranger-derivation)
+        unstable.ranger
         imagemagick
         elinks
         ffmpegthumbnailer
@@ -25,10 +26,18 @@ let username = (import ./settings.nix).username; in
         file
         calibre
         poppler_utils
+        atool
       ];
 
   home-manager.users."${username}" = {
     xdg.configFile = {
+      "ranger/plugins/ranger_devicons".source= (pkgs.fetchFromGitHub {
+        owner = "alexanderjeurissen";
+        repo = "ranger_devicons";
+        rev = "1fa1d0f29047979b9ffd541eb330756ac4b348ab";
+        sha256 = "0lvcfykhxsjcz2ipxlldasclz459arya4q8b9786kbqp2y1k6z5k";
+      });
+
       "ranger/rc.conf".text =
         let ranger-scope-sh = (pkgs.writeShellScriptBin "scope.sh" ''
           set -o noclobber -o noglob -o nounset -o pipefail
@@ -292,6 +301,7 @@ let username = (import ./settings.nix).username; in
           handle_fallback
           exit 1
         ''); in ''
+        default_linemode devicons
         set preview_images true
         set use_preview_script true
         set preview_script ${ranger-scope-sh}/bin/scope.sh
