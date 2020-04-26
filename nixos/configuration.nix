@@ -197,9 +197,6 @@ in
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
 
-  # Enable the clipmenu daemon
-  services.clipmenu.enable = true;
-
   # docker
   virtualisation.docker.enable = true;
 

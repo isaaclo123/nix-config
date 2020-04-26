@@ -216,6 +216,7 @@
       unzip
       zip
       xdotool
+      coreutils-full
 
       # development tools
       firejail

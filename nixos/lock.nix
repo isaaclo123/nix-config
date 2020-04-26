@@ -15,7 +15,8 @@ in
     let
       lock = (pkgs.writeShellScriptBin "lock" ''
         mpc pause &>/dev/null
-        ${pkgs.betterlockscreen}/bin/betterlockscreen "$@"
+        # amixer set Master mute
+        ${pkgs.betterlockscreen}/bin/betterlockscreen "$@" blur
       '');
     in with pkgs; [
       (lock)

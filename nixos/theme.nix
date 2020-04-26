@@ -50,6 +50,10 @@ in
   };
 
   home-manager.users."${username}" = {
+    home.file = {
+      ".icons".source = "${pkgs.numix-icon-theme}/share/icons";
+    };
+
     gtk = {
       enable = true;
 

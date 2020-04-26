@@ -80,14 +80,6 @@ let input-toggle-create = device: script-name: (pkgs.writeShellScriptBin script-
       fi
     ''); in
 
-    let clipmenu-ext = (pkgs.writeShellScriptBin "clipmenu-ext" ''
-      CM_HISTLENGTH=20 CM_LAUNCHER=rofi clipmenu -p  -theme-str '#textbox-prompt-colon { str: ""; }'
-    ''); in
-
-    let clipmenu-del = (pkgs.writeShellScriptBin "clipmenu-del" ''
-      clipdel -d ".*" && notify-send "Clipboard Cleared"
-    ''); in
-
     let screenshot = (pkgs.writeShellScriptBin "screenshot" ''
       #!/bin/bash
 
@@ -100,8 +92,6 @@ let input-toggle-create = device: script-name: (pkgs.writeShellScriptBin script-
       (touchpad-toggle)
       (bluetooth-toggle)
       (screenshot)
-      (clipmenu-ext)
-      (clipmenu-del)
       sxhkd
     ];
 
@@ -147,7 +137,7 @@ let input-toggle-create = device: script-name: (pkgs.writeShellScriptBin script-
 
       # lock
       super + F11
-        lock -l blur
+        lock -l
 
       XF86Favorites
         sleep 0.5 && xset dpms force off
@@ -182,7 +172,7 @@ let input-toggle-create = device: script-name: (pkgs.writeShellScriptBin script-
 
       # lock and suspend
       super + Delete
-        lock -s blur
+        lock -s
 
       # terminal emulator
       super + Return
@@ -194,7 +184,7 @@ let input-toggle-create = device: script-name: (pkgs.writeShellScriptBin script-
 
       # program launcher
       super + d
-        rofi-wrapper -show run
+        ~/.config/rofi/launchers/launcher.sh
 
       # rofi pass
       super + p
@@ -265,7 +255,7 @@ let input-toggle-create = device: script-name: (pkgs.writeShellScriptBin script-
 
       # quit/restart bspwm
       super + ctrl + e
-          logout-desktop
+          ~/.config/rofi/scripts/menu_powermenu.sh
 
       super + ctrl + r
           reload-desktop
