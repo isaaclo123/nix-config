@@ -219,22 +219,27 @@ in
               wrapping-scroll = false;
               reverse-scroll = false;
 
-              ws-icon-0 = "1;h";
-              ws-icon-1 = "2;";
+              ws-icon-0 = "1;";
+              ws-icon-1 = "2;";
               ws-icon-2 = "3;";
-              ws-icon-3 = "4;";
-              ws-icon-4 = "5;";
+              ws-icon-3 = "4;";
+              ws-icon-4 = "5;";
               ws-icon-5 = "6;ﱘ";
-              ws-icon-6 = "7;";
+              ws-icon-6 = "7;";
+              ws-icon-7 = "8;8";
+              ws-icon-8 = "9;9";
+              ws-icon-9 = "0;10";
+
+              fuzzy-match = false;
 
               format = "<label-state> <label-mode>";
-              label-focused = "%index%";
+              label-focused = "%icon%";
               label-focused-foreground = "#${color.black}";
               label-focused-background = bar-color.ac;
               label-focused-underline = bar-color.ac;
               label-focused-padding = 1;
 
-              label-occupied = "%index%";
+              label-occupied = "%icon%";
               label-occupied-foreground = "#${fg}";
               label-occupied-background = "#${bg}";
               label-occupied-underline = "#${bg}";
@@ -247,7 +252,7 @@ in
               label-mode-foreground = "#${color.black}";
               label-mode-background = bar-color.ac;
 
-              label-urgent = "%index%";
+              label-urgent = "%icon%";
               label-urgent-foreground = "#${color.black}";
               label-urgent-background = "#${color.red}";
               label-urgent-padding = 1;
