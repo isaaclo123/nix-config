@@ -1,6 +1,7 @@
 { pkgs, ... }:
 
 let username = (import ./settings.nix).username; in
+let rofi = (import ./settings.nix).rofi; in
 
 {
   environment.systemPackages = with pkgs; [
@@ -17,7 +18,7 @@ let username = (import ./settings.nix).username; in
 
         # rofi command. Make sure to have "$@" as last argument
         _rofi () {
-          rofi-wrapper -i -p "" -no-auto-select "$@"
+          rofi -i -p Passwords -no-auto-select ${rofi.args} "$@"
         }
 
         # default command to generate passwords

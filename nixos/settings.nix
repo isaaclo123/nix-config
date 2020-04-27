@@ -53,4 +53,10 @@
     background = "dark";
     wallpaper = "/etc/nixos/wallpaper.jpg";
   };
+
+  rofi = rec {
+    style = "style_normal_grid";
+    colorscheme = "gruvbox";
+    args = "-theme launchers/${style}.rasi -no-show-icons";
+  };
 }

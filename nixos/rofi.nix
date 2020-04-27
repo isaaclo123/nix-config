@@ -5,6 +5,7 @@ let
   font = (import ./settings.nix).font;
   color = (import ./settings.nix).color;
   spacing = (import ./settings.nix).spacing;
+  rofi = (import ./settings.nix).rofi;
 in
 
 let
@@ -14,48 +15,49 @@ let
     rev = "bcddd3d9134ffd3b0493feea448bb1451af7ff44";
     sha256 = "1z5l4l084mhj9x5av8wh6zcsq7j1i41pylmsiacn262kkq5y0wxq";
   });
-
-  colors-rasi = ''
-    @import "colorschemes/gruvbox.rasi"
-  '';
 in
 
 {
+  # Enable the clipmenu daemon
+  services.clipmenu.enable = true;
+
   environment.systemPackages =
-    let clipmenu-ext = (pkgs.writeShellScriptBin "clipmenu-ext" ''
-      CM_HISTLENGTH=20 CM_LAUNCHER=rofi clipmenu -p  -theme-str '#textbox-prompt-colon { str: ""; }'
-    ''); in
+    let
+      clipmenu-ext = (pkgs.writeShellScriptBin "clipmenu-ext" ''
+        CM_HISTLENGTH=20 CM_LAUNCHER=rofi clipmenu -p Clipboard ${rofi.args}
+      '');
 
-    let clipmenu-del = (pkgs.writeShellScriptBin "clipmenu-del" ''
-      clipdel -d ".*" && notify-send "Clipboard Cleared"
-    ''); in
-
+      clipmenu-del = (pkgs.writeShellScriptBin "clipmenu-del" ''
+        clipdel -d ".*" && notify-send "Clipboard Cleared"
+      '');
+  in
     with pkgs; [
       (clipmenu-ext)
       (clipmenu-del)
+
       (unstable.rofi.override {
         plugins = with pkgs; [
           numix-icon-theme
         ];
     })
-
-    (pkgs.writeShellScriptBin "rofi-wrapper" ''
-      # ${pkgs.rofi}/bin/rofi -theme-str '#textbox-prompt-colon { str: ""; }' "$@"
-      ${pkgs.rofi}/bin/rofi "$@"
-    '')
   ];
-
-  # Enable the clipmenu daemon
-  services.clipmenu.enable = true;
 
   home-manager.users."${username}" = {
     xdg.configFile = {
       "rofi/bin".source = "${rofi-themes}/bin";
       # "rofi/scripts".source = "${rofi-themes}/scripts";
 
-      # powermenu and themes
-      "rofi/themes/colorschemes".source = "${rofi-themes}/themes/colorschemes";
+      "rofi/config.rasi".text = ''
+        configuration {
+          show-icons:         true;
+          icon-theme:         "Numix";
+          location: 0;
+          yoffset: 0;
+          xoffset: 0;
+        }
+      '';
 
+      # powermenu
       "rofi/scripts/menu_powermenu.sh".source = (pkgs.writeShellScript "menu_powermenu.sh" ''
         rofi_command="rofi -theme themes/menu/powermenu.rasi"
         uptime=$(uptime | sed 's/.*up \([^,]*\), .*/\1/')
@@ -93,8 +95,11 @@ in
         esac
       '');
 
-      "rofi/themes/menu/powermenu.rasi".text =
-        (builtins.readFile "${rofi-themes}/themes/menu/powermenu.rasi") + ''
+      "rofi/themes/colors.rasi".text = ''
+        @import "${rofi-themes}/themes/colorschemes/${rofi.colorscheme}.rasi"
+      '';
+      "rofi/themes/menu/powermenu.rasi".text = ''
+        ${builtins.readFile "${rofi-themes}/themes/menu/powermenu.rasi"}
 
         #window {
           width: 761px;
@@ -107,95 +112,15 @@ in
         }
       '';
 
-      "rofi/themes/colors.rasi".text = ''
-        @import "colorschemes/gruvbox.rasi"
-      '';
-
       # launcher
       "rofi/launchers/launcher.sh".source = (pkgs.writeShellScript "launcher.sh" ''
-        style="style_normal_grid"
-        rofi -no-lazy-grab -show combi -combi-modi "drun,run" -modi combi -display-combi Applications -display-run Run -display-drun App -show-icons -theme launchers/"$style".rasi
+        rofi -no-lazy-grab -show combi -combi-modi "drun,run" -modi combi -display-combi Applications -display-run Run -display-drun App -theme launchers/${rofi.style}.rasi
       '');
-      "rofi/launchers/colors.rasi".text = ''
-        @import "../themes/colorschemes/gruvbox.rasi"
+
+      "rofi/colors.rasi".text = ''
+        @import "${rofi-themes}/themes/colorschemes/${rofi.colorscheme}.rasi"
       '';
-      "rofi/launchers/style_normal_grid.rasi".source = "${rofi-themes}/launchers/style_normal_grid.rasi";
-
-      # config
-
-      "rofi/config.rasi".text = ''
-        configuration {
-          icon-theme:         "Numix";
-          show-icons:         true;
-          location: 0;
-          yoffset: 0;
-          xoffset: 0;
-        }
-        '';
-    };
-
-    programs.rofi = {
-      enable = false;
-
-      # package =
-      font = "${font.mono} ${toString font.size}";
-      scrollbar = false;
-      padding = spacing.padding;
-      borderWidth = spacing.border;
-      terminal = "${pkgs.termite}/bin/termite";
-
-      colors = {
-        rows = {
-          normal = {
-            background = "#${color.black}";
-            foreground = "#${color.white}";
-            backgroundAlt = "#${color.black}";
-
-            highlight = {
-              background = "#${color.blue}";
-              foreground = "#${color.black}";
-            };
-          };
-
-          active = {
-            background = "#${color.black}";
-            foreground = "#${color.yellow}";
-            backgroundAlt = "#${color.black}";
-
-            highlight = {
-              background = "#${color.yellow}";
-              foreground = "#${color.black}";
-            };
-          };
-
-          urgent = {
-            background = "#${color.black}";
-            foreground = "#${color.red}";
-            backgroundAlt = "#${color.black}";
-
-            highlight = {
-              background = "#${color.red}";
-              foreground = "#${color.black}";
-            };
-          };
-        };
-
-        window = {
-          separator = "#${color.black}";
-          background = "#${color.black}";
-          border = "#${color.white}";
-        };
-      };
-
-      extraConfig = ''
-        theme-str: '#textbox-prompt-colon { str: ""; }'
-        rofi.display-run: 
-        rofi.display-window: 类
-        rofi.display-ssh: ﯱ
-        rofi.display-drun: 
-        rofi.display-combi: 
-        rofi.display-keys: 
-      '';
+      "rofi/launchers/${rofi.style}.rasi".source = "${rofi-themes}/launchers/${rofi.style}.rasi";
     };
   };
 }

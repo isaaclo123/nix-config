@@ -7,6 +7,7 @@ let
   font = (import ./settings.nix).font;
   opacity = (import ./settings.nix).opacity;
   theme = (import ./settings.nix).theme;
+  rofi = (import ./settings.nix).rofi;
 in
 
 {
@@ -164,7 +165,7 @@ in
           startup_notification = false;
 
           # dmenu path.
-          dmenu = "rofi -dmenu -p dunst";
+          dmenu = "rofi -dmenu -p Notifications ${rofi.args}";
 
           # Browser for opening urls in context menu.
           browser = "qutebrowser";

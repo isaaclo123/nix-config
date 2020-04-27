@@ -1,5 +1,7 @@
 { pkgs, ... }:
 
+let rofi = (import ./settings.nix).rofi; in
+
 # creates input toggle scripts based on device name and script name
 let input-toggle-create = device: script-name: (pkgs.writeShellScriptBin script-name ''
   #!/bin/bash
@@ -196,7 +198,7 @@ let input-toggle-create = device: script-name: (pkgs.writeShellScriptBin script-
 
       # rofimoji
       super + e
-      	rofimoji
+      	rofimoji --rofi-args "${rofi.args}"
 
       # mpv toggle
       super + Up
