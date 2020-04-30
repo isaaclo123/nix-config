@@ -12,7 +12,7 @@ in
 
 {
   environment.systemPackages = with pkgs; [
-    dunst
+    # dunst
     libnotify
   ];
 
@@ -23,7 +23,7 @@ in
       iconTheme = {
         name = "Numix";
         package = pkgs.numix-icon-theme;
-        size = "48x48";
+        size = "48";
       };
 
       settings = {
@@ -176,7 +176,7 @@ in
           max_icon_size = 48;
 
           # Paths to default icons.
-          # icon_path = "${pkgs.numix-icon-theme}/share/icons/gnome/16x16/status/:${pkgs.numix-icon-theme}/share/icons/gnome/16x16/devices/";
+          # icon_path = "${pkgs.numix-icon-theme}/share/icons/gnome/48x48/status/:${pkgs.numix-icon-theme}/share/icons/gnome/48x48/devices/";
 
           frame_width = 4;
           frame_color = "#${color.fg}";
