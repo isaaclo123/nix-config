@@ -12,7 +12,7 @@ in
 
 {
   environment.systemPackages = with pkgs; [
-    # dunst
+    dunst
     libnotify
   ];
 
