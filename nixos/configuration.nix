@@ -28,6 +28,7 @@ in
       ./hardware-configuration.nix
       ./bspwm.nix
       ./compton.nix
+      ./opengl.nix
       ./sxhkd.nix
       ./vim.nix
       ./zsh.nix
@@ -109,11 +110,6 @@ in
     device = "ETPS/2 Elantech TrackPoint";
     sensitivity = 255;
     speed = 255;
-  };
-
-  hardware.opengl = {
-    driSupport32Bit = true;
-    extraPackages32 = with pkgs.pkgsi686Linux; [ libva ];
   };
 
   hardware.pulseaudio = {

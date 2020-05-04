@@ -23,6 +23,8 @@ in
 
     fontconfig = {
       # dpi = 96;
+      antialias = true;
+      hinting.enable = true;
 
       defaultFonts = {
         monospace = [ font.mono ];

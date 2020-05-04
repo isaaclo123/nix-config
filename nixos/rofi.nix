@@ -60,7 +60,8 @@ in
       # powermenu
       "rofi/scripts/menu_powermenu.sh".source = (pkgs.writeShellScript "menu_powermenu.sh" ''
         rofi_command="rofi -theme themes/menu/powermenu.rasi"
-        uptime=$(uptime | sed 's/.*up \([^,]*\), .*/\1/')
+        uptime=$(uptime | sed s/,//g| awk '{ print $3}')
+
         #mem=$( free -h | grep -i mem | awk -F ' ' '{print $3}')
         cpu=$(sh ~/.config/rofi/bin/usedcpu)
         memory=$(sh ~/.config/rofi/bin/usedram)
