@@ -9,7 +9,7 @@ let
   username = (import ./settings.nix).username;
 
   home-manager =
-    fetchTarball https://github.com/rycee/home-manager/archive/release-19.09.tar.gz;
+    fetchTarball https://github.com/rycee/home-manager/archive/release-20.03.tar.gz;
 
   nixos-hardware =
     fetchTarball https://github.com/NixOS/nixos-hardware/archive/master.tar.gz;
@@ -69,13 +69,13 @@ in
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  boot.initrd.luks.devices = [
-    {
-      name = "root";
+  boot.initrd.luks.devices = {
+    root = {
+      # name = "root";
       device = "/dev/nvme0n1p2";
       preLVM = true;
-    }
-  ];
+    };
+  };
 
   boot.extraModprobeConfig = ''
     options snd-hda-intel model=auto
@@ -93,15 +93,15 @@ in
   hardware.bluetooth = {
     enable = true;
     package = pkgs.bluezFull;
-    extraConfig = ''
-      [General]
-      Enable=Source,Sink,Media,Socket
-      AutoConnectTimeout = 0
-      IdleTimeout=0
-      DiscoverableTimeout = 0
-      PairableTimeout = 0
-      PageTimeout = 8192
-    '';
+    # extraConfig = ''
+    #   [General]
+    #   Enable=Source,Sink,Media,Socket
+    #   AutoConnectTimeout = 0
+    #   IdleTimeout=0
+    #   DiscoverableTimeout = 0
+    #   PairableTimeout = 0
+    #   PageTimeout = 8192
+    # '';
   };
 
   hardware.trackpoint = {
@@ -165,7 +165,7 @@ in
   # List packages installed in system profile. To search, run:
   # $ nix search wget
 
-  hardware.brightnessctl.enable = true;
+  # hardware.brightnessctl.enable = true;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -201,13 +201,13 @@ in
   virtualisation.docker.enable = true;
 
   # virtualbox
-  virtualisation.virtualbox = {
-    guest.enable = true;
-    host = {
-      enable = true;
-      enableExtensionPack = true;
-    };
-  };
+  # virtualisation.virtualbox = {
+  #   guest.enable = true;
+  #   host = {
+  #     enable = true;
+  #     enableExtensionPack = true;
+  #   };
+  # };
 
   # Open ports in the firewall.
   networking.firewall.allowedTCPPorts = [ ];
@@ -233,6 +233,8 @@ in
           user = username;
         };
       };
+
+      defaultSession = "none+bspwm";
 
       xpra.pulseaudio = true;
     };
@@ -341,9 +343,10 @@ in
   # compatible, in order to avoid breaking some software such as database
   # servers. You should change this only after NixOS release notes say you
   # should.
-  system.stateVersion = "19.09"; # Did you read the comment?
+  system.stateVersion = "20.03"; # Did you read the comment?
   nixpkgs.config = {
     # pulseaudio = true;
+    allowBroken = true;
     allowUnfree = true;
     packageOverrides = pkgs: {
       unstable = import unstable {

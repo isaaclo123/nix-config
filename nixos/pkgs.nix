@@ -192,7 +192,7 @@
       # pandoc
       pandoc
       haskellPackages.pandoc-citeproc
-      texlive.combined.scheme-full
+      # texlive.combined.scheme-full
 
       # dot
       graphviz
@@ -250,7 +250,7 @@
       rclone
 
       # video
-      openshot-qt
+      # openshot-qt
 
       # themes
       gtk-engine-murrine

@@ -8,7 +8,7 @@ in
 {
   home-manager.users."${username}" = {
     # compton
-    services.compton =
+    services.picom =
       let compton-animated =
         (with import <nixpkgs> {};
           stdenv.lib.overrideDerivation pkgs.neocomp (oldAttrs : {
@@ -24,6 +24,10 @@ in
             ]);
 
             postPatch = null;
+
+            fixupPhase = ''
+              ln -s $out/bin/compton $out/bin/picom
+            '';
         })); in {
           enable = true;
           backend = "glx";
@@ -42,7 +46,7 @@ in
           fade = true;
           fadeDelta = 3;
 
-          vSync = "drm";
+          vSync = true;
 
           extraOptions = ''
             focus-exclude = [
@@ -60,6 +64,7 @@ in
 
             shadow-radius = 6;
             transition-length = 65;
+            unredir-if-possible = true;
             paint-on-overlay = true;
           '';
         };

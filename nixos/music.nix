@@ -9,6 +9,7 @@ in
   environment.systemPackages = with pkgs; [
     ncmpcpp
     mpc_cli
+    mpd
   ];
 
   home-manager.users."${username}" = {

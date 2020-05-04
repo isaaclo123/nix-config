@@ -12,8 +12,8 @@ in
 
 {
   environment.systemPackages = with pkgs; [
-    dunst
-    libnotify
+    unstable.dunst
+    unstable.libnotify
   ];
 
   home-manager.users."${username}" = {

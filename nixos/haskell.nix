@@ -8,6 +8,6 @@
 
     haskellPackages.hoogle
     haskellPackages.hindent
-    haskellPackages.stylish-haskell
+    # haskellPackages.stylish-haskell
   ];
 }

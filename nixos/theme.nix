@@ -31,8 +31,7 @@ in
         serif = [ font.serif ];
       };
 
-      ultimate.enable = true;
-      penultimate.enable = false;
+      penultimate.enable = true;
 
       allowBitmaps = true;
       useEmbeddedBitmaps = false;

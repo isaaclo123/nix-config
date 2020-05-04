@@ -14,8 +14,8 @@ let
   polybar-themes = (pkgs.fetchFromGitHub {
     owner = "adi1090x";
     repo = "polybar-themes";
-    rev = "243058f04961009481cdd059ab1591be2509e018";
-    sha256 = "0ha2hrdz97vj4xwy5hj2ic92pw0cimn6g7iwfnqjs3ya0z3hhh2v";
+    rev = "786166cf976d4a64f90bb108fb76bb4eb33555f3";
+    sha256 = "0db7j02g133zlhy3ccvny9gkvzciwi4fi5dkisclnzy1pzhxdg6g";
   });
 
   themes-folder = "${polybar-themes}/${theme-name}/source/${theme-icon}";

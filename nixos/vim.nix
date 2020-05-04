@@ -497,7 +497,7 @@ in
 
               haskell-vim
               vim-hindent
-              vim-stylish-haskell
+              # vim-stylish-haskell
 
               typescript-vim
             ];
@@ -515,8 +515,6 @@ in
         (start-vlime)
         (system_vim)
         (system_vimdiff)
-        neovim
-        nvi
         universal-ctags
         ripgrep
         scowl

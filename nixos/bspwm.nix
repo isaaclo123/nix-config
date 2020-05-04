@@ -37,8 +37,6 @@ let autostarted-status = "/tmp/autostarted-status.lock"; in
       enable = true;
       configFile = "/etc/bspwmrc";
     };
-
-    default = "bspwm";
   };
 
   environment.etc.bspwmrc = {
