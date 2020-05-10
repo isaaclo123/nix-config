@@ -13,7 +13,7 @@ let notmuch-config = "${homedir}/.config/notmuch/notmuchrc"; in
       notify-send "Mail Syncing"
       mbsync -a &> /dev/null
       notmuch --config=${notmuch-config} new &> /dev/null
-      afew -t -n
+      afew -t -n --notmuch-config=${notmuch-config}
       notify-send "Mail Sync Done!"
     ''); in [
       (mail-sync)
@@ -133,7 +133,7 @@ let notmuch-config = "${homedir}/.config/notmuch/notmuchrc"; in
         package = (pkgs.writeShellScriptBin "mbsync" ''
           ${pkgs.isync}/bin/mbsync $@
           ${pkgs.notmuch}/bin/notmuch --config=${notmuch-config} new
-          ${pkgs.afew}/bin/afew -t -n
+          ${pkgs.afew}/bin/afew -t -n --notmuch-config=${notmuch-config}
         '');
       };
     };
