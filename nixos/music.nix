@@ -9,16 +9,15 @@ in
   environment.systemPackages = with pkgs; [
     ncmpcpp
     mpc_cli
-    mpd
   ];
 
-  home-manager.users."${username}" = {
-    services.mpd = {
-      enable = true;
-      dataDir = "${homedir}/.mpd";
-      musicDirectory = "${homedir}/Music";
-    };
+  services.mpd = {
+    enable = true;
+    # dataDir = "${homedir}/.mpd";
+    musicDirectory = "${homedir}/Music";
+  };
 
+  home-manager.users."${username}" = {
     xdg.configFile = {
       "ncmpcpp/config".text = ''
         visualizer_fifo_path = "/tmp/mpd.fifo"

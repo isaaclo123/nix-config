@@ -4,8 +4,6 @@ let rofi = (import ./settings.nix).rofi; in
 
 # creates input toggle scripts based on device name and script name
 let input-toggle-create = device: script-name: (pkgs.writeShellScriptBin script-name ''
-  #!/bin/bash
-
   # toggle device
 
   DEVICE="${device}"
@@ -48,8 +46,6 @@ let input-toggle-create = device: script-name: (pkgs.writeShellScriptBin script-
     let touchpad-toggle = (input-toggle-create "ETPS/2 Elantech Touchpad" "touchpad-toggle"); in
 
     let bluetooth-toggle = (pkgs.writeShellScriptBin "bluetooth-toggle" ''
-      #!/bin/bash
-
       BT=$(rfkill list | grep tpacpi_bluetooth_sw | head -c 1)
       BT_STATE=$(rfkill list $BT | grep "Soft blocked: yes")
 
@@ -57,12 +53,12 @@ let input-toggle-create = device: script-name: (pkgs.writeShellScriptBin script-
 
       enable_device () {
         sudo rfkill unblock $BT &&
-        [ "$NOTIFY_VAL" == "on" ] && notify-send "Bluetooth Enabled"
+        [ "$NOTIFY_VAL" == "on" ] && ${pkgs.libnotify}/bin/notify-send "Bluetooth Enabled"
       }
 
       disable_device () {
         sudo rfkill block $BT &&
-        [ "$NOTIFY_VAL" == "on" ] && notify-send "Bluetooth Disabled"
+        [ "$NOTIFY_VAL" == "on" ] && ${pkgs.libnotify}/bin/notify-send "Bluetooth Disabled"
       }
 
       if [ "$1" == "on" ]; then
@@ -83,10 +79,8 @@ let input-toggle-create = device: script-name: (pkgs.writeShellScriptBin script-
     ''); in
 
     let screenshot = (pkgs.writeShellScriptBin "screenshot" ''
-      #!/bin/bash
-
       SCREENSHOT=~/Pictures/Screenshots/Screenshot_%Y%m%d-%H%M%S.png
-      scrot "$@" $SCREENSHOT -e 'notify-send "Screenshot Saved" "$f"'
+      scrot "$@" $SCREENSHOT -e '${pkgs.libnotify}/bin/notify-send "Screenshot Saved" "$f"'
     ''); in
 
     with pkgs; [

@@ -46,23 +46,33 @@ in
           }));
         in
       ''
-        matrix-off: discordapp.com true
         matrix-off: umn.edu true
+        matrix-off: discord.com true
         matrix-off: countryfinancial.com true
 
         ${rules-txt}
 
         xda-developers.com xda-cdn.com script allow
 
-        discordapp.com 127.0.0.1 xhr allow
-        discordapp.com discord.gg * allow
-        discordapp.com gateway.discord.gg xhr allow
-        discordapp.com google.com * allow
-        discordapp.com gstatic.com * allow
-        discordapp.com ytimg.com * allow
+        # Discord
+        discord.com 127.0.0.1 xhr allow
+        discord.com discord.gg * allow
+        discord.com gateway.discord.gg xhr allow
+        discord.com google.com * allow
+        discord.com gstatic.com * allow
+        discord.com ytimg.com * allow
         discordservers.com ajax.cloudflare.com script allow
         discordservers.com cloudflare.com cookie allow
         discordservers.com discordapp.com cookie allow
+
+        reddit.com cdn.embedly.com frame allow
+        reddit.com gateway.reddit.com xhr allow
+        reddit.com oops.redditmedia.com xhr allow
+        reddit.com www.reddit.com script allow
+        reddit.com www.reddit.com xhr allow
+        reddit.com www.redditmedia.com frame allow
+        reddit.com www.redditmedia.com script allow
+        reddit.com www.redditstatic.com script allow
 
         bandcamp.com s4.bcbits.com script allow
         bandcamp.com t4.bcbits.com media allow
@@ -82,6 +92,19 @@ in
         vimeo.com vimeocdn.com plugin allow
         vimeo.com vimeocdn.com script allow
         vimeo.com vimeocdn.com xhr allow
+
+        youtube-nocookie.com googlevideo.com xhr allow
+        youtube-nocookie.com ytimg.com * allow
+
+        facebook.com 1st-party xhr allow
+        facebook.com facebook.com cookie allow
+        facebook.com fbcdn.net script allow
+        facebook.com fbcdn.net xhr allow
+        facebook.com staticxx.facebook.com frame allow
+        facebook.com video-ort2-2.xx.fbcdn.net media allow
+        facebook.com www.facebook.com frame allow
+        facebook.com www.facebook.com media allow
+        facebook.com www.facebook.com xhr allow
 
         #eBay
         ebay.com ebayrtm.com script allow

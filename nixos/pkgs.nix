@@ -192,7 +192,7 @@
       # pandoc
       pandoc
       haskellPackages.pandoc-citeproc
-      # texlive.combined.scheme-full
+      texlive.combined.scheme-full
 
       # dot
       graphviz

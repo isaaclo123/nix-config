@@ -25,25 +25,41 @@
   };
 
   color = rec {
-    # red = "cc241d";
-    # green = "98971a";
-    # yellow = "d79921";
-    # blue = "458588";
-    # purple = "b16286";
-    # cyan = "689d6a";
     red = "fb4934";
     green = "b8bb26";
     yellow = "fabd2f";
     blue = "83a598";
     purple = "d3869b";
     cyan = "8ec07c";
+    orange = "fe8019";
+    gray = "928374";
 
-    gray = "a89984";
+    # darkgray = "32302f";
+    darkgray = "3c3836";
+
     black = "1d2021";
     white = "ebdbb2";
 
-    darkgray = "3c3836";
 
+    alt = rec {
+      red = "cc241d";
+      green = "98971a";
+      yellow = "d79921";
+      blue = "458588";
+      purple = "b16286";
+      cyan = "689d6a";
+      orange = "d65d0e";
+      gray = "a89984";
+      darkgray = "3c3836";
+
+      black = "282828";
+      white = "fbf1c7";
+
+      bg = black;
+      fg = white;
+    };
+
+    ac = blue;
     fg = white;
     bg = black;
   };

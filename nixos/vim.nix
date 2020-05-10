@@ -515,6 +515,7 @@ in
         (start-vlime)
         (system_vim)
         (system_vimdiff)
+        neovim
         universal-ctags
         ripgrep
         scowl

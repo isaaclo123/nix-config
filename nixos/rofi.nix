@@ -15,6 +15,18 @@ let
     rev = "bcddd3d9134ffd3b0493feea448bb1451af7ff44";
     sha256 = "1z5l4l084mhj9x5av8wh6zcsq7j1i41pylmsiacn262kkq5y0wxq";
   });
+
+  rofi-colorscheme = (pkgs.writeText "colorscheme.rasi" ''
+    @import "${rofi-themes}/themes/colorschemes/${rofi.colorscheme}.rasi"
+  '');
+  # * {
+  #   accent:           #${color.blue};
+  #   background:       #${color.bg};
+  #   background-light: #${color.darkgray};
+  #   foreground:       #${color.fg};
+  #   on:               #${color.green};
+  #   off:              #${color.red};
+  # }
 in
 
 {
@@ -45,7 +57,6 @@ in
   home-manager.users."${username}" = {
     xdg.configFile = {
       "rofi/bin".source = "${rofi-themes}/bin";
-      # "rofi/scripts".source = "${rofi-themes}/scripts";
 
       "rofi/config.rasi".text = ''
         configuration {
@@ -96,8 +107,9 @@ in
         esac
       '');
 
+      # @import "${rofi-themes}/themes/colorschemes/${rofi.colorscheme}.rasi"
       "rofi/themes/colors.rasi".text = ''
-        @import "${rofi-themes}/themes/colorschemes/${rofi.colorscheme}.rasi"
+        @import "${rofi-colorscheme}"
       '';
       "rofi/themes/menu/powermenu.rasi".text = ''
         ${builtins.readFile "${rofi-themes}/themes/menu/powermenu.rasi"}
@@ -119,7 +131,7 @@ in
       '');
 
       "rofi/colors.rasi".text = ''
-        @import "${rofi-themes}/themes/colorschemes/${rofi.colorscheme}.rasi"
+        @import "${rofi-colorscheme}"
       '';
       "rofi/launchers/${rofi.style}.rasi".source = "${rofi-themes}/launchers/${rofi.style}.rasi";
     };

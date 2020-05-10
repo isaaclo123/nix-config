@@ -271,7 +271,7 @@ in
     enable = true;
     temperature = {
       day = 6500;
-      night = 3000;
+      night = 4000;
     };
   };
 

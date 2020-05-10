@@ -10,10 +10,14 @@ let
   rofi = (import ./settings.nix).rofi;
 in
 
+let
+  icon-size = "48";
+  icon-path = "${pkgs.numix-icon-theme}/share/icons/Numix/${icon-size}";
+in
+
 {
   environment.systemPackages = with pkgs; [
-    unstable.dunst
-    unstable.libnotify
+    libnotify
   ];
 
   home-manager.users."${username}" = {
@@ -23,7 +27,7 @@ in
       iconTheme = {
         name = "Numix";
         package = pkgs.numix-icon-theme;
-        size = "48";
+        size = icon-size;
       };
 
       settings = {
@@ -40,7 +44,7 @@ in
           # <http://developer.gnome.org/pango/stable/PangoMarkupFormat.html>.
           # If markup is not allowed, those tags will be stripped out of the
           # message.
-          markup = true;
+          markup = "full";
 
           # The format of the message.  Possible variables are:
           #   %a  appname
@@ -58,6 +62,8 @@ in
           # Show how many messages are currently hidden (because of geometry).
           indicate_hidden = true;
 
+
+
           # Alignment of message text.
           # Possible values are "left", "center" and "right".
           alignment = "left";
@@ -66,7 +72,7 @@ in
           # window allows bounces back and forth.
           # This option conflicts with "word_wrap".
           # Set to 0 to disable.
-          bounce_freq = 0;
+          # bounce_freq = 0;
 
           # Show age of message if message is older than show_age_threshold
           # seconds.
@@ -93,7 +99,8 @@ in
           # the top and down respectevly.
           # The width can be negative.  In this case the actual width is the
           # screen width minus the Width defined in within the geometry option.
-          geometry = "310x6-34-34";
+          # geometry = "310x6-34-34";
+          geometry = "310x6-32+62";
 
           # Shrink window if it's smaller than the width.  Will be ignored if
           # width is 0.
@@ -118,7 +125,7 @@ in
           #   none: don't follow anything
           #
           # "keyboard" needs a windowmanager that exports the
-          # _NET_ACTIVE_WINDOW property.
+          # _net_ACTIVE_WINDOW property.
           # This should be the case for almost all modern windowmanagers.
           #
           # If this option is set to mouse or keyboard, the monitor option
@@ -133,31 +140,18 @@ in
           history_length = 20;
 
           # Display indicators for URLs (U) and actions (A).
-          show_indicators = true;
+          show_indicators = false;
 
           # The height of a single line.  If the height is smaller than the
           # font height, it will get raised to the font height.
           # This adds empty space above and under the text.
           line_height = 0;
 
-          # Draw a line of "separatpr_height" pixel height between two
-          # notifications.
-          # Set to 0 to disable.
-          separator_height = spacing.border;
-
           # Padding between text and separator.
           padding = spacing.padding;
 
           # Horizontal padding.
           horizontal_padding = spacing.padding;
-
-          # Define a color for the separator.
-          # possible values are:
-          #  * auto: dunst tries to find a color fitting to the background;
-          #  * foreground: use the same color as the foreground;
-          #  * frame: use the same color as the frame;
-          #  * anything else will be interpreted as a X color.
-          separator_color = "frame";
 
           # Print a notification on startup.
           # This is mainly for error detection, since dbus (re-)starts dunst
@@ -173,13 +167,16 @@ in
           # Align icons left/right/off
           icon_position = "left";
 
-          max_icon_size = 48;
+          max_icon_size = icon-size;
 
           # Paths to default icons.
           # icon_path = "${pkgs.numix-icon-theme}/share/icons/gnome/48x48/status/:${pkgs.numix-icon-theme}/share/icons/gnome/48x48/devices/";
 
-          frame_width = 4;
-          frame_color = "#${color.fg}";
+          frame_width = spacing.border;
+          frame_color = "#${color.alt.white}";
+
+          separator_height = spacing.border;
+          separator_color = "frame";
         };
 
         shortcuts = {
@@ -206,20 +203,21 @@ in
         urgency_low = {
           # IMPORTANT: colors have to be defined in quotation marks.
           # Otherwise the "#" and following would be interpreted as a comment.
-          background = "#${color.bg}";
-          foreground = "#${color.green}";
+          background = "#${color.alt.bg}";
+          foreground = "#${color.fg}";
           timeout = 5;
         };
 
         urgency_normal = {
-          background = "#${color.bg}";
+          background = "#${color.alt.bg}";
           foreground = "#${color.fg}";
           timeout = 5;
         };
 
         urgency_critical = {
-          background = "#${color.bg}";
-          foreground = "#${color.yellow}";
+          icon = "${icon-path}/status/dialog-warning.svg";
+          background = "#${color.alt.bg}";
+          foreground = "#${color.fg}";
           timeout = 5;
         };
       };

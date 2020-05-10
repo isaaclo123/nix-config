@@ -50,7 +50,8 @@ in
 
           extraOptions = ''
             focus-exclude = [
-              "name = 'i3lock'"
+              "name = 'i3lock'",
+              "name = 'mpvscratchpad'"
             ];
 
             transition-pow-x = 1.0;

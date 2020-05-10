@@ -82,7 +82,7 @@ in
               cyan = "#${color.cyan}";
               green = "#${color.green}";
               yellow = "#${color.yellow}";
-              orange = "#${color.yellow}";
+              orange = "#${color.orange}";
               grey = "#${color.gray}";
 
               # temp
@@ -92,7 +92,7 @@ in
               amber = "#${color.yellow}";
               brown = "#${color.green}";
               indigo = "#${color.purple}";
-              blue-gray = "#${color.darkgray}";
+              blue-gray = "#${color.alt.gray}";
             };
           in {
             "color" = bar-color;
@@ -123,7 +123,7 @@ in
               fixed-center = true;
 
               width = "100%";
-              height = 2 * spacing.border + font.size + 2;
+              height = 22;
               offset-x = 0;
               offset-y = 0;
 
@@ -202,8 +202,8 @@ in
               pseudo-transparency = true;
 
               format-foreground = "#${color.black}";
-              format-background = "#${color.darkgray}";
-              format-underline = "#${color.darkgray}";
+              format-background = "#${color.alt.gray}";
+              format-underline = "#${color.alt.gray}";
             };
 
             "module/bspwm" = {

@@ -15,13 +15,13 @@ in
   home-manager.users."${username}" = {
     xdg.configFile = {
       "zathura/zathurarc".text = ''
-        set recolor-darkcolor "#${color.fg}"
+        set recolor-darkcolor "#${color.alt.white}"
         set recolor-lightcolor "#${color.bg}"
         set recolor true
 
         # colors
-        set statusbar-fg "#${color.gray}"
-        set statusbar-bg "#${color.darkgray}"
+        set statusbar-fg "#${color.white}"
+        set statusbar-bg "#${color.bg}"
 
         # keybindings
         map [fullscreen] a adjust_window best-fit

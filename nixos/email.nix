@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 let
   homedir = (import ./settings.nix).homedir;
@@ -56,7 +56,7 @@ let notmuch-config = "${homedir}/.config/notmuch/notmuchrc"; in
             };
           };
 
-          passwordCommand = "${pkgs.pass}/bin/pass show google.com/isaaclo123@gmail.com | head -n1";
+          passwordCommand = "${pkgs.pass}/bin/pass show google.com/isaaclo123@gmail.com | ${config.system.path}/bin/head -n1";
 
           mbsync = {
             enable = true;
@@ -110,7 +110,7 @@ let notmuch-config = "${homedir}/.config/notmuch/notmuchrc"; in
           #   showSignature = "append";
           # };
 
-          passwordCommand = "${pkgs.pass}/bin/pass show umn.edu/loxxx298@umn.edu | head -n1";
+          passwordCommand = "${pkgs.pass}/bin/pass show umn.edu/loxxx298@umn.edu | ${config.system.path}/bin/head -n1";
 
           mbsync = {
             enable = true;
@@ -128,10 +128,13 @@ let notmuch-config = "${homedir}/.config/notmuch/notmuchrc"; in
       mbsync = {
         enable = true;
         frequency = "*:0/30";
-        postExec = ''
-          ${pkgs.notmuch}/bin/notmuch --config=${notmuch-config} new;
+        # postExec = "${pkgs.notmuch}/bin/notmuch --config=${notmuch-config} new;${pkgs.afew}/bin/afew -t -n";
+
+        package = (pkgs.writeShellScriptBin "mbsync" ''
+          ${pkgs.isync}/bin/mbsync $@
+          ${pkgs.notmuch}/bin/notmuch --config=${notmuch-config} new
           ${pkgs.afew}/bin/afew -t -n
-        '';
+        '');
       };
     };
 

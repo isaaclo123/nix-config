@@ -8,6 +8,15 @@ let
   font = (import ./settings.nix).font;
 in
 
+let nerdfonts-derivation =
+  (with import <nixpkgs> {};
+    stdenv.lib.overrideDerivation pkgs.nerdfonts (oldAttrs : {
+      src = builtins.fetchurl {
+        url = "https://github.com/ryanoasis/nerd-fonts/archive/2.0.0.tar.gz";
+        sha256 = "1j3v7s1w3kyygkl0mwl1cyy6q11c7ldqfapfh6djsfzz5q23jn8d";
+      };
+  })); in
+
 {
   fonts = {
     fonts = with pkgs; [
@@ -17,7 +26,8 @@ in
       latinmodern-math
       corefonts
       vistafonts
-      nerdfonts
+      # nerdfonts
+      (nerdfonts-derivation)
       dejavu_fonts
     ];
 
