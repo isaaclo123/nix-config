@@ -20,7 +20,6 @@ let username = (import ./settings.nix).username; in
         imagemagick
         elinks
         ffmpegthumbnailer
-        p7zip
         odt2txt
         libtar
         file

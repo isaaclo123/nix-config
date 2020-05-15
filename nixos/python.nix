@@ -17,6 +17,7 @@ let my-python-packages = python-packages:
     };
 
     propagatedBuildInputs = with pkgs.python37Packages; [
+      pynvim
       xlib
       psutil
       pillow
@@ -52,7 +53,7 @@ in
   };
 
   services.jupyter = {
-    enable = true;
+    enable = false;
     group = "users";
     kernels = {
       python3 = {

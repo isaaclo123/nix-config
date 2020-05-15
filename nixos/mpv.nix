@@ -195,7 +195,7 @@ in
     in
 
       with pkgs; [
-        (unstable.mpv-with-scripts.override {
+        (mpv-with-scripts.override {
           scripts = [
             # mpv-image-viewer
             "${mpv-image-viewer}/scripts/detect-image.lua"

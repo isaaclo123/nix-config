@@ -8,11 +8,7 @@ let
   opacity = (import ./settings.nix).opacity;
   theme = (import ./settings.nix).theme;
   rofi = (import ./settings.nix).rofi;
-in
-
-let
-  icon-size = "48";
-  icon-path = "${pkgs.numix-icon-theme}/share/icons/Numix/${icon-size}";
+  icon = (import ./settings.nix).icon;
 in
 
 {
@@ -27,7 +23,7 @@ in
       iconTheme = {
         name = "Numix";
         package = pkgs.numix-icon-theme;
-        size = icon-size;
+        size = icon.size;
       };
 
       settings = {
@@ -167,7 +163,7 @@ in
           # Align icons left/right/off
           icon_position = "left";
 
-          max_icon_size = icon-size;
+          max_icon_size = icon.size;
 
           # Paths to default icons.
           # icon_path = "${pkgs.numix-icon-theme}/share/icons/gnome/48x48/status/:${pkgs.numix-icon-theme}/share/icons/gnome/48x48/devices/";
@@ -215,7 +211,7 @@ in
         };
 
         urgency_critical = {
-          icon = "${icon-path}/status/dialog-warning.svg";
+          icon = "${icon.path}/status/dialog-warning.svg";
           background = "#${color.alt.bg}";
           foreground = "#${color.fg}";
           timeout = 5;

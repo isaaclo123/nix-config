@@ -1,3 +1,5 @@
+with import <nixpkgs> {};
+
 {
   username = "isaac";
   fullname = "Isaac Lo";
@@ -16,7 +18,7 @@
 
   spacing = {
     padding = 20;
-    border = 4;
+    border = 2;
   };
 
   opacity = {
@@ -74,5 +76,13 @@
     style = "style_normal_grid";
     colorscheme = "gruvbox";
     args = "-theme launchers/${style}.rasi -no-show-icons";
+  };
+
+  icon = rec {
+    pkg = pkgs.numix-icon-theme;
+    name = "Numix";
+    size = "48";
+
+    path = "${pkg}/share/icons/${name}/${size}";
   };
 }

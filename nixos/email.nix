@@ -3,18 +3,86 @@
 let
   homedir = (import ./settings.nix).homedir;
   username = (import ./settings.nix).username;
+  icon = (import ./settings.nix).icon;
 in
 
 let notmuch-config = "${homedir}/.config/notmuch/notmuchrc"; in
+
+let create-account = {
+  realName,
+  userName,
+  accountName,
+  passPath,
+  primary
+}: {
+  primary = primary;
+  realName = realName;
+  address = userName;
+  userName = userName;
+
+  folders = {
+    inbox = "Inbox";
+    sent = "Sent";
+    trash = "Trash";
+    drafts = "Drafts";
+  };
+
+  imap = {
+    host = "imap.gmail.com";
+    port = 993;
+    tls = {
+      enable = true;
+      # useStartTls = true;
+    };
+  };
+  smtp = {
+    host = "smtp.gmail.com";
+    port = 587;
+    tls = {
+      enable = true;
+      useStartTls = true;
+    };
+  };
+
+  imapnotify = {
+    enable = true;
+    boxes = [ "Inbox" ];
+    onNotify = "${pkgs.isync}/bin/mbsync ${accountName}";
+    onNotifyPost = {
+      mail =
+        "${pkgs.notmuch}/bin/notmuch --config=${notmuch-config} new && " +
+        "${pkgs.afew}/bin/afew -t -n --notmuch-config=${notmuch-config} && " +
+        "${pkgs.libnotify}/bin/notify-send -i ${icon.path}/categories/applications-mail.svg '${accountName}' 'New Mail!'";
+    };
+  };
+
+  passwordCommand = "${pkgs.pass}/bin/pass show ${passPath} | ${config.system.path}/bin/head -n1";
+
+  mbsync = {
+    enable = true;
+    create = "both";
+    expunge = "both";
+    patterns = [
+      "archive"
+      "Inbox"
+      "Sent"
+      "Trash"
+      "[Gmail]/Drafts"
+      "[Gmail]/Sent Mail"
+      "[Gmail]/Starred"
+      "[Gmail]/All Mail"
+    ];
+  };
+
+  notmuch.enable = true;
+  msmtp.enable = true;
+}; in
 
 {
   environment.systemPackages = with pkgs;
     let mail-sync= (writeShellScriptBin "mail-sync" ''
       notify-send "Mail Syncing"
       mbsync -a &> /dev/null
-      notmuch --config=${notmuch-config} new &> /dev/null
-      afew -t -n --notmuch-config=${notmuch-config}
-      notify-send "Mail Sync Done!"
     ''); in [
       (mail-sync)
     ];
@@ -27,115 +95,31 @@ let notmuch-config = "${homedir}/.config/notmuch/notmuchrc"; in
     accounts.email = {
       maildirBasePath = "${homedir}/.mail";
       accounts = {
-        "Personal" = {
-          primary = true;
+        "Personal" = create-account {
           realName = "Isaac Lo";
-          address = "isaaclo123@gmail.com";
           userName = "isaaclo123@gmail.com";
-          folders = {
-            inbox = "Inbox";
-            sent = "Sent";
-            trash = "Trash";
-            drafts = "Drafts";
-          };
-
-          imap = {
-            host = "imap.gmail.com";
-            port = 993;
-            tls = {
-              enable = true;
-              # useStartTls = true;
-            };
-          };
-          smtp = {
-            host = "smtp.gmail.com";
-            port = 587;
-            tls = {
-              enable = true;
-              useStartTls = true;
-            };
-          };
-
-          passwordCommand = "${pkgs.pass}/bin/pass show google.com/isaaclo123@gmail.com | ${config.system.path}/bin/head -n1";
-
-          mbsync = {
-            enable = true;
-            create = "both";
-            expunge = "both";
-          };
-
-          notmuch.enable = true;
-          msmtp.enable = true;
+          accountName = "Personal";
+          passPath = "google.com/isaaclo123@gmail.com";
+          primary = true;
         };
 
-        "School" = {
-          primary = false;
+        "School" = create-account {
           realName = "Isaac Lo";
-          address = "loxxx298@umn.edu";
           userName = "loxxx298@umn.edu";
-          folders = {
-            inbox = "Inbox";
-            sent = "Sent";
-            trash = "Trash";
-            drafts = "Drafts";
-          };
-
-          imap = {
-            host = "imap.gmail.com";
-            port = 993;
-            tls = {
-              enable = true;
-              # useStartTls = true;
-            };
-          };
-          smtp = {
-            host = "smtp.gmail.com";
-            port = 587;
-            tls = {
-              enable = true;
-              useStartTls = true;
-            };
-          };
-
-          # signature = {
-          #   text = ''
-          #     --
-
-          #     Isaac Lo
-
-          #     220 Delaware Street
-          #     Minneapolis, MN 55455
-          #     1(650)-503-1253
-          #   '';
-          #   showSignature = "append";
-          # };
-
-          passwordCommand = "${pkgs.pass}/bin/pass show umn.edu/loxxx298@umn.edu | ${config.system.path}/bin/head -n1";
-
-          mbsync = {
-            enable = true;
-            create = "both";
-            expunge = "both";
-          };
-
-          notmuch.enable = true;
-          msmtp.enable = true;
+          accountName = "School";
+          passPath = "umn.edu/loxxx298@umn.edu";
+          primary = false;
         };
       };
     };
 
     services = {
-      mbsync = {
-        enable = true;
-        frequency = "*:0/30";
-        # postExec = "${pkgs.notmuch}/bin/notmuch --config=${notmuch-config} new;${pkgs.afew}/bin/afew -t -n";
-
-        package = (pkgs.writeShellScriptBin "mbsync" ''
-          ${pkgs.isync}/bin/mbsync $@
-          ${pkgs.notmuch}/bin/notmuch --config=${notmuch-config} new
-          ${pkgs.afew}/bin/afew -t -n --notmuch-config=${notmuch-config}
-        '');
-      };
+      imapnotify.enable = true;
+      # mbsync = {
+      #   enable = true;
+      #   frequency = "*:0/30";
+      #   # postExec = "${pkgs.notmuch}/bin/notmuch --config=${notmuch-config} new;${pkgs.afew}/bin/afew -t -n";
+      # };
     };
 
     programs = {

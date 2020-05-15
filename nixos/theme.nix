@@ -6,6 +6,7 @@ let
   username = (import ./settings.nix).username;
   theme = (import ./settings.nix).theme;
   font = (import ./settings.nix).font;
+  icon = (import ./settings.nix).icon;
 in
 
 let nerdfonts-derivation =
@@ -62,7 +63,7 @@ let nerdfonts-derivation =
 
   home-manager.users."${username}" = {
     home.file = {
-      ".icons".source = "${pkgs.numix-icon-theme}/share/icons";
+      ".icons".source = "${icon.pkg}/share/icons";
     };
 
     gtk = {
@@ -98,8 +99,8 @@ let nerdfonts-derivation =
       # };
 
       iconTheme = {
-        name = "Numix";
-        package = pkgs.numix-icon-theme;
+        name = icon.name;
+        package = icon.pkg;
       };
 
       # iconTheme = {

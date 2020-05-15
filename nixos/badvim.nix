@@ -12,27 +12,169 @@ in
 # in
 
 {
-  programs.vim.defaultEditor = true;
+  # programs.vim.defaultEditor = true;
 
   environment.systemPackages =
+    let
+      system_vim = (pkgs.neovim.override {
+        vimAlias = true;
+
+        # python = pkgs.python3;
+        # withPython3 = true;
+        # extraPython3Packages = (python-packages: with python-packages; [
+        #     pynvim
+        #     msgpack
+        #   ]
+        # );
+      });
+
+      system_vimdiff = (pkgs.writeShellScriptBin "vimdiff" ''
+        vim -d "$@"
+      '');
+    in with pkgs; [
+        # (system_vim)
+        (system_vimdiff)
+        universal-ctags
+        ripgrep
+        scowl
+
+        mdl
+
+        nodePackages.prettier
+        nodePackages.javascript-typescript-langserver
+        # nodePackages.eslint
+      ];
+
+  home-manager.users."${username}" =
     let
       zathura-async = (pkgs.writeScript "zathura-async.sh" ''
         #!${pkgs.stdenv.shell}
         zathura ''${*} &
       '');
+    in {
+    programs.neovim = {
+      enable = true;
+      plugins = with pkgs.vimPlugins; [
+        (pkgs.vimUtils.buildVimPlugin {
+          name = "vim-wordmotion";
+          src = pkgs.fetchFromGitHub {
+            owner = "chaoren";
+            repo = "vim-wordmotion";
+            rev = "4c8c4ca0165bc45ec269d1aa300afc36edee0a55";
+            sha256 = "1dnvryzqrf9msr81qlmcdf660csp43h19mbx56dnadpsyzadx6vm";
+          };
+        })
 
-      vlime = (pkgs.fetchFromGitHub {
-          owner = "vlime";
-          repo = "vlime";
-          rev = "64e6220fc8c4c243ce57e503ab598c3eed62f42c";
-          sha256 = "12fq43r2930sbpd5c0iw6dlwj67nqwqvzv5m8jffb1ilp3ha45fj";
-        });
+        (pkgs.vimUtils.buildVimPlugin {
+          name = "indentLine";
+          src = pkgs.fetchFromGitHub {
+            owner = "Yggdroot";
+            repo = "indentLine";
+            rev = "47648734706fb2cd0e4d4350f12157d1e5f4c465";
+            sha256 = "0739hdvdfa1lm209q4sl75jvmf2k03cvlka7wv1gwnfl00krvszs";
+          };
+        })
 
-      start-vlime = (pkgs.writeShellScriptBin "start-vlime" ''
-        ${pkgs.sbcl}/bin/sbcl --load ${pkgs.lispPackages.quicklisp}/lib/common-lisp/quicklisp/setup.lisp --load ${vlime}/lisp/start-vlime.lisp
-      '');
+        (pkgs.vimUtils.buildVimPlugin {
+          name = "pandoc-preview";
+          src = pkgs.fetchFromGitHub {
+            owner = "lingnand";
+            repo = "pandoc-preview.vim";
+            rev = "7f3506d3d7037ed8c06303b3fb035cec9f987fa0";
+            sha256 = "0v5g25cf58lic06ygnm2gr3c9z4wdmzjq6k8h02xwrmwcfp76r6r";
+          };
+        })
 
-      vimrc = ''
+        (pkgs.vimUtils.buildVimPlugin {
+          name = "deoplete-spell";
+          src = pkgs.fetchFromGitHub {
+            owner = "deathlyfrantic";
+            repo = "deoplete-spell";
+            rev = "e4a3604dc09d0580c66e29421518caf348442291";
+            sha256 = "1p3hvr6i3wk78628lvnn64abcfhkvvaxskrfgqzlg1mmmpvndh3n";
+          };
+        })
+
+        # (pkgs.vimUtils.buildVimPlugin {
+        #   name = "context-vim";
+        #   src = pkgs.fetchFromGitHub {
+        #     owner = "wellle";
+        #     repo = "context.vim";
+        #     rev = "3c7153d932106a9ada84cb2cb5f904559ddcf1a3";
+        #     sha256 = "0aj05r1hz4f8zs2w284l9zxscp0i03dzcgn9z6m2q51dz4la3l6g";
+        #   };
+        # })
+
+        (pkgs.vimUtils.buildVimPlugin {
+          name = "Nvim-R";
+          src = pkgs.fetchurl {
+            url = "https://github.com/jalvesaq/Nvim-R/archive/v0.9.13.tar.gz";
+            sha256 = "0rz836gwsfp4n1vskcs45z1bign5cp0r1jzw1f6xwfqbg3r35lfl";
+          };
+          buildInputs = with pkgs; [ which vim zip ];
+        })
+
+        (pkgs.vimUtils.buildVimPlugin {
+          name = "vim-pandoc";
+          src = pkgs.fetchFromGitHub {
+            owner = "vim-pandoc";
+            repo = "vim-pandoc";
+            rev = "c473c298d570622d520f455698a95356e55d6dcf";
+            sha256 = "1j4plsm7md6yhis8bmgznwln12gnnm0lg9wvxgydqd6wxrc6hfnd";
+          };
+        })
+
+        (pkgs.vimUtils.buildVimPlugin {
+          name = "vim-pandoc-syntax";
+          src = pkgs.fetchFromGitHub {
+            owner = "vim-pandoc";
+            repo = "vim-pandoc-syntax";
+            rev = "0d1129e5cf1b0e3a90e923c3b5f40133bf153f7c";
+            sha256 = "162l2p8md8lfyfjxzlmlz5ky5kvvr6wjmdk8r8lk6ygpkl2b51f7";
+          };
+        })
+
+        vim-startify
+        vim-devicons
+        gruvbox
+
+        editorconfig-vim
+        vim-polyglot
+        vim-nix
+        ale
+        vim-airline
+
+        vim-pandoc-after
+
+        vim-speeddating
+        vim-easymotion
+        vim-css-color
+        nerdtree
+        vim-table-mode
+        auto-pairs
+        python-mode
+        ctrlp
+
+        deoplete-nvim
+        deoplete-khard
+        deoplete-notmuch
+
+        ansible-vim
+        UltiSnips
+        vim-snippets
+        vim-unimpaired
+        vim-surround
+        direnv-vim
+        rainbow
+
+        haskell-vim
+        vim-hindent
+        # vim-stylish-haskell
+
+        typescript-vim
+      ];
+
+      extraConfig = ''
         set wildmode=longest,list,full
         set wildmenu
         set nocp
@@ -71,25 +213,24 @@ in
         set foldlevelstart=1
         let g:vimsyn_folding='af'
 
-        " ncm2
-        autocmd BufEnter * call ncm2#enable_for_buffer()
+        " deoplete/ultisnip
+        let g:deoplete#enable_at_startup = 1
 
-        " IMPORTANT: :help Ncm2PopupOpen for more information
-        set completeopt=noinsert,menuone,noselect
+        let g:UltiSnipsExpandTrigger="<C-j>"
+        let g:UltiSnipsJumpForwardTrigger="<C-j>"
+        let g:UltiSnipsJumpBackwardTrigger="<C-k>"
 
-        set shortmess+=c
-        inoremap <c-c> <ESC>
+        inoremap <expr><tab> pumvisible() ? "\<C-n>" : "\<TAB>"
+        inoremap <expr><s-tab> pumvisible() ? "\<C-p>" : "\<TAB>"
 
-        inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-        inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+        " Make <CR> smart
+        let g:ulti_expand_or_jump_res = 0 "default value, just set once
+        function! Ulti_ExpandOrJump_and_getRes()
+            call UltiSnips#ExpandSnippetOrJump()
+            return g:ulti_expand_or_jump_res
+        endfunction
 
-        inoremap <silent> <expr> <CR> ncm2_ultisnips#expand_or("\n", 'n')
-
-        " c-j c-k for moving in snippet
-        let g:UltiSnipsExpandTrigger		= "<Plug>(ultisnips_expand)"
-        let g:UltiSnipsJumpForwardTrigger	= "<c-j>"
-        let g:UltiSnipsJumpBackwardTrigger	= "<c-k>"
-        let g:UltiSnipsRemoveSelectModeMappings = 0
+        inoremap <CR> <C-R>=(Ulti_ExpandOrJump_and_getRes() > 0)?"":"\n"<CR>
 
         " This is only necessary if you use "set termguicolors".
         set t_8f=^[[38;2;%lu;%lu;%lum
@@ -354,142 +495,9 @@ in
         "   \ 'text',
         "   \ 'gitcommit'
         "   \]
-      ''; in
+      '';
+    };
 
-      let system_vim = (pkgs.neovim.override {
-        vimAlias = true;
-
-        # python = pkgs.python3;
-        withPython = false;
-        withPython3 = true;
-        # extraPython3Packages = (python-packages: with python-packages; [
-        #     pynvim
-        #     msgpack
-        #   ]
-        # );
-
-        configure = {
-          packages.myVimPackage = {
-
-            start = with pkgs.vimPlugins; [
-              # (pkgs.vimUtils.buildVimPlugin {
-              #   name = "gruvbox";
-              #   src = pkgs.fetchFromGitHub {
-              #     owner = "morhetz";
-              #     repo = "gruvbox";
-              #     rev = "040138616bec342d5ea94d4db296f8ddca17007a";
-              #     sha256 = "0qk2mqs04qlxkc1ldgjbiv1yisi2xl2b8svmjz0hdp9y2l5vfccw";
-              #   };
-              # })
-
-              (pkgs.vimUtils.buildVimPlugin {
-                name = "vim-wordmotion";
-                src = pkgs.fetchFromGitHub {
-                  owner = "chaoren";
-                  repo = "vim-wordmotion";
-                  rev = "4c8c4ca0165bc45ec269d1aa300afc36edee0a55";
-                  sha256 = "1dnvryzqrf9msr81qlmcdf660csp43h19mbx56dnadpsyzadx6vm";
-                };
-              })
-
-              (pkgs.vimUtils.buildVimPlugin {
-                name = "pandoc-preview";
-                src = pkgs.fetchFromGitHub {
-                  owner = "lingnand";
-                  repo = "pandoc-preview.vim";
-                  rev = "7f3506d3d7037ed8c06303b3fb035cec9f987fa0";
-                  sha256 = "0v5g25cf58lic06ygnm2gr3c9z4wdmzjq6k8h02xwrmwcfp76r6r";
-                };
-              })
-
-              # (pkgs.vimUtils.buildVimPlugin {
-              #   name = "context-vim";
-              #   src = pkgs.fetchFromGitHub {
-              #     owner = "wellle";
-              #     repo = "context.vim";
-              #     rev = "3c7153d932106a9ada84cb2cb5f904559ddcf1a3";
-              #     sha256 = "0aj05r1hz4f8zs2w284l9zxscp0i03dzcgn9z6m2q51dz4la3l6g";
-              #   };
-              # })
-
-              (pkgs.vimUtils.buildVimPlugin {
-                name = "Nvim-R";
-                src = pkgs.fetchurl {
-                  url = "https://github.com/jalvesaq/Nvim-R/archive/v0.9.13.tar.gz";
-                  sha256 = "0rz836gwsfp4n1vskcs45z1bign5cp0r1jzw1f6xwfqbg3r35lfl";
-                };
-                buildInputs = with pkgs; [ which vim zip ];
-              })
-
-              vim-startify
-              vim-devicons
-              gruvbox
-
-              indentLine
-              editorconfig-vim
-              vim-polyglot
-              vim-nix
-              ale
-              vim-airline
-
-              vim-pandoc
-              vim-pandoc-syntax
-              vim-pandoc-after
-
-              vim-speeddating
-              vim-easymotion
-              vim-css-color
-              nerdtree
-              vim-table-mode
-              auto-pairs
-              python-mode
-              ctrlp
-
-              nvim-yarp
-              ncm2
-              ncm2-path
-              ncm2-ultisnips
-              ncm2-bufword
-
-              ansible-vim
-              vim-snippets
-              vim-unimpaired
-              vim-surround
-              direnv-vim
-              rainbow
-
-              haskell-vim
-              vim-hindent
-              # vim-stylish-haskell
-
-              typescript-vim
-            ];
-
-            opt = [ ];
-          };
-
-          customRC = vimrc;
-        };
-      }); in
-      let system_vimdiff = (pkgs.writeShellScriptBin "vimdiff" ''
-        vim -d "$@"
-      ''); in
-      with pkgs; [
-        (start-vlime)
-        (system_vim)
-        (system_vimdiff)
-        universal-ctags
-        ripgrep
-        scowl
-
-        mdl
-
-        nodePackages.prettier
-        nodePackages.javascript-typescript-langserver
-        # nodePackages.eslint
-      ];
-
-  home-manager.users."${username}" = {
     home.file = {
       ".editorconfig".text = ''
         root = true

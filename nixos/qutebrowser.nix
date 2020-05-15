@@ -182,6 +182,14 @@ in
               # "https://pgl.yoyo.org/adservers/serverlist.php?hostformat=hosts&showintro=1&mimetype=plaintext",
             ])
 
+            # Searchengines
+            config.set('url.searchengines', {
+              "DEFAULT": "https://duckduckgo.com/?q={}",
+              "y": "https://www.youtube.com/results?search_query={}",
+              "w": "https://en.wikipedia.org/w/index.php?search={}&title=Special:Search",
+              "g": "https://www.google.com/search?q={}"
+            })
+
             # User stylesheet (add floppymoose css rules http://www.floppymoose.com/)
             # Type: List
             config.set('content.user_stylesheets', ["${user-content-css}"])

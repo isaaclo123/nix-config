@@ -263,7 +263,7 @@
 
       # games
       unstable.steam
-      unstable.lutris
+      # unstable.lutris
       unstable.multimc
       unstable.logmein-hamachi
       ngrok
