@@ -53,7 +53,6 @@ in
       ./rofi-pass.nix
       ./python.nix
       ./haskell.nix
-      ./lisp.nix
       ./r.nix
       ./email.nix
       ./termite.nix
@@ -342,7 +341,7 @@ in
   system.stateVersion = "20.03"; # Did you read the comment?
   nixpkgs.config = {
     # pulseaudio = true;
-    allowBroken = true;
+    allowBroken = false;
     allowUnfree = true;
     packageOverrides = pkgs: {
       unstable = import unstable {

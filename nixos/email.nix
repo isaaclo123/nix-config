@@ -81,8 +81,11 @@ let create-account = {
 {
   environment.systemPackages = with pkgs;
     let mail-sync= (writeShellScriptBin "mail-sync" ''
-      notify-send "Mail Syncing"
-      mbsync -a &> /dev/null
+      ${pkgs.libnotify}/bin/notify-send -i ${icon.path}/categories/applications-mail.svg 'Mail Syncing'
+      ${pkgs.isync}/bin/mbsync -a &> /dev/null &&
+      ${pkgs.notmuch}/bin/notmuch --config=${notmuch-config} new &> /dev/null &&
+      ${pkgs.afew}/bin/afew -t -n --notmuch-config=${notmuch-config} &> /dev/null &&
+      ${pkgs.libnotify}/bin/notify-send -i ${icon.path}/categories/applications-mail.svg 'Mail Synced!'
     ''); in [
       (mail-sync)
     ];

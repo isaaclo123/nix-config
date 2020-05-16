@@ -5,6 +5,7 @@
     zsh
     oh-my-zsh
     direnv
+    z-lua
   ];
 
   programs.zsh.enable = true;
@@ -30,7 +31,7 @@
       "colored-man-pages"
       "history-substring-search"
     ];
-    theme = "bira";
+    theme = "clean";
     # cacheDir = "/tmp/.ohmyzsh-$USER";
     customPkgs = with pkgs;
       [ pkgs.zsh-completions pkgs.nix-zsh-completions ];
@@ -54,8 +55,8 @@
     source ${pkgs.zsh-syntax-highlighting}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
     source ${pkgs.zsh-history-substring-search}/share/zsh-history-substring-search/zsh-history-substring-search.zsh
 
-    # z.sh
-    . ${import ./z.nix}/bin/z
+    # z-lua
+    eval "$(${pkgs.z-lua}/bin/z --init zsh)"
   '';
 
   # zshrc (end)

@@ -21,17 +21,6 @@ in
         zathura ''${*} &
       '');
 
-      vlime = (pkgs.fetchFromGitHub {
-          owner = "vlime";
-          repo = "vlime";
-          rev = "64e6220fc8c4c243ce57e503ab598c3eed62f42c";
-          sha256 = "12fq43r2930sbpd5c0iw6dlwj67nqwqvzv5m8jffb1ilp3ha45fj";
-        });
-
-      start-vlime = (pkgs.writeShellScriptBin "start-vlime" ''
-        ${pkgs.sbcl}/bin/sbcl --load ${pkgs.lispPackages.quicklisp}/lib/common-lisp/quicklisp/setup.lisp --load ${vlime}/lisp/start-vlime.lisp
-      '');
-
       vimrc = ''
         set wildmode=longest,list,full
         set wildmenu
@@ -83,13 +72,13 @@ in
         inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
         inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
-        inoremap <silent> <expr> <CR> ncm2_ultisnips#expand_or("\n", 'n')
+        inoremap <silent> <buffer> <expr> <CR> ncm2_ultisnips#expand_or("\<CR>", 'n')
 
         " c-j c-k for moving in snippet
         let g:UltiSnipsExpandTrigger		= "<Plug>(ultisnips_expand)"
         let g:UltiSnipsJumpForwardTrigger	= "<c-j>"
         let g:UltiSnipsJumpBackwardTrigger	= "<c-k>"
-        let g:UltiSnipsRemoveSelectModeMappings = 0
+        let g:UltiSnipsRemoveSelectModeMappings = 1
 
         " This is only necessary if you use "set termguicolors".
         set t_8f=^[[38;2;%lu;%lu;%lum
@@ -359,29 +348,13 @@ in
       let system_vim = (pkgs.neovim.override {
         vimAlias = true;
 
-        # python = pkgs.python3;
-        withPython = false;
+        withPython = true;
         withPython3 = true;
-        # extraPython3Packages = (python-packages: with python-packages; [
-        #     pynvim
-        #     msgpack
-        #   ]
-        # );
 
         configure = {
           packages.myVimPackage = {
 
             start = with pkgs.vimPlugins; [
-              # (pkgs.vimUtils.buildVimPlugin {
-              #   name = "gruvbox";
-              #   src = pkgs.fetchFromGitHub {
-              #     owner = "morhetz";
-              #     repo = "gruvbox";
-              #     rev = "040138616bec342d5ea94d4db296f8ddca17007a";
-              #     sha256 = "0qk2mqs04qlxkc1ldgjbiv1yisi2xl2b8svmjz0hdp9y2l5vfccw";
-              #   };
-              # })
-
               (pkgs.vimUtils.buildVimPlugin {
                 name = "vim-wordmotion";
                 src = pkgs.fetchFromGitHub {
@@ -424,13 +397,13 @@ in
               vim-startify
               vim-devicons
               gruvbox
+              vim-airline
 
               indentLine
               editorconfig-vim
               vim-polyglot
               vim-nix
               ale
-              vim-airline
 
               vim-pandoc
               vim-pandoc-syntax
@@ -439,10 +412,11 @@ in
               vim-speeddating
               vim-easymotion
               vim-css-color
-              nerdtree
               vim-table-mode
               auto-pairs
               python-mode
+
+              nerdtree
               ctrlp
 
               nvim-yarp
@@ -451,16 +425,16 @@ in
               ncm2-ultisnips
               ncm2-bufword
 
-              ansible-vim
               vim-snippets
               vim-unimpaired
               vim-surround
               direnv-vim
               rainbow
 
+              ansible-vim
+
               haskell-vim
               vim-hindent
-              # vim-stylish-haskell
 
               typescript-vim
             ];
@@ -475,7 +449,6 @@ in
         vim -d "$@"
       ''); in
       with pkgs; [
-        (start-vlime)
         (system_vim)
         (system_vimdiff)
         universal-ctags

@@ -143,7 +143,8 @@
 
     in with pkgs; [
       # custom packages
-      (import ./z.nix)
+      (import ./metronome)
+      # (import ./z.nix)
       (import ./rofimoji.nix)
       (wn)
       (alarm)
@@ -262,11 +263,8 @@
       sshpass
 
       # games
-      unstable.steam
       # unstable.lutris
       unstable.multimc
-      unstable.logmein-hamachi
-      ngrok
 
       # xorg
       xorg.xhost
