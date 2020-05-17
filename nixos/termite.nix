@@ -89,6 +89,8 @@ let toggle-lock = "/tmp/termite-scratchpad-toggle.lock"; in
           color15 = #ebdbb2
 
           color16 = #3c3836
+          color17 = #fe8019
+          color18 = #d65d0e
 
           # vim: ft=dosini cms=#%s
 

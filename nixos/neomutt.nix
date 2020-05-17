@@ -79,39 +79,68 @@ let create-account = folder: email: signature: (pkgs.writeText folder ''
           set text_flowed=yes
           set send_charset="us-ascii:utf-8"
 
-          ## COLOR START
+          ## COLOR START (text then bg)
 
-          # cancel theme colors
-          color index color15 color0 ~Q
-          color index color15 color0 ~P
-          color index color15 color0 ~T
-          color index color15 color0 ~O
-          color index color15 color0 ~F
-          color index color15 color0 ~N
+          color attachment  color12 color00
+          color bold        color15 color00
+          color error       color09 color00
+          color hdrdefault  color15 color00
+          color indicator   color15 color16
+          color markers     color16 color00
+          color normal      color15 color00
+          color quoted      color15 color00
+          color quoted1     color14 color00
+          color quoted2     color15 color00
+          color quoted3     color14 color00
+          color quoted4     color15 color00
+          color quoted5     color14 color00
+          color search      color00 color17
+          color signature   color14 color00
+          color status      color07 color16
+          color tilde       color16 color00
+          color tree        color10 color00
+          color underline   color15 color16
 
-          # add some nice custom coloring to the message list
-          # thanks to new neomutt features
-          # http://www.mutt.org/doc/manual/#patterns
-          # https://neomutt.org/feature/index-color
+          color sidebar_divider    color15 color00
+          color sidebar_new        color10 color00
 
-          color index_subject color12 color0 "~P !~T !~D"
-          color index_author color12 color0 "~P !~T !~D"
-          color index_subject color243 color0 "~Q !~T !~D"
-          color index_author color243 color0 "~Q !~T !~D"
-          color index_subject brightcolor2 color0 "~N !~T !~D"
-          color index_author  brightcolor2 color0 "~N !~T !~D"
-          color index_subject color2 color0 "~O !~T !~D"
-          color index_author color2 color0 "~O !~T !~D"
-          color index_subject color3 color0 "~F !~T !~D"
-          color index_author color3 color0 "~F !~T !~D"
-          color index_subject brightcolor3 color0 "~F ~N !~T !~D"
-          color index_author  brightcolor3 color0 "~F ~N !~T !~D"
-          color index_subject color1 color0 "~= !~T !~D"
-          color index_author color1 color0 "~= !~T !~D"
-          color index_subject brightcolor12 color0 "~P ~N !~T !~D"
-          color index_author brightcolor12 color0 "~P ~N !~T !~D"
-          color index color0 color15 "~T"
-          color index color15 color1 "~D"
+          color index color10 color00 ~N
+          color index color14 color00 ~O
+          color index color12 color00 ~P
+          color index color11 color00 ~F
+          color index color13 color00 ~Q
+          color index color09 color00 ~=
+          color index color00 color15 ~T
+          color index color00 color09 ~D
+
+          color header color11 color00 "^(To:|From:)"
+          color header color10 color00 "^Subject:"
+          color header color14 color00 "^X-Spam-Status:"
+          color header color14 color00 "^Received:"
+
+          color body color10 color00 "[a-z]{3,256}://[-a-zA-Z0-9@:%._\\+~#=/?&,]+"
+          #color body color10 color00 "[a-zA-Z]([-a-zA-Z0-9_]+\\.){2,256}[-a-zA-Z0-9_]{2,256}"
+          color body color17 color00 "[-a-z_0-9.%$]+@[-a-z_0-9.]+\\.[-a-z][-a-z]+"
+          color body color17 color00 "mailto:[-a-z_0-9.]+@[-a-z_0-9.]+"
+          color body color00 color11 "[;:]-*[)>(<lt;|]"
+          color body color15 color00 "\\*[- A-Za-z]+\\*"
+
+          color body color11 color00 "^-.*PGP.*-*"
+          color body color10 color00 "^gpg: Good signature from"
+          color body color09 color00 "^gpg: Can't.*$"
+          color body color11 color00 "^gpg: WARNING:.*$"
+          color body color09 color00 "^gpg: BAD signature from"
+          color body color09 color00 "^gpg: Note: This key has expired!"
+          color body color11 color00 "^gpg: There is no indication that the signature belongs to the owner."
+          color body color11 color00 "^gpg: can't handle these multiple signatures"
+          color body color11 color00 "^gpg: signature verification suppressed"
+          color body color11 color00 "^gpg: invalid node with packet of type"
+
+          color compose header            color15 color00
+          color compose security_encrypt  color13 color00
+          color compose security_sign     color12 color00
+          color compose security_both     color10 color00
+          color compose security_none     color17 color00
 
           ## COLOR END
 

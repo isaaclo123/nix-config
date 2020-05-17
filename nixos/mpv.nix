@@ -203,8 +203,8 @@ in
             # "${mpv-image-viewer}/scripts/freeze-window.lua"
             "${mpv-image-viewer}/scripts/image-positioning.lua"
             # "${mpv-image-viewer}/scripts/minimap.lua"
-            # "${mpv-image-viewer}/scripts/ruler.lua"
-            "${mpv-image-viewer}/scripts/status-line.lua"
+            "${mpv-image-viewer}/scripts/ruler.lua"
+            # "${mpv-image-viewer}/scripts/status-line.lua"
 
             # autosave
             # (fetchurl {
@@ -333,20 +333,6 @@ in
 
         "mpv/scripts/mpv_thumbnail_client-1.lua".source = "${mpv-thumbnail-pkg}/scripts/mpv_thumbnail_script_client_osc.lua";
         "mpv/scripts/mpv_thumbnail_server.lua".source = "${mpv-thumbnail-pkg}/scripts/mpv_thumbnail_script_server.lua";
-
-        "mpv/script-opts/status_line.conf".text = ''
-          # whether to show by default
-          enabled=no
-          # its position, possible values: (bottom|top)-(left|right)
-          position=bottom-left
-          # its font size
-          size=36
-          # the text to be expanded
-          # see property expansion: https://mpv.io/manual/master/#property-expansion
-          # \N can be used for line breaks
-          # you can also use ass tags, see here: http://docs.aegisub.org/3.2/ASS_Tags/
-          text=''${filename} [''${playlist-pos-1}/''${playlist-count}]
-        '';
 
         "mpv/script-opts/mpv_thumbnail_script.conf".text = ''
           cache_directory=${mpv-thumbs-cache}
