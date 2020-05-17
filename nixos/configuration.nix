@@ -250,21 +250,22 @@ in
     # group = "isaac";
   };
 
-  location.provider = "geoclue2";
+  location = {
+    # provider = "geoclue2";
+    provider = "manual";
+    latitude = 37.0;
+    longitude = -119.0;
+  };
+
+  # services.localtime.enable = true;
 
   services.geoclue2 = {
     enable = true;
-    enable3G = false;
-    enableCDMA = false;
-    enableDemoAgent = false;
-    enableModemGPS = false;
-    enableNmea = false;
-    enableWifi = true;
   };
 
-  services.avahi = {
-    enable = true;
-  };
+  # services.avahi = {
+  #   enable = true;
+  # };
 
   services.redshift = {
     enable = true;
@@ -311,6 +312,7 @@ in
       automount = true;
       notify = true;
     };
+
     services.unclutter = {
       enable = true;
     };
@@ -365,7 +367,6 @@ in
     autoOptimiseStore = true;
 
     #   plugin-files = ${pkgs.nix-plugins.override { nix = config.nix.package; }}/lib/nix/plugins/libnix-extra-builtins.so
-    #   extra-builtins-file = /etc/nixos/extra-builtins.nix
     extraOptions = ''
       allow-unsafe-native-code-during-evaluation = true
     '';

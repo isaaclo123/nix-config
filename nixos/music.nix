@@ -11,13 +11,13 @@ in
     mpc_cli
   ];
 
-  services.mpd = {
-    enable = true;
-    # dataDir = "${homedir}/.mpd";
-    musicDirectory = "${homedir}/Music";
-  };
-
   home-manager.users."${username}" = {
+    services.mpd = {
+      enable = true;
+      dataDir = "${homedir}/.mpd";
+      musicDirectory = "${homedir}/Music";
+    };
+
     xdg.configFile = {
       "ncmpcpp/config".text = ''
         visualizer_fifo_path = "/tmp/mpd.fifo"

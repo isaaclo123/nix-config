@@ -1,11 +1,11 @@
 { ... }:
 
+let homedir = (import ./settings.nix).homedir; in
+
 with import <nixpkgs> {};
 
 let create-eval-funct = script: args:
   let eval-run = (pkgs.writeScript "eval-run.sh" ''
-    #!${pkgs.bash}/bin/bash
-
     set -euo pipefail
 
     f=$(mktemp)
@@ -19,16 +19,12 @@ in
 {
   pass =
     let nix-pass = (pkgs.writeScript "nix-pass.sh" ''
-    #!${pkgs.bash}/bin/bash
-
-      pass show "$1" | head -n1
+      PASSWORD_STORE_DIR='${homedir}/.password-store' pass show '$1' | head -n1
     ''); in
     name: create-eval-funct nix-pass [ name ];
 
   firstdir =
     let nix-firstdir = (pkgs.writeScript "nix-firstdir.sh" ''
-      #!${pkgs.bash}/bin/bash
-
       ls -d "$1"* | head -n1
     ''); in
     name: create-eval-funct nix-firstdir [ name ];

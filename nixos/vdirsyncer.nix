@@ -6,37 +6,6 @@ let
   dav-url= (import ./settings.nix).dav-url;
 in
 
-# let calcurse-vdirsyncer =
-#   (with import <nixpkgs> {};
-#     stdenv.mkDerivation rec {
-#       name = "calcurse-vdirsyncer";
-#
-#       src = pkgs.fetchFromGitHub {
-#         owner = "lfos";
-#         repo = "calcurse";
-#         rev = "12863ff7c05e4abe601890157b222eaee9737ad5";
-#         sha256 = "0bb98d6z3s5nymx67sj6z2gd76xj6x0n8kwi0mmv09k37yfda237";
-#         fetchSubmodules = false;
-#       };
-#
-#       # patches = [
-#       #   (pkgs.fetchurl {
-#       #     # https://gist.github.com/isaaclo123/f8f46730cf01363aec926206f7524c61
-#       #     name = "calcurse-vdirsyncer-fix";
-#       #     url = "https://gist.githubusercontent.com/isaaclo123/f8f46730cf01363aec926206f7524c61/raw/93853866e320c67524ef9fea8af300d00135e0d6/calcurse-vdirsyncer-fix.patch";
-#       #     sha256 = "1zicfl3qhq53ipbs7xih2p8praswzvqwr7xcmkjczvw6lzmvfvah";
-#       #   })
-#       # ];
-#
-#       dontBuild = true;
-#
-#       installPhase = ''
-#         mkdir -p $out/bin
-#         cp ./contrib/vdir/calcurse-vdirsyncer $out/bin/
-#         chmod +x $out/bin/calcurse-vdirsyncer
-#       '';
-#     }); in
-
 {
   environment.systemPackages = with pkgs; [
     # (calcurse-vdirsyncer)
@@ -61,6 +30,7 @@ in
       serviceConfig.Type = "oneshot";
 
       # ${calcurse-vdirsyncer}/bin/calcurse-vdirsyncer $CALENDAR_DIR
+
       script = ''
         CALENDAR_DIR=${(import ./extra-builtins.nix {}).firstdir "${homedir}/.calendars/"}
 

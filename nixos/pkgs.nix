@@ -145,7 +145,7 @@
       # custom packages
       (import ./metronome)
       # (import ./z.nix)
-      (import ./rofimoji.nix)
+      # (import ./rofimoji.nix)
       (wn)
       (alarm)
       (display-toggle)

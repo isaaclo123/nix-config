@@ -23,6 +23,9 @@ let autostarted-status = "/tmp/autostarted-status.lock"; in
       systemctl --user restart polybar
       systemctl --user restart compton
       bspc wm -r
+
+      betterlockscreen -u ${theme.wallpaper} -b &
+      bat cache --build &
     ''); in
 
     with pkgs; [
@@ -96,7 +99,7 @@ let autostarted-status = "/tmp/autostarted-status.lock"; in
       # only autostart on beginning
       if [ ! -f ${autostarted-status} ]; then
         autocutsel -fork
-        autocutsel -selection PRIMARY -fork
+        Autocutsel -selection PRIMARY -fork
 
         # window autostart
         qutebrowser &
@@ -113,9 +116,6 @@ let autostarted-status = "/tmp/autostarted-status.lock"; in
         NOTIFY=off bluetooth-toggle off &
         # NOTIFY=off touchpad-toggle off &
         NOTIFY=off touchscreen-toggle off &
-
-        betterlockscreen -u ${theme.wallpaper} -b &
-        bat cache --build &
 
         # create autostarted status file
         touch ${autostarted-status}

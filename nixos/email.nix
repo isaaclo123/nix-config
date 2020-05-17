@@ -6,7 +6,21 @@ let
   icon = (import ./settings.nix).icon;
 in
 
-let notmuch-config = "${homedir}/.config/notmuch/notmuchrc"; in
+let
+  notmuch-config = "${homedir}/.config/notmuch/notmuchrc";
+  maildir = "${homedir}/.mail";
+in
+
+let mail-notify = pkgs.writeShellScript "mail-notify.sh" ''
+  # count new mail for every maildir
+  newfolder="$2"
+  new="$(find $newfolder -type f | wc -l)"
+
+  if [ $new -gt 0 ]
+  then
+    ${pkgs.libnotify}/bin/notify-send -i ${icon.path}/categories/applications-mail.svg "$1" "You have $new unread emails"
+  fi
+''; in
 
 let create-account = {
   realName,
@@ -52,7 +66,7 @@ let create-account = {
       mail =
         "${pkgs.notmuch}/bin/notmuch --config=${notmuch-config} new && " +
         "${pkgs.afew}/bin/afew -t -n --notmuch-config=${notmuch-config} && " +
-        "${pkgs.libnotify}/bin/notify-send -i ${icon.path}/categories/applications-mail.svg '${accountName}' 'New Mail!'";
+        "${mail-notify} '${accountName}' '${maildir}/${accountName}/Inbox/new'";
     };
   };
 
@@ -63,14 +77,8 @@ let create-account = {
     create = "both";
     expunge = "both";
     patterns = [
-      "archive"
-      "Inbox"
-      "Sent"
-      "Trash"
-      "[Gmail]/Drafts"
-      "[Gmail]/Sent Mail"
-      "[Gmail]/Starred"
-      "[Gmail]/All Mail"
+      "*"
+      "!Travel"
     ];
   };
 
@@ -96,7 +104,7 @@ let create-account = {
 
   home-manager.users."${username}" = {
     accounts.email = {
-      maildirBasePath = "${homedir}/.mail";
+      maildirBasePath = maildir;
       accounts = {
         "Personal" = create-account {
           realName = "Isaac Lo";
@@ -118,11 +126,6 @@ let create-account = {
 
     services = {
       imapnotify.enable = true;
-      # mbsync = {
-      #   enable = true;
-      #   frequency = "*:0/30";
-      #   # postExec = "${pkgs.notmuch}/bin/notmuch --config=${notmuch-config} new;${pkgs.afew}/bin/afew -t -n";
-      # };
     };
 
     programs = {

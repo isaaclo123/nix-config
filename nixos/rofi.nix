@@ -6,6 +6,7 @@ let
   color = (import ./settings.nix).color;
   spacing = (import ./settings.nix).spacing;
   rofi = (import ./settings.nix).rofi;
+  icon = (import ./settings.nix).icon;
 in
 
 let
@@ -42,17 +43,18 @@ in
       clipmenu-del = (pkgs.writeShellScriptBin "clipmenu-del" ''
         clipdel -d ".*" && notify-send "Clipboard Cleared"
       '');
-  in
-    with pkgs; [
+    in
+      with pkgs; [
       (clipmenu-ext)
       (clipmenu-del)
 
       (unstable.rofi.override {
         plugins = with pkgs; [
-          numix-icon-theme
+          icon.pkg
+          unstable.rofi-emoji
         ];
-    })
-  ];
+      })
+    ];
 
   home-manager.users."${username}" = {
     xdg.configFile = {
