@@ -2,6 +2,8 @@
 
 let
   username = (import ./settings.nix).username;
+  icon = (import ./settings.nix).icon;
+  mpv-thumbnail-pkg = (import ./mpv-thumbnail.nix);
 in
 
 let
@@ -163,10 +165,9 @@ in
       '');
 
       mpv-window-open = (pkgs.writeShellScriptBin "mpv-window-open" ''
-        #!/bin/bash
         # open item in mpv, try different methods
 
-        NOTIFY_MAX_LEN=33
+        NOTIFY_MAX_LEN=40
         url="$1"
 
         if [ "''${#url}" -gt "$(($NOTIFY_MAX_LEN - 2))" ]; then
@@ -174,22 +175,22 @@ in
             url+="…"
         fi
 
-        notify-send "MPV opening" "$url"
+        ${pkgs.libnotify}/bin/notify-send -i "${icon.path}/categories/applications-multimedia.svg" "MPV opening" "$url"
 
         # (mpv --force-window "gallery-dl://$@";
         #   bspc node --focus last) ||
         (mpv --force-window "gallery-dl://$@") ||
         (xdg-open "$@" &&
-            notify-send "Browser opening" "$url") ||
-        notify-send "Error opening" "$url"
+            ${pkgs.libnotify}/bin/notify-send -i "${icon.path}/categories/applications-internet.svg" "Browser opening" "$url") ||
+        ${pkgs.libnotify}/bin/notify-send -i "${icon.path}/status/dialog-warning.svg" "Error opening" "$url"
       '');
 
       # this is a plugin
       mpv-image-viewer = (pkgs.fetchFromGitHub {
         owner = "occivink";
         repo = "mpv-image-viewer";
-        rev = "0b1ea8efa965d40c11396d4e75f4ffbc2b1dccaf";
-        sha256 = "1dqwylbvy4c40sjbzwk99vvx7sjj8vs1vsdhhks3vblj4yhfa8pd";
+        rev = "553b61cb6fd6ded1ce396d0e0e4d70a89b681af9";
+        sha256 = "0mzlbf6c7i0yixbfxqvdma5vjx70f7pvcfw74akhfpzjzw4fms8v";
       });
 
     in
@@ -201,8 +202,8 @@ in
             "${mpv-image-viewer}/scripts/detect-image.lua"
             # "${mpv-image-viewer}/scripts/freeze-window.lua"
             "${mpv-image-viewer}/scripts/image-positioning.lua"
-            "${mpv-image-viewer}/scripts/minimap.lua"
-            "${mpv-image-viewer}/scripts/ruler.lua"
+            # "${mpv-image-viewer}/scripts/minimap.lua"
+            # "${mpv-image-viewer}/scripts/ruler.lua"
             "${mpv-image-viewer}/scripts/status-line.lua"
 
             # autosave
@@ -277,7 +278,6 @@ in
         (mpv-window-open)
         unstable.gallery-dl
         mpvc
-        ffmpeg-full
 
         nodePackages.peerflix
       ];
@@ -331,19 +331,8 @@ in
         "mpv/scripts/gallery-thumbgen.lua".source = "${mpv-gallery-view}/scripts/gallery-thumbgen.lua";
         "mpv/scripts/playlist-view.lua".source = "${mpv-gallery-view}/scripts/playlist-view.lua";
 
-        "mpv/scripts/mpv_thumbnail_client-1.lua".source =
-          (pkgs.fetchurl {
-            # mpv thumbnail client
-            url = "https://github.com/TheAMM/mpv_thumbnail_script/releases/download/0.4.2/mpv_thumbnail_script_client_osc.lua";
-            sha256 = "1g8g0l2dfydmbh1rbsxvih8zsyr7r9x630jhw95jwb1s1x8izrr7";
-          });
-
-        "mpv/scripts/mpv_thumbnail_server.lua".source =
-          (pkgs.fetchurl {
-            # mpv thumbnail server
-            url = "https://github.com/TheAMM/mpv_thumbnail_script/releases/download/0.4.2/mpv_thumbnail_script_server.lua";
-            sha256 = "12flp0flzgsfvkpk6vx59n9lpqhb85azcljcqg21dy9g8dsihnzg";
-          });
+        "mpv/scripts/mpv_thumbnail_client-1.lua".source = "${mpv-thumbnail-pkg}/scripts/mpv_thumbnail_script_client_osc.lua";
+        "mpv/scripts/mpv_thumbnail_server.lua".source = "${mpv-thumbnail-pkg}/scripts/mpv_thumbnail_script_server.lua";
 
         "mpv/script-opts/status_line.conf".text = ''
           # whether to show by default

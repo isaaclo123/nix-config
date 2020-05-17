@@ -1,9 +1,12 @@
 { pkgs, ... }:
 
-let rofi = (import ./settings.nix).rofi; in
+let
+  rofi = (import ./settings.nix).rofi;
+  icon = (import ./settings.nix).icon;
+in
 
 # creates input toggle scripts based on device name and script name
-let input-toggle-create = device: script-name: (pkgs.writeShellScriptBin script-name ''
+let input-toggle-create = device: script-name: icon: (pkgs.writeShellScriptBin script-name ''
   # toggle device
 
   DEVICE="${device}"
@@ -12,12 +15,12 @@ let input-toggle-create = device: script-name: (pkgs.writeShellScriptBin script-
 
   enable_device () {
     xinput enable "$DEVICE" &&
-    [ "$NOTIFY_VAL" == "on" ] && notify-send "${device} Enabled"
+    [ "$NOTIFY_VAL" == "on" ] && notify-send -i "${icon}" "${device} Enabled"
   }
 
   disable_device () {
     xinput disable "$DEVICE" &&
-    [ "$NOTIFY_VAL" == "on" ] && notify-send "${device} Disabled"
+    [ "$NOTIFY_VAL" == "on" ] && notify-send -i "${icon}" "${device} Disabled"
   }
 
   if [ "$1" == "on" ]; then
@@ -41,47 +44,49 @@ let input-toggle-create = device: script-name: (pkgs.writeShellScriptBin script-
 {
 
   environment.systemPackages =
-    let touchscreen-toggle = (input-toggle-create "ELAN Touchscreen" "touchscreen-toggle"); in
+    let
+      touchscreen-toggle = (input-toggle-create "ELAN Touchscreen" "touchscreen-toggle" "${icon.path}/devices/display.svg");
 
-    let touchpad-toggle = (input-toggle-create "ETPS/2 Elantech Touchpad" "touchpad-toggle"); in
+      touchpad-toggle = (input-toggle-create "ETPS/2 Elantech Touchpad" "touchpad-toggle" "${icon.path}/devices/input-touchpad.svg");
 
-    let bluetooth-toggle = (pkgs.writeShellScriptBin "bluetooth-toggle" ''
-      BT=$(rfkill list | grep tpacpi_bluetooth_sw | head -c 1)
-      BT_STATE=$(rfkill list $BT | grep "Soft blocked: yes")
+      bluetooth-toggle = (pkgs.writeShellScriptBin "bluetooth-toggle" ''
+        BT=$(rfkill list | grep tpacpi_bluetooth_sw | head -c 1)
+        BT_STATE=$(rfkill list $BT | grep "Soft blocked: yes")
 
-      NOTIFY_VAL=''${NOTIFY:-on}
+        NOTIFY_VAL=''${NOTIFY:-on}
 
-      enable_device () {
-        sudo rfkill unblock $BT &&
-        [ "$NOTIFY_VAL" == "on" ] && ${pkgs.libnotify}/bin/notify-send "Bluetooth Enabled"
-      }
+        enable_device () {
+          sudo rfkill unblock $BT &&
+          [ "$NOTIFY_VAL" == "on" ] && ${pkgs.libnotify}/bin/notify-send -i "${icon.path}/categories/preferences-bluetooth.svg" "Bluetooth Enabled"
+        }
 
-      disable_device () {
-        sudo rfkill block $BT &&
-        [ "$NOTIFY_VAL" == "on" ] && ${pkgs.libnotify}/bin/notify-send "Bluetooth Disabled"
-      }
+        disable_device () {
+          sudo rfkill block $BT &&
+          [ "$NOTIFY_VAL" == "on" ] && ${pkgs.libnotify}/bin/notify-send -i "${icon.path}/categories/preferences-bluetooth.svg" "Bluetooth Disabled"
+        }
 
-      if [ "$1" == "on" ]; then
-        enable_device
-        exit 0
-      fi
-      if [ "$1" == "off" ]; then
-        disable_device
-        exit 0
-      fi
+        if [ "$1" == "on" ]; then
+          enable_device
+          exit 0
+        fi
+        if [ "$1" == "off" ]; then
+          disable_device
+          exit 0
+        fi
 
-      if [ -z "$BT_STATE" ]; then
-        # if is not soft blocked
-        disable_device
-      else
-        enable_device
-      fi
-    ''); in
+        if [ -z "$BT_STATE" ]; then
+          # if is not soft blocked
+          disable_device
+        else
+          enable_device
+        fi
+      '');
 
-    let screenshot = (pkgs.writeShellScriptBin "screenshot" ''
-      SCREENSHOT=~/Pictures/Screenshots/Screenshot_%Y%m%d-%H%M%S.png
-      scrot "$@" $SCREENSHOT -e '${pkgs.libnotify}/bin/notify-send "Screenshot Saved" "$f"'
-    ''); in
+      screenshot = (pkgs.writeShellScriptBin "screenshot" ''
+        SCREENSHOT=~/Pictures/Screenshots/Screenshot_%Y%m%d-%H%M%S.png
+        scrot "$@" $SCREENSHOT -e '${pkgs.libnotify}/bin/notify-send -i "$f" "Screenshot Saved" "$f"'
+      '');
+    in
 
     with pkgs; [
       (touchscreen-toggle)

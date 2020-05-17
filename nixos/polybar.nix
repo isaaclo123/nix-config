@@ -136,7 +136,7 @@ in
               overline-size = 2;
               overline-color = bar-color.ac;
 
-              border-size = spacing.border;
+              border-size = 4; # Used to be border-size
               border-color = "#${bar-background}";
 
               padding = 1;
@@ -344,6 +344,9 @@ in
               full-at = 98;
               battery = "BAT0";
               adapter = "AC";
+
+              label-full-foreground = "#${color.black}";
+              label-full-background = "#${color.white}";
             };
 
             "module/my_battery_i" = {

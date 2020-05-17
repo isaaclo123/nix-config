@@ -18,11 +18,11 @@ with import <nixpkgs> {};
 
   spacing = {
     padding = 20;
-    border = 2;
+    border = 1;
   };
 
   opacity = {
-    inactive = 0.90;
+    inactive = 0.85;
     active = 1.0;
   };
 
