@@ -85,7 +85,8 @@ let create-account = folder: email: signature: (pkgs.writeText folder ''
           color bold        color15 color00
           color error       color09 color00
           color hdrdefault  color15 color00
-          color indicator   color15 color16
+          # color indicator   color15 color16
+          color indicator   color00 color07
           color markers     color16 color00
           color normal      color15 color00
           color quoted      color15 color00
