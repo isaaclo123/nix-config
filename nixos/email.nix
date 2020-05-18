@@ -11,20 +11,6 @@ let
   maildir = "${homedir}/.mail";
 in
 
-let mail-notify = pkgs.writeShellScript "mail-notify.sh" ''
-  # count new mail for every maildir
-  newfolder="$2"
-  new="$(find $newfolder -type f | wc -l)"
-
-  if [ $new -gt 0 ]
-  then
-    export DBUS_SESSION_BUS_ADDRESS=$3
-    export DISPLAY=:0
-    export XAUTHORITY=${homedir}/.Xauthority
-    ${pkgs.libnotify}/bin/notify-send -i ${icon.path}/categories/applications-mail.svg "$1" "You have $new unread emails"
-  fi
-''; in
-
 let create-account = {
   realName,
   userName,
@@ -69,7 +55,7 @@ let create-account = {
       mail =
         "${pkgs.notmuch}/bin/notmuch --config=${notmuch-config} new && " +
         "${pkgs.afew}/bin/afew -t -n --notmuch-config=${notmuch-config} && " +
-        "${pkgs.libnotify}/bin/notify-send -i ${icon.path}/categories/applications-mail.svg '${accountName}' \"You have $(${config.system.path}/bin/find '${maildir}/${accountName}/Inbox/new' -type f | ${config.system.path}/bin/wc -l) mails\"";
+        "${pkgs.libnotify}/bin/notify-send -i ${icon.path}/categories/applications-mail.svg '${accountName}' \"You have $(${config.system.path}/bin/find '${maildir}/${accountName}/Inbox/new' -type f | ${config.system.path}/bin/wc -l) unread mails\"";
     };
   };
 
