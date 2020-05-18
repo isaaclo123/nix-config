@@ -302,9 +302,6 @@ let create-account = folder: email: signature: (pkgs.writeText folder ''
           bind index M middle-page
           bind index L bottom-page
 
-          # toggle new
-          bind index U toggle-new
-
           # Macros for switching accounts
           macro index,pager <f1> '<sync-mailbox><enter-command>source ${personal}<enter><change-folder>!<enter>'
           macro index,pager <f2> '<sync-mailbox><enter-command>source ${school}<enter><change-folder>!<enter>'

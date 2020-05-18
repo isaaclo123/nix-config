@@ -33,8 +33,10 @@
     ];
     theme = "clean";
     # cacheDir = "/tmp/.ohmyzsh-$USER";
-    customPkgs = with pkgs;
-      [ pkgs.zsh-completions pkgs.nix-zsh-completions ];
+    customPkgs = with pkgs; [
+      zsh-completions
+      nix-zsh-completions
+    ];
   };
 
   # zprofile (once, before zshrc)
@@ -51,7 +53,6 @@
     # disable ctrl-s ctrl-q keybinds in terminal
     stty -ixon
 
-    # source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
     source ${pkgs.zsh-syntax-highlighting}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
     source ${pkgs.zsh-history-substring-search}/share/zsh-history-substring-search/zsh-history-substring-search.zsh
 
@@ -88,8 +89,7 @@
     zmodload zsh/complist
     bindkey -M menuselect '^[[Z' reverse-menu-complete
 
-    # unset XDG_CONFIG_HOME for termite
-    # unset XDG_CONFIG_HOME
+    source ${pkgs.fzf-zsh}/share/zsh/plugins/fzf-zsh/fzf-zsh.plugin.zsh
 
     eval "$(${pkgs.direnv}/bin/direnv hook zsh)"
   '';
