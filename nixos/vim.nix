@@ -216,14 +216,6 @@ in
         " coverage
         " autocmd FileType python map <silent> <leader>c :HighlightCoverage<CR>
 
-        " ctrlp
-        if executable('rg')
-          set grepprg=rg\ --color=never
-          let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
-          let g:ctrlp_use_caching = 0
-        endif
-        set wildignore+=*/.git/*,*/tmp/*,*.swp
-
         " Vim table mode settings
         let g:table_mode_corner = '+'
         let g:table_mode_corner_corner = '+'
@@ -315,6 +307,32 @@ in
         let g:indentLine_fileTypeExclude = ['markdown', 'pandoc']
         let g:indentLine_char_list = ['|', '¦', '┆', '┊']
 
+        " fzf
+        set grepprg=rg\ --vimgrep
+
+        let g:fzf_preview_use_dev_icons = 1
+
+        nmap <silent> <C-t> :FzfPreviewDirectoryFiles<CR>
+        nmap <silent> <M-c> :FzfPreviewProjectFiles<CR>
+
+        nmap <Leader>f [fzf-p]
+        xmap <Leader>f [fzf-p]
+
+        nnoremap <silent> [fzf-p]p     :<C-u>FzfPreviewFromResources project_mru git<CR>
+        nnoremap <silent> [fzf-p]gs    :<C-u>FzfPreviewGitStatus<CR>
+        nnoremap <silent> [fzf-p]b     :<C-u>FzfPreviewBuffers<CR>
+        nnoremap <silent> [fzf-p]B     :<C-u>FzfPreviewAllBuffers<CR>
+        nnoremap <silent> [fzf-p]o     :<C-u>FzfPreviewFromResources buffer project_mru<CR>
+        nnoremap <silent> [fzf-p]<C-o> :<C-u>FzfPreviewJumps<CR>
+        nnoremap <silent> [fzf-p]g;    :<C-u>FzfPreviewChanges<CR>
+        nnoremap <silent> [fzf-p]/     :<C-u>FzfPreviewLines -add-fzf-arg=--no-sort -add-fzf-arg=--query="'"<CR>
+        nnoremap <silent> [fzf-p]*     :<C-u>FzfPreviewLines -add-fzf-arg=--no-sort -add-fzf-arg=--query="'<C-r>=expand('<cword>')<CR>"<CR>
+        nnoremap          [fzf-p]gr    :<C-u>FzfPreviewProjectGrep<Space>
+        xnoremap          [fzf-p]gr    "sy:FzfPreviewProjectGrep<Space>-F<Space>"<C-r>=substitute(substitute(@s, '\n', "", 'g'), '/', '\\/', 'g')<CR>"
+        nnoremap <silent> [fzf-p]t     :<C-u>FzfPreviewBufferTags<CR>
+        nnoremap <silent> [fzf-p]q     :<C-u>FzfPreviewQuickFix<CR>
+        nnoremap <silent> [fzf-p]l     :<C-u>FzfPreviewLocationList<CR>
+
         " Nvim-R
         augroup nvim_r
           au!
@@ -335,14 +353,6 @@ in
           au!
           au FileType typescript setlocal indentkeys+=0
         augroup END
-
-        " Bullets.vim
-        " let g:bullets_enabled_file_types = [
-        "   \ 'markdown',
-        "   \ 'pandoc',
-        "   \ 'text',
-        "   \ 'gitcommit'
-        "   \]
       ''; in
 
       let system_vim = (pkgs.neovim.override {
@@ -375,16 +385,6 @@ in
                 };
               })
 
-              # (pkgs.vimUtils.buildVimPlugin {
-              #   name = "context-vim";
-              #   src = pkgs.fetchFromGitHub {
-              #     owner = "wellle";
-              #     repo = "context.vim";
-              #     rev = "3c7153d932106a9ada84cb2cb5f904559ddcf1a3";
-              #     sha256 = "0aj05r1hz4f8zs2w284l9zxscp0i03dzcgn9z6m2q51dz4la3l6g";
-              #   };
-              # })
-
               (pkgs.vimUtils.buildVimPlugin {
                 name = "Nvim-R";
                 src = pkgs.fetchurl {
@@ -394,9 +394,21 @@ in
                 buildInputs = with pkgs; [ which vim zip ];
               })
 
+              (pkgs.vimUtils.buildVimPlugin {
+                name = "fzf-preview-vim";
+                src = pkgs.fetchFromGitHub {
+                  owner = "yuki-ycino";
+                  repo = "fzf-preview.vim";
+                  rev = "765b9b3b29fd625aa76f5a517f83309269fdfea0";
+                  sha256 = "1h6bd38727dkm1rpkfb7ag9ii8ps5j998m1zrdpr71avzfi56r7j";
+                };
+              })
+
+              fzf-vim
+
+              gruvbox
               vim-startify
               vim-devicons
-              gruvbox
               vim-airline
 
               indentLine
@@ -417,7 +429,6 @@ in
               python-mode
 
               nerdtree
-              ctrlp
 
               nvim-yarp
               ncm2
@@ -452,8 +463,11 @@ in
         (system_vim)
         (system_vimdiff)
         universal-ctags
-        ripgrep
         scowl
+
+        # for fzf
+        exa
+        ripgrep
 
         mdl
 

@@ -61,7 +61,7 @@ let autostarted-status = "/tmp/autostarted-status.lock"; in
       bspc config border_width ${toString spacing.border}
       bspc config window_gap ${toString spacing.padding}
 
-      bspc config focused_border_color \#${color.alt.white}
+      bspc config focused_border_color \#${color.white}
       bspc config active_border_color \#${color.yellow}
       bspc config normal_border_color \#${color.black}
       bspc config presel_feedback_color \#${color.cyan}

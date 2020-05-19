@@ -8,7 +8,7 @@ in
 
 {
   environment.systemPackages = with pkgs; [
-    ripgrep-all
+    ripgrep
     fzf
   ];
 
@@ -23,6 +23,6 @@ in
     # FZF_DEFAULT_OPTS = "-m --ansi --color=16,bg:-1,bg+:-1 --tac";
     # FZF_ALT_C_COMMAND = "find -L . -maxdepth 16 -type d 2>/dev/null";
     FZF_DEFAULT_OPS = "--extended";
-    FZF_DEFAULT_COMMAND="${pkgs.ripgrep-all}/bin/rg --files --no-ignore --hidden --follow --glob '!.git/*'";
+    FZF_DEFAULT_COMMAND="${pkgs.ripgrep}/bin/rg --files --no-ignore --hidden --follow --glob '!.git/*'";
   };
 }

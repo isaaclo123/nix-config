@@ -169,7 +169,7 @@ in
           # icon_path = "${pkgs.numix-icon-theme}/share/icons/gnome/48x48/status/:${pkgs.numix-icon-theme}/share/icons/gnome/48x48/devices/";
 
           frame_width = spacing.border;
-          frame_color = "#${color.alt.white}";
+          frame_color = "#${color.white}";
 
           separator_height = spacing.border;
           separator_color = "frame";
