@@ -1,6 +1,9 @@
 { pkgs, ... }:
 
-let username = (import ./settings.nix).username; in
+let
+  username = (import ./settings.nix).username;
+  icon = (import ./settings.nix).icon;
+in
 
 {
   environment.systemPackages = with pkgs; [
@@ -34,7 +37,7 @@ let username = (import ./settings.nix).username; in
         general.periodicsave=0
         general.progressbar=yes
         general.systemdialogs=no
-        notification.command=calcurse --next | xargs -0 notify-send "Appointment"
+        notification.command=calcurse --next | xargs -0 notify-send -i "${icon.path}/places/calendar-$(date +'%d').svg" "Calendar"
         notification.notifyall=all
         notification.warning=600
       '';
