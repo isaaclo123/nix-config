@@ -47,10 +47,6 @@ let create-account = folder: email: signature: (pkgs.writeText folder ''
         application/pdf; zathura %s; test=test -n "$DISPLAY"
       '';
 
-      # ".urlview".text = ''
-      #   COMMAND xdg-open
-      # '';
-
       ".muttrc".text =
         let signature = (pkgs.writeText "sig" ''
 
@@ -378,7 +374,7 @@ let create-account = folder: email: signature: (pkgs.writeText folder ''
                     ],
                     [
                         "urlref:number",
-                        "green",
+                        "light green",
                         "black",
                         "standout"
                     ],
