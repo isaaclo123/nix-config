@@ -345,7 +345,7 @@ let create-account = folder: email: signature: (pkgs.writeText folder ''
                 "default": [
                     [
                         "header",
-                        "dark magenta",
+                        "light cyan",
                         "black",
                         "standout"
                     ],
@@ -378,7 +378,7 @@ let create-account = folder: email: signature: (pkgs.writeText folder ''
                     ],
                     [
                         "urlref:number",
-                        "yellow",
+                        "green",
                         "black",
                         "standout"
                     ],
@@ -390,7 +390,7 @@ let create-account = folder: email: signature: (pkgs.writeText folder ''
                     ],
                     [
                         "url:sel",
-                        "light cyan",
+                        "yellow",
                         "black",
                         "bold"
                     ]

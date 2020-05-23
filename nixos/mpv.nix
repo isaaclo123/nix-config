@@ -8,11 +8,8 @@ in
 
 let
   mpv-socket = "/tmp/mpv-scratchpad-socket";
-
   mpv-thumbs-cache = "/tmp/mpv_thumbs_cache";
-
   mpv-gallery-thumb-dir = "/tmp/mpv_gallery_cache";
-
   fullscreen-lock = "/tmp/mpv-scratchpad-fullscreen.lock";
 in
 
@@ -26,7 +23,7 @@ in
 
         mkdir -p ${mpv-gallery-thumb-dir}
 
-        mpv --input-ipc-server=$SOCKET --x11-name=mpvscratchpad --title=mpvscratchpad --geometry=384x216+100%+100% --no-terminal --force-window --keep-open=yes --idle=yes
+        mpv --input-ipc-server=$SOCKET --x11-name=mpvscratchpad --title=mpvscratchpad --geometry=384x216-32-0 --no-terminal --force-window --keep-open=yes --idle=yes
         '');
 
       mpv-scratchpad-toggle = (pkgs.writeShellScriptBin "mpv-scratchpad-toggle" ''
@@ -505,12 +502,15 @@ in
           # Video output
 
           osc=no # disable osc for custom osc
-          # vo=xv # simpler rendering for reducing tearing
           x11-bypass-compositor=yes # bypass compositor
           demuxer-thread=yes
 
+          # enable hardware acceleration
+          hwdec=auto-safe
+          vo=gpu
+          profile=gpu-hq
+
           script-opts=osc-layout=slimbox
-          profile=opengl-hq
           scale=ewa_lanczossharp
           #scale=haasnsoft
           scale-radius=3
@@ -525,7 +525,6 @@ in
           # target-brightness=100
           interpolation
           tscale=oversample
-          hwdec=no
           video-sync=display-resample
           deband-iterations=2
           deband-range=12
@@ -566,9 +565,6 @@ in
 
           # save position on quit
           # save-position-on-quit
-
-          # Enable hardware decoding if available.
-          #hwdec=cuda
 
           # Screenshot format
           screenshot-format=png

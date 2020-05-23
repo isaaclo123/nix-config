@@ -19,7 +19,7 @@ in
         appearance.layout=1
         appearance.notifybar=yes
         appearance.sidebarwidth=0
-        # appearance.theme=magenta on default
+        appearance.theme=yellow on default
         appearance.todoview=show-completed
         appearance.headingpos=right-justified
         daemon.enable=yes

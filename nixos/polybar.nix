@@ -5,6 +5,7 @@ let
   color = (import ./settings.nix).color;
   font = (import ./settings.nix).font;
   spacing = (import ./settings.nix).spacing;
+  opacity = (import ./settings.nix).opacity;
 
   theme-name = "polybar-8";
   theme-icon = "material";
@@ -53,7 +54,7 @@ in
             fg = color.white;
             bg = color.darkgray;
 
-            bar-background = "e6${color.black}";
+            bar-background = "${opacity.inactive-hex}${color.black}";
 
             bar-color = {
               bg = "#${fg}";

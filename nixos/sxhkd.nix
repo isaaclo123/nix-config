@@ -84,7 +84,7 @@ let input-toggle-create = device: script-name: icon: (pkgs.writeShellScriptBin s
 
       screenshot = (pkgs.writeShellScriptBin "screenshot" ''
         SCREENSHOT=~/Pictures/Screenshots/Screenshot_%Y%m%d-%H%M%S.png
-        scrot "$@" $SCREENSHOT -e '${pkgs.libnotify}/bin/notify-send -i "$f" "Screenshot Saved" "$f"'
+        scrot "$@" $SCREENSHOT -e '${pkgs.libnotify}/bin/notify-send -i "${icon.path}/categories/applications-photography.svg" "Screenshot Saved" "$f"'
       '');
     in
 
@@ -197,7 +197,7 @@ let input-toggle-create = device: script-name: icon: (pkgs.writeShellScriptBin s
 
       # rofimoji
       super + e
-      	rofi -show emoji -modi emoji ${rofi.args}
+      	rofimoji --prompt Emoji --rofi-args="${rofi.args}"
 
       # mpv toggle
       super + Up

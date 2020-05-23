@@ -1,11 +1,21 @@
 { pkgs, ... }:
 
+let
+  fzf-theme = builtins.fetchurl {
+    url = "https://raw.githubusercontent.com/nicodebo/base16-fzf/b0dcab770ccdff79413cb46a2e1e0b56fdf48493/bash/base16-gruvbox-dark-hard.config";
+    sha256 = "07fxl6w7kdsjgzakk68asr4mb4rr1783d6gal01ykba3iblkw335";
+  };
+in
+
 {
   environment.systemPackages = with pkgs; [
     zsh
     oh-my-zsh
     direnv
     z-lua
+
+    ripgrep
+    fzf
   ];
 
   programs.zsh.enable = true;
@@ -90,12 +100,18 @@
     bindkey -M menuselect '^[[Z' reverse-menu-complete
 
     source ${pkgs.fzf-zsh}/share/zsh/plugins/fzf-zsh/fzf-zsh.plugin.zsh
+    source ${fzf-theme}
 
     eval "$(${pkgs.direnv}/bin/direnv hook zsh)"
   '';
 
   programs.zsh.shellAliases = with pkgs; {
     c = "clear";
+  };
+
+  environment.variables = {
+    # FZF_DEFAULT_OPTS = "--extended";
+    FZF_DEFAULT_COMMAND="${pkgs.ripgrep}/bin/rg --files --no-ignore --hidden --follow --glob '!.git/*'";
   };
 
   # environment.variables = {

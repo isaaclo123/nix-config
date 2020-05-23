@@ -3,30 +3,19 @@
 let username = (import ./settings.nix).username; in
 
 {
-  environment.systemPackages =
-    # let ranger-derivation =
-    #   (with import <nixpkgs> {};
-    #     stdenv.lib.overrideDerivation pkgs.ranger (oldAttrs : {
-    #       src = fetchFromGitHub {
-    #         owner = "ranger";
-    #         repo = "ranger";
-    #         rev = "ee344c896e85f92f91d097a95e88ae4ead786c7b";
-    #         sha256 = "1j621vsjg8s221raf8v2x3db35zqlfwksqlv6wgq2krpmi729p35";
-    #       };
-    #   })); in
-      with pkgs; [
-        # (ranger-derivation)
-        unstable.ranger
-        imagemagick
-        elinks
-        ffmpegthumbnailer
-        odt2txt
-        libtar
-        file
-        calibre
-        poppler_utils
-        atool
-      ];
+  environment.systemPackages = with pkgs; [
+    ranger
+    ueberzug
+    imagemagick
+    elinks
+    ffmpegthumbnailer
+    odt2txt
+    libtar
+    file
+    calibre
+    poppler_utils
+    atool
+  ];
 
   home-manager.users."${username}" = {
     xdg.configFile = {

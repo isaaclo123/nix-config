@@ -1,5 +1,37 @@
 with import <nixpkgs> {};
 
+let
+  opacity-hex = opacity-int:
+
+  let
+    opacity-str = builtins.toString opacity-int;
+    opacity-dict = {
+      "100" = "FF";
+      "95" = "F2";
+      "90" = "E6";
+      "85" = "D9";
+      "80" = "CC";
+      "75" = "BF";
+      "70" = "B3";
+      "65" = "A6";
+      "60" = "99";
+      "55" = "8C";
+      "50" = "80";
+      "45" = "73";
+      "40" = "66";
+      "35" = "59";
+      "30" = "4D";
+      "25" = "40";
+      "20" = "33";
+      "15" = "26";
+      "10" = "1A";
+      "5" = "0D";
+      "0" = "00";
+    };
+  in
+  opacity-dict."${opacity-str}";
+in
+
 {
   username = "isaac";
   fullname = "Isaac Lo";
@@ -21,9 +53,15 @@ with import <nixpkgs> {};
     border = 1;
   };
 
-  opacity = {
-    inactive = 0.85;
-    active = 1.0;
+  opacity = rec {
+    inactive-int = 85;
+    active-int = 100;
+
+    inactive = inactive-int * 0.01;
+    active = active-int * 0.01;
+
+    inactive-hex = opacity-hex inactive-int;
+    active-hex = opacity-hex active-int;
   };
 
   color = rec {
@@ -81,7 +119,7 @@ with import <nixpkgs> {};
   icon = rec {
     pkg = pkgs.numix-icon-theme;
     name = "Numix";
-    size = "48";
+    size = "32";
 
     path = "${pkg}/share/icons/${name}/${size}";
   };

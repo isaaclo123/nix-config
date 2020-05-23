@@ -59,8 +59,8 @@ let nixos-weechat = (with import <nixpkgs> {};
           src = pkgs.fetchFromGitHub {
             owner = "s3rvac";
             repo = "weechat-notify-send";
-            rev = "b491e6acc1fe00fd1b91409444f9904587b2e588";
-            sha256 = "1f9558a78ismd645c9v6p3lgda6hkgn3f63i8s4y5r8zdymx08d0";
+            rev = "3390f91a3af23fc49ebb77771d78732501738241";
+            sha256 = "0w22dda3x99nhh0xrfjhvpqqx5b40vd1ybzh6acvrxsh7nwlagqn";
           };
 
           passthru.scripts = [ "notify_send.py" ];

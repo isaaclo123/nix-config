@@ -24,4 +24,6 @@
       galliumDrivers = [ "nouveau" "virgl" "swrast" "iris" ];
     }).drivers;
   };
+
+  services.xserver.videoDrivers = [ "iris" "intel" "vesa" ];
 }

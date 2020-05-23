@@ -310,10 +310,14 @@ in
         " fzf
         set grepprg=rg\ --vimgrep
 
-        let g:fzf_preview_use_dev_icons = 1
+        set autochdir
+        autocmd BufEnter * silent! lcd %:p:h
 
-        nmap <silent> <C-t> :FzfPreviewDirectoryFiles<CR>
-        nmap <silent> <M-c> :FzfPreviewProjectFiles<CR>
+        let g:fzf_preview_use_dev_icons = 1
+        let g:fzf_preview_filelist_postprocess_command = 'xargs -d "\n" exa --color=always' " Use ex
+
+        nmap <silent> <C-p> :FzfPreviewDirectoryFiles<CR>
+        nmap <silent> <C-t> :FzfPreviewProjectFiles<CR>
 
         nmap <Leader>f [fzf-p]
         xmap <Leader>f [fzf-p]

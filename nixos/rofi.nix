@@ -41,7 +41,7 @@ in
       '');
 
       clipmenu-del = (pkgs.writeShellScriptBin "clipmenu-del" ''
-        clipdel -d ".*" && notify-send "Clipboard Cleared"
+        clipdel -d ".*" && notify-send -i  "${icon.path}/actions/edit-copy.svg" "Clipboard Cleared"
       '');
     in
       with pkgs; [
@@ -51,7 +51,6 @@ in
       (unstable.rofi.override {
         plugins = with pkgs; [
           icon.pkg
-          unstable.rofi-emoji
         ];
       })
     ];

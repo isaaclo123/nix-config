@@ -35,7 +35,6 @@ in
       ./lock.nix
       ./pkgs.nix
 
-      ./fzf.nix
       ./bat.nix
       ./sxiv.nix
       ./weechat.nix

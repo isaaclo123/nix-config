@@ -110,6 +110,8 @@ let autostarted-status = "/tmp/autostarted-status.lock"; in
         termite --class=ncmpcpp_ -e ncmpcpp &
         (sleep 30 && termite --class=weechat_ -e weechat) &
 
+        (sleep 30 && systemctl restart --user "imapnotify-*.service") &
+
         termite-scratchpad &
         mpv-scratchpad &
 

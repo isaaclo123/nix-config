@@ -46,7 +46,7 @@ in
           fade = true;
           fadeDelta = 3;
 
-          vSync = true;
+          vSync = false;
 
           extraOptions = ''
             focus-exclude = [
@@ -54,17 +54,19 @@ in
               "name = 'mpvscratchpad'"
             ];
 
-            transition-pow-x = 1.0;
-            transition-pow-y = 1.0;
-            transition-pow-w = 1.0;
-            transition-pow-h = 1.0;
+            # no-fading-destroyed-argb = true;
+
+            transition-pow-x = 0.5;
+            transition-pow-y = 0.5;
+            transition-pow-w = 0.5;
+            transition-pow-h = 0.5;
             size-transition = true;
             spawn-center-screen = false;
             spawn-center = false;
-            no-scale-down = false;
+            no-scale-down = true;
 
             shadow-radius = 6;
-            transition-length = 65;
+            transition-length = 60;
             unredir-if-possible = true;
             paint-on-overlay = true;
           '';

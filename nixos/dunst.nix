@@ -22,7 +22,7 @@ in
 
       iconTheme = {
         name = "Numix";
-        package = pkgs.numix-icon-theme;
+        package = icon.pkg;
         size = icon.size;
       };
 

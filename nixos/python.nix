@@ -4,31 +4,26 @@ let
   homedir = (import ./settings.nix).homedir;
 in
 
-with import <nixpkgs> {};
-
 let my-python-packages = python-packages:
-  let ueberzug = python3.pkgs.buildPythonPackage rec {
-    pname = "ueberzug";
-    version = "18.1.4";
+  let
+    rofimoji = pkgs.python3.pkgs.buildPythonPackage rec {
+      pname = "rofimoji";
+      version = "4.1.1";
 
-    src = fetchurl {
-      url = "https://github.com/seebye/ueberzug/archive/18.1.4.tar.gz";
-      sha256 = "1yf9lmpmmjh6bk0q5yxy22zbx9qf60rd0zlq4r5rfdavhk7gak0q";
+      src = builtins.fetchurl {
+        url = "https://github.com/fdw/rofimoji/archive/4.1.1.tar.gz";
+        sha256 = "09xm13i8n16g0gbvb7fhnbla34nq7c893y83rgb81qxp8vjkdnbh";
+      };
+
+      propagatedBuildInputs = with pkgs.python37Packages; [
+        pyxdg
+        ConfigArgParse
+      ];
+
+      doCheck = false;
     };
-
-    propagatedBuildInputs = with pkgs.python37Packages; [
-      pynvim
-      xlib
-      psutil
-      pillow
-      docopt
-      attrs
-      pkgs.x11
-    ];
-
-    doCheck = false;
-  }; in
-  with python-packages; [
+  in with python-packages; [
+    (rofimoji)
     cython
     # opencv
     conda
@@ -42,7 +37,7 @@ let my-python-packages = python-packages:
     ipykernel
     matplotlib
   ];
-  python-with-my-packages = python3.withPackages my-python-packages;
+  python-with-my-packages = pkgs.python3.withPackages my-python-packages;
 in
 
 {
@@ -73,7 +68,7 @@ in
   };
 
   environment.systemPackages = with pkgs; [
-    unstable.pipenv
+    pipenv
 
     python-with-my-packages
     pypi2nix
