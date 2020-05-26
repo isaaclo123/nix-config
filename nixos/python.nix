@@ -22,8 +22,10 @@ let my-python-packages = python-packages:
 
       doCheck = false;
     };
+
   in with python-packages; [
     (rofimoji)
+
     cython
     # opencv
     conda

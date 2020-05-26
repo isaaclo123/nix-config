@@ -240,7 +240,6 @@
       simplehttp2server
       heroku
       httpie
-      insomnia
 
       binutils-unwrapped
 

@@ -22,6 +22,7 @@ let autostarted-status = "/tmp/autostarted-status.lock"; in
       # pkill -USR1 -x compton
       systemctl --user restart polybar
       systemctl --user restart compton
+      systemctl --user restart dunst
       bspc wm -r
 
       betterlockscreen -u ${theme.wallpaper} -b &
@@ -32,7 +33,7 @@ let autostarted-status = "/tmp/autostarted-status.lock"; in
       (reload-desktop)
       (logout-desktop)
       bspwm
-      autocutsel
+      # autocutsel
     ];
 
   services.xserver.windowManager = {
@@ -89,17 +90,19 @@ let autostarted-status = "/tmp/autostarted-status.lock"; in
 
       bspc rule -a termitescratchpad sticky=on state=floating hidden=on
 
+      bspc rule -a termiteopen sticky=on state=floating
+
       # always autostart
       xinput set-prop "ETPS/2 Elantech TrackPoint" "libinput Accel Speed" 0.7
       xinput set-prop "ETPS/2 Elantech Touchpad" "libinput Accel Speed" 0.45
-      killall -q dunst && (dunst &)
       feh --bg-scale "${theme.wallpaper}"
-      calcurse --daemon
 
       # only autostart on beginning
       if [ ! -f ${autostarted-status} ]; then
-        autocutsel -fork
-        Autocutsel -selection PRIMARY -fork
+        calcurse --daemon
+
+        # autocutsel -fork
+        # autocutsel -selection PRIMARY -fork
 
         # window autostart
         qutebrowser &
@@ -110,7 +113,7 @@ let autostarted-status = "/tmp/autostarted-status.lock"; in
         termite --class=ncmpcpp_ -e ncmpcpp &
         (sleep 30 && termite --class=weechat_ -e weechat) &
 
-        (sleep 30 && systemctl restart --user "imapnotify-*.service") &
+        (sleep 20 && systemctl restart --user "imapnotify-*.service") &
 
         termite-scratchpad &
         mpv-scratchpad &

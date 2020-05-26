@@ -86,6 +86,7 @@ in
 
         let g:gruvbox_contrast_dark = 'hard'
         let g:gruvbox_italic=1
+        autocmd VimEnter * hi Normal ctermbg=none
 
         set background=${theme.background}
         colorscheme ${theme.name}
@@ -314,7 +315,7 @@ in
         autocmd BufEnter * silent! lcd %:p:h
 
         let g:fzf_preview_use_dev_icons = 1
-        let g:fzf_preview_filelist_postprocess_command = 'xargs -d "\n" exa --color=always' " Use ex
+        let g:fzf_preview_filelist_postprocess_command = 'xargs -d "\n" ls -U --color'      " Use dircolors
 
         nmap <silent> <C-p> :FzfPreviewDirectoryFiles<CR>
         nmap <silent> <C-t> :FzfPreviewProjectFiles<CR>
@@ -408,6 +409,16 @@ in
                 };
               })
 
+              (pkgs.vimUtils.buildVimPlugin {
+                name = "vim-rest-console";
+                src = pkgs.fetchFromGitHub {
+                  owner = "diepm";
+                  repo = "vim-rest-console";
+                  rev = "7b407f47185468d1b57a8bd71cdd66c9a99359b2";
+                  sha256 = "1x7qicd721vcb7zgaqzy5kgiqkyj69z1lkl441rc29n6mwncpkjj";
+                };
+              })
+
               fzf-vim
 
               gruvbox
@@ -470,7 +481,6 @@ in
         scowl
 
         # for fzf
-        exa
         ripgrep
 
         mdl

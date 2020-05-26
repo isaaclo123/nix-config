@@ -4,6 +4,7 @@ let
   username = (import ./settings.nix).username;
   font = (import ./settings.nix).font;
   spacing = (import ./settings.nix).spacing;
+  opacity = (import ./settings.nix).opacity;
 in
 
 let toggle-lock = "/tmp/termite-scratchpad-toggle.lock"; in
@@ -11,7 +12,7 @@ let toggle-lock = "/tmp/termite-scratchpad-toggle.lock"; in
 {
   environment.systemPackages =
     let termite-open = (pkgs.writeShellScriptBin "termite-open" ''
-      ${pkgs.termite}/bin/termite -e "$*"
+      ${pkgs.termite}/bin/termite --class="termiteopen" -e "$*"
     ''); in
 
     let termite-scratchpad = (pkgs.writeShellScriptBin "termite-scratchpad" ''
@@ -50,6 +51,7 @@ let toggle-lock = "/tmp/termite-scratchpad-toggle.lock"; in
         # hard contrast
         # background = #282828
         # soft contrast: background = #32302f
+        # background = rgba(29, 32, 33, ${builtins.toString (1.0 - opacity.inactive)})
         ''
           [colors]
           background = #1d2021

@@ -1,6 +1,9 @@
 { pkgs, ... }:
 
-let username = (import ./settings.nix).username; in
+let
+  username = (import ./settings.nix).username;
+  font = (import ./settings.nix).font;
+in
 
 {
   environment.systemPackages = with pkgs; [
@@ -11,7 +14,7 @@ let username = (import ./settings.nix).username; in
     xresources.properties = {
       "Sxiv.background" = "black";
       "Sxiv.foreground" = "white";
-      "Sxiv.font" = "GohuFont:pixelsize=14";
+      "Sxiv.font" = "${font.mono}:size=${builtins.toString font.size}";
     };
   };
 }

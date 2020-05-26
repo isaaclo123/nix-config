@@ -197,7 +197,7 @@ let input-toggle-create = device: script-name: icon: (pkgs.writeShellScriptBin s
 
       # rofimoji
       super + e
-      	rofimoji --prompt Emoji --rofi-args="${rofi.args}"
+      	rofimoji --rofi-args="${rofi.args}"
 
       # mpv toggle
       super + Up

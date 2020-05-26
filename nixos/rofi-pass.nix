@@ -5,7 +5,7 @@ let rofi = (import ./settings.nix).rofi; in
 
 {
   environment.systemPackages = with pkgs; [
-    rofi-pass
+    unstable.rofi-pass
     diceware
   ];
 
