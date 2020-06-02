@@ -54,7 +54,7 @@ in
   };
 
   opacity = rec {
-    inactive-int = 85;
+    inactive-int = 90;
     active-int = 100;
 
     inactive = inactive-int * 0.01;

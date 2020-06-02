@@ -39,7 +39,7 @@ in
         general.systemdialogs=no
         notification.command=calcurse --next | xargs -0 notify-send -i "${icon.path}/places/calendar-$(date +'%d').svg" "Calendar"
         notification.notifyall=all
-        notification.warning=600
+        notification.warning=900
       '';
 
       ".calcurse/keys".text = ''

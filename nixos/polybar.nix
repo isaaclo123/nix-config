@@ -203,8 +203,8 @@ in
               pseudo-transparency = true;
 
               format-foreground = "#${color.black}";
-              format-background = "#${color.alt.gray}";
-              format-underline = "#${color.alt.gray}";
+              format-background = "#${color.alt.bg}";
+              format-underline = "#${color.alt.bg}";
             };
 
             "module/bspwm" = {

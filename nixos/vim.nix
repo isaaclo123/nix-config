@@ -159,6 +159,10 @@ in
         map <Leader>k <Plug>(easymotion-k)
         map <Leader>h <Plug>(easymotion-linebackward)
 
+        " vim-rest-console
+        let g:vrc_trigger = '<Leader>r'
+        " let g:vrc_split_request_body = 1
+
         " text pandoc
 
         augroup vim_pandoc
@@ -311,14 +315,17 @@ in
         " fzf
         set grepprg=rg\ --vimgrep
 
-        set autochdir
-        autocmd BufEnter * silent! lcd %:p:h
+        " set autochdir
+        " autocmd BufEnter * silent! lcd %:p:h
 
         let g:fzf_preview_use_dev_icons = 1
         let g:fzf_preview_filelist_postprocess_command = 'xargs -d "\n" ls -U --color'      " Use dircolors
 
-        nmap <silent> <C-p> :FzfPreviewDirectoryFiles<CR>
-        nmap <silent> <C-t> :FzfPreviewProjectFiles<CR>
+        " :cd %:p:h<CR>
+        nnoremap <leader>cd :cd %:p:h<CR>:pwd<CR>
+
+        nmap <silent> <C-t> :FzfPreviewDirectoryFiles<CR>
+        nmap <silent> <C-p> :FzfPreviewProjectFiles<CR>
 
         nmap <Leader>f [fzf-p]
         xmap <Leader>f [fzf-p]
@@ -337,6 +344,10 @@ in
         nnoremap <silent> [fzf-p]t     :<C-u>FzfPreviewBufferTags<CR>
         nnoremap <silent> [fzf-p]q     :<C-u>FzfPreviewQuickFix<CR>
         nnoremap <silent> [fzf-p]l     :<C-u>FzfPreviewLocationList<CR>
+
+        " vim gutentags
+        let g:airline#extensions#gutentags#enabled = 1
+        let g:gutentags_ctags_tagfile = ".git/tags"
 
         " Nvim-R
         augroup nvim_r
@@ -420,6 +431,7 @@ in
               })
 
               fzf-vim
+              vim-gutentags
 
               gruvbox
               vim-startify

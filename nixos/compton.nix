@@ -38,9 +38,14 @@ in
           shadowOffsets = [ (-9) (-9) ];
           shadowOpacity = "0.4";
 
-          activeOpacity = toString opacity.active;
-          inactiveOpacity = toString opacity.inactive;
+          # activeOpacity = toString opacity.active;
+          # inactiveOpacity = toString opacity.inactive;
           menuOpacity = toString opacity.inactive;
+
+          opacityRule = [
+            "${toString opacity.inactive-int}:class_g = 'Termite'"
+            "${toString opacity.inactive-int}:class_g = 'Rofi'"
+          ];
 
           blur = true;
           fade = true;
@@ -53,8 +58,6 @@ in
               "name = 'i3lock'",
               "name = 'mpvscratchpad'"
             ];
-
-            # no-fading-destroyed-argb = true;
 
             transition-pow-x = 0.5;
             transition-pow-y = 0.5;

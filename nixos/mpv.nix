@@ -275,6 +275,7 @@ in
         (mpv-window-open)
         unstable.gallery-dl
         mpvc
+        # ffmpeg
 
         nodePackages.peerflix
       ];
@@ -328,25 +329,28 @@ in
         "mpv/scripts/gallery-thumbgen.lua".source = "${mpv-gallery-view}/scripts/gallery-thumbgen.lua";
         "mpv/scripts/playlist-view.lua".source = "${mpv-gallery-view}/scripts/playlist-view.lua";
 
-        "mpv/scripts/mpv_thumbnail_client-1.lua".source = "${mpv-thumbnail-pkg}/scripts/mpv_thumbnail_script_client_osc.lua";
+        "mpv/scripts/mpv_thumbnail_client.lua".source = "${mpv-thumbnail-pkg}/scripts/mpv_thumbnail_script_client_osc.lua";
         "mpv/scripts/mpv_thumbnail_server.lua".source = "${mpv-thumbnail-pkg}/scripts/mpv_thumbnail_script_server.lua";
+        "mpv/scripts/mpv_thumbnail_server.lua-1".source = "${mpv-thumbnail-pkg}/scripts/mpv_thumbnail_script_server.lua";
+        "mpv/scripts/mpv_thumbnail_server.lua-2".source = "${mpv-thumbnail-pkg}/scripts/mpv_thumbnail_script_server.lua";
 
         "mpv/script-opts/mpv_thumbnail_script.conf".text = ''
           cache_directory=${mpv-thumbs-cache}
           autogenerate=yes
-          autogenerate_max_duration=1800
+          autogenerate_max_duration=3600
           prefer_mpv=yes
           mpv_no_sub=no
           disable_keybinds=no
-          thumbnail_width=150
-          thumbnail_height=150
-          thumbnail_count=100
+          thumbnail_width=200
+          thumbnail_height=200
+          thumbnail_count=120
           min_delta=5
           max_delta=90
           thumbnail_network=yes
-          remote_thumbnail_count=40
+          remote_thumbnail_count=50
           remote_min_delta=15
           remote_max_delta=120
+          remote_direct_stream=no
         '';
 
         "mpv/script-opts/gallery_worker.conf".text = ''
@@ -380,7 +384,7 @@ in
           show_title=yes
           strip_directory=yes
           strip_extension=yes
-          text_size=28
+          text_size=20
 
           background_color=333333
           background_opacity=33

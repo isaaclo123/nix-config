@@ -193,7 +193,7 @@ in
             ## User agent
             config.set('content.headers.user_agent', 'Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101 Firefox/68.0')
             config.set('content.headers.accept_language', 'en-US,en;q=0.5')
-            config.set('content.headers.custom', {"accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"})
+            # config.set('content.headers.custom', {"accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"})
 
             # User stylesheet (add floppymoose css rules http://www.floppymoose.com/)
             # Type: List
