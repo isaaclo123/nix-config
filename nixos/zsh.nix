@@ -1,10 +1,44 @@
 { pkgs, ... }:
 
 let
-  fzf-theme = builtins.fetchurl {
-    url = "https://raw.githubusercontent.com/nicodebo/base16-fzf/b0dcab770ccdff79413cb46a2e1e0b56fdf48493/bash/base16-gruvbox-dark-hard.config";
-    sha256 = "07fxl6w7kdsjgzakk68asr4mb4rr1783d6gal01ykba3iblkw335";
-  };
+  # fzf-theme = builtins.fetchurl {
+  #   url = "https://raw.githubusercontent.com/nicodebo/base16-fzf/b0dcab770ccdff79413cb46a2e1e0b56fdf48493/bash/base16-gruvbox-dark-hard.config";
+  #   sha256 = "07fxl6w7kdsjgzakk68asr4mb4rr1783d6gal01ykba3iblkw335";
+  # };
+  fzf-theme = pkgs.writeShellScript "gruvbox.config" ''
+    # Base16 Gruvbox dark, hard
+    # Author: Dawid Kurek (dawikur@gmail.com), morhetz (https://github.com/morhetz/gruvbox)
+
+    _gen_fzf_default_opts() {
+
+    local color00='#1d2021'
+    local color01='#3c3836'
+    local color02='#504945'
+    local color03='#665c54'
+    local color04='#bdae93'
+    local color05='#d5c4a1'
+    local color06='#ebdbb2'
+    local color07='#fbf1c7'
+    local color08='#fb4934'
+    local color09='#fe8019'
+    local color0A='#fabd2f'
+    local color0B='#b8bb26'
+    local color0C='#8ec07c'
+    local color0D='#83a598'
+    local color0E='#d3869b'
+    local color0F='#d65d0e'
+
+    # bg = -1 instead of 01 for transparent background
+    export FZF_DEFAULT_OPTS="
+      --color=bg+:$color01,bg:-1,spinner:$color0C,hl:$color0D
+      --color=fg:$color04,header:$color0D,info:$color0A,pointer:$color0C
+      --color=marker:$color0C,fg+:$color06,prompt:$color0A,hl+:$color0D
+    "
+
+    }
+
+    _gen_fzf_default_opts
+  '';
 in
 
 {

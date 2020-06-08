@@ -5,6 +5,7 @@ let
   theme = (import ./settings.nix).theme;
   font = (import ./settings.nix).font;
   color = (import ./settings.nix).color;
+  opacity = (import ./settings.nix).opacity;
 
   # fontname = "Iosevka-Medium-Nerd-Font-Complete-Mono";
   # font = (import ./settings.nix).font;
@@ -16,7 +17,7 @@ in
       lock = (pkgs.writeShellScriptBin "lock" ''
         mpc pause &>/dev/null
         # amixer set Master mute
-        ${pkgs.betterlockscreen}/bin/betterlockscreen "$@" blur
+        ${pkgs.betterlockscreen}/bin/betterlockscreen "$@"
       '');
     in with pkgs; [
       (lock)
@@ -45,7 +46,7 @@ in
         verifcolor=${color.white}ff
         timecolor=${color.white}ff
         datecolor=${color.white}ff
-        loginbox=${color.black}e6 # 90% color
+        loginbox=${color.black}${opacity.inactive-hex}
         font="${font.mono}"
         locktext='Type password to unlock...'
         lock_timeout=1

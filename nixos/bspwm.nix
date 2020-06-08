@@ -25,7 +25,7 @@ let autostarted-status = "/tmp/autostarted-status.lock"; in
       systemctl --user restart dunst
       bspc wm -r
 
-      betterlockscreen -u ${theme.wallpaper} -b &
+      betterlockscreen -u ${theme.wallpaper} &
       bat cache --build &
     ''); in
 

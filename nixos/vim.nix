@@ -5,6 +5,7 @@ let
   username = (import ./settings.nix).username;
   theme = (import ./settings.nix).theme;
   color = (import ./settings.nix).color;
+  opacity = (import ./settings.nix).opacity;
 in
 
 # let
@@ -321,6 +322,8 @@ in
         set noautochdir
         " autocmd BufEnter * silent! lcd %:p:h
 
+        let g:fzf_preview_floating_window_winblend = ${builtins.toString (100 - opacity.inactive-int)}
+        let g:fzf_preview_fzf_color_option = "bg+:'#3c3836',bg:'#1d2021',spinner:'#8ec07c',hl:'#83a598',fg:'#bdae93',header:'#83a598',info:'#fabd2f',pointer:'#8ec07c',marker:'#8ec07c',fg+:'#ebdbb2',prompt:'#fabd2f',hl+:'#83a598'"
         let g:fzf_preview_use_dev_icons = 1
         let g:fzf_preview_filelist_postprocess_command = 'xargs -d "\n" ls -U --color'      " Use dircolors
 
@@ -331,6 +334,7 @@ in
         nmap <silent> <C-p> :FzfPreviewProjectFiles<CR>
         nmap <silent> <Leader>/ :<C-u>FzfPreviewLines -add-fzf-arg=--no-sort -add-fzf-arg=--query="'"<CR>
         nmap <Leader>g :<C-u>FzfPreviewProjectGrep<Space>
+        nmap <silent> <Leader>b :<C-u>FzfPreviewAllBuffers<CR>
 
         nmap <Leader>f [fzf-p]
         xmap <Leader>f [fzf-p]

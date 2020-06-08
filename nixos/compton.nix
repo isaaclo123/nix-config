@@ -48,9 +48,9 @@ in
             "${toString opacity.inactive-int}:class_g = 'Zathura'"
           ];
 
-          blur = true;
+          blur = false;
           fade = true;
-          fadeDelta = 4;
+          fadeDelta = 3;
 
           vSync = false;
 
@@ -70,7 +70,7 @@ in
             no-scale-down = true;
 
             shadow-radius = 6;
-            transition-length = 80;
+            transition-length = 70;
             unredir-if-possible = true;
             paint-on-overlay = true;
           '';
