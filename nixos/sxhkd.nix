@@ -50,13 +50,15 @@ let input-toggle-create = device: script-name: icon: (pkgs.writeShellScriptBin s
       touchpad-toggle = (input-toggle-create "ETPS/2 Elantech Touchpad" "touchpad-toggle" "${icon.path}/devices/input-touchpad.svg");
 
       bluetooth-toggle = (pkgs.writeShellScriptBin "bluetooth-toggle" ''
-        BT=$(rfkill list | grep tpacpi_bluetooth_sw | head -c 1)
+        BT=$(rfkill list | grep tpacpi_bluetooth_sw | cut -d: -f1)
+
         BT_STATE=$(rfkill list $BT | grep "Soft blocked: yes")
 
         NOTIFY_VAL=''${NOTIFY:-on}
 
         enable_device () {
           sudo rfkill unblock $BT &&
+          sudo rfkill unblock $(rfkill list | grep hci0 | cut -d: -f1) &&
           [ "$NOTIFY_VAL" == "on" ] && ${pkgs.libnotify}/bin/notify-send -i "${icon.path}/categories/preferences-bluetooth.svg" "Bluetooth Enabled"
         }
 

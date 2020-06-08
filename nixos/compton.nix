@@ -42,14 +42,14 @@ in
           # inactiveOpacity = toString opacity.inactive;
           menuOpacity = toString opacity.inactive;
 
-          opacityRule = [
-            "${toString opacity.inactive-int}:class_g = 'Termite'"
-            "${toString opacity.inactive-int}:class_g = 'Rofi'"
-          ];
+          # opacityRule = [
+          #   "${toString opacity.inactive-int}:class_g = 'termite'"
+          #   "${toString opacity.inactive-int}:class_g = 'Rofi'"
+          # ];
 
           blur = true;
           fade = true;
-          fadeDelta = 3;
+          fadeDelta = 4;
 
           vSync = false;
 
@@ -69,7 +69,7 @@ in
             no-scale-down = true;
 
             shadow-radius = 6;
-            transition-length = 60;
+            transition-length = 80;
             unredir-if-possible = true;
             paint-on-overlay = true;
           '';

@@ -331,8 +331,8 @@ in
 
         "mpv/scripts/mpv_thumbnail_client.lua".source = "${mpv-thumbnail-pkg}/scripts/mpv_thumbnail_script_client_osc.lua";
         "mpv/scripts/mpv_thumbnail_server.lua".source = "${mpv-thumbnail-pkg}/scripts/mpv_thumbnail_script_server.lua";
-        "mpv/scripts/mpv_thumbnail_server.lua-1".source = "${mpv-thumbnail-pkg}/scripts/mpv_thumbnail_script_server.lua";
-        "mpv/scripts/mpv_thumbnail_server.lua-2".source = "${mpv-thumbnail-pkg}/scripts/mpv_thumbnail_script_server.lua";
+        "mpv/scripts/mpv_thumbnail_server-1.lua".source = "${mpv-thumbnail-pkg}/scripts/mpv_thumbnail_script_server.lua";
+        "mpv/scripts/mpv_thumbnail_server-2.lua".source = "${mpv-thumbnail-pkg}/scripts/mpv_thumbnail_script_server.lua";
 
         "mpv/script-opts/mpv_thumbnail_script.conf".text = ''
           cache_directory=${mpv-thumbs-cache}
@@ -350,7 +350,7 @@ in
           remote_thumbnail_count=50
           remote_min_delta=15
           remote_max_delta=120
-          remote_direct_stream=no
+          remote_direct_stream=yes
         '';
 
         "mpv/script-opts/gallery_worker.conf".text = ''
@@ -384,7 +384,7 @@ in
           show_title=yes
           strip_directory=yes
           strip_extension=yes
-          text_size=20
+          # text_size=20
 
           background_color=333333
           background_opacity=33
@@ -606,21 +606,12 @@ in
 
           sub-scale-by-window=yes
 
-          #1
-          # sub-font='Montara'
-          # sub-font-size=54
-          # sub-margin-y=45
-          # sub-color="#ffffffff"
-          # sub-border-color="#000000"
-          # sub-border-size=2.4
-          # sub-shadow-offset=0
-          # sub-shadow-color="#000000"
-          #2
           # sub-text-font='PT Sans Tight'
           # sub-text-bold=yes
-          sub-font-size=45
           # sub-text-margin-y=40
           ## sub-text-margin-x=160
+
+          sub-font-size=45
           sub-color="#ffffffff"
           sub-border-color="#000000"
           sub-border-size=3.0

@@ -5,6 +5,7 @@ let
   font = (import ./settings.nix).font;
   color = (import ./settings.nix).color;
   spacing = (import ./settings.nix).spacing;
+  opacity = (import ./settings.nix).opacity;
   rofi = (import ./settings.nix).rofi;
   icon = (import ./settings.nix).icon;
 in
@@ -17,8 +18,16 @@ let
     sha256 = "1z5l4l084mhj9x5av8wh6zcsq7j1i41pylmsiacn262kkq5y0wxq";
   });
 
+  # @import "${rofi-themes}/themes/colorschemes/${rofi.colorscheme}.rasi"
   rofi-colorscheme = (pkgs.writeText "colorscheme.rasi" ''
-    @import "${rofi-themes}/themes/colorschemes/${rofi.colorscheme}.rasi"
+    * {
+      accent:           #83a598;
+      background:       #282828${opacity.inactive-hex};
+      background-light: #303030;
+      foreground:       #ebdbb2;
+      on:               #44ad4d;
+      off:              #fb4934;
+    }
   '');
   # * {
   #   accent:           #${color.blue};
@@ -108,14 +117,15 @@ in
         esac
       '');
 
-      # @import "${rofi-themes}/themes/colorschemes/${rofi.colorscheme}.rasi"
       "rofi/themes/colors.rasi".text = ''
         @import "${rofi-colorscheme}"
       '';
+
       "rofi/themes/menu/powermenu.rasi".text = ''
         ${builtins.readFile "${rofi-themes}/themes/menu/powermenu.rasi"}
 
         #window {
+          background-color: @background;
           width: 761px;
           height: 260px;
         }
@@ -123,6 +133,7 @@ in
         * {
           /* General */
           text-font:                            "${font.mono} 14"; /* sans maybe */
+          background-color: #00000000;
         }
       '';
 
@@ -134,7 +145,17 @@ in
       "rofi/colors.rasi".text = ''
         @import "${rofi-colorscheme}"
       '';
-      "rofi/launchers/${rofi.style}.rasi".source = "${rofi-themes}/launchers/${rofi.style}.rasi";
+      "rofi/launchers/${rofi.style}.rasi".text = ''
+        ${builtins.readFile "${rofi-themes}/launchers/${rofi.style}.rasi"}
+
+        #window {
+          background-color: @background;
+        }
+
+        * {
+          background-color: #00000000;
+        }
+      '';
     };
   };
 }

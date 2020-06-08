@@ -93,6 +93,7 @@ in
   hardware.bluetooth = {
     enable = true;
     package = pkgs.bluezFull;
+    powerOnBoot = true;
     # extraConfig = ''
     #   [General]
     #   Enable=Source,Sink,Media,Socket

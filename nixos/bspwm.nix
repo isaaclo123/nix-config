@@ -93,8 +93,8 @@ let autostarted-status = "/tmp/autostarted-status.lock"; in
       bspc rule -a termiteopen sticky=on state=floating
 
       # always autostart
-      xinput set-prop "ETPS/2 Elantech TrackPoint" "libinput Accel Speed" 0.7
-      xinput set-prop "ETPS/2 Elantech Touchpad" "libinput Accel Speed" 0.45
+      xinput set-prop "ETPS/2 Elantech TrackPoint" "libinput Accel Speed" 0.8
+      xinput set-prop "ETPS/2 Elantech Touchpad" "libinput Accel Speed" 0.5
       feh --bg-scale "${theme.wallpaper}"
 
       # only autostart on beginning
@@ -107,18 +107,18 @@ let autostarted-status = "/tmp/autostarted-status.lock"; in
         # window autostart
         qutebrowser &
         termite --class=termite_ &
-        termite --class=vim_ -e vim &
-        termite --class=ranger_ -e ranger &
-        termite --class=neomutt_ -e neomutt &
+        termite --class=vim_ -e "zsh -c vim" &
+        termite --class=ranger_ -e "zsh -c ranger" &
+        termite --class=neomutt_ -e "zsh -c neomutt" &
         termite --class=ncmpcpp_ -e ncmpcpp &
-        (sleep 30 && termite --class=weechat_ -e weechat) &
+        (sleep 20 && termite --class=weechat_ -e weechat) &
 
-        (sleep 20 && systemctl restart --user "imapnotify-*.service") &
+        (sleep 5 && systemctl restart --user "imapnotify-*.service") &
 
         termite-scratchpad &
         mpv-scratchpad &
 
-        NOTIFY=off bluetooth-toggle off &
+        # NOTIFY=off bluetooth-toggle off &
         # NOTIFY=off touchpad-toggle off &
         NOTIFY=off touchscreen-toggle off &
 

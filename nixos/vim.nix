@@ -86,7 +86,10 @@ in
 
         let g:gruvbox_contrast_dark = 'hard'
         let g:gruvbox_italic=1
-        autocmd VimEnter * hi Normal ctermbg=none
+
+        " remove background
+        hi Normal guibg=NONE ctermbg=NONE
+        autocmd VimEnter * hi Normal guibg=NONE ctermbg=NONE
 
         set background=${theme.background}
         colorscheme ${theme.name}
@@ -170,8 +173,8 @@ in
           au BufNewFile,BufFilePre,BufRead *.md setlocal filetype=pandoc
           au FileType markdown,pandoc setlocal filetype=pandoc
           au FileType markdown,pandoc setlocal concealcursor=""
-          au FileType markdown,txt,pandoc,text map <silent> <leader>c :TOC<CR>
-          au FileType markdown,txt,pandoc,text map <leader>p :PandocPreview<CR>
+          au FileType markdown,txt,pandoc,text map <silent> <Leader>c :TOC<CR>
+          au FileType markdown,txt,pandoc,text map <Leader>p :PandocPreview<CR>
 
           au FileType markdown,txt,pandoc,text let g:table_mode_corner='+'
         augroup END
@@ -219,7 +222,7 @@ in
         let g:pymode_rope = 0
 
         " coverage
-        " autocmd FileType python map <silent> <leader>c :HighlightCoverage<CR>
+        " autocmd FileType python map <silent> <Leader>c :HighlightCoverage<CR>
 
         " Vim table mode settings
         let g:table_mode_corner = '+'
@@ -283,7 +286,7 @@ in
         \}
 
         " nerdTree settings
-        map <silent> <leader>n :NERDTreeToggle<CR>
+        map <silent> <Leader>n :NERDTreeToggle<CR>
         let g:nerdtree_tabs_focus_on_files = 1
         let NERDTreeShowBookmarks=1
 
@@ -315,17 +318,19 @@ in
         " fzf
         set grepprg=rg\ --vimgrep
 
-        " set autochdir
+        set noautochdir
         " autocmd BufEnter * silent! lcd %:p:h
 
         let g:fzf_preview_use_dev_icons = 1
         let g:fzf_preview_filelist_postprocess_command = 'xargs -d "\n" ls -U --color'      " Use dircolors
 
         " :cd %:p:h<CR>
-        nnoremap <leader>cd :cd %:p:h<CR>:pwd<CR>
+        nnoremap <M-c> :cd %:p:h<CR>:pwd<CR>
 
         nmap <silent> <C-t> :FzfPreviewDirectoryFiles<CR>
         nmap <silent> <C-p> :FzfPreviewProjectFiles<CR>
+        nmap <silent> <Leader>/ :<C-u>FzfPreviewLines -add-fzf-arg=--no-sort -add-fzf-arg=--query="'"<CR>
+        nmap <Leader>g :<C-u>FzfPreviewProjectGrep<Space>
 
         nmap <Leader>f [fzf-p]
         xmap <Leader>f [fzf-p]
@@ -354,7 +359,7 @@ in
           au!
           au BufNewFile,BufFilePre,BufRead *.{r,R} set filetype=r
 
-          au Filetype R,r map <leader>r <Plug>RSendFile
+          au Filetype R,r map <Leader>r <Plug>RSendFile
           au Filetype R,r nmap , <Plug>RDSendLine
           " remapping selection :: send multiple lines
           au Filetype R,r vmap , <Plug>RDSendSelection

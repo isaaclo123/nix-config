@@ -275,7 +275,7 @@
 
       # bluetooth
       bluez-alsa
-      blueman
+      # blueman
 
       # audacity
       audacity

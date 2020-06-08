@@ -3,7 +3,9 @@
 let
   homedir = (import ./settings.nix).homedir;
   username = (import ./settings.nix).username;
-  dav-url= (import ./settings.nix).dav-url;
+  dav-url = (import ./settings.nix).dav-url;
+
+  timeout = 30;
 in
 
 {
@@ -24,20 +26,21 @@ in
     services.calcurse-vdirsyncer = {
       description = "calcurse-vdirsyncer systemd service";
 
-      requiredBy = [ "nixos-activation.service" ];
-      after = [ "nixos-activation.service" ];
+      # requiredBy = [ "nixos-activation.service" ];
+      # after = [ "nixos-activation.service" ];
 
       serviceConfig.Type = "oneshot";
 
       # ${calcurse-vdirsyncer}/bin/calcurse-vdirsyncer $CALENDAR_DIR
 
+      # test if server reachable
+      # ${pkgs.curl}/bin/curl -m ${timeout} -s -o /dev/null -w "%{http_code}" ${dav-url} | grep 403 || exit 1
+
+
       script = ''
         CALENDAR_DIR=${(import ./extra-builtins.nix {}).firstdir "${homedir}/.calendars/"}
 
         [ -z "$CALENDAR_DIR" ] && exit 1
-
-        # test if server reachable
-        ${pkgs.curl}/bin/curl -m 3 -s -o /dev/null -w "%{http_code}" ${dav-url} | grep 403 || exit 1
 
         ${pkgs.unstable.calcurse}/bin/calcurse-vdir export $CALENDAR_DIR -D "${homedir}/.calcurse" &&
         ${pkgs.vdirsyncer}/bin/vdirsyncer sync &&
@@ -54,7 +57,7 @@ in
   system.userActivationScripts.vdirsyncerSetup = {
     text = ''
       # test if server reachable
-      ${pkgs.curl}/bin/curl -m 3 -s -o /dev/null -w "%{http_code}" ${dav-url} | grep -e "404" -e "000" && exit 1
+      # ${pkgs.curl}/bin/curl -m ${builtins.toString timeout} -s -o /dev/null -w "%{http_code}" ${dav-url} | grep -e "404" -e "000" && exit 1
 
       ${config.system.path}/bin/yes | ${pkgs.vdirsyncer}/bin/vdirsyncer discover
       ${pkgs.vdirsyncer}/bin/vdirsyncer sync

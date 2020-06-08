@@ -237,8 +237,7 @@ let username = (import ./settings.nix).username; in
                       bat --style=plain \
                           --color=always \
                           --wrap=never \
-                          --line-range \
-                          "0:''${PV_HEIGHT}" "''${FILE_PATH}"\
+                          "''${FILE_PATH}"\
                           && exit 5
                       ## Syntax highlight
                       if [[ "$( stat --printf='%s' -- "''${FILE_PATH}" )" -gt "''${HIGHLIGHT_SIZE_MAX}" ]]; then

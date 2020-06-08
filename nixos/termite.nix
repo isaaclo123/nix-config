@@ -54,7 +54,8 @@ let toggle-lock = "/tmp/termite-scratchpad-toggle.lock"; in
         # background = rgba(29, 32, 33, ${builtins.toString (1.0 - opacity.inactive)})
         ''
           [colors]
-          background = #1d2021
+          # background = #1d2021
+          background = rgba(29, 32, 33, ${builtins.toString (opacity.inactive)})
           foreground = #ebdbb2
           foreground_bold = #ebdbb2
 
