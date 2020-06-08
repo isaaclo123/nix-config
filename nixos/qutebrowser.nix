@@ -140,8 +140,6 @@ in
 
             ${builtins.readFile theme}
 
-            c.colors.webpage.bg = base07
-
             # END THEME
 
             # Uncomment this to still load settings configured via autoconfig.yml
@@ -159,6 +157,15 @@ in
             # Disable qutebrowser (host-based) adblock.
             # Type: Bool
             config.set('content.host_blocking.enabled', False)
+
+            # Dark mode Settings
+            c.colors.webpage.bg = base07
+            c.colors.webpage.darkmode.enabled = True
+            c.colors.webpage.darkmode.policy.images = 'smart'
+            c.colors.webpage.darkmode.policy.page = 'smart'
+            c.colors.webpage.darkmode.threshold.text = 150
+            c.colors.webpage.darkmode.threshold.background = 205
+            c.colors.webpage.prefers_color_scheme_dark = True
 
             # Adblock lists.
             # Type: List
