@@ -50,7 +50,7 @@ in
 
   spacing = {
     padding = 20;
-    border = 1;
+    border = 2;
   };
 
   opacity = rec {
@@ -62,6 +62,8 @@ in
 
     inactive-hex = opacity-hex inactive-int;
     active-hex = opacity-hex active-int;
+
+    background-transparent = "rgba(29, 32, 33, ${builtins.toString (inactive)})";
   };
 
   color = rec {

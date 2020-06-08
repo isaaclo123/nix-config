@@ -155,6 +155,10 @@ in
         * {
           background-color: #00000000;
         }
+
+        #prompt {
+          text-color: #${color.black};
+        }
       '';
     };
   };

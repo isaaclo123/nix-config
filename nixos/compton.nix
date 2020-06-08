@@ -42,10 +42,11 @@ in
           # inactiveOpacity = toString opacity.inactive;
           menuOpacity = toString opacity.inactive;
 
-          # opacityRule = [
-          #   "${toString opacity.inactive-int}:class_g = 'termite'"
-          #   "${toString opacity.inactive-int}:class_g = 'Rofi'"
-          # ];
+          opacityRule = [
+            # "${toString opacity.inactive-int}:class_g = 'termite'"
+            # "${toString opacity.inactive-int}:class_g = 'Rofi'"
+            "${toString opacity.inactive-int}:class_g = 'Zathura'"
+          ];
 
           blur = true;
           fade = true;
