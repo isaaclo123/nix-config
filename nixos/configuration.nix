@@ -53,6 +53,7 @@ in
       ./rofi-pass.nix
       ./python.nix
       ./haskell.nix
+      ./rust.nix
       ./r.nix
       ./email.nix
       ./termite.nix

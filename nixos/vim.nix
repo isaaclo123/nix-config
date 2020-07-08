@@ -338,8 +338,8 @@ in
         " :cd %:p:h<CR>
         nnoremap <M-c> :cd %:p:h<CR>:pwd<CR>
 
-        nmap <silent> <C-t> :FzfPreviewDirectoryFiles<CR>
-        nmap <silent> <C-p> :FzfPreviewProjectFiles<CR>
+        nmap <silent> <C-t> :FzfPreviewProjectFiles<CR>
+        nmap <silent> <C-p> :FzfPreviewDirectoryFiles<CR>
         nmap <silent> <Leader>/ :<C-u>FzfPreviewLines -add-fzf-arg=--no-sort -add-fzf-arg=--query="'"<CR>
         nmap <Leader>g :<C-u>FzfPreviewProjectGrep<Space>
         nmap <silent> <Leader>b :<C-u>FzfPreviewAllBuffers<CR>
