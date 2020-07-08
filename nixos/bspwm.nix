@@ -33,7 +33,7 @@ let autostarted-status = "/tmp/autostarted-status.lock"; in
       (reload-desktop)
       (logout-desktop)
       bspwm
-      # autocutsel
+      autocutsel
     ];
 
   services.xserver.windowManager = {
@@ -101,8 +101,8 @@ let autostarted-status = "/tmp/autostarted-status.lock"; in
       if [ ! -f ${autostarted-status} ]; then
         calcurse --daemon
 
-        # autocutsel -fork
-        # autocutsel -selection PRIMARY -fork
+        autocutsel -s CLIPBOARD -fork
+        autocutsel -s PRIMARY -fork
 
         # window autostart
         qutebrowser &

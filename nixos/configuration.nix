@@ -77,11 +77,14 @@ in
     };
   };
 
+  boot.extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback ];
   boot.extraModprobeConfig = ''
     options snd-hda-intel model=auto
+    options v4l2loopback devices=1 exclusive_caps=1 video_nr=2 card_label="v4l2loopback"
   '';
-
+  boot.initrd.kernelModules = [ "v412loopback" ];
   boot.blacklistedKernelModules = [ "snd_pcsp" ];
+
   boot.cleanTmpDir = true;
 
   # Enable sound.
@@ -94,15 +97,15 @@ in
     enable = true;
     package = pkgs.bluezFull;
     powerOnBoot = true;
-    # extraConfig = ''
-    #   [General]
-    #   Enable=Source,Sink,Media,Socket
-    #   AutoConnectTimeout = 0
-    #   IdleTimeout=0
-    #   DiscoverableTimeout = 0
-    #   PairableTimeout = 0
-    #   PageTimeout = 8192
-    # '';
+    extraConfig = ''
+      [General]
+      Enable=Source,Sink,Media,Socket
+      AutoConnectTimeout = 0
+      IdleTimeout=0
+      DiscoverableTimeout = 0
+      PairableTimeout = 0
+      PageTimeout = 8192
+    '';
   };
 
   hardware.trackpoint = {
@@ -125,6 +128,10 @@ in
     support32Bit = true;
 
     extraConfig = ''
+      load-module module-switch-on-connect
+      load-module module-bluetooth-policy
+      load-module module-bluetooth-discover
+
       .ifexists module-udev-detect.so
         load-module module-udev-detect tsched=0
       .else
@@ -342,20 +349,33 @@ in
   # servers. You should change this only after NixOS release notes say you
   # should.
   system.stateVersion = "20.03"; # Did you read the comment?
-  nixpkgs.config = {
-    # pulseaudio = true;
-    allowBroken = false;
-    allowUnfree = true;
-    packageOverrides = pkgs: {
-      unstable = import unstable {
-        config = config.nixpkgs.config;
-      };
+  nixpkgs = {
+    config = {
+      # pulseaudio = true;
+      allowBroken = false;
+      allowUnfree = true;
+      packageOverrides = pkgs: {
+        unstable = import unstable {
+          config = config.nixpkgs.config;
+        };
 
-      nixos-hardware = import nixos-hardware {
-        config = config.nixpkgs.config;
+        nixos-hardware = import nixos-hardware {
+          config = config.nixpkgs.config;
+        };
       };
     };
+
+    # overlays = [
+    #   (import ./overlays/aws-cli.nix)
+    # ];
   };
+
+  # Without any `nix.nixPath` entry:
+  # nix.nixPath =
+  #   # Prepend default nixPath values.
+  #   # Append our nixpkgs-overlays.
+  #   [ "nixpkgs-overlays=/etc/nixos/overlays/" ]
+  # ;
 
   nix = {
     # auto garbage collect

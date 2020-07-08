@@ -23,8 +23,8 @@ in
       '');
 
       vimrc = ''
-        set wildmode=longest,list,full
-        set wildmenu
+        " set wildmode=longest,list,full
+        " set wildmenu
         set nocp
         set t_Co=256
         filetype plugin indent on
@@ -73,7 +73,12 @@ in
         inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
         inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
-        inoremap <silent> <buffer> <expr> <CR> ncm2_ultisnips#expand_or("\<CR>", 'n')
+        " inoremap <silent> <expr> <CR> ncm2_ultisnips#completed_is_snippet() ?
+        "   \ "\<Plug>(ncm2_ultisnips_expand_completed)"
+        "   \ : "\<Plug>(AutoPairsReturn)"
+
+        let g:AutoPairsMapCR=0
+        inoremap <silent> <expr> <CR> ncm2_ultisnips#expand_or("\<CR>\<C-R>=AutoPairsReturn()<CR>", 'n')
 
         " c-j c-k for moving in snippet
         let g:UltiSnipsExpandTrigger		= "<Plug>(ultisnips_expand)"
@@ -442,6 +447,16 @@ in
                 };
               })
 
+              (pkgs.vimUtils.buildVimPlugin {
+                name = "ncm2-racer";
+                src = pkgs.fetchFromGitHub {
+                  owner = "ncm2";
+                  repo = "ncm2-racer";
+                  rev = "e3aec0836ea1ff1b820e937f9c6463eb015fa784";
+                  sha256 = "03vd252qm6b3isd45jz7wah3p9sm73pf4gxngwsfb1hc1hn7c1cf";
+                };
+              })
+
               fzf-vim
               vim-gutentags
 
@@ -474,6 +489,7 @@ in
               ncm2-path
               ncm2-ultisnips
               ncm2-bufword
+              ncm2-jedi
 
               vim-snippets
               vim-unimpaired

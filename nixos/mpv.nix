@@ -384,7 +384,7 @@ in
           show_title=yes
           strip_directory=yes
           strip_extension=yes
-          # text_size=20
+          text_size=15
 
           background_color=333333
           background_opacity=33
@@ -611,7 +611,7 @@ in
           # sub-text-margin-y=40
           ## sub-text-margin-x=160
 
-          sub-font-size=45
+          sub-font-size=42
           sub-color="#ffffffff"
           sub-border-color="#000000"
           sub-border-size=3.0

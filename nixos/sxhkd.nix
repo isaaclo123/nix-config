@@ -58,7 +58,7 @@ let input-toggle-create = device: script-name: icon: (pkgs.writeShellScriptBin s
 
         enable_device () {
           sudo rfkill unblock $BT &&
-          sudo rfkill unblock $(rfkill list | grep hci0 | cut -d: -f1) &&
+          sleep 1 && sudo rfkill unblock $(rfkill list | grep hci0 | cut -d: -f1) &&
           [ "$NOTIFY_VAL" == "on" ] && ${pkgs.libnotify}/bin/notify-send -i "${icon.path}/categories/preferences-bluetooth.svg" "Bluetooth Enabled"
         }
 
@@ -155,17 +155,23 @@ let input-toggle-create = device: script-name: icon: (pkgs.writeShellScriptBin s
       super + Insert
         mpc next
 
+      # media control special buttons
+
       XF86AudioPrev
-        mpc prev
+        mpv-scratchpad-ctl previous
+      # mpc prev
 
       XF86AudioNext
-        mpc next
+        mpv-scratchpad-ctl next
+      # mpc next
 
       XF86AudioPlay
-        mpc play
+        mpv-scratchpad-ctl play
+      # mpc play
 
       XF86AudioPause
-        mpc pause
+        mpv-scratchpad-ctl pause
+      # mpc pause
 
       super + Print
         screenshot

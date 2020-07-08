@@ -4,6 +4,7 @@ let
   username = (import ./settings.nix).username;
   homedir = (import ./settings.nix).homedir;
   font = (import ./settings.nix).font;
+  rofi = (import ./settings.nix).rofi;
 in
 
 # Qutebrowser config.py
@@ -160,12 +161,12 @@ in
 
             # Dark mode Settings
             c.colors.webpage.bg = base07
-            c.colors.webpage.darkmode.enabled = True
-            c.colors.webpage.darkmode.policy.images = 'smart'
-            c.colors.webpage.darkmode.policy.page = 'smart'
-            c.colors.webpage.darkmode.threshold.text = 150
-            c.colors.webpage.darkmode.threshold.background = 205
-            c.colors.webpage.prefers_color_scheme_dark = True
+            # c.colors.webpage.darkmode.enabled = True
+            # c.colors.webpage.darkmode.policy.images = 'smart'
+            # c.colors.webpage.darkmode.policy.page = 'smart'
+            # c.colors.webpage.darkmode.threshold.text = 150
+            # c.colors.webpage.darkmode.threshold.background = 205
+            # c.colors.webpage.prefers_color_scheme_dark = True
 
             # Adblock lists.
             # Type: List
@@ -296,7 +297,7 @@ in
             config.bind(',', 'spawn mpv-window-open {url}')
 
             # pass settings
-            c.aliases["qute-pass"] = "spawn --userscript ${pkgs.qutebrowser}/share/qutebrowser/userscripts/qute-pass" # pylint: disable=line-too-long
+            c.aliases["qute-pass"] = "spawn --userscript ${pkgs.qutebrowser}/share/qutebrowser/userscripts/qute-pass -d 'rofi ${rofi.args}'"
             config.bind('<z><l>', 'qute-pass')
             config.bind('<z><u><l>', 'qute-pass --username-only')
             config.bind('<z><p><l>', 'qute-pass --password-only')
@@ -319,7 +320,7 @@ in
             c.fonts.messages.warning = "${toString font.size}.0pt ${font.mono}"
             c.fonts.prompts = "${toString font.size}.0pt ${font.mono}"
             c.fonts.statusbar = "${toString font.size}.0pt ${font.mono}"
-            c.fonts.tabs = "${toString font.size}.0pt ${font.mono}"
+            # c.fonts.tabs = "${toString font.size}.0pt ${font.mono}"
           '';
         };
   };

@@ -32,7 +32,7 @@ in
         mouse_support = "yes"
         cyclic_scrolling = "yes"
         mouse_list_scroll_whole_page = "no"
-        lines_scrolled = 1
+        # lines_scrolled = 1
         song_library_format = "{%n > }{%t}|{%f}"
         progressbar_look = "▄▄ "
         selected_item_prefix = " √ "

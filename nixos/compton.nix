@@ -45,7 +45,7 @@ in
           opacityRule = [
             # "${toString opacity.inactive-int}:class_g = 'termite'"
             # "${toString opacity.inactive-int}:class_g = 'Rofi'"
-            "${toString opacity.inactive-int}:class_g = 'Zathura'"
+            # "${toString opacity.inactive-int}:class_g = 'Zathura'"
           ];
 
           blur = false;

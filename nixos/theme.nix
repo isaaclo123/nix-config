@@ -74,21 +74,21 @@ let nerdfonts-derivation =
       };
 
       theme = {
-        name = "oomox-gtk-gruvbox";
+        name = "gruvbox-gtk";
         package =
           (stdenv.mkDerivation rec {
             name = "oomox-gtk-gruvbox";
             src = pkgs.fetchFromGitHub {
-              owner = "leomarchand51";
-              repo = "oomox-gtk-gruvbox";
-              rev = "5906fd0460dc744a58d09b0969a2a4c88f1bfa96";
-              sha256 = "0l8ykyj6lwyz9478v2p4pw827x58zb513nd38574x56f89nd61zs";
+              owner = "3ximus";
+              repo = "gruvbox-gtk";
+              rev = "fda45c127bd5ed3cdd2dfcc6c396e7aef99abd8e";
+              sha256 = "1vlgsp7hgf96bzlj54rimmimzhpchh3z3a4fll71wxghr3gpv27d";
             };
 
             dontBuild = true;
             installPhase = ''
-              mkdir -p $out/share/themes/oomox-gtk-gruvbox/
-              cp -r dark-variant/. $out/share/themes/oomox-gtk-gruvbox/
+              mkdir -p $out/share/themes/gruvbox-gtk/
+              cp -r . $out/share/themes/gruvbox-gtk/
             '';
           });
       };

@@ -163,6 +163,8 @@
       home-manager
 
       # monitoring
+      pulsemixer
+      pavucontrol
       htop
       s-tui
 
@@ -178,7 +180,6 @@
       # setting
       acpi
       arandr
-      pavucontrol
       redshift
       xbrightness
       brightnessctl
@@ -270,8 +271,11 @@
       xorg.xdpyinfo
 
       # aws
-      aws
-      awscli
+      # unstable.aws
+      # unstable.awscli
+
+      # docker
+      docker-compose
 
       # bluetooth
       bluez-alsa
@@ -285,5 +289,19 @@
       pciutils
 
       ncdu
+
+      unstable.libsass
+
+      # (unstable.steam.override {
+      #   extraPkgs = pkgs: [
+      #     (pkgs.mesa.override {
+      #       galliumDrivers = [ "nouveau" "virgl" "swrast" "iris" ];
+      #     }).driver
+      #   ];
+      # }).run
+
+      # aws-sam-cli
+      # unstable.awscli
+      awscli
     ];
 }

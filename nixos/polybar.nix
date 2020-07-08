@@ -160,7 +160,7 @@ in
 
               modules-left = "bspwm sep my_mpd_bar_i my_mpd_bar sep";
               modules-center = "my_title";
-              modules-right = "my_pulseaudio_i my_pulseaudio sep my_network_i my_network sep my_battery_i my_battery sep my_date_i my_date";
+              modules-right = "my_pulseaudio_i my_pulseaudio sep my_network_i my_network sep my_battery_i my_battery sep my_date_day_i my_date_day sep my_date_i my_date";
               #  separator network_i network separator date_i date
 
               # Opacity value between 0.0 and 1.0 used on fade in/out
@@ -400,10 +400,26 @@ in
               animation-charging-framerate = 750;
             };
 
+            "module/my_date_day" = {
+              "inherit" = "module/date";
+
+              time = "%a, %b %d";
+              # time-alt = "%Y-%m-%d%";
+              time-alt = "";
+            };
+
+            "module/my_date_day_i" = {
+              "inherit" = "module/date_i";
+
+              format-foreground = "#${icon-fg}";
+
+              time = "";
+            };
+
             "module/my_date" = {
               "inherit" = "module/date";
 
-              time = "%Y-%m-%d %H:%M";
+              time = "%H:%M";
               # time-alt = "%Y-%m-%d%";
               time-alt = "";
             };
@@ -412,6 +428,8 @@ in
               "inherit" = "module/date_i";
 
               format-foreground = "#${icon-fg}";
+              format-background = "#${color.orange}";
+
               time = "";
               # time-alt = "";
               time-alt = "";
