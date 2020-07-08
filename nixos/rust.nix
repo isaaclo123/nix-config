@@ -27,6 +27,7 @@ with nixpkgs;
 
   environment.systemPackages = with nixpkgs; [
     rust
+    pkgs.rustracer
     latest.rustChannels.nightly.cargo
     latest.rustChannels.nightly.rustc
   ];

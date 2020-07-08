@@ -271,6 +271,7 @@ in
         \   'javascript': ['prettier', 'eslint'],
         \   'typescript': ['prettier', 'eslint'],
         \   'vue': ['prettier', 'eslint'],
+        \   'rust': ['rustfmt'],
         \}
 
         let g:ale_linter_aliases = {
@@ -278,6 +279,8 @@ in
         \   'typescript': ['typescript', 'javascript'],
         \   'pandoc': ['markdown', 'pandoc'],
         \}
+
+        let g:ale_rust_cargo_use_check=1
 
         let g:ale_linters = {
         \   'vue': ['eslint'],
@@ -288,7 +291,8 @@ in
         \   'pandoc': ['mdl'],
         \   'python': ['flake8'],
         \   'cpp': ['cpplint', 'gcc'],
-        \   'java': ['javac']
+        \   'java': ['javac'],
+        \   'rust': ['cargo', 'rls']
         \}
 
         " nerdTree settings
