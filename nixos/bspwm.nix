@@ -107,9 +107,9 @@ let autostarted-status = "/tmp/autostarted-status.lock"; in
         # window autostart
         qutebrowser &
         termite --class=termite_ &
-        termite --class=vim_ -e "zsh -c vim" &
-        termite --class=ranger_ -e "zsh -c ranger" &
-        termite --class=neomutt_ -e "zsh -c neomutt" &
+        termite --class=vim_ -e "zsh -ci vim" &
+        termite --class=ranger_ -e "zsh -ci ranger" &
+        termite --class=neomutt_ -e "zsh -ci neomutt" &
         termite --class=ncmpcpp_ -e ncmpcpp &
         (sleep 20 && termite --class=weechat_ -e weechat) &
 

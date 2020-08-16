@@ -275,7 +275,7 @@ in
         (mpv-window-open)
         unstable.gallery-dl
         mpvc
-        # ffmpeg
+        ffmpeg
 
         nodePackages.peerflix
       ];
@@ -338,16 +338,16 @@ in
           cache_directory=${mpv-thumbs-cache}
           autogenerate=yes
           autogenerate_max_duration=3600
-          prefer_mpv=yes
-          mpv_no_sub=no
+          prefer_mpv=no
+          mpv_no_sub=yes
           disable_keybinds=no
           thumbnail_width=200
           thumbnail_height=200
-          thumbnail_count=120
+          thumbnail_count=150
           min_delta=5
           max_delta=90
           thumbnail_network=yes
-          remote_thumbnail_count=50
+          remote_thumbnail_count=60
           remote_min_delta=15
           remote_max_delta=120
           remote_direct_stream=yes

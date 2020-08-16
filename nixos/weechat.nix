@@ -31,8 +31,8 @@ let nixos-weechat = (with import <nixpkgs> {};
 
         vimode = attrs: {
           src = pkgs.fetchurl {
-            url = "https://raw.githubusercontent.com/GermainZ/weechat-vimode/f31f445368be36bd5bdd856076a39fc9df5b7d39/vimode.py";
-            sha256 = "0hpamwza1kwscxa05jh45haf2cnwf5hx8jcnyw64dnxiqph9l5y4";
+            url = "https://raw.githubusercontent.com/GermainZ/weechat-vimode/0acb869b481313361cee86d375c60688b85e55a0/vimode.py";
+            sha256 = "04dg4dccpfalqnwc6s5qnp2bxn0j2pxak42rcqqm4qz10qid58vp";
           };
         };
 

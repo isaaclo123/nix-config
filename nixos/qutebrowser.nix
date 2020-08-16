@@ -16,7 +16,7 @@ in
   environment.systemPackages =
     let qutebrowser-derivation =
       (with import <nixpkgs> {};
-        stdenv.lib.overrideDerivation pkgs.unstable.qutebrowser (oldAttrs : {
+        stdenv.lib.overrideDerivation pkgs.qutebrowser (oldAttrs : {
           patches = oldAttrs.patches ++ [
             (pkgs.fetchurl {
               # https://gist.githubusercontent.com/isaaclo123/c73221c39dbfc0bacd72dd5d5a692973/raw/8e40d724a8cafe350a26d79a2e686c3074537b02/qutebrowser-qwerty-tab.patch
@@ -195,7 +195,8 @@ in
               "DEFAULT": "https://duckduckgo.com/?q={}",
               "y": "https://www.youtube.com/results?search_query={}",
               "w": "https://en.wikipedia.org/w/index.php?search={}&title=Special:Search",
-              "g": "https://www.google.com/search?q={}"
+              "g": "https://www.google.com/search?q={}",
+              "r": "https://doc.rust-lang.org/std/index.html?search={}"
             })
 
             ## User agent
@@ -297,7 +298,7 @@ in
             config.bind(',', 'spawn mpv-window-open {url}')
 
             # pass settings
-            c.aliases["qute-pass"] = "spawn --userscript ${pkgs.qutebrowser}/share/qutebrowser/userscripts/qute-pass -d 'rofi ${rofi.args}'"
+            c.aliases["qute-pass"] = "spawn --userscript ${pkgs.qutebrowser}/share/qutebrowser/userscripts/qute-pass -d 'rofi ${rofi.args} -dmenu'"
             config.bind('<z><l>', 'qute-pass')
             config.bind('<z><u><l>', 'qute-pass --username-only')
             config.bind('<z><p><l>', 'qute-pass --password-only')

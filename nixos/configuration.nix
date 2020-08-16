@@ -164,7 +164,7 @@ in
   # };
 
   # Set your time zone.
-  time.timeZone = "America/Los_Angeles";
+  time.timeZone = "America/Chicago";
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -262,8 +262,8 @@ in
   location = {
     # provider = "geoclue2";
     provider = "manual";
-    latitude = 37.0;
-    longitude = -119.0;
+    latitude = 44.9;
+    longitude = -93.3;
   };
 
   # services.localtime.enable = true;

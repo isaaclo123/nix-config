@@ -292,8 +292,10 @@ in
         \   'python': ['flake8'],
         \   'cpp': ['cpplint', 'gcc'],
         \   'java': ['javac'],
-        \   'rust': ['cargo', 'rls']
+        \   'rust': ['rls', 'cargo']
         \}
+
+        map <silent> <Leader>d :ALEDetail<CR>
 
         " nerdTree settings
         map <silent> <Leader>n :NERDTreeToggle<CR>
@@ -494,6 +496,8 @@ in
               ncm2-ultisnips
               ncm2-bufword
               ncm2-jedi
+
+              rust-vim
 
               vim-snippets
               vim-unimpaired
