@@ -38,7 +38,18 @@ in
       };
     };
 
-    xdg.configFile = {
+    xdg.configFile =
+      let
+        jmatrix-toggle-indicate = (pkgs.writeShellScript "jmatrix-toggle-indicate.sh" ''
+          FILE=/tmp/jmatrix-off.tmp
+          if test -f "$FILE"; then
+            rm $FILE
+          else
+            touch $FILE
+          fi
+        '');
+      in
+      {
       "qutebrowser/jmatrix-rules".text =
         let rules-txt =
           (builtins.readFile (pkgs.fetchurl {
@@ -150,7 +161,7 @@ in
             config.source("${jmatrix}/jmatrix/integrations/qutebrowser.py")
 
             # toggle jmatrix
-            config.bind('tm', 'jmatrix-toggle')
+            config.bind('tm', 'jmatrix-toggle ;; spawn --userscript ${jmatrix-toggle-indicate}')
 
             sys.path.append("${jblock}")
             config.source("${jblock}/jblock/integrations/qutebrowser.py")

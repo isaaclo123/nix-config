@@ -42,8 +42,8 @@ in
     xdg.configFile = {
       "zathura/zathurarc".text = ''
         set recolor-darkcolor "#${color.alt.white}"
-        set recolor-lightcolor "${opacity.background-transparent}"
-        set default-bg "${opacity.background-transparent}"
+        set recolor-lightcolor ${opacity.background-transparent}
+        set default-bg ${opacity.background-transparent}
         set recolor true
 
         # colors

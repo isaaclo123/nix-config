@@ -38,4 +38,10 @@ let username = (import ./settings.nix).username; in
       };
     };
   };
+
+  # programs.gnupg.agent = {
+  #   enable = true;
+  #   enableSSHSupport = true;
+  #   pinentryFlavor = "gtk2";
+  # };
 }

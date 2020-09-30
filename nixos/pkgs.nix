@@ -120,6 +120,7 @@
 
             "/home/isaac/.password-store"
             "/home/isaac/.gnupg"
+            "/home/isaac/.ssh"
             "/home/isaac/buku"
             "/home/isaac/DCIM"
             "/home/isaac/Documents"
@@ -232,7 +233,7 @@
       gdb
       gcc6
       # node
-      nodejs
+      nodejs-12_x
       nodePackages.node2nix
       jetbrains.jdk
 
@@ -282,7 +283,7 @@
       # blueman
 
       # audacity
-      audacity
+      unstable.audacity
 
       # system
       # busybox
@@ -290,6 +291,7 @@
 
       ncdu
 
+      unstable.sass
       unstable.libsass
 
       # (unstable.steam.override {
@@ -303,5 +305,7 @@
       # aws-sam-cli
       # unstable.awscli
       awscli
+
+      qjackctl
     ];
 }

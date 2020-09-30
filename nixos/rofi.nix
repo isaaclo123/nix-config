@@ -14,7 +14,7 @@ let
   rofi-themes = (pkgs.fetchFromGitHub {
     owner = "adi1090x";
     repo = "rofi";
-    rev = "bcddd3d9134ffd3b0493feea448bb1451af7ff44";
+    rev = "4ae073f2e5358a3dd3adc6b802f9b1f5419de5dc";
     sha256 = "1z5l4l084mhj9x5av8wh6zcsq7j1i41pylmsiacn262kkq5y0wxq";
   });
 
@@ -57,11 +57,12 @@ in
       (clipmenu-ext)
       (clipmenu-del)
 
-      (unstable.rofi.override {
-        plugins = with pkgs; [
-          icon.pkg
-        ];
-      })
+      pkgs.rofi
+      # (pkgs.rofi.override {
+      #   plugins = with pkgs; [
+      #     icon.pkg
+      #   ];
+      # })
     ];
 
   home-manager.users."${username}" = {

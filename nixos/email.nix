@@ -122,9 +122,9 @@ let create-account = {
         postExec =
           "(${pkgs.notmuch}/bin/notmuch --config=${notmuch-config} new " +
           "&& ${pkgs.afew}/bin/afew -t -n --notmuch-config=${notmuch-config})";
+          # "&& ${config.system.path}/bin/systemctl restart --user \"imapnotify-*.service\"";
       };
     };
-    # "${config.system.path}/bin/systemctl restart --user \"imapnotify-*.service\"";
 
     programs = {
       afew = {

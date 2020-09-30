@@ -6,7 +6,8 @@ let rofi = (import ./settings.nix).rofi; in
 {
   environment.systemPackages = with pkgs; [
     unstable.rofi-pass
-    diceware
+    pwgen
+    # diceware
   ];
 
   home-manager.users."${username}" = {
@@ -23,7 +24,8 @@ let rofi = (import ./settings.nix).rofi; in
 
         # default command to generate passwords
         _pwgen () {
-          diceware -d '-' -n "$@"
+          # diceware -s 1 -n "$@"
+          pwgen -y "$@"
         }
 
         # image viewer to display qrcode of selected entry
@@ -92,7 +94,7 @@ let rofi = (import ./settings.nix).rofi; in
         # default_user is also used for password files that have no user field.
         default_user=loxxx298
         default_user2=isaaclo123@gmail.com
-        password_length=6
+        password_length=10
 
         # Custom Keybindings
         autotype="Alt+1"

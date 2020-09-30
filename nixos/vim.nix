@@ -533,6 +533,8 @@ in
 
         mdl
 
+        unstable.travis
+
         nodePackages.prettier
         nodePackages.javascript-typescript-langserver
         # nodePackages.eslint

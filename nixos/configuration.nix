@@ -124,6 +124,8 @@ in
     daemon = {
       config = {
         realtime-scheduling = "yes";
+        default-fragments = 3;
+        default-fragment-size-msec = 5;
       };
     };
     support32Bit = true;
@@ -137,9 +139,24 @@ in
         load-module module-udev-detect tsched=0
       .else
 
+      # tsched=0
       #load-module module-suspend-on-idle timeout=30
     '';
   };
+
+  # services.jack = {
+  #   jackd.enable = true;
+  #   # support ALSA only programs via ALSA JACK PCM plugin
+  #   alsa.enable = false;
+  #   # support ALSA only programs via loopback device (supports programs like Steam)
+  #   loopback = {
+  #     enable = true;
+  #     # buffering parameters for dmix device to work with ALSA only semi-professional sound programs
+  #     #dmixConfig = ''
+  #     #  period_size 2048
+  #     #'';
+  #   };
+  # };
 
   security.rtkit.enable = true;
 
@@ -303,7 +320,7 @@ in
 
   users.users."${username}" = {
     createHome = true;
-    extraGroups = [ "wireshark" "docker" "uucp" "adbusers" "wheel" "video" "audio" "disk" "networkmanager" "sudo" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "wireshark" "docker" "uucp" "adbusers" "wheel" "video" "audio" "disk" "networkmanager" "sudo" ];
     group = "users";
     home = "${homedir}";
     isNormalUser = true;

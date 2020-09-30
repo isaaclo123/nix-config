@@ -293,6 +293,8 @@ let username = (import ./settings.nix).username; in
         set use_preview_script true
         set preview_script ${ranger-scope-sh}/bin/scope.sh
         set preview_images_method ueberzug
+
+        map gm cd /run/media
       '';
     };
   };
