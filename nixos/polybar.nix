@@ -440,6 +440,7 @@ in
               format-padding = 1;
               exec = "echo ";
               exec-if = "test ! -f /tmp/jmatrix-off.tmp";
+              interval = 2;
             };
 
             "module/jblock_off_i" = {
@@ -449,6 +450,7 @@ in
               format-padding = 1;
               exec = "echo ";
               exec-if = "test -f /tmp/jmatrix-off.tmp";
+              interval = 2;
             };
 
             "module/jblock" = {
@@ -456,7 +458,8 @@ in
               format-foreground = "#${color.fg}";
               format-background = "#${bg}";
               format-padding = 1;
-              exec = "test -f /tmp/jmatrix-off.tmp && echo 'JMatrix OFF' || echo 'JMatrix ON'";
+              exec = "test -f /tmp/jmatrix-off.tmp && echo 'Off' || echo 'On'";
+              interval = 2;
               # type = "custom/text";
               # content-foreground = "#${color.fg}";
               # content-background = "#${bg}";

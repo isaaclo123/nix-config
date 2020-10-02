@@ -38,18 +38,7 @@ in
       };
     };
 
-    xdg.configFile =
-      let
-        jmatrix-toggle-indicate = (pkgs.writeShellScript "jmatrix-toggle-indicate.sh" ''
-          FILE=/tmp/jmatrix-off.tmp
-          if test -f "$FILE"; then
-            rm $FILE
-          else
-            touch $FILE
-          fi
-        '');
-      in
-      {
+    xdg.configFile = {
       "qutebrowser/jmatrix-rules".text =
         let rules-txt =
           (builtins.readFile (pkgs.fetchurl {
@@ -60,7 +49,6 @@ in
       ''
         matrix-off: umn.edu true
         matrix-off: discord.com true
-        matrix-off: countryfinancial.com true
 
         ${rules-txt}
 
@@ -142,6 +130,31 @@ in
             sha256 = "1iry9qp2nrf42ckf8zwq4g5a58b9yjam5y7hssrmyvl27wm3qldd";
           };
 
+          jmatrix-integration-py = (pkgs.writeText "qutebrowser.py" ''
+            import os
+            from pathlib import Path
+
+            ${builtins.readFile "${jmatrix}/jmatrix/integrations/qutebrowser.py"}
+
+            JMATRIX_TMPFILE = "/tmp/jmatrix-off.tmp"
+
+            @cmdutils.register()
+            def jmatrix_toggle_tmpfile(quiet=False):
+                global JMATRIX_ENABLED
+
+                JMATRIX_ENABLED = not JMATRIX_ENABLED
+
+                if JMATRIX_ENABLED:
+                  if os.path.exists(JMATRIX_TMPFILE):
+                    os.remove(JMATRIX_TMPFILE)
+                else:
+                  Path(JMATRIX_TMPFILE).touch()
+
+                enabled_str = "enabled" if JMATRIX_ENABLED else "disabled"
+                if not quiet:
+                    message.info("jmatrix has been " + enabled_str)
+          '');
+
           user-content-css = pkgs.fetchurl {
             url = "https://www.floppymoose.com/userContent.css";
             sha256 = "0bmlm6aslvgczzwpy1ijbi6h6f0n1qva4453ls5gv7x40c3qg8mq";
@@ -158,10 +171,11 @@ in
             # config.load_autoconfig()
 
             sys.path.append("${jmatrix}")
-            config.source("${jmatrix}/jmatrix/integrations/qutebrowser.py")
+            # config.source("${jmatrix}/jmatrix/integrations/qutebrowser.py")
+            config.source("${jmatrix-integration-py}")
 
             # toggle jmatrix
-            config.bind('tm', 'jmatrix-toggle ;; spawn --userscript ${jmatrix-toggle-indicate}')
+            config.bind('tm', 'jmatrix-toggle-tmpfile')
 
             sys.path.append("${jblock}")
             config.source("${jblock}/jblock/integrations/qutebrowser.py")
