@@ -138,6 +138,8 @@ in
 
             JMATRIX_TMPFILE = "/tmp/jmatrix-off.tmp"
 
+            JMATRIX_ENABLED = not os.path.exists(JMATRIX_TMPFILE)
+
             @cmdutils.register()
             def jmatrix_toggle_tmpfile(quiet=False):
                 global JMATRIX_ENABLED
