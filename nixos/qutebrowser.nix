@@ -52,6 +52,9 @@ in
 
         ${rules-txt}
 
+        hackerrank.com hrcdn.net script allow
+        trello.com a.trellocdn.com script allow
+
         xda-developers.com xda-cdn.com script allow
 
         # Discord

@@ -52,7 +52,7 @@ let create-account = folder: email: signature: (pkgs.writeText folder ''
 
           Isaac Lo
 
-          Intern Software Developer, COUNTRY Financial
+          Software Developer, Cognizant
           1(650)-503-1253
         ''); in
 

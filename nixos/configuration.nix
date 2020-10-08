@@ -121,11 +121,19 @@ in
     package = pkgs.pulseaudioFull;
     extraModules = [ pkgs.pulseaudio-modules-bt ];
 
+  configFile = pkgs.runCommand "default.pa" {} ''
+    sed 's/load-module module-suspend-on-idle$/#load-module module-suspend-on-idle/' \
+      ${pkgs.pulseaudio}/etc/pulse/default.pa > $out
+  '';
+
+
     daemon = {
       config = {
         realtime-scheduling = "yes";
         default-fragments = 3;
         default-fragment-size-msec = 5;
+        avoid-resampling = "yes";
+        default-sample-rate = 48000;
       };
     };
     support32Bit = true;
@@ -139,8 +147,11 @@ in
         load-module module-udev-detect tsched=0
       .else
 
-      # tsched=0
-      #load-module module-suspend-on-idle timeout=30
+      load-module module-null-sink sink_name=rtp
+      load-module module-rtp-send source=rtp.monitor
+
+      set-default-sink rtp
+      load-module module-rtp-recv
     '';
   };
 
