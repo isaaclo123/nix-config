@@ -23,7 +23,7 @@
         song=$(find ~/Music -iname "*.mp3" -o -iname "*.wav" -o -iname "*.m4a" -o -iname "*.ogg" | shuf | head -n1)
         date="$@"
         echo Okay! Will ring you on $(date --date="$date").
-        sleep $(( $(date --date="$date" +%s) - $(date +%s) ));
+        sleep `expr $(date --date="$date" +%s) - $(date +%s)`
         echo Wake up!
         mpv --no-video --no-config --loop=inf "$song"
       '');

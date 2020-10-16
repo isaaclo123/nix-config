@@ -19,11 +19,11 @@ let autostarted-status = "/tmp/autostarted-status.lock"; in
 
     let reload-desktop = (pkgs.writeShellScriptBin "reload-desktop" ''
       pkill -USR1 -x sxhkd
-      # pkill -USR1 -x compton
+      bspc wm -r
+
       systemctl --user restart polybar
       systemctl --user restart compton
       systemctl --user restart dunst
-      bspc wm -r
 
       betterlockscreen -u ${theme.wallpaper} &
       bat cache --build &
@@ -48,15 +48,34 @@ let autostarted-status = "/tmp/autostarted-status.lock"; in
     text = ''
       #!/usr/bin/env bash
 
+      LAPTOP_MONITOR='eDP-1'
+      LAPTOP_MONITOR_RESOLUTION=1920x1080
+
+      EXTERNAL_MONITOR=$(xrandr --query | grep ' connected' | grep -v $LAPTOP_MONITOR | head -n1 | cut -d ' ' -f1)
+
+      if [[ -z "$EXTERNAL_MONITOR" ]]; then
+        # if not external monitor
+        bspc monitor -d 1 2 3 4 5 6 7 8 9 0
+      else
+        # if there is external monitor
+        EXTERNAL_MONITOR_RESOLUTION=$(xrandr --query | awk -v a=$LAPTOP_MONITOR '/ connected/{if ($1 == a) next; else getline; print $1; exit;}')
+
+        xrandr --output $LAPTOP_MONITOR --primary --mode $LAPTOP_MONITOR_RESOLUTION --rotate normal --output $EXTERNAL_MONITOR --mode $EXTERNAL_MONITOR_RESOLUTION --rotate normal --right-of $LAPTOP_MONITOR
+
+        bspc monitor $LAPTOP_MONITOR -d 1 2 3 4 5 6 7
+        bspc monitor $EXTERNAL_MONITOR -d 8 9 0
+      fi
+
       # spread desktops
-      desktops=10
-      count=$(xrandr -q | grep ' connected' | wc -l)
-      i=1
-      for m in $(xrandr -q | grep ' connected' | awk '{print $1}'); do
-        sequence=$(seq $(((1+($i-1)*$desktops/$count))) $(($i*$desktops/$count)))
-        bspc monitor $m -d $(echo ''${sequence} | sed 's/10/0/')
-        i=$(($i+1))
-      done
+      # desktops=10
+      # count=$(xrandr -q | grep ' connected' | wc -l)
+      # i=1
+      # for m in $(xrandr -q | grep ' connected' | awk '{print $1}'); do
+      #   sequence=$(seq $(((1+($i-1)*$desktops/$count))) $(($i*$desktops/$count)))
+      #   bspc monitor $m -d $(echo ''${sequence} | sed 's/10/0/')
+      #   i=$(($i+1))
+      # done
+
       # bspc monitor -d 1 2 3 4 5 6 7 8 9 10
 
       bspc config border_width ${toString spacing.border}

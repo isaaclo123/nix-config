@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 
 let
   username = (import ./settings.nix).username;
@@ -42,9 +42,11 @@ in
         };
 
         script = ''
-          #!/usr/bin/env sh
-          systemctl --user daemon-reload
-          polybar main &
+          #!/usr/bin/env bash
+
+          for m in $(polybar --list-monitors | ${config.system.path}/bin/cut -d ":" -f1); do
+            MONITOR=$m polybar --reload main &
+          done
         '';
 
         config =
@@ -117,6 +119,7 @@ in
 
             "bar/main" = {
               wm-restack = "bspwm";
+              monitor = "\${env:MONITOR:}";
               monitor-fallback = "";
               monitor-strict = false;
               override-redirect = false;
