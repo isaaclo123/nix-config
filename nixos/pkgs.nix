@@ -307,5 +307,7 @@
       awscli
 
       qjackctl
+
+      usbutils
     ];
 }
