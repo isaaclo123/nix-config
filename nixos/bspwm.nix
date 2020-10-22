@@ -18,7 +18,9 @@ let autostarted-status = "/tmp/autostarted-status.lock"; in
     ''); in
 
     let reload-desktop = (pkgs.writeShellScriptBin "reload-desktop" ''
-      pkill -USR1 -x sxhkd
+      # pkill -USR1 -x sxhkd
+      killall sxhkd
+      sxhkd -c /etc/sxhkdrc &
       bspc wm -r
 
       systemctl --user restart polybar
@@ -52,18 +54,20 @@ let autostarted-status = "/tmp/autostarted-status.lock"; in
       LAPTOP_MONITOR_RESOLUTION=1920x1080
 
       LAPTOP_MONITOR_WITH_EXT_RESOLUTION=1600x900
+      EXTERNAL_MONITOR_OFFSET=1600x0
 
       EXTERNAL_MONITOR=$(xrandr --query | grep ' connected' | grep -v $LAPTOP_MONITOR | head -n1 | cut -d ' ' -f1)
 
       if [[ -z "$EXTERNAL_MONITOR" ]]; then
         # if not external monitor
-        xrandr --output $LAPTOP_MONITOR --primary --auto
-        bspc monitor -d 1 2 3 4 5 6 7 8 9 0
+        xrandr --output $LAPTOP_MONITOR --primary --mode $LAPTOP_MONITOR_RESOLUTION --auto --pos 0x0 --rotate normal --output DP-1 --off --output HDMI-1 --off --output DP-2 --off --output HDMI-2 --off
+        bspc monitor $LAPTOP_MONITOR -d 1 2 3 4 5 6 7 8 9 0
       else
         # if there is external monitor
         EXTERNAL_MONITOR_RESOLUTION=$(xrandr --query | awk -v a=$LAPTOP_MONITOR '/ connected/{if ($1 == a) next; else getline; print $1; exit;}')
 
-        xrandr --output $LAPTOP_MONITOR --primary --mode $LAPTOP_MONITOR_WITH_EXT_RESOLUTION --rotate normal --output $EXTERNAL_MONITOR --mode $EXTERNAL_MONITOR_RESOLUTION --rotate normal --right-of $LAPTOP_MONITOR
+        xrandr --output eDP-1 --off --output DP-1 --off --output HDMI-1 --off --output DP-2 --off --output HDMI-2 --off
+        xrandr --output $LAPTOP_MONITOR --primary --mode $LAPTOP_MONITOR_WITH_EXT_RESOLUTION --pos 0x0 --rotate normal --output $EXTERNAL_MONITOR --mode $EXTERNAL_MONITOR_RESOLUTION --pos $EXTERNAL_MONITOR_OFFSET --rotate normal --right-of $LAPTOP_MONITOR
 
         bspc monitor $LAPTOP_MONITOR -d 1 2 3 4 5 6 7
         bspc monitor $EXTERNAL_MONITOR -d 8 9 0

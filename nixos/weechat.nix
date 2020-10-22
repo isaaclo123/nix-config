@@ -74,7 +74,7 @@ let nixos-weechat = (with import <nixpkgs> {};
       }; in
 
       with pkgs; [
-        (unstable.weechat.override {
+        (weechat.override {
           configure = { availablePlugins, ... }: {
             plugins = builtins.attrValues availablePlugins;
 

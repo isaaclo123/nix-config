@@ -130,6 +130,8 @@
             "/home/isaac/Videos"
         )
 
+        gpg --export-secret-keys > "$BACKUP_DIR_NAME/privatekey"
+
         mkdir "$BACKUP_DIR_NAME"
 
         # get length of an array

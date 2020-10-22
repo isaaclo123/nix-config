@@ -63,7 +63,7 @@ in
     inactive-hex = opacity-hex inactive-int;
     active-hex = opacity-hex active-int;
 
-    background-transparent = "rgba(29, 32, 33, ${builtins.toString (inactive)})";
+    background-transparent = "rgba(29,32,33,0.85)";
   };
 
   color = rec {

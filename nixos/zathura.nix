@@ -33,9 +33,10 @@ in
     #             })];
     #           })); in
     with pkgs; [
-      (unstable.zathura.override {
-        useMupdf = true;
-      })
+      # (unstable.zathura.override {
+      #   useMupdf = true;
+      # })
+      (unstable.zathura)
   ];
 
   home-manager.users."${username}" = {

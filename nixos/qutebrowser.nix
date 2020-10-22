@@ -16,7 +16,7 @@ in
   environment.systemPackages =
     let qutebrowser-derivation =
       (with import <nixpkgs> {};
-        stdenv.lib.overrideDerivation pkgs.qutebrowser (oldAttrs : {
+        stdenv.lib.overrideDerivation pkgs.unstable.qutebrowser (oldAttrs : {
           patches = oldAttrs.patches ++ [
             (pkgs.fetchurl {
               # https://gist.githubusercontent.com/isaaclo123/c73221c39dbfc0bacd72dd5d5a692973/raw/8e40d724a8cafe350a26d79a2e686c3074537b02/qutebrowser-qwerty-tab.patch
@@ -190,13 +190,13 @@ in
             config.set('content.host_blocking.enabled', False)
 
             # Dark mode Settings
-            c.colors.webpage.bg = base07
-            # c.colors.webpage.darkmode.enabled = True
-            # c.colors.webpage.darkmode.policy.images = 'smart'
-            # c.colors.webpage.darkmode.policy.page = 'smart'
-            # c.colors.webpage.darkmode.threshold.text = 150
-            # c.colors.webpage.darkmode.threshold.background = 205
-            # c.colors.webpage.prefers_color_scheme_dark = True
+            c.colors.webpage.bg = base00
+            c.colors.webpage.darkmode.enabled = True
+            c.colors.webpage.darkmode.policy.images = 'smart'
+            c.colors.webpage.darkmode.policy.page = 'smart'
+            c.colors.webpage.darkmode.threshold.text = 150
+            c.colors.webpage.darkmode.threshold.background = 205
+            c.colors.webpage.prefers_color_scheme_dark = True
 
             # Adblock lists.
             # Type: List
@@ -270,9 +270,9 @@ in
             config.set('content.javascript.can_open_tabs_automatically', True)
 
             # hiding tab bindings
-            config.bind('xx', 'config-cycle statusbar.hide ;; config-cycle tabs.show always switching')
+            config.bind('xx', 'config-cycle statusbar.show always never;; config-cycle tabs.show always switching')
             config.bind('xt', 'config-cycle tabs.show always switching')
-            config.bind('xb', 'config-cycle statusbar.hide')
+            config.bind('xb', 'config-cycle statusbar.show always never')
 
             # Bindings for normal mode
             config.unbind('d')

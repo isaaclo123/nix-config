@@ -11,12 +11,52 @@ let
   maildir = "${homedir}/.mail";
 in
 
+let
+  gmail-imap = {
+    host = "imap.gmail.com";
+    port = 993;
+    tls = {
+      enable = true;
+      # useStartTls = true;
+    };
+  };
+
+  gmail-smtp = {
+    host = "smtp.gmail.com";
+    port = 587;
+    tls = {
+      enable = true;
+      useStartTls = true;
+    };
+  };
+
+  # microsoft-imap = {
+  #   host = "outlook.office365.com";
+  #   port = 993;
+  #   tls = {
+  #     enable = true;
+  #     # useStartTls = true;
+  #   };
+  # };
+
+  # microsoft-smtp = {
+  #   host = "smtp.office365.com";
+  #   port = 587;
+  #   tls = {
+  #     enable = true;
+  #     useStartTls = true;
+  #   };
+  # };
+in
+
 let create-account = {
   realName,
   userName,
   accountName,
   passPath,
-  primary
+  primary,
+  imap,
+  smtp
 }: {
   primary = primary;
   realName = realName;
@@ -30,22 +70,8 @@ let create-account = {
     drafts = "Drafts";
   };
 
-  imap = {
-    host = "imap.gmail.com";
-    port = 993;
-    tls = {
-      enable = true;
-      # useStartTls = true;
-    };
-  };
-  smtp = {
-    host = "smtp.gmail.com";
-    port = 587;
-    tls = {
-      enable = true;
-      useStartTls = true;
-    };
-  };
+  imap = imap;
+  smtp = smtp;
 
   imapnotify = {
     enable = true;
@@ -101,6 +127,8 @@ let create-account = {
           accountName = "Personal";
           passPath = "google.com/isaaclo123@gmail.com";
           primary = true;
+          imap = gmail-imap;
+          smtp = gmail-smtp;
         };
 
         "School" = create-account {
@@ -109,6 +137,8 @@ let create-account = {
           accountName = "School";
           passPath = "umn.edu/loxxx298@umn.edu";
           primary = false;
+          imap = gmail-imap;
+          smtp = gmail-smtp;
         };
       };
     };
