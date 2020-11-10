@@ -112,8 +112,8 @@ in
   hardware.trackpoint = {
     enable = true;
     device = "ETPS/2 Elantech TrackPoint";
-    sensitivity = 255;
-    speed = 255;
+    sensitivity = 150;
+    speed = 150;
   };
 
   hardware.pulseaudio = {

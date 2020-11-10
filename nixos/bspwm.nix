@@ -50,6 +50,7 @@ let autostarted-status = "/tmp/autostarted-status.lock"; in
     text = ''
       #!/usr/bin/env bash
 
+      # CONFIG
       LAPTOP_MONITOR='eDP-1'
       LAPTOP_MONITOR_RESOLUTION=1920x1080
 
@@ -61,13 +62,18 @@ let autostarted-status = "/tmp/autostarted-status.lock"; in
       if [[ -z "$EXTERNAL_MONITOR" ]]; then
         # if not external monitor
         xrandr --output $LAPTOP_MONITOR --primary --mode $LAPTOP_MONITOR_RESOLUTION --auto --pos 0x0 --rotate normal --output DP-1 --off --output HDMI-1 --off --output DP-2 --off --output HDMI-2 --off
+
+        bspc desktop 8 -m $LAPTOP_MONITOR
+        bspc desktop 9 -m $LAPTOP_MONITOR
+        bspc desktop 0 -m $LAPTOP_MONITOR
+
         bspc monitor $LAPTOP_MONITOR -d 1 2 3 4 5 6 7 8 9 0
       else
         # if there is external monitor
         EXTERNAL_MONITOR_RESOLUTION=$(xrandr --query | awk -v a=$LAPTOP_MONITOR '/ connected/{if ($1 == a) next; else getline; print $1; exit;}')
 
-        xrandr --output eDP-1 --off --output DP-1 --off --output HDMI-1 --off --output DP-2 --off --output HDMI-2 --off
-        xrandr --output $LAPTOP_MONITOR --primary --mode $LAPTOP_MONITOR_WITH_EXT_RESOLUTION --pos 0x0 --rotate normal --output $EXTERNAL_MONITOR --mode $EXTERNAL_MONITOR_RESOLUTION --pos $EXTERNAL_MONITOR_OFFSET --rotate normal --right-of $LAPTOP_MONITOR
+        xrandr --output $LAPTOP_MONITOR --primary --mode $LAPTOP_MONITOR_WITH_EXT_RESOLUTION --pos 0x0 --rotate normal --output DP-1 --off --output HDMI-1 --off --output DP-2 --off --output HDMI-2 --off
+        xrandr --output $EXTERNAL_MONITOR --mode $EXTERNAL_MONITOR_RESOLUTION --pos $EXTERNAL_MONITOR_OFFSET --rotate normal --right-of $LAPTOP_MONITOR
 
         bspc monitor $LAPTOP_MONITOR -d 1 2 3 4 5 6 7
         bspc monitor $EXTERNAL_MONITOR -d 8 9 0
@@ -75,17 +81,10 @@ let autostarted-status = "/tmp/autostarted-status.lock"; in
 
       systemctl --user restart polybar.service
 
-      # spread desktops
-      # desktops=10
-      # count=$(xrandr -q | grep ' connected' | wc -l)
-      # i=1
-      # for m in $(xrandr -q | grep ' connected' | awk '{print $1}'); do
-      #   sequence=$(seq $(((1+($i-1)*$desktops/$count))) $(($i*$desktops/$count)))
-      #   bspc monitor $m -d $(echo ''${sequence} | sed 's/10/0/')
-      #   i=$(($i+1))
-      # done
-
-      # bspc monitor -d 1 2 3 4 5 6 7 8 9 10
+      # Config
+      bspc config remove_disabled_monitors true
+      bspc config remove_unplugged_monitors true
+      bspc config merge_overlapping_monitors true
 
       bspc config border_width ${toString spacing.border}
       bspc config window_gap ${toString spacing.padding}
@@ -121,7 +120,7 @@ let autostarted-status = "/tmp/autostarted-status.lock"; in
       bspc rule -a termiteopen sticky=on state=floating
 
       # always autostart
-      xinput set-prop "ETPS/2 Elantech TrackPoint" "libinput Accel Speed" 0.8
+      xinput set-prop "ETPS/2 Elantech TrackPoint" "libinput Accel Speed" 0.5
       xinput set-prop "ETPS/2 Elantech Touchpad" "libinput Accel Speed" 0.5
       feh --bg-scale "${theme.wallpaper}"
 
