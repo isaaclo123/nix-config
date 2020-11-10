@@ -108,41 +108,41 @@ let input-toggle-create = device: script-name: icon: (pkgs.writeShellScriptBin s
       #
 
       # volume controls
-      XF86AudioRaiseVolume
-        pactl set-sink-volume @DEFAULT_SINK@ '+5%'
-
-      XF86AudioLowerVolume
-        pactl set-sink-volume @DEFAULT_SINK@ '-5%'
-
-      XF86AudioMute
+      {XF86AudioMute, super + F1}
         pactl set-sink-mute @DEFAULT_SINK@ toggle
 
-      XF86AudioMicMute
+      {XF86AudioLowerVolume, super + F2}
+        pactl set-sink-volume @DEFAULT_SINK@ '-5%'
+
+      {XF86AudioRaiseVolume, super + F3}
+        pactl set-sink-volume @DEFAULT_SINK@ '+5%'
+
+      {XF86AudioMicMute, super + F4}
         pactl set-source-mute 1 toggle
 
-      XF86MonBrightnessUp
-        brightnessctl set +5%
-
-      XF86MonBrightnessDown
+      {XF86MonBrightnessDown, super + F5}
         brightnessctl set 5%-
 
+      {XF86MonBrightnessUp, super + F6}
+        brightnessctl set +5%
+
       # Toggle touchscreen
-      XF86Display
+      {XF86Display, super + F7}
         touchscreen-toggle
 
       # Toggle touchpad
-      XF86Tools
+      {XF86Tools, super + F9}
         touchpad-toggle
 
       # Toggle bluetooth
-      XF86Bluetooth
+      {XF86Bluetooth, super + F10}
         bluetooth-toggle
 
       # lock
       super + F11
         lock -l
 
-      XF86Favorites
+      {XF86Favorites, super + F12}
         sleep 0.5 && xset dpms force off
 
       # media controls
