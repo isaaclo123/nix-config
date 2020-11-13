@@ -203,6 +203,12 @@ in
             "${mpv-image-viewer}/scripts/ruler.lua"
             # "${mpv-image-viewer}/scripts/status-line.lua"
 
+            # sponsorblock
+            # (fetchurl {
+            #   url = "https://codeberg.org/jouni/mpv_sponsorblock_minimal/src/commit/5dc4e1be618d54e96532e1d723984933f13f5e17/sponsorblock_minimal.lua";
+            #   sha256 = "0hgf8pgn8wy4g80v2dkpw2vx5hihsrnfq2hv1b70bwd5p3091997";
+            # })
+
             # autosave
             # (fetchurl {
             #   url = "https://gist.githubusercontent.com/Hakkin/5489e511bd6c8068a0fc09304c9c5a82/raw/7a19f7cdb6dd0b1c6878b41e13b244e2503c15fc/autosave.lua";
@@ -321,9 +327,21 @@ in
           rev = "da97cc6142a7cd566414f007df8fb30a46115568";
           sha256 = "1fwlz37k93n046dx56d0iaka8bzbkap76xkw4anh2hlgnbx7rq2j";
         });
+
+        mpv-sponsorblock = (pkgs.fetchFromGitHub {
+          owner = "po5";
+          repo = "mpv_sponsorblock";
+          rev = "a4e933946b62371cbf102f815c646a1d1f326ee8";
+          sha256 = "15y64vhhvhld5hh0z1avgz8mysyylxynlimbv0jnw8kgdh7h31v4";
+        });
       in
 
       {
+        # mpv-sponsorblock
+        "mpv/scripts/sponsorblock.lua".source = "${mpv-sponsorblock}/sponsorblock.lua";
+        "mpv/scripts/sponsorblock_shared/main.lua".source = "${mpv-sponsorblock}/sponsorblock_shared/main.lua";
+        "mpv/scripts/sponsorblock_shared/sponsorblock.py".source = "${mpv-sponsorblock}/sponsorblock_shared/sponsorblock.py";
+
         # mpv-gallery-view
         "mpv/scripts/lib".source = "${mpv-gallery-view}/scripts/lib";
         "mpv/scripts/gallery-thumbgen.lua".source = "${mpv-gallery-view}/scripts/gallery-thumbgen.lua";
@@ -418,6 +436,12 @@ in
         '';
 
         "mpv/input.conf".text = ''
+          # mpv sponsorblock
+          alt+b script-binding sponsorblock/set_segment
+          shift+b script-binding sponsorblock/submit_segment
+          h script-binding sponsorblock/upvote_segment
+          shift+h script-binding sponsorblock/downvote_segment
+
           # mouse-centric bindings
           # MBTN_RIGHT script-binding drag-to-pan
           # MBTN_LEFT  script-binding pan-follows-cursor
@@ -452,12 +476,12 @@ in
           # align-border ALIGN_X ALIGN_Y
           # any value for ALIGN_* is accepted, -1 and 1 map to the border of the window
           ctrl+shift+l script-message align-border -1 ""
-          ctrl+shift+h  script-message align-border 1 ""
-          ctrl+shift+j  script-message align-border "" -1
-          ctrl+shift+k    script-message align-border "" 1
+          ctrl+shift+h script-message align-border 1 ""
+          ctrl+shift+j script-message align-border "" -1
+          ctrl+shift+k script-message align-border "" 1
 
           # reset the image
-          ctrl+0  no-osd set video-pan-x 0; no-osd set video-pan-y 0; no-osd set video-zoom 0
+          ctrl+0 no-osd set video-pan-x 0; no-osd set video-pan-y 0; no-osd set video-zoom 0
 
           + add video-zoom 0.5
           - add video-zoom -0.5; script-message reset-pan-if-visible

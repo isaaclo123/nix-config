@@ -123,7 +123,7 @@ let autostarted-status = "/tmp/autostarted-status.lock"; in
       bspc rule -a termiteopen sticky=on state=floating
 
       # always autostart
-      xinput set-prop "ETPS/2 Elantech TrackPoint" "libinput Accel Speed" 0.5
+      xinput set-prop "ETPS/2 Elantech TrackPoint" "libinput Accel Speed" 0.3
       xinput set-prop "ETPS/2 Elantech Touchpad" "libinput Accel Speed" 0.5
       feh --bg-scale "${theme.wallpaper}"
 
