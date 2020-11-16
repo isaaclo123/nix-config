@@ -7,16 +7,19 @@
 let
   homedir = (import ./settings.nix).homedir;
   username = (import ./settings.nix).username;
+  nixos-version = (import ./settings.nix).nixos-version;
 
-  home-manager =
-    fetchTarball https://github.com/nix-community/home-manager/archive/release-20.09.tar.gz;
-    # fetchTarball https://github.com/rycee/home-manager/archive/release-20.03.tar.gz;
-
-  nixos-hardware =
-    fetchTarball https://github.com/NixOS/nixos-hardware/archive/master.tar.gz;
+  nixos =
+    fetchTarball "https://nixos.org/channels/nixos-${nixos-version}/nixexprs.tar.xz";
 
   unstable =
     fetchTarball https://github.com/NixOS/nixpkgs-channels/archive/nixos-unstable.tar.gz;
+
+  home-manager =
+    fetchTarball "https://github.com/nix-community/home-manager/archive/release-${nixos-version}.tar.gz";
+
+  nixos-hardware =
+    fetchTarball https://github.com/NixOS/nixos-hardware/archive/master.tar.gz;
 in
 
 {
@@ -379,13 +382,17 @@ in
   # compatible, in order to avoid breaking some software such as database
   # servers. You should change this only after NixOS release notes say you
   # should.
-  system.stateVersion = "20.09"; # Did you read the comment?
+  system.stateVersion = nixos-version; # Did you read the comment?
   nixpkgs = {
     config = {
       # pulseaudio = true;
       allowBroken = false;
       allowUnfree = true;
       packageOverrides = pkgs: {
+        nixos = import nixos {
+          config = config.nixpkgs.config;
+        };
+
         unstable = import unstable {
           config = config.nixpkgs.config;
         };

@@ -33,6 +33,8 @@ let
 in
 
 {
+  nixos-version = "20.09";
+
   username = "isaac";
   fullname = "Isaac Lo";
 
