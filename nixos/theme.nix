@@ -22,7 +22,7 @@ in
   fonts = {
     fonts = with pkgs; [
       (nerdfonts.override {
-        fonts = font.nerdFonts;
+        fonts = font.nerd-fonts;
       })
       symbola
       unifont

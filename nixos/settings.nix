@@ -47,7 +47,7 @@ in
     sansSerif = "DejaVu Sans";
     serif = "DejaVu Serif";
 
-    nerdFonts = [
+    nerd-fonts = [
       "Iosevka"
     ];
 
