@@ -15,7 +15,7 @@ let my-python-packages = python-packages:
         sha256 = "09xm13i8n16g0gbvb7fhnbla34nq7c893y83rgb81qxp8vjkdnbh";
       };
 
-      propagatedBuildInputs = with pkgs.python37Packages; [
+      propagatedBuildInputs = with pkgs.python3Packages; [
         pyxdg
         ConfigArgParse
       ];
@@ -34,7 +34,7 @@ let my-python-packages = python-packages:
     requests
     virtualenv
     flake8
-    tensorflow
+    # tensorflow
     numpy
     scikitlearn
     ipykernel

@@ -49,7 +49,7 @@ in
         remove_dup_if_exists() {
           if [ -f "$1" ]; then
             echo "Removing duplicate lines in $1"
-            ${config.system.path}/bin/sort -u $1 | ${config.system.path}/bin/tee $1 > /dev/null
+            ${config.system.path}/bin/uniq $1 | ${config.system.path}/bin/tee $1 > /dev/null
           fi
         }
 

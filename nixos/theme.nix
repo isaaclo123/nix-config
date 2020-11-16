@@ -9,18 +9,21 @@ let
   icon = (import ./settings.nix).icon;
 in
 
-let nerdfonts-derivation =
-  (with import <nixpkgs> {};
-    stdenv.lib.overrideDerivation pkgs.nerdfonts (oldAttrs : {
-      src = builtins.fetchurl {
-        url = "https://github.com/ryanoasis/nerd-fonts/archive/2.0.0.tar.gz";
-        sha256 = "1j3v7s1w3kyygkl0mwl1cyy6q11c7ldqfapfh6djsfzz5q23jn8d";
-      };
-  })); in
+# let nerdfonts-derivation =
+#   (with import <nixpkgs> {};
+#     stdenv.lib.overrideDerivation pkgs.nerdfonts (oldAttrs : {
+#       src = builtins.fetchurl {
+#         url = "https://github.com/ryanoasis/nerd-fonts/archive/2.0.0.tar.gz";
+#         sha256 = "1j3v7s1w3kyygkl0mwl1cyy6q11c7ldqfapfh6djsfzz5q23jn8d";
+#       };
+#   })); in
 
 {
   fonts = {
     fonts = with pkgs; [
+      (nerdfonts.override {
+        fonts = font.nerdFonts;
+      })
       symbola
       unifont
       unifont_upper
@@ -28,7 +31,7 @@ let nerdfonts-derivation =
       corefonts
       vistafonts
       # nerdfonts
-      (nerdfonts-derivation)
+      # (nerdfonts-derivation)
       dejavu_fonts
     ];
 
@@ -43,8 +46,6 @@ let nerdfonts-derivation =
         sansSerif = [ font.sansSerif ];
         serif = [ font.serif ];
       };
-
-      penultimate.enable = true;
 
       allowBitmaps = true;
       useEmbeddedBitmaps = false;

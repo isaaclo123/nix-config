@@ -9,7 +9,8 @@ let
   username = (import ./settings.nix).username;
 
   home-manager =
-    fetchTarball https://github.com/rycee/home-manager/archive/release-20.03.tar.gz;
+    fetchTarball https://github.com/nix-community/home-manager/archive/release-20.09.tar.gz;
+    # fetchTarball https://github.com/rycee/home-manager/archive/release-20.03.tar.gz;
 
   nixos-hardware =
     fetchTarball https://github.com/NixOS/nixos-hardware/archive/master.tar.gz;
@@ -98,15 +99,16 @@ in
     enable = true;
     package = pkgs.bluezFull;
     powerOnBoot = true;
-    extraConfig = ''
-      [General]
-      Enable=Source,Sink,Media,Socket
-      AutoConnectTimeout = 0
-      IdleTimeout=0
-      DiscoverableTimeout = 0
-      PairableTimeout = 0
-      PageTimeout = 8192
-    '';
+    config = {
+      General = {
+        Enable = "Source,Sink,Media,Socket";
+        AutoConnectTimeout = 0;
+        IdleTimeout = 0;
+        DiscoverableTimeout = 0;
+        PairableTimeout = 0;
+        PageTimeout = 8192;
+      };
+    };
   };
 
   hardware.trackpoint = {
@@ -377,7 +379,7 @@ in
   # compatible, in order to avoid breaking some software such as database
   # servers. You should change this only after NixOS release notes say you
   # should.
-  system.stateVersion = "20.03"; # Did you read the comment?
+  system.stateVersion = "20.09"; # Did you read the comment?
   nixpkgs = {
     config = {
       # pulseaudio = true;

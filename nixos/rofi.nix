@@ -57,12 +57,11 @@ in
       (clipmenu-ext)
       (clipmenu-del)
 
-      pkgs.rofi
-      # (pkgs.rofi.override {
-      #   plugins = with pkgs; [
-      #     icon.pkg
-      #   ];
-      # })
+      (pkgs.rofi.override {
+        plugins = with pkgs; [
+          icon.pkg
+        ];
+      })
     ];
 
   home-manager.users."${username}" = {
@@ -127,8 +126,8 @@ in
 
         #window {
           background-color: @background;
-          width: 761px;
-          height: 260px;
+          width: 786px;
+          height: 270px;
         }
 
         * {
@@ -146,6 +145,7 @@ in
       "rofi/colors.rasi".text = ''
         @import "${rofi-colorscheme}"
       '';
+
       "rofi/launchers/${rofi.style}.rasi".text = ''
         ${builtins.readFile "${rofi-themes}/launchers/${rofi.style}.rasi"}
 

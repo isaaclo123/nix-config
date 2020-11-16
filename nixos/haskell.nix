@@ -7,7 +7,7 @@
     ghc
 
     haskellPackages.hoogle
-    haskellPackages.hindent
+    # haskellPackages.hindent
     # haskellPackages.stylish-haskell
   ];
 }

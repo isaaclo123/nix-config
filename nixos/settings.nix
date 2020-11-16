@@ -45,6 +45,10 @@ in
     sansSerif = "DejaVu Sans";
     serif = "DejaVu Serif";
 
+    nerdFonts = [
+      "Iosevka"
+    ];
+
     size = 10;
   };
 
