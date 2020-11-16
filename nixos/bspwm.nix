@@ -55,6 +55,7 @@ let autostarted-status = "/tmp/autostarted-status.lock"; in
       LAPTOP_MONITOR_RESOLUTION=1920x1080
 
       LAPTOP_MONITOR_WITH_EXT_RESOLUTION=1600x900
+      # LAPTOP_MONITOR_WITH_EXT_RESOLUTION=1920x1080
       EXTERNAL_MONITOR_OFFSET=1600x0
 
       EXTERNAL_MONITOR=$(xrandr --query | grep ' connected' | grep -v $LAPTOP_MONITOR | head -n1 | cut -d ' ' -f1)

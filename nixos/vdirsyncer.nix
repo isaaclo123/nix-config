@@ -42,9 +42,19 @@ in
 
         [ -z "$CALENDAR_DIR" ] && exit 1
 
-        ${pkgs.unstable.calcurse}/bin/calcurse-vdir export $CALENDAR_DIR -D "${homedir}/.calcurse" &&
-        ${pkgs.vdirsyncer}/bin/vdirsyncer sync &&
+        ${pkgs.unstable.calcurse}/bin/calcurse-vdir export $CALENDAR_DIR -D "${homedir}/.calcurse"
+        ${pkgs.vdirsyncer}/bin/vdirsyncer sync
         ${pkgs.unstable.calcurse}/bin/calcurse-vdir import $CALENDAR_DIR -D "${homedir}/.calcurse"
+
+        remove_dup_if_exists() {
+          if [ -f "$1" ]; then
+            echo "Removing duplicate lines in $1"
+            ${config.system.path}/bin/sort -u $1 | ${config.system.path}/bin/tee $1 > /dev/null
+          fi
+        }
+
+        remove_dup_if_exists "${homedir}/.calcurse/apts"
+        remove_dup_if_exists "${homedir}/.calcurse/apts.new"
       '';
 
       path = with pkgs; [

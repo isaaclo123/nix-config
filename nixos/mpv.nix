@@ -174,8 +174,6 @@ in
 
         ${pkgs.libnotify}/bin/notify-send -i "${icon.path}/categories/applications-multimedia.svg" "MPV opening" "$url"
 
-        # (mpv --force-window "gallery-dl://$@";
-        #   bspc node --focus last) ||
         (mpv --force-window "gallery-dl://$@") ||
         (xdg-open "$@" &&
             ${pkgs.libnotify}/bin/notify-send -i "${icon.path}/categories/applications-internet.svg" "Browser opening" "$url") ||
@@ -282,6 +280,7 @@ in
         unstable.gallery-dl
         mpvc
         ffmpeg
+        unstable.youtube-dl
 
         nodePackages.peerflix
       ];

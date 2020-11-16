@@ -262,7 +262,7 @@
       lxappearance
 
       # ansible/ssh
-      ansible
+      ansible_2_9
       sshpass
 
       # games
