@@ -202,62 +202,6 @@ in
             # "${mpv-image-viewer}/scripts/freeze-window.lua"
             # "${mpv-image-viewer}/scripts/minimap.lua"
             # "${mpv-image-viewer}/scripts/status-line.lua"
-
-            # autospeed
-            (fetchurl {
-              url = "https://raw.githubusercontent.com/kevinlekiller/mpv_scripts/master/autospeed/autospeed.lua";
-              sha256 = "18m0lzf0gs3g0mfgwfgih6mz98v5zcciykjl7jmg9rllwsx8syjl";
-              passthru.scriptName = "autospeed.lua";
-            })
-
-            # autoloop
-            (fetchurl {
-              url = "https://raw.githubusercontent.com/zc62/mpv-scripts/master/autoloop.lua";
-              sha256 = "1g60h3c85ladx3ksixqnmg2cmpr68li38sgx167jylmgiavfaa6v";
-              passthru.scriptName = "autoloop.lua";
-            })
-
-            # playlistnoplayback
-            (fetchurl {
-              url = "https://raw.githubusercontent.com/422658476/MPV-EASY-Player/master/portable-data/scripts/playlistnoplayback.lua";
-              sha256 = "035zsm4z349m920b625zly7zaz361972is55mg02xvgpv0awclfl";
-              passthru.scriptName = "playlistnoplayback.lua";
-            })
-
-            # reload
-            (fetchurl {
-              url = "https://raw.githubusercontent.com/4e6/mpv-reload/2b8a719fe166d6d42b5f1dd64761f97997b54a86/reload.lua";
-              sha256 = "0dyx22rr1883m2lhnaig9jdp7lpjydha0ad7lj9pfwlgdr2zg4b9";
-              passthru.scriptName = "reload.lua";
-            })
-
-            # youtube-quality
-            (fetchurl {
-              url = "https://raw.githubusercontent.com/jgreco/mpv-youtube-quality/1f8c31457459ffc28cd1c3f3c2235a53efad7148/youtube-quality.lua";
-              sha256 = "0fi1b4r5znp2k2z590jrrbn6wirx7nggjcl1frkcwsv7gmhjl11l";
-              passthru.scriptName = "youtube-quality.lua";
-            })
-
-            # gallery-dl_hook
-            (fetchurl {
-              url = "https://gist.githubusercontent.com/isaaclo123/47993f6de088bb55de27fd126f722f2a/raw/1cac024adbffb0d6334bfd3666dea1d56bb4a525/gallery-dl_hook.lua";
-              sha256 = "0rc81bclfydpyil7xjpi560fmsajfc6ixmlsmchmhbb4ajxxavrs";
-              passthru.scriptName = "gallery-dl_hook.lua";
-            })
-
-            # peerflix-hook
-            (fetchurl {
-              url = "https://gist.githubusercontent.com/ekisu/bba287693830055a6bad90081c1ad4e2/raw/65a97c59b9dcfc9de94864160124fbe5eb5f3aa3/peerflix-hook.lua";
-              sha256 = "08h6wzrhrp1i1pbzzrim8rwa1bkvjxdvs7rqqsnj6s4b77rg1x48";
-              passthru.scriptName = "peerflix-hook.lua";
-            })
-
-            # show_filename (shift enter)
-            (fetchurl {
-              url = "https://raw.githubusercontent.com/yuukidach/mpv-scripts/cbcd5b799e37b479aa55cbb8d3bb851e28f39630/show_filename.lua";
-              sha256 = "1h976qymbal199f5z7sz1hban2g2mr4jb1v8zg96g5c537fix8zy";
-              passthru.scriptName = "show_filename.lua";
-            })
           ];
         })
 
@@ -327,6 +271,8 @@ in
         });
       in
 
+      with pkgs;
+
       {
         # mpv-sponsorblock
         "mpv/scripts/sponsorblock.lua".source = "${mpv-sponsorblock}/sponsorblock.lua";
@@ -342,6 +288,63 @@ in
         "mpv/scripts/mpv_thumbnail_server.lua".source = "${mpv-thumbnail-pkg}/scripts/mpv_thumbnail_script_server.lua";
         "mpv/scripts/mpv_thumbnail_server-1.lua".source = "${mpv-thumbnail-pkg}/scripts/mpv_thumbnail_script_server.lua";
         "mpv/scripts/mpv_thumbnail_server-2.lua".source = "${mpv-thumbnail-pkg}/scripts/mpv_thumbnail_script_server.lua";
+
+
+        # autospeed
+        "mpv/scripts/autospeed.lua".source = (fetchurl {
+          url = "https://raw.githubusercontent.com/kevinlekiller/mpv_scripts/master/autospeed/autospeed.lua";
+          sha256 = "18m0lzf0gs3g0mfgwfgih6mz98v5zcciykjl7jmg9rllwsx8syjl";
+          passthru.scriptName = "autospeed.lua";
+        });
+
+        # autoloop
+        "mpv/scripts/autoloop.lua".source = (fetchurl {
+          url = "https://raw.githubusercontent.com/zc62/mpv-scripts/master/autoloop.lua";
+          sha256 = "1g60h3c85ladx3ksixqnmg2cmpr68li38sgx167jylmgiavfaa6v";
+          passthru.scriptName = "autoloop.lua";
+        });
+
+        # playlistnoplayback
+        "mpv/scripts/playlistnoplayback.lua".source = (fetchurl {
+          url = "https://raw.githubusercontent.com/422658476/MPV-EASY-Player/master/portable-data/scripts/playlistnoplayback.lua";
+          sha256 = "035zsm4z349m920b625zly7zaz361972is55mg02xvgpv0awclfl";
+          passthru.scriptName = "playlistnoplayback.lua";
+        });
+
+        # reload
+        "mpv/scripts/reload.lua".source = (fetchurl {
+          url = "https://raw.githubusercontent.com/4e6/mpv-reload/2b8a719fe166d6d42b5f1dd64761f97997b54a86/reload.lua";
+          sha256 = "0dyx22rr1883m2lhnaig9jdp7lpjydha0ad7lj9pfwlgdr2zg4b9";
+          passthru.scriptName = "reload.lua";
+        });
+
+        # youtube-quality
+        "mpv/scripts/youtube-quality.lua".source = (fetchurl {
+          url = "https://raw.githubusercontent.com/jgreco/mpv-youtube-quality/1f8c31457459ffc28cd1c3f3c2235a53efad7148/youtube-quality.lua";
+          sha256 = "0fi1b4r5znp2k2z590jrrbn6wirx7nggjcl1frkcwsv7gmhjl11l";
+          passthru.scriptName = "youtube-quality.lua";
+        });
+
+        # gallery-dl_hook
+        "mpv/scripts/gallery-dl_hook.lua".source = (fetchurl {
+          url = "https://gist.githubusercontent.com/isaaclo123/47993f6de088bb55de27fd126f722f2a/raw/1cac024adbffb0d6334bfd3666dea1d56bb4a525/gallery-dl_hook.lua";
+          sha256 = "0rc81bclfydpyil7xjpi560fmsajfc6ixmlsmchmhbb4ajxxavrs";
+          passthru.scriptName = "gallery-dl_hook.lua";
+        });
+
+        # peerflix-hook
+        "mpv/scripts/peerflix-hook.lua".source = (fetchurl {
+          url = "https://gist.githubusercontent.com/ekisu/bba287693830055a6bad90081c1ad4e2/raw/65a97c59b9dcfc9de94864160124fbe5eb5f3aa3/peerflix-hook.lua";
+          sha256 = "08h6wzrhrp1i1pbzzrim8rwa1bkvjxdvs7rqqsnj6s4b77rg1x48";
+          passthru.scriptName = "peerflix-hook.lua";
+        });
+
+        # show_filename (shift enter)
+        "mpv/scripts/show_filename.lua".source = (fetchurl {
+          url = "https://raw.githubusercontent.com/yuukidach/mpv-scripts/cbcd5b799e37b479aa55cbb8d3bb851e28f39630/show_filename.lua";
+          sha256 = "1h976qymbal199f5z7sz1hban2g2mr4jb1v8zg96g5c537fix8zy";
+          passthru.scriptName = "show_filename.lua";
+        });
 
         "mpv/script-opts/mpv_thumbnail_script.conf".text = ''
           cache_directory=${mpv-thumbs-cache}

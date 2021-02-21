@@ -12,8 +12,10 @@ let
   nixos =
     fetchTarball "https://nixos.org/channels/nixos-${nixos-version}/nixexprs.tar.xz";
 
-  unstable =
-    fetchTarball https://github.com/NixOS/nixpkgs-channels/archive/nixos-unstable.tar.gz;
+  # unstable =
+  #   fetchTarball https://github.com/NixOS/nixpkgs-channels/archive/nixos-unstable.tar.gz;
+
+  # unstable = import <unstable> {};
 
   home-manager =
     fetchTarball "https://github.com/nix-community/home-manager/archive/release-${nixos-version}.tar.gz";
@@ -350,6 +352,7 @@ in
     # };
 
     services.udiskie = {
+      tray = "never";
       enable = true;
       automount = true;
       notify = true;
@@ -393,7 +396,7 @@ in
           config = config.nixpkgs.config;
         };
 
-        unstable = import unstable {
+        unstable = import <unstable> {
           config = config.nixpkgs.config;
         };
 
@@ -401,6 +404,9 @@ in
           config = config.nixpkgs.config;
         };
       };
+      permittedInsecurePackages = [
+        "go-1.14.15"
+      ];
     };
 
     # overlays = [

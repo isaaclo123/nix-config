@@ -4,8 +4,8 @@ let username = (import ./settings.nix).username; in
 
 {
   environment.systemPackages = with pkgs; [
+    python38Packages.ueberzug
     ranger
-    ueberzug
     imagemagick
     elinks
     ffmpegthumbnailer

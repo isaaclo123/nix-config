@@ -26,6 +26,7 @@ let my-python-packages = python-packages:
   in with python-packages; [
     (rofimoji)
 
+    psutil
     psycopg2
     cython
     # opencv
@@ -46,8 +47,8 @@ in
 {
   environment.variables = {
     SOURCE_DATE_EPOCH="$(date +%s)";
-    PYTHONEXECUTABLE="${python-with-my-packages}/bin/python3.7";
-    PYTHONPATH="${python-with-my-packages}/lib/python3.7/site-packages";
+    PYTHONEXECUTABLE="${python-with-my-packages}/bin/python3.8";
+    PYTHONPATH="${python-with-my-packages}/lib/python3.8/site-packages";
   };
 
   services.jupyter = {

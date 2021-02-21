@@ -9,21 +9,24 @@ let
   icon = (import ./settings.nix).icon;
 in
 
-# let nerdfonts-derivation =
-#   (with import <nixpkgs> {};
-#     stdenv.lib.overrideDerivation pkgs.nerdfonts (oldAttrs : {
-#       src = builtins.fetchurl {
-#         url = "https://github.com/ryanoasis/nerd-fonts/archive/2.0.0.tar.gz";
-#         sha256 = "1j3v7s1w3kyygkl0mwl1cyy6q11c7ldqfapfh6djsfzz5q23jn8d";
-#       };
-#   })); in
+let nerdfonts-derivation =
+  (with import <nixpkgs> {};
+    stdenv.lib.overrideDerivation pkgs.nerdfonts (oldAttrs : {
+      # version = "2.0.0";
+      srcs = (builtins.fetchurl {
+        url = "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.0.0/Iosevka.zip";
+        sha256 = "1813i2p1415k8nsicrqyx9lvf77qsyjws68dxww7yvhlcqnrwzd6";
+      });
+      # fonts = font.nerd-fonts;
+  })); in
 
 {
   fonts = {
     fonts = with pkgs; [
-      (nerdfonts.override {
-        fonts = font.nerd-fonts;
-      })
+      nerdfonts-derivation
+      # (nerdfonts-derivation.override {
+      #   fonts = font.nerd-fonts;
+      # })
       symbola
       unifont
       unifont_upper

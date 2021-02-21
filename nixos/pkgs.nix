@@ -157,6 +157,9 @@
       (colortest)
       # (import ./xfd.nix)
 
+      phpPackages.composer2
+      php
+
       # office
       libreoffice
       unoconv

@@ -14,20 +14,28 @@ in
 
 {
   environment.systemPackages =
-    let qutebrowser-derivation =
-      (with import <nixpkgs> {};
-        stdenv.lib.overrideDerivation pkgs.unstable.qutebrowser (oldAttrs : {
-          patches = oldAttrs.patches ++ [
-            (pkgs.fetchurl {
-              # https://gist.githubusercontent.com/isaaclo123/c73221c39dbfc0bacd72dd5d5a692973/raw/8e40d724a8cafe350a26d79a2e686c3074537b02/qutebrowser-qwerty-tab.patch
-              # qutebrowser-qwerty-tab.patch
-              url = "https://gist.githubusercontent.com/isaaclo123/c73221c39dbfc0bacd72dd5d5a692973/raw/8e40d724a8cafe350a26d79a2e686c3074537b02/qutebrowser-qwerty-tab.patch";
-              sha256 = "1lvvw32ab955j8la5xyxd7lxdmfjqab1wn7wga4i9g3c2j3np5jk";
-            })
-          ];
-      })); in
+    # let qutebrowser-derivation =
+    #   (with import <nixpkgs> {};
+    #     stdenv.lib.overrideDerivation pkgs.unstable.qutebrowser (oldAttrs : {
+    #       python3Packages = python3.8;
+    #       srcs =  [(pkgs.fetchurl {
+    #           # https://gist.githubusercontent.com/isaaclo123/c73221c39dbfc0bacd72dd5d5a692973/raw/8e40d724a8cafe350a26d79a2e686c3074537b02/qutebrowser-qwerty-tab.patch
+    #           # qutebrowser-qwerty-tab.patch
+    #           url = "https://github.com/qutebrowser/qutebrowser/archive/v2.0.2.tar.gz";
+    #           sha256 = "05ch8jwlhkx697v63pn3srxxr493iyxbw7br1zy28im2n6mcqc48";
+    #         })
+    #       # patches = oldAttrs.patches ++ [
+    #       #   (pkgs.fetchurl {
+    #       #     # https://gist.githubusercontent.com/isaaclo123/c73221c39dbfc0bacd72dd5d5a692973/raw/8e40d724a8cafe350a26d79a2e686c3074537b02/qutebrowser-qwerty-tab.patch
+    #       #     # qutebrowser-qwerty-tab.patch
+    #       #     url = "https://gist.githubusercontent.com/isaaclo123/c73221c39dbfc0bacd72dd5d5a692973/raw/8e40d724a8cafe350a26d79a2e686c3074537b02/qutebrowser-qwerty-tab.patch";
+    #       #     sha256 = "1lvvw32ab955j8la5xyxd7lxdmfjqab1wn7wga4i9g3c2j3np5jk";
+    #       #   })
+    #       ];
+    #   })); in
     with pkgs; [
-      (qutebrowser-derivation)
+      # (qutebrowser-derivation)
+      unstable.qutebrowser
     ];
 
   home-manager.users."${username}" = {
@@ -39,81 +47,6 @@ in
     };
 
     xdg.configFile = {
-      "qutebrowser/jmatrix-rules".text =
-        let rules-txt =
-          (builtins.readFile (pkgs.fetchurl {
-            url = "https://gist.githubusercontent.com/isaaclo123/dddcc8ed99e9ddcab7222fd8e3be6785/raw/122d399bc4db44cff299866e56205debe5631e47/rules.txt";
-            sha256 = "1rijk27l51bbvwll1dir0v39d22hkrracg4lqqxickj49cid63x1";
-          }));
-        in
-      ''
-        matrix-off: umn.edu true
-        matrix-off: discord.com true
-
-        ${rules-txt}
-
-        hackerrank.com hrcdn.net script allow
-        trello.com a.trellocdn.com script allow
-
-        xda-developers.com xda-cdn.com script allow
-
-        # Discord
-        discord.com 127.0.0.1 xhr allow
-        discord.com discord.gg * allow
-        discord.com gateway.discord.gg xhr allow
-        discord.com google.com * allow
-        discord.com gstatic.com * allow
-        discord.com ytimg.com * allow
-        discordservers.com ajax.cloudflare.com script allow
-        discordservers.com cloudflare.com cookie allow
-        discordservers.com discordapp.com cookie allow
-
-        reddit.com cdn.embedly.com frame allow
-        reddit.com gateway.reddit.com xhr allow
-        reddit.com oops.redditmedia.com xhr allow
-        reddit.com www.reddit.com script allow
-        reddit.com www.reddit.com xhr allow
-        reddit.com www.redditmedia.com frame allow
-        reddit.com www.redditmedia.com script allow
-        reddit.com www.redditstatic.com script allow
-
-        bandcamp.com s4.bcbits.com script allow
-        bandcamp.com t4.bcbits.com media allow
-
-        soundcloud.com a-v2.sndcdn.com script allow
-        soundcloud.com a-v2.sndcdn.com xhr allow
-        soundcloud.com cf-hls-media.sndcdn.com xhr allow
-        soundcloud.com i1.sndcdn.com xhr allow
-        soundcloud.com style.sndcdn.com xhr allow
-        soundcloud.com wis.sndcdn.com xhr allow
-
-        vimeo.com player.vimeo.com frame allow
-        vimeo.com player.vimeo.com script allow
-        vimeo.com player.vimeo.com xhr allow
-        vimeo.com vimeocdn.com frame allow
-        vimeo.com vimeocdn.com other allow
-        vimeo.com vimeocdn.com plugin allow
-        vimeo.com vimeocdn.com script allow
-        vimeo.com vimeocdn.com xhr allow
-
-        youtube-nocookie.com googlevideo.com xhr allow
-        youtube-nocookie.com ytimg.com * allow
-
-        facebook.com 1st-party xhr allow
-        facebook.com facebook.com cookie allow
-        facebook.com fbcdn.net script allow
-        facebook.com fbcdn.net xhr allow
-        facebook.com staticxx.facebook.com frame allow
-        facebook.com video-ort2-2.xx.fbcdn.net media allow
-        facebook.com www.facebook.com frame allow
-        facebook.com www.facebook.com media allow
-        facebook.com www.facebook.com xhr allow
-
-        #eBay
-        ebay.com ebayrtm.com script allow
-        ebay.com ebaystatic.com script allow
-      '';
-
       "qutebrowser/config.py".text =
         let
           theme = pkgs.fetchurl {
@@ -121,50 +54,13 @@ in
             sha256 = "1b1klfpgg0afg1jgpycx87d3f002ccv391nbkz0jz6grnbq79n2s";
           };
 
-          jblock = pkgs.fetchgit {
-            url = "https://gitlab.com/jgkamat/jblock";
-            rev = "7e2779336bdffeb72184a559d8366dd2c73ca98f";
-            sha256 = "0ykcg3fzdn944r674q8bk8wciz0ags8pssfmf6j6db9qpv9c6rvy";
-          };
-
-          jmatrix = pkgs.fetchgit {
-            url = "https://gitlab.com/jgkamat/jmatrix";
-            rev = "f69a3155ba5de29c7e107a5abcc504632a97ceee";
-            sha256 = "1iry9qp2nrf42ckf8zwq4g5a58b9yjam5y7hssrmyvl27wm3qldd";
-          };
-
-          jmatrix-integration-py = (pkgs.writeText "qutebrowser.py" ''
-            import os
-            from pathlib import Path
-
-            ${builtins.readFile "${jmatrix}/jmatrix/integrations/qutebrowser.py"}
-
-            JMATRIX_TMPFILE = "/tmp/jmatrix-off.tmp"
-
-            JMATRIX_ENABLED = not os.path.exists(JMATRIX_TMPFILE)
-
-            @cmdutils.register()
-            def jmatrix_toggle_tmpfile(quiet=False):
-                global JMATRIX_ENABLED
-
-                JMATRIX_ENABLED = not JMATRIX_ENABLED
-
-                if JMATRIX_ENABLED:
-                  if os.path.exists(JMATRIX_TMPFILE):
-                    os.remove(JMATRIX_TMPFILE)
-                else:
-                  Path(JMATRIX_TMPFILE).touch()
-
-                enabled_str = "enabled" if JMATRIX_ENABLED else "disabled"
-                if not quiet:
-                    message.info("jmatrix has been " + enabled_str)
-          '');
-
           user-content-css = pkgs.fetchurl {
             url = "https://www.floppymoose.com/userContent.css";
             sha256 = "0bmlm6aslvgczzwpy1ijbi6h6f0n1qva4453ls5gv7x40c3qg8mq";
           }; in ''
             import sys, os
+
+            config.load_autoconfig(False);
 
             # START THEME
 
@@ -175,19 +71,9 @@ in
             # Uncomment this to still load settings configured via autoconfig.yml
             # config.load_autoconfig()
 
-            sys.path.append("${jmatrix}")
-            # config.source("${jmatrix}/jmatrix/integrations/qutebrowser.py")
-            config.source("${jmatrix-integration-py}")
-
-            # toggle jmatrix
-            config.bind('tm', 'jmatrix-toggle-tmpfile')
-
-            sys.path.append("${jblock}")
-            config.source("${jblock}/jblock/integrations/qutebrowser.py")
-
-            # Disable qutebrowser (host-based) adblock.
+            # Enable qutebrowser adblock.
             # Type: Bool
-            config.set('content.host_blocking.enabled', False)
+            config.set('content.blocking.enabled', True)
 
             # Dark mode Settings
             c.colors.webpage.bg = base00
@@ -202,7 +88,7 @@ in
 
             # Adblock lists.
             # Type: List
-            config.set('content.host_blocking.lists', [
+            config.set('content.blocking.adblock.lists', [
               "https://easylist.to/easylist/easylist.txt",
               "https://easylist.to/easylist/easyprivacy.txt",
               "https://easylist.to/easylist/fanboy-annoyance.txt",

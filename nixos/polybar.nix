@@ -163,7 +163,7 @@ in
 
               modules-left = "bspwm sep my_mpd_bar_i my_mpd_bar sep";
               modules-center = "my_title";
-              modules-right = "jblock_on_i jblock_off_i jblock sep my_pulseaudio_i my_pulseaudio sep my_network_i my_network sep my_battery_i my_battery sep my_date_day_i my_date_day sep my_date_i my_date";
+              modules-right = "my_pulseaudio_i my_pulseaudio sep my_network_i my_network sep my_battery_i my_battery sep my_date_day_i my_date_day sep my_date_i my_date";
               #  separator network_i network separator date_i date
 
               # Opacity value between 0.0 and 1.0 used on fade in/out
@@ -436,40 +436,40 @@ in
               time-alt = "";
             };
 
-            "module/jblock_on_i" = {
-              type = "custom/script";
-              format-foreground = "#${icon-fg}";
-              format-background = "#${color.red}";
-              format-padding = 1;
-              exec = "echo ";
-              exec-if = "test ! -f /tmp/jmatrix-off.tmp";
-              interval = 2;
-            };
+            # "module/jblock_on_i" = {
+            #   type = "custom/script";
+            #   format-foreground = "#${icon-fg}";
+            #   format-background = "#${color.red}";
+            #   format-padding = 1;
+            #   exec = "echo ";
+            #   exec-if = "test ! -f /tmp/jmatrix-off.tmp";
+            #   interval = 2;
+            # };
 
-            "module/jblock_off_i" = {
-              type = "custom/script";
-              format-foreground = "#${icon-fg}";
-              format-background = "#${color.green}";
-              format-padding = 1;
-              exec = "echo ";
-              exec-if = "test -f /tmp/jmatrix-off.tmp";
-              interval = 2;
-            };
+            # "module/jblock_off_i" = {
+            #   type = "custom/script";
+            #   format-foreground = "#${icon-fg}";
+            #   format-background = "#${color.green}";
+            #   format-padding = 1;
+            #   exec = "echo ";
+            #   exec-if = "test -f /tmp/jmatrix-off.tmp";
+            #   interval = 2;
+            # };
 
-            "module/jblock" = {
-              type = "custom/script";
-              format-foreground = "#${color.fg}";
-              format-background = "#${bg}";
-              format-padding = 1;
-              exec = "test -f /tmp/jmatrix-off.tmp && echo 'Off' || echo 'On'";
-              interval = 2;
-              # type = "custom/text";
-              # content-foreground = "#${color.fg}";
-              # content-background = "#${bg}";
-              # content-padding = 1;
-              # content = "JMatrix";
-              # exec = "test -f /tmp/jmatrix-off.tmp && echo 'JMatrix OFF' || echo 'JMatrix ON'";
-            };
+            # "module/jblock" = {
+            #   type = "custom/script";
+            #   format-foreground = "#${color.fg}";
+            #   format-background = "#${bg}";
+            #   format-padding = 1;
+            #   exec = "test -f /tmp/jmatrix-off.tmp && echo 'Off' || echo 'On'";
+            #   interval = 2;
+            #   # type = "custom/text";
+            #   # content-foreground = "#${color.fg}";
+            #   # content-background = "#${bg}";
+            #   # content-padding = 1;
+            #   # content = "JMatrix";
+            #   # exec = "test -f /tmp/jmatrix-off.tmp && echo 'JMatrix OFF' || echo 'JMatrix ON'";
+            # };
           };
       };
     };
