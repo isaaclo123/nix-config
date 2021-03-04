@@ -430,6 +430,8 @@ in
         '';
 
         "mpv/input.conf".text = ''
+          MOUSE_BTN2 cycle pause                 # toggle pause on/off
+
           # mpv sponsorblock
           alt+b script-binding sponsorblock/set_segment
           shift+b script-binding sponsorblock/submit_segment

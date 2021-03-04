@@ -157,6 +157,8 @@
       (colortest)
       # (import ./xfd.nix)
 
+      # synergy
+
       phpPackages.composer2
       php
 

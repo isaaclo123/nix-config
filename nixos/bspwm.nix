@@ -74,7 +74,7 @@ let autostarted-status = "/tmp/autostarted-status.lock"; in
         EXTERNAL_MONITOR_RESOLUTION=$(xrandr --query | awk -v a=$LAPTOP_MONITOR '/ connected/{if ($1 == a) next; else getline; print $1; exit;}')
 
         xrandr --output $LAPTOP_MONITOR --primary --mode $LAPTOP_MONITOR_WITH_EXT_RESOLUTION --pos 0x0 --rotate normal --output DP-1 --off --output HDMI-1 --off --output DP-2 --off --output HDMI-2 --off
-        xrandr --output $EXTERNAL_MONITOR --mode $EXTERNAL_MONITOR_RESOLUTION --pos $EXTERNAL_MONITOR_OFFSET --rotate normal --right-of $LAPTOP_MONITOR
+        xrandr --output $EXTERNAL_MONITOR --mode $EXTERNAL_MONITOR_RESOLUTION --pos $EXTERNAL_MONITOR_OFFSET --rotate normal --right-of $LAPTOP_MONITOR --rate 74.97
         bspc desktop 8 -m $EXTERNAL_MONITOR
         bspc desktop 9 -m $EXTERNAL_MONITOR
         bspc desktop 0 -m $EXTERNAL_MONITOR

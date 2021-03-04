@@ -216,6 +216,12 @@ in
 
   # List services that you want to enable:
 
+  # services.synergy.server = {
+  #   enable = true;
+  #   autoStart = true;
+  #   configFile = "/etc/synergy-server.conf";
+  # };
+
   # fwupd
   services.fwupd = {
     enable = true;
@@ -248,11 +254,14 @@ in
   #   };
   # };
 
-  # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [ ];
-  networking.firewall.allowedUDPPorts = [ ];
-  # Or disable the firewall altogether.
-  networking.firewall.enable = false;
+  networking.firewall = {
+    enable = true;
+    checkReversePath = false; # https://github.com/NixOS/nixpkgs/issues/10101
+
+    allowedTCPPorts = [
+      24800 # synergy
+    ];
+  };
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -350,6 +359,13 @@ in
     #   name = "Vanilla-DMZ";
     #   package = pkgs.vanilla-dmz;
     # };
+
+    dconf.settings = {
+      # set screen timeout to 20 min
+      "org/gnome/desktop" = {
+        idle-delay = 1200;
+      };
+    };
 
     services.udiskie = {
       tray = "never";
