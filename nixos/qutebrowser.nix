@@ -39,12 +39,12 @@ in
     ];
 
   home-manager.users."${username}" = {
-    home.file = {
-      ".local/share/qutebrowser/greasemonkey/anti-adblock-killer.user.js".source = pkgs.fetchurl {
-        url = "https://raw.githubusercontent.com/reek/anti-adblock-killer/9a933f417f0fd074935b23ef2d8ad0fa0c62631c/anti-adblock-killer.user.js";
-        sha256 = "0way11wrl9lpmi4s8l99is8s2vfnm0r8358zs769x9pfbjahxqp2";
-      };
-    };
+    # home.file = {
+    #   ".local/share/qutebrowser/greasemonkey/anti-adblock-killer.user.js".source = pkgs.fetchurl {
+    #     url = "https://raw.githubusercontent.com/reek/anti-adblock-killer/9a933f417f0fd074935b23ef2d8ad0fa0c62631c/anti-adblock-killer.user.js";
+    #     sha256 = "0way11wrl9lpmi4s8l99is8s2vfnm0r8358zs769x9pfbjahxqp2";
+    #   };
+    # };
 
     xdg.configFile = {
       "qutebrowser/config.py".text =

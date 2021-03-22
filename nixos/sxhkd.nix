@@ -280,8 +280,11 @@ let input-toggle-create = device: script-name: icon: (pkgs.writeShellScriptBin s
           bspc node @/ --circulate {backward,forward}
 
       # flip
-      super + {_,shift + }v
-          bspc node @/ --flip {vertical,horizontal}
+      super + v
+          bspc node @/ --flip vertical
+
+      super + u
+          bspc node @/ --flip horizontal
 
       # Make split ratios equal
       super + equal

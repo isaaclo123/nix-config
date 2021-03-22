@@ -174,7 +174,8 @@ in
 
         ${pkgs.libnotify}/bin/notify-send -i "${icon.path}/categories/applications-multimedia.svg" "MPV opening" "$url"
 
-        (mpv --force-window "gallery-dl://$@") ||
+        (mpv --force-window "$@") ||
+        # (mpv --force-window "gallery-dl://$@") ||
         (xdg-open "$@" &&
             ${pkgs.libnotify}/bin/notify-send -i "${icon.path}/categories/applications-internet.svg" "Browser opening" "$url") ||
         ${pkgs.libnotify}/bin/notify-send -i "${icon.path}/status/dialog-warning.svg" "Error opening" "$url"
@@ -430,8 +431,6 @@ in
         '';
 
         "mpv/input.conf".text = ''
-          MOUSE_BTN2 cycle pause                 # toggle pause on/off
-
           # mpv sponsorblock
           alt+b script-binding sponsorblock/set_segment
           shift+b script-binding sponsorblock/submit_segment

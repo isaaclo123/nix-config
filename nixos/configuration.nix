@@ -17,11 +17,11 @@ let
 
   # unstable = import <unstable> {};
 
-  home-manager =
-    fetchTarball "https://github.com/nix-community/home-manager/archive/release-${nixos-version}.tar.gz";
+  # home-manager =
+  #   fetchTarball "https://github.com/nix-community/home-manager/archive/release-${nixos-version}.tar.gz";
 
-  nixos-hardware =
-    fetchTarball https://github.com/NixOS/nixos-hardware/archive/master.tar.gz;
+  # nixos-hardware =
+  #   fetchTarball https://github.com/NixOS/nixos-hardware/archive/master.tar.gz;
 in
 
 {
@@ -29,7 +29,8 @@ in
     [ # Include the results of the hardware scan.
       # "${nixos-hardware}/lenovo/thinkpad/t480s"
       <nixos-hardware/lenovo/thinkpad/t480s>
-      "${home-manager}/nixos"
+      <home-manager/nixos>
+      # "${home-manager}/nixos"
 
       ./hardware-configuration.nix
       ./bspwm.nix
@@ -367,12 +368,15 @@ in
       };
     };
 
+    # services.caffeine.enable = true;
+
     services.udiskie = {
       tray = "never";
       enable = true;
       automount = true;
       notify = true;
     };
+    systemd.user.services.udiskie.Service.Environment = "GDK_PIXBUF_MODULE_FILE=${pkgs.librsvg.out}/lib/gdk-pixbuf-2.0/2.1.0/loaders.cache";
 
     services.unclutter = {
       enable = true;
@@ -416,9 +420,9 @@ in
           config = config.nixpkgs.config;
         };
 
-        nixos-hardware = import nixos-hardware {
-          config = config.nixpkgs.config;
-        };
+        # nixos-hardware = import nixos-hardware {
+        #   config = config.nixpkgs.config;
+        # };
       };
       permittedInsecurePackages = [
         "go-1.14.15"

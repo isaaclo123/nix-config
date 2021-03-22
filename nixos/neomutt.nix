@@ -32,7 +32,7 @@ let create-account = folder: email: signature: (pkgs.writeText folder ''
     neomutt
     # elinks
     w3m-full
-    unstable.urlscan
+    urlscan
     xclip
   ];
 

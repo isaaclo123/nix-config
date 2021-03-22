@@ -62,7 +62,7 @@ let nerdfonts-derivation =
 
   # Use librsvg's gdk-pixbuf loader cache file as it enables gdk-pixbuf to load SVG files (important for icons)
   environment.sessionVariables = {
-    GDK_PIXBUF_MODULE_FILE = "$(echo ${pkgs.librsvg.out}/lib/gdk-pixbuf-2.0/*/loaders.cache)";
+    GDK_PIXBUF_MODULE_FILE = "$(echo ${pkgs.unstable.librsvg.out}/lib/gdk-pixbuf-2.0/*/loaders.cache)";
   };
 
   home-manager.users."${username}" = {

@@ -17,7 +17,7 @@ let
     port = 993;
     tls = {
       enable = true;
-      # useStartTls = true;
+      useStartTls = false;
     };
   };
 
@@ -73,17 +73,17 @@ let create-account = {
   imap = imap;
   smtp = smtp;
 
-  imapnotify = {
-    enable = true;
-    boxes = [ "Inbox" ];
-    onNotify = "${pkgs.isync}/bin/mbsync ${accountName}";
-    onNotifyPost = {
-      mail =
-        "${pkgs.notmuch}/bin/notmuch --config=${notmuch-config} new && " +
-        "${pkgs.afew}/bin/afew -t -n --notmuch-config=${notmuch-config} && " +
-        "${pkgs.libnotify}/bin/notify-send -i ${icon.path}/categories/applications-mail.svg '${accountName}' \"You have $(${config.system.path}/bin/find '${maildir}/${accountName}/Inbox/new' -type f | ${config.system.path}/bin/wc -l) unread mails\"";
-    };
-  };
+  # imapnotify = {
+  #   enable = true;
+  #   boxes = [ "Inbox" ];
+  #   onNotify = "${pkgs.isync}/bin/mbsync ${accountName}";
+  #   onNotifyPost = {
+  #     mail =
+  #       "${pkgs.notmuch}/bin/notmuch --config=${notmuch-config} new && " +
+  #       "${pkgs.afew}/bin/afew -t -n --notmuch-config=${notmuch-config} && " +
+  #       "${pkgs.libnotify}/bin/notify-send -i ${icon.path}/categories/applications-mail.svg '${accountName}' \"You have $(${config.system.path}/bin/find '${maildir}/${accountName}/Inbox/new' -type f | ${config.system.path}/bin/wc -l) unread mails\"";
+  #   };
+  # };
 
   passwordCommand = "${pkgs.pass}/bin/pass show ${passPath} | ${config.system.path}/bin/head -n1";
 
@@ -101,17 +101,34 @@ let create-account = {
   msmtp.enable = true;
 }; in
 
+
+let
+  notify-mail = (pkgs.writeShellScriptBin "notify-mail" ''
+    notify () {
+      ACCOUNTNAME=$1
+
+      ${pkgs.libnotify}/bin/notify-send \
+        -i ${icon.path}/categories/applications-mail.svg $ACCOUNTNAME \
+        "You have $(${config.system.path}/bin/find "${maildir}/$ACCOUNTNAME/Inbox/new" -type f | ${config.system.path}/bin/wc -l) unread mails"
+    }
+
+    notify "Personal"
+    notify "School"
+  '');
+in
+
 {
   environment.systemPackages = with pkgs;
-    let mail-sync= (writeShellScriptBin "mail-sync" ''
+    let mail-sync = (writeShellScriptBin "mail-sync" ''
       ${pkgs.libnotify}/bin/notify-send -i ${icon.path}/categories/applications-mail.svg 'Mail Syncing'
       ${pkgs.isync}/bin/mbsync -a &> /dev/null &&
-      ${pkgs.notmuch}/bin/notmuch --config=${notmuch-config} new &> /dev/null &&
-      ${pkgs.afew}/bin/afew -t -n --notmuch-config=${notmuch-config} &> /dev/null &&
-      ${pkgs.libnotify}/bin/notify-send -i ${icon.path}/categories/applications-mail.svg 'Mail Synced!'
+      ${pkgs.notmuch}/bin/notmuch --config=${notmuch-config} new &> /dev/null
     ''); in [
       (mail-sync)
+      # (notify-mail)
     ];
+    # ${pkgs.libnotify}/bin/notify-send -i ${icon.path}/categories/applications-mail.svg 'Mail Synced!'
+    # ${pkgs.afew}/bin/afew -t -n --notmuch-config=${notmuch-config} &> /dev/null &&
 
   environment.variables = {
     NOTMUCH_CONFIG = notmuch-config;
@@ -144,14 +161,12 @@ let create-account = {
     };
 
     services = {
-      imapnotify.enable = true;
+      # imapnotify.enable = true;
 
       mbsync = {
         enable = true;
         frequency = "hourly";
-        postExec =
-          "(${pkgs.notmuch}/bin/notmuch --config=${notmuch-config} new " +
-          "&& ${pkgs.afew}/bin/afew -t -n --notmuch-config=${notmuch-config})";
+        postExec = "${pkgs.notmuch}/bin/notmuch --config=${notmuch-config} new";
           # "&& ${config.system.path}/bin/systemctl restart --user \"imapnotify-*.service\"";
       };
     };
@@ -170,7 +185,10 @@ let create-account = {
       notmuch = {
         enable = true;
         new.tags = [ "new" "unread" ];
-        hooks = {};
+        hooks = {
+          postNew = "${pkgs.afew}/bin/afew -t -n --notmuch-config=${notmuch-config}; ${notify-mail}/bin/notify-mail";# +
+            # "${pkgs.libnotify}/bin/notify-send -i ${icon.path}/categories/applications-mail.svg '${accountName}' \"You have $(${config.system.path}/bin/find '${maildir}/${accountName}/Inbox/new' -type f | ${config.system.path}/bin/wc -l) unread mails\"";
+        };
         extraConfig = {
           search = {
             exclude_tags = "deleted;spam;";
