@@ -106,10 +106,13 @@ let
   notify-mail = (pkgs.writeShellScriptBin "notify-mail" ''
     notify () {
       ACCOUNTNAME=$1
+      COUNT=$(${config.system.path}/bin/find "${maildir}/$ACCOUNTNAME/Inbox/new" -type f | ${config.system.path}/bin/wc -l)
 
-      ${pkgs.libnotify}/bin/notify-send \
-        -i ${icon.path}/categories/applications-mail.svg $ACCOUNTNAME \
-        "You have $(${config.system.path}/bin/find "${maildir}/$ACCOUNTNAME/Inbox/new" -type f | ${config.system.path}/bin/wc -l) unread mails"
+      if [ $COUNT - ge 0 ]; then
+        ${pkgs.libnotify}/bin/notify-send \
+          -i ${icon.path}/categories/applications-mail.svg $ACCOUNTNAME \
+          "You have $COUNT unread mails"
+      fi
     }
 
     notify "Personal"

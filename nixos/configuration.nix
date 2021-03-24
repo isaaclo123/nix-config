@@ -276,12 +276,12 @@ in
     desktopManager.xterm.enable = false;
 
     displayManager = {
-      lightdm = {
-        autoLogin = {
-          enable = true;
-          user = username;
-        };
+      autoLogin = {
+        user = username;
+        enable = true;
       };
+
+      lightdm.enable = true;
 
       defaultSession = "none+bspwm";
 
@@ -429,9 +429,10 @@ in
       ];
     };
 
-    # overlays = [
-    #   (import ./overlays/aws-cli.nix)
-    # ];
+    overlays = [
+      (import ./overlays/aws-cli.nix)
+      (import ./overlays/zoom.nix)
+    ];
   };
 
   # Without any `nix.nixPath` entry:

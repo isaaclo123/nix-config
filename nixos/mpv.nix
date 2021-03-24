@@ -320,11 +320,11 @@ in
         });
 
         # youtube-quality
-        "mpv/scripts/youtube-quality.lua".source = (fetchurl {
-          url = "https://raw.githubusercontent.com/jgreco/mpv-youtube-quality/1f8c31457459ffc28cd1c3f3c2235a53efad7148/youtube-quality.lua";
-          sha256 = "0fi1b4r5znp2k2z590jrrbn6wirx7nggjcl1frkcwsv7gmhjl11l";
-          passthru.scriptName = "youtube-quality.lua";
-        });
+        # "mpv/scripts/youtube-quality.lua".source = (fetchurl {
+        #   url = "https://raw.githubusercontent.com/jgreco/mpv-youtube-quality/1f8c31457459ffc28cd1c3f3c2235a53efad7148/youtube-quality.lua";
+        #   sha256 = "0fi1b4r5znp2k2z590jrrbn6wirx7nggjcl1frkcwsv7gmhjl11l";
+        #   passthru.scriptName = "youtube-quality.lua";
+        # });
 
         # gallery-dl_hook
         "mpv/scripts/gallery-dl_hook.lua".source = (fetchurl {
@@ -651,7 +651,8 @@ in
           hls-bitrate=max                         # use max quality for HLS streams
           # ytdl-format=0/(bestvideo[vcodec=vp9]/bestvideo[height>720]/bestvideo[height<=1080]/bestvideo[fps>30])[tbr<13000]+(bestaudio[acodec=vorbis]/bestaudio)/best
           # ytdl-format=0/(bestvideo[vcodec=vp9]/bestvideo[height>720]/bestvideo[height<=1080]/bestvideo[fps>30])[tbr<13000]+(bestaudio[acodec=vorbis]/bestaudio)/best
-          ytdl-format=bestvideo[height<=?720][fps<=?30][vcodec!=?vp9]+bestaudio/best
+          # ytdl-format=bestvideo[height<=?720][fps<=?30][vcodec!=?vp9]+bestaudio/best
+          ytdl-format=bestvideo[height<=1080]+bestaudio/best[height<=1080]
           # protocol config
           [protocol.http]
           force-window=immediate

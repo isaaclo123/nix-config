@@ -147,6 +147,7 @@
     in with pkgs; [
       # custom packages
       (import ./metronome)
+      # (import ./zoom.nix)
       # (import ./z.nix)
       # (import ./rofimoji.nix)
       (wn)
@@ -156,6 +157,8 @@
       (backup)
       (colortest)
       # (import ./xfd.nix)
+
+      zoom-us
 
       # synergy
 
