@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, pkgs, options, ... }:
 
 let
   homedir = (import ./settings.nix).homedir;
@@ -432,6 +432,7 @@ in
     overlays = [
       (import ./overlays/aws-cli.nix)
       (import ./overlays/zoom.nix)
+      # (import ./overlays/nxengine.nix)
     ];
   };
 
@@ -456,5 +457,10 @@ in
     extraOptions = ''
       allow-unsafe-native-code-during-evaluation = true
     '';
+
+    # nixPath =
+    #   options.nix.nixPath.default ++ [
+    #   "nixpkgs-overlays=/etc/nixos/overlays/"
+    # ];
   };
 }

@@ -1,5 +1,16 @@
 { pkgs, ... }:
 
+let
+  nixpkgs = import <nixpkgs> {
+    config.allowUnfree = true;
+    overlays = [
+      # (import ./overlays/aws-cli.nix)
+      (import ./overlays/zoom.nix)
+      # (import ./overlays/nxengine.nix)
+    ];
+  };
+in
+
 {
   environment.systemPackages =
     let
@@ -144,7 +155,10 @@
         done
       '');
 
-    in with pkgs; [
+    in with nixpkgs; [
+      zoom-us
+    ] ++
+    (with pkgs; [
       # custom packages
       (import ./metronome)
       # (import ./zoom.nix)
@@ -157,8 +171,7 @@
       (backup)
       (colortest)
       # (import ./xfd.nix)
-
-      zoom-us
+      # awscli2
 
       # synergy
 
@@ -314,10 +327,12 @@
 
       # aws-sam-cli
       # unstable.awscli
-      awscli
+      # awscli
+
+      nxengine-evo
 
       qjackctl
 
       usbutils
-    ];
+    ]);
 }

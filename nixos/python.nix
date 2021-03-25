@@ -26,6 +26,7 @@ let my-python-packages = python-packages:
   in with python-packages; [
     (rofimoji)
 
+    wcwidth
     psutil
     psycopg2
     cython

@@ -1,4 +1,5 @@
-self: super: {
+self: super:
+{
   zoom-us = super.zoom-us.overrideAttrs (old: {
     version = "5.6.13558.0321";
     src = super.fetchurl {

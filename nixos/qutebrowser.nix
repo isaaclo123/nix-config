@@ -93,19 +93,6 @@ in
               "https://easylist.to/easylist/easyprivacy.txt",
               "https://easylist.to/easylist/fanboy-annoyance.txt",
               "https://easylist-downloads.adblockplus.org/antiadblockfilters.txt",
-
-              # anti adblock killer cont.
-              "https://raw.githubusercontent.com/reek/anti-adblock-killer/master/anti-adblock-killer-filters.txt",
-              "https://gitlab.com/xuhaiyang1234/AAK-Cont/raw/master/FINAL_BUILD/aak-cont-list-notubo.txt",
-
-              # "https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/filters.txt",
-              # "https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/annoyances.txt",
-              # "https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/badware.txt",
-              # "https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/privacy.txt",
-              # "https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/resource-abuse.txt",
-              # "https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/unbreak.txt",
-              # "https://www.malwaredomainlist.com/hostslist/hosts.txt",
-              # "https://pgl.yoyo.org/adservers/serverlist.php?hostformat=hosts&showintro=1&mimetype=plaintext",
             ])
 
             # Searchengines

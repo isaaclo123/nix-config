@@ -516,8 +516,7 @@ in
         "mpv/mpv.conf".text = ''
           # MPV config
 
-          # Every possible settings are explained here:
-          # https://github.com/mpv-player/mpv/tree/master/DOCS/man
+          # https://github.com/hl2guide/better-mpv-config/blob/master/mpv.conf
 
           ##################
           # VIDEO
@@ -525,55 +524,12 @@ in
           # Video output
 
           osc=no # disable osc for custom osc
+          script-opts=osc-layout=slimbox
+
           x11-bypass-compositor=yes # bypass compositor
           demuxer-thread=yes
 
-          # enable hardware acceleration
-          hwdec=auto-safe
-          vo=gpu
-          profile=gpu-hq
-
-          script-opts=osc-layout=slimbox
-          scale=ewa_lanczossharp
-          #scale=haasnsoft
-          scale-radius=3
-          cscale=ewa_lanczossoft
-          opengl-pbo=yes
-          fbo-format=rgba16f
-          #opengl-shaders="~/.mpv/shaders/SSimSuperRes.glsl"
-          #opengl-shaders="~/.mpv/shaders/SSimSuperRes.glsl,~/.mpv/shaders/adaptive-sharpen-2pass.glsl"
-          #opengl-shaders="~/.mpv/shaders/adaptive-sharpen-2pass.glsl"
-          icc-profile-auto=yes
-          icc-cache-dir=/tmp/mpv-icc
-          # target-brightness=100
-          interpolation
-          tscale=oversample
-          video-sync=display-resample
-          deband-iterations=2
-          deband-range=12
-          #no-deband
-          temporal-dither=yes
-          # no-border                               # no window title bar
-          msg-module                              # prepend module name to log messages
-          msg-color                               # color log messages on terminal
-          # term-osd-bar                            # display a progress bar on the terminal
-          use-filedir-conf                        # look for additional config files in the directory of the opened file                        # 'auto' does not imply interlacing-detection
-          cursor-autohide-fs-only                 # don't autohide the cursor in window mode, only fullscreen
-          cursor-autohide=1000                    # autohide the curser after 1s
-          # fs-black-out-screens
-          keep-open=yes
-
-          # Video filters
-          #vf=vapoursynth=~/.config/mpv/scripts/mvtools.vpy
-
-          # Start in fullscreen
-          # fullscreen
-
-          # Activate autosync
-          autosync=30
-
-          # Skip some frames to maintain A/V sync on slow systems
-          framedrop=vo
+          ytdl=yes
 
           # Force starting with centered window
           geometry=50%:50%
@@ -646,13 +602,95 @@ in
           slang=en,eng,enm,de,deu,ger             # automatically select these subtitles (decreasing priority)
           alang=en,eng,de,deu,ger       # automatically select these audio tracks (decreasing priority)
 
-          # ytdl
-          ytdl=yes
           hls-bitrate=max                         # use max quality for HLS streams
-          # ytdl-format=0/(bestvideo[vcodec=vp9]/bestvideo[height>720]/bestvideo[height<=1080]/bestvideo[fps>30])[tbr<13000]+(bestaudio[acodec=vorbis]/bestaudio)/best
-          # ytdl-format=0/(bestvideo[vcodec=vp9]/bestvideo[height>720]/bestvideo[height<=1080]/bestvideo[fps>30])[tbr<13000]+(bestaudio[acodec=vorbis]/bestaudio)/best
-          # ytdl-format=bestvideo[height<=?720][fps<=?30][vcodec!=?vp9]+bestaudio/best
-          ytdl-format=bestvideo[height<=1080]+bestaudio/best[height<=1080]
+
+          ## CONFIG SETTINGS
+
+          # Uses GPU-accelerated video output by default.
+          vo=gpu
+          # Can cause performance problems with some drivers and GPUs.
+          profile=gpu-hq,M60
+
+          # ===== REMOVE THE ABOVE LINES AND RESAVE IF YOU ENCOUNTER PLAYBACK ISSUES =====
+
+          # Source: https://github.com/hl2guide/better-mpv-config
+
+          # Saves the seekbar position on exit
+          save-position-on-quit=yes
+
+          # Uses a large seekable RAM cache even for local input.
+          cache=yes
+          # cache-secs=300
+          # Uses extra large RAM cache (needs cache=yes to make it useful).
+          demuxer-max-bytes=800M
+          demuxer-max-back-bytes=200M
+          # Sets volume to 70%.
+          volume=70
+
+          af-add='dynaudnorm=g=5:f=250:r=0.9:p=0.5'
+
+          ## PROFILE
+
+          # Custom Profiles
+          # Uses specific naming convensions for shorter easier typing.
+          # Naming Convensions:
+          # V = Very Low, L = Low, M = Medium, H = High, U = Ultra, S = Supreme
+          # Very Low = 480p, Low = 720p, Medium = 1080p, High = 1440p, Ultra = 2160p (4K), Supreme = 4320p (8K)
+          # 30 = 30 frames per second, 60 = 60 frames per second
+          # Use the switch e.g: --profile=H60
+          # 4320p (8K) 60 FPS
+          [S60]
+          ytdl-format=bestvideo[height<=?4320][fps<=?60][vcodec!=?vp9]+bestaudio/best
+          # 4320p (8K) 30 FPS
+          [S30]
+          ytdl-format=bestvideo[height<=?4320][fps<=?30][vcodec!=?vp9]+bestaudio/best
+          # 2160p (4K) 60 FPS
+          [U60]
+          ytdl-format=bestvideo[height<=?2160][fps<=?60][vcodec!=?vp9]+bestaudio/best
+          # 2160p (4K) 30 FPS
+          [U30]
+          ytdl-format=bestvideo[height<=?2160][fps<=?30][vcodec!=?vp9]+bestaudio/best
+          # 1440p 60 FPS
+          [H60]
+          ytdl-format=bestvideo[height<=?1440][fps<=?60][vcodec!=?vp9]+bestaudio/best
+          # 1440p 30 FPS
+          [H30]
+          ytdl-format=bestvideo[height<=?1440][fps<=?30][vcodec!=?vp9]+bestaudio/best
+          # 1080p 60 FPS
+          [M60]
+          ytdl-format=bestvideo[height<=?1080][fps<=?60][vcodec!=?vp9]+bestaudio/best
+          # 1080p 30 FPS
+          [M30]
+          ytdl-format=bestvideo[height<=?1080][fps<=?30][vcodec!=?vp9]+bestaudio/best
+          # 720p 60 FPS
+          [L60]
+          ytdl-format=bestvideo[height<=?720][fps<=?60][vcodec!=?vp9]+bestaudio/best
+          # 720p 30 FPS
+          [L30]
+          ytdl-format=bestvideo[height<=?720][fps<=?30][vcodec!=?vp9]+bestaudio/best
+          # 480p 60 FPS
+          [V60]
+          ytdl-format=bestvideo[height<=?480][fps<=?60][vcodec!=?vp9]+bestaudio/best
+          # 480p 30 FPS
+          [V30]
+          ytdl-format=bestvideo[height<=?480][fps<=?30][vcodec!=?vp9]+bestaudio/best
+
+          # File Type Profiles
+          # GIF Files
+          [extension.gif]
+          cache=no
+          no-pause
+          loop-file=yes
+          # WebM Files
+          [extension.webm]
+          no-pause
+          loop-file=yes
+
+          osd-scale=1
+          osd-font-size=55
+
+          ## AFTER VIDEO SETTINGS
+
           # protocol config
           [protocol.http]
           force-window=immediate
