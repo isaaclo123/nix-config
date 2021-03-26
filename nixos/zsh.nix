@@ -1,4 +1,6 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
+
+with import <nixpkgs> {};
 
 let
   # fzf-theme = builtins.fetchurl {

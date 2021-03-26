@@ -108,7 +108,7 @@ let
       ACCOUNTNAME=$1
       COUNT=$(${config.system.path}/bin/find "${maildir}/$ACCOUNTNAME/Inbox/new" -type f | ${config.system.path}/bin/wc -l)
 
-      if [ $COUNT - ge 0 ]; then
+      if [ $COUNT -ge 1 ]; then
         ${pkgs.libnotify}/bin/notify-send \
           -i ${icon.path}/categories/applications-mail.svg $ACCOUNTNAME \
           "You have $COUNT unread mails"

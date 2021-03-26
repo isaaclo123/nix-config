@@ -539,6 +539,9 @@ in
           # Keep the player window on top of all other windows.
           ontop=yes
 
+          # Keep open
+          keep-open=yes
+
           # Disable screensaver
           stop-screensaver=yes
 

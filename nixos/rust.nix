@@ -1,7 +1,8 @@
 { pkgs, ... }:
 
 let
-  moz_overlay = import (builtins.fetchTarball https://github.com/mozilla/nixpkgs-mozilla/archive/master.tar.gz);
+  # moz_overlay = import (builtins.fetchTarball https://github.com/mozilla/nixpkgs-mozilla/archive/master.tar.gz);
+  moz_overlay = import (builtins.fetchTarball "https://github.com/oxalica/rust-overlay/archive/master.tar.gz");
   # moz_overlay = import ((import <nixpkgs> {}).fetchFromGitHub {
   #   owner = "mozilla";
   #   repo = "nixpkgs-mozilla";
