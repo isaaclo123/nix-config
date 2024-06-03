@@ -7,6 +7,11 @@
     settings = {
       monitor = ",preferred,auto,auto";
 
+      # unscale XWayland
+      xwayland = {
+        force_zero_scaling = true;
+      };
+
       general = {
         cursor_inactive_timeout = 10;
         no_cursor_warps = true;

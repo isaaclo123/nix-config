@@ -3,6 +3,7 @@
     ./nvim-cmp.nix
     ./lsp-saga.nix
     ./luasnip.nix
+    ./project-nvim.nix
   ];
 
   programs.nixvim = {

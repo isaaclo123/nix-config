@@ -30,7 +30,6 @@
     ./mpv/default.nix
     ./udiskie/default.nix
     ./gammastep/default.nix
-    # ./git/default.nix
   ];
 
   nixpkgs = {
@@ -64,9 +63,19 @@
     homeDirectory = "/home/isaac";
   };
 
+  xdg.configFile."electron-flags.conf".text = ''
+    --enable-features=UseOzonePlatform --ozone-platform=wayland
+  '';
+
   # Add stuff for your user as you see fit:
   # programs.neovim.enable = true;
-  # home.packages = with pkgs; [ ];
+  home.packages = with pkgs; [
+    (pkgs.discord.override {
+      # remove any overrides that you don't want
+      withOpenASAR = true;
+      withVencord = true;
+    })
+  ];
 
   # Enable home-manager and git
   programs.home-manager.enable = true;
