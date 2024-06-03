@@ -18,7 +18,7 @@
   home-manager = {
     extraSpecialArgs = { inherit inputs outputs; };
     users = {
-      isaac = import ../../home-manager/home.nix;
+      isaac = import ../home-manager/home.nix;
     };
   };
 
@@ -68,6 +68,13 @@
     packages = with pkgs; [];
   };
 
+  # nix-ld
+  programs.nix-ld.enable = true;
+  programs.nix-ld.libraries = with pkgs; [
+    openal
+    libpulseaudio
+  ];
+
   # Allow unfree packages
   nixpkgs = {
     # You can add overlays here
@@ -92,6 +99,31 @@
       # Disable if you don't want unfree packages
       allowUnfree = true;
     };
+  };
+
+  programs.hyprland.enable = true;
+
+  # udisk2
+  services.udisks2.enable = true;
+
+  # audio
+  sound.enable = true;
+  nixpkgs.config.pulseaudio = true;
+  hardware.pulseaudio.enable = true;
+
+  #fonts
+  fonts = {
+    enableDefaultPackages = true;
+    packages = with pkgs; [
+      (nerdfonts.override { fonts = [ "FiraCode" ]; })
+    ];
+  };
+
+  # geoclue2
+  services.avahi.enable = true;
+  services.geoclue2 = {
+    enable = true;
+    enableWifi = true;
   };
 
   nix = let
@@ -138,7 +170,6 @@
      # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
      nix-prefetch
      nix-prefetch-github
-     ranger
   ];
 
   # Some programs need SUID wrappers, can be configured further or are

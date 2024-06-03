@@ -28,6 +28,7 @@
       # (vaapiIntel.override {
       #   enableHybridCodec = true;
       # })
+      libopenal
       vaapiIntel
       vaapiVdpau
       libvdpau-va-gl
