@@ -76,10 +76,6 @@
       withVencord = true;
     })
 
-    (pkgs.atlauncher.override {
-      jre = temurin-jre-bin;
-    })
-
     prismlauncher
   ];
 
