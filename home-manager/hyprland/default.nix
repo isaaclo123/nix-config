@@ -40,6 +40,12 @@
         kb_options="ctrl:nocaps";
       };
 
+      # Move/resize windows with mainMod + LMB/RMB and dragging
+      bindm = [
+        "$mod, mouse:272, movewindow"
+        "$mod, mouse:273, resizewindow"
+      ];
+
       bind = [
         "$mod, D, exec, pkill wofi || wofi --show=drun --normal-window"
         "$mod, RETURN, exec, $terminal"
