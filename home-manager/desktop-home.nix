@@ -77,6 +77,9 @@
     })
 
     prismlauncher
+
+    pavucontrol
+    htop
   ];
 
   # Enable home-manager and git

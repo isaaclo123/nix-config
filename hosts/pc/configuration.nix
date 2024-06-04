@@ -30,4 +30,6 @@
   networking.hostName = "pc"; # Define your hostname.
   # Enable automatic login for the user.
   services.getty.autologinUser = "isaac";
+
+  services.hardware.openrgb.enable = true;
 }
