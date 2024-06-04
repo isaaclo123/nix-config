@@ -10,17 +10,17 @@
   pkgs,
   ...
 }: {
-  imports =
-    [ # Include the results of the hardware scan.
-      inputs.home-manager.nixosModules.home-manager
-    ];
+  # imports =
+  #   [ # Include the results of the hardware scan.
+  #     inputs.home-manager.nixosModules.home-manager
+  #   ];
 
-  home-manager = {
-    extraSpecialArgs = { inherit inputs outputs; };
-    users = {
-      isaac = import ../home-manager/home.nix;
-    };
-  };
+  # home-manager = {
+  #   extraSpecialArgs = { inherit inputs outputs; };
+  #   users = {
+  #     isaac = import ../home-manager/home.nix;
+  #   };
+  # };
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;

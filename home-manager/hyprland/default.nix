@@ -1,11 +1,23 @@
-{ pkgs, ...}: {
+{ pkgs, lib, specialArgs, ...}: 
+let
+  inherit (specialArgs) monitors;
+in
+{
   home.packages = with pkgs; [wofi brightnessctl];
 
   wayland.windowManager.hyprland = {
     enable = true;
 
     settings = {
-      monitor = ",preferred,auto,auto";
+      monitor = if monitors then (map
+        (m:
+          let
+            resolution = "${toString m.width}x${toString m.height}@${toString m.refreshRate}";
+            position  = "${toString m.x}x${toString m.y}";
+          in
+          "${m.name},${resolution},${position},1"
+        )
+        (monitors)) else ",preferred,auto,auto";
 
       # unscale XWayland
       xwayland = {

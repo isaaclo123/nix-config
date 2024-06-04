@@ -75,6 +75,14 @@
           stylix.nixosModules.stylix
         ];
       };
+      pc = nixpkgs.lib.nixosSystem {
+        specialArgs = {inherit inputs outputs;};
+        modules = [
+          # > Our main nixos configuration file <
+          ./hosts/pc/configuration.nix
+          stylix.nixosModules.stylix
+        ];
+      };
     };
   };
 }

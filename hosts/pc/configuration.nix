@@ -15,36 +15,19 @@
       ./hardware-configuration.nix
       ../../nixos/desktop-configuration.nix
       ../../nixos/opengl/default.nix
-      ../../nixos/nvidia/default.nix
       ../../nixos/steam/default.nix
       ../../nixos/stylix/default.nix
       ./home.nix
     ];
 
-  # asusd
-  services.asusd = {
-    enable = true;
-    enableUserService = true;
-  };
-
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.initrd.kernelModules = [ "amdgpu" "nvidia" ];
-  services.xserver.videoDrivers = ["amdgpu" "nvidia"];
+  boot.initrd.kernelModules = [ "amdgpu" ];
+  services.xserver.videoDrivers = ["amdgpu" ];
 
-  hardware.nvidia.prime = {
-    offload = {
-      enable = true;
-      enableOffloadCmd = true;
-    };
-
-    amdgpuBusId = "PCI:4:0:0";
-    nvidiaBusId = "PCI:1:0:0";
-  };
-
-  boot.initrd.luks.devices."luks-ab9fcfa9-f400-4fe0-8c38-5eca10042f29".device = "/dev/disk/by-uuid/ab9fcfa9-f400-4fe0-8c38-5eca10042f29";
-  networking.hostName = "zephyrus-g14"; # Define your hostname.
+  boot.initrd.luks.devices."luks-31e8f9c7-09f0-413b-932e-5bf095de9716".device = "/dev/disk/by-uuid/31e8f9c7-09f0-413b-932e-5bf095de9716";
+  networking.hostName = "pc"; # Define your hostname.
   # Enable automatic login for the user.
   services.getty.autologinUser = "isaac";
 }
