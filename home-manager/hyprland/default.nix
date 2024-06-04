@@ -1,6 +1,6 @@
 { pkgs, lib, specialArgs, ...}: 
 let
-  monitors = specialArgs?monitors;
+  inherit (specialArgs) monitors;
 in
 {
   home.packages = with pkgs; [wofi brightnessctl];
@@ -9,7 +9,7 @@ in
     enable = true;
 
     settings = {
-      monitor = if monitors then (map
+      monitor = if specialArgs?monitors then (map
         (m:
           let
             resolution = "${toString m.width}x${toString m.height}@${toString m.refreshRate}";
