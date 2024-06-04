@@ -15,6 +15,8 @@
   programs.ssh = {
     enable = true;
     extraConfig = ''
+      AddKeysToAgent yes
+
       Host work
         HostName github.com
         user git

@@ -1,4 +1,12 @@
 { pkgs, inputs, ...}: {
+
+  home.sessionVariables = {
+    DIRENV_WARN_TIMEOUT = 0;
+  };
+  programs.direnv = {
+    enable = true;
+  };
+
   programs.fish = {
     enable = true;
 

@@ -12,6 +12,12 @@
     # nix-hardware
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 
+    # nix-hardware
+    # nix-ld-rs = {
+    #   url = "github:nix-community/nix-ld-rs/main";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
+
     # Home manager
     home-manager.url = "github:nix-community/home-manager/release-23.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";

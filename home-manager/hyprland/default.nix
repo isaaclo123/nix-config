@@ -7,7 +7,7 @@ in
     ./waybar/default.nix
   ];
 
-  home.packages = with pkgs; [tofi brightnessctl];
+  home.packages = with pkgs; [wofi brightnessctl];
 
   wayland.windowManager.hyprland = {
     enable = true;
@@ -68,7 +68,7 @@ in
       ];
 
       bind = [
-        "$mod, D, exec, pkill tofi-drun || tofi-drun"
+        "$mod, D, exec, pkill wofi || wofi --show=drun"
         "$mod, RETURN, exec, $terminal"
         "$mod SHIFT, Q, killactive"
         "$mod CTRL, E, exit"

@@ -26,6 +26,7 @@
 	    smarttab = true;
 	    colorcolumn = "100";
       # "&t_ut" = 0; # kitty option
+      termguicolors = true;
     };
   };
 }

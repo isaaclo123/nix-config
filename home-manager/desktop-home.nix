@@ -27,7 +27,9 @@
     ./ranger/default.nix
     ./password-store/default.nix
     ./gpg/default.nix
+    ./nodejs/default.nix
     ./mpv/default.nix
+    ./python/default.nix
     ./udiskie/default.nix
     ./gammastep/default.nix
     ./git/default.nix
@@ -81,6 +83,8 @@
 
     pavucontrol
     htop
+
+    awscli2
   ];
 
   # Enable home-manager and git

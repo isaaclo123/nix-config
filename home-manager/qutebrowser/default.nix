@@ -1,4 +1,20 @@
 { pkgs, ...}: {
+  xdg.mimeApps = {
+    enable = true;
+    
+    defaultApplications = {
+      "text/html" = "org.qutebrowser.qutebrowser.desktop";
+      "x-scheme-handler/http" = "org.qutebrowser.qutebrowser.desktop";
+      "x-scheme-handler/https" = "org.qutebrowser.qutebrowser.desktop";
+      "x-scheme-handler/about" = "org.qutebrowser.qutebrowser.desktop";
+      "x-scheme-handler/unknown" = "org.qutebrowser.qutebrowser.desktop";
+    };
+  };
+
+  home.sessionVariables = {
+    BROWSER = "qutebrowser";
+  };
+
   programs.qutebrowser = 
     let user-content-css = pkgs.fetchurl {
       url = "https://www.gozer.org/mozilla/ad_blocking/css/ad_blocking.css";
@@ -44,7 +60,7 @@
 
     aliases = {
       "tor-cycle" = "config-cycle -t -p content.proxy http://0.0.0.0:8118/ system";
-      "qute-pass" = "spawn --userscript ${pkgs.qutebrowser}/share/qutebrowser/userscripts/qute-pass -d 'tofi-run'";
+      "qute-pass" = "spawn --userscript ${pkgs.qutebrowser}/share/qutebrowser/userscripts/qute-pass -d 'wofi --show=dmenu'";
       "password-fill" = "spawn --userscript ${pkgs.qutebrowser}/share/qutebrowser/userscripts/password_fill";
     };
 

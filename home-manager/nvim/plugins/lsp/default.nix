@@ -14,18 +14,29 @@
           bashls.enable = true;
           clangd.enable = true;
           nixd.enable = true;
+
           pyright.enable = true;
           pylsp.enable = true;
+
           rust-analyzer.enable = true;
           tsserver.enable = true;
         };
-        keymaps.lspBuf = {
-          "gd" = "definition";
-          "gD" = "references";
-          # "gt" = "type_definition";
-          # "gd" = "type_definition";
-          "gi" = "implementation";
-          "K" = "hover";
+        keymaps = {
+          silent = true;
+          diagnostic = {
+            # Navigate in diagnostics
+            "g[" = "goto_prev";
+            "g]" = "goto_next";
+          };
+
+          lspBuf = {
+            gd = "definition";
+            gD = "references";
+            gI = "type_definition";
+            gi = "implementation";
+            K = "hover";
+            "<F2>" = "rename";
+          };
         };
       };
       # lsp-lines = {
@@ -33,11 +44,6 @@
       #   currentLine = false;
       # };
       rust-tools.enable = true;
-
-      lspkind = {
-        enable = true;
-        cmp.enable = true;
-      };
     };
   };
 }

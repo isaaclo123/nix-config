@@ -5,6 +5,7 @@
       confirm_os_window_close 0
       single-instance 1
     '';
+    shellIntegration.enableFishIntegration = true;
   };
 
   home.sessionVariables = {

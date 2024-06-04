@@ -203,7 +203,7 @@ in
             config.bind(',', 'spawn mpv-window-open {url}')
 
             # pass settings
-            c.aliases["qute-pass"] = "spawn --userscript ${pkgs.qutebrowser}/share/qutebrowser/userscripts/qute-pass -d 'rofi ${rofi.args} -dmenu'"
+            c.aliases["qute-pass"] = "spawn --userscript ${pkgs.qutebrowser}/share/qutebrowser/userscripts/qute-pass -d 'wofi --show=dmenu ${rofi.args} -dmenu'"
             config.bind('<z><l>', 'qute-pass')
             config.bind('<z><u><l>', 'qute-pass --username-only')
             config.bind('<z><p><l>', 'qute-pass --password-only')
