@@ -44,7 +44,7 @@
 
     aliases = {
       "tor-cycle" = "config-cycle -t -p content.proxy http://0.0.0.0:8118/ system";
-      "qute-pass" = "spawn --userscript ${pkgs.qutebrowser}/share/qutebrowser/userscripts/qute-pass -d 'wofi -show=dmenu'";
+      "qute-pass" = "spawn --userscript ${pkgs.qutebrowser}/share/qutebrowser/userscripts/qute-pass -d 'tofi-run'";
       "password-fill" = "spawn --userscript ${pkgs.qutebrowser}/share/qutebrowser/userscripts/password_fill";
     };
 

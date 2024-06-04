@@ -3,7 +3,11 @@ let
   inherit (specialArgs) monitors;
 in
 {
-  home.packages = with pkgs; [wofi brightnessctl];
+  imports = [
+    ./waybar/default.nix
+  ];
+
+  home.packages = with pkgs; [tofi brightnessctl];
 
   wayland.windowManager.hyprland = {
     enable = true;
@@ -18,6 +22,11 @@ in
           "${m.name},${resolution},${position},1"
         )
         (monitors)) else ",preferred,auto,auto";
+
+      #autostart
+      exec-once = [
+        "waybar"
+      ];
 
       # unscale XWayland
       xwayland = {
@@ -59,7 +68,7 @@ in
       ];
 
       bind = [
-        "$mod, D, exec, pkill wofi || wofi --show=drun --normal-window"
+        "$mod, D, exec, pkill tofi-drun || tofi-drun"
         "$mod, RETURN, exec, $terminal"
         "$mod SHIFT, Q, killactive"
         "$mod CTRL, E, exit"

@@ -1,0 +1,24 @@
+{
+  pkgs,
+  ...
+}: {
+  programs.git = {
+    enable = true;
+    userName = "isaaclo123";
+    userEmail = "isaaclo123@gmail.com";
+  };
+
+  programs.gh = {
+    enable = true;
+  };
+
+  programs.ssh = {
+    enable = true;
+    extraConfig = ''
+      Host work
+        HostName github.com
+        user git
+        IdentityFile ~/.ssh/work_rsa
+    '';
+  };
+}

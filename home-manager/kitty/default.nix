@@ -8,6 +8,6 @@
   };
 
   home.sessionVariables = {
-    TERM = "xterm-kitty";
+    TERM = "xterm-256color";
   };
 }

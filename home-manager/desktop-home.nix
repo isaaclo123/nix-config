@@ -30,6 +30,7 @@
     ./mpv/default.nix
     ./udiskie/default.nix
     ./gammastep/default.nix
+    ./git/default.nix
   ];
 
   nixpkgs = {
@@ -84,12 +85,6 @@
 
   # Enable home-manager and git
   programs.home-manager.enable = true;
-
-  programs.git = {
-    enable = true;
-    userName = "isaaclo123";
-    userEmail = "isaaclo123@gmail.com";
-  };
 
 
   programs.nix-index =
