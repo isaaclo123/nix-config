@@ -1,6 +1,6 @@
 { pkgs, lib, specialArgs, ...}: 
 let
-  inherit (specialArgs) monitors;
+  monitors = specialArgs?monitors;
 in
 {
   home.packages = with pkgs; [wofi brightnessctl];
