@@ -14,7 +14,11 @@
   programs.pyenv.enable = true;
 
   home.packages = with pkgs; [
-    python3
+    # python3
+    (pkgs.writeShellScriptBin "python" ''
+      export LD_LIBRARY_PATH=$NIX_LD_LIBRARY_PATH
+      exec ${pkgs.python3}/bin/python "$@"
+    '')
     python311Packages.pip
     pipenv
 

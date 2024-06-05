@@ -7,6 +7,9 @@
       "shift+h" = "script-binding sponsorblock/downvote_segment";
       "S" = "screenshot window";
       "g" = "script-message playlist-view-toggle";
+      "f" = "script-binding quality_menu/video_formats_toggle";
+      "Alt+f" = "script-binding quality_menu/audio_formats_toggle";
+      "Ctrl+r" = "script-binding quality_menu/reload";
     };
   };
 }

@@ -75,6 +75,14 @@
             modes = ["i" "s"];
             action = "cmp.mapping.select_prev_item()";
           };
+          "<Down>" = {
+            modes = ["i" "s"];
+            action = "cmp.mapping.select_next_item()";
+          };
+          "<Up>" = {
+            modes = ["i" "s"];
+            action = "cmp.mapping.select_prev_item()";
+          };
           "<CR>" = "cmp.mapping.confirm({ select = true })";
         };
 

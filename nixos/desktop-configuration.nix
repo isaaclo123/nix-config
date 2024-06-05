@@ -64,7 +64,7 @@
   users.users.isaac = {
     isNormalUser = true;
     description = "Isaac Lo";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "docker" ];
     packages = with pkgs; [];
   };
 
@@ -228,6 +228,8 @@
   };
 
   virtualisation.waydroid.enable = true;
+
+  virtualisation.docker.enable = true;
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget

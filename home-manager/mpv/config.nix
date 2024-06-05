@@ -11,7 +11,10 @@
       # Video output
 
       osc=false; # disable osc for custom osc
-      script-opts="osc-layout=slimbox,ytdl_hook-ytdl_path=${pkgs.yt-dlp}/bin/yt-dlp";
+      osc-bar=false;
+      border=false;
+      video-sync="display-resample";
+      script-opts="ytdl_hook-ytdl_path=${pkgs.yt-dlp}/bin/yt-dlp";
 
       x11-bypass-compositor=true; # bypass compositor
       demuxer-thread=true;
