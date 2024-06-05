@@ -32,7 +32,9 @@
     ./python/default.nix
     ./udiskie/default.nix
     ./gammastep/default.nix
+    ./email/default.nix
     ./git/default.nix
+    ./pkgs.nix
   ];
 
   nixpkgs = {
@@ -72,20 +74,6 @@
 
   # Add stuff for your user as you see fit:
   # programs.neovim.enable = true;
-  home.packages = with pkgs; [
-    (pkgs.discord.override {
-      # remove any overrides that you don't want
-      withOpenASAR = true;
-      withVencord = true;
-    })
-
-    prismlauncher
-
-    pavucontrol
-    htop
-
-    awscli2
-  ];
 
   # Enable home-manager and git
   programs.home-manager.enable = true;

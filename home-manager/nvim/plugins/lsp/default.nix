@@ -25,13 +25,11 @@
           silent = true;
           diagnostic = {
             # Navigate in diagnostics
-            "g[" = "goto_prev";
-            "g]" = "goto_next";
+            "d[" = "goto_prev";
+            "d]" = "goto_next";
           };
 
           lspBuf = {
-            gd = "definition";
-            gD = "references";
             gI = "type_definition";
             gi = "implementation";
             K = "hover";

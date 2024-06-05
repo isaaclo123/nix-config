@@ -10,9 +10,10 @@
   pkgs,
   ...
 }: {
-  # imports =
-  #   [ # Include the results of the hardware scan.
-  #   ];
+  imports =
+    [ # Include the results of the hardware scan.
+      aagl/default.nix
+    ];
 
   # home-manager = {
   #   extraSpecialArgs = { inherit inputs outputs; };
@@ -185,17 +186,20 @@
     enableWifi = true;
   };
 
+  programs.anime-game-launcher.enable = true;
+
   nix = let
     flakeInputs = lib.filterAttrs (_: lib.isType "flake") inputs;
   in {
-    settings = {
+    settings = lib.mkMerge [{
       # Enable flakes and new 'nix' command
       experimental-features = "nix-command flakes";
       # Opinionated: disable global registry
       flake-registry = "";
       # Workaround for https://github.com/NixOS/nix/issues/9574
       nix-path = config.nix.nixPath;
-    };
+    }
+    ];
     # Opinionated: disable channels
     channel.enable = false;
 
@@ -222,6 +226,8 @@
       Defaults timestamp_timeout=60
     '';
   };
+
+  virtualisation.waydroid.enable = true;
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
