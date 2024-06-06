@@ -27,5 +27,8 @@
 
     fastfetch
     mangohud
+
+    gnome.cheese
+    wget
   ];
 }

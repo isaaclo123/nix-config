@@ -49,17 +49,14 @@ let create-account = folder: email: signature: (pkgs.writeText folder ''
 
       ".muttrc".text =
         let signature = (pkgs.writeText "sig" ''
-
           Isaac Lo
-
-          Software Developer, Cognizant
-          1(650)-503-1253
         ''); in
 
         # accounts
         let
           personal = create-account "Personal" "isaaclo123@gmail.com" signature;
           school = create-account "School" "loxxx298@umn.edu" signature;
+          work = create-account "Work" "isaac.lo@umn.edu" signature;
         in ''
           # editor settings
 

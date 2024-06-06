@@ -91,12 +91,6 @@ in
         "$mod SHIFT, j, movewindow, d"
         "$mod SHIFT, l, movewindow, r"
 
-	# resize window 
-        "$mod ALT, l, resizeactive, 10 0"
-        "$mod ALT, h, resizeactive, -10 0"
-        "$mod ALT, k, resizeactive, 0 -10"
-        "$mod ALT, j, resizeactive, 0 10"
-
 	# workspace
 	"$mod, 1, workspace, 1"
 	"$mod, 2, workspace, 2"
@@ -127,6 +121,12 @@ in
       ];
 
       bindel = [
+       	# resize window 
+        "$mod ALT, l, resizeactive, 10 0"
+        "$mod ALT, h, resizeactive, -10 0"
+        "$mod ALT, k, resizeactive, 0 -10"
+        "$mod ALT, j, resizeactive, 0 10"
+
         # zephyrus-g14
         ", XF86MonBrightnessUp, exec, brightnessctl s 10%+"
         ", XF86MonBrightnessDown, exec, brightnessctl s 10%-"
@@ -138,7 +138,6 @@ in
 
         ", XF86AudioRaiseVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"
         ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
-
       ];
 
       bindl = [

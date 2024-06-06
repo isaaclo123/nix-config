@@ -22,12 +22,12 @@
       ytdl=true;
 
       # Force starting with centered window
-      geometry="50%:50%";
-      autofit-larger="60%x60%";
-      autofit-smaller="10%x10%";
+      # geometry="50%:50%";
+      # autofit-larger="60%x60%";
+      # autofit-smaller="10%x10%";
 
       # Keep the player window on top of all other windows.
-      ontop=true;
+      # ontop=false;
 
       # Keep open
       keep-open=true;

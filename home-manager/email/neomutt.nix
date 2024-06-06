@@ -45,7 +45,7 @@ let create-account = folder: email: signature: (pkgs.writeText folder ''
 
         Isaac Lo
 
-        Software Developer, Cognizant
+        Software Developer, Classranked 
         1(650)-503-1253
       ''); in
 
@@ -53,14 +53,15 @@ let create-account = folder: email: signature: (pkgs.writeText folder ''
       let
         personal = create-account "Personal" "isaaclo123@gmail.com" signature;
         school = create-account "School" "loxxx298@umn.edu" signature;
+        work = create-account "Work" "isaac.lo@classranked.com" signature;
       in ''
         # editor settings
 
-        # set editor="vim \"+set spell colorcolumn=80\" +/^$/ -c \"noh\" -c \"+set tw=80\""
+        # set editor="nvim \"+set spell colorcolumn=80\" +/^$/ -c \"noh\" -c \"+set tw=80\""
         # set postpone=no
 
         set folder = ~/.mail
-        set editor="vim"
+        set editor="nvim"
         set edit_headers = yes
         set autoedit
         set auto_tag = yes
@@ -294,6 +295,7 @@ let create-account = folder: email: signature: (pkgs.writeText folder ''
         # Macros for switching accounts
         macro index,pager <f1> '<sync-mailbox><enter-command>source ${personal}<enter><change-folder>!<enter>'
         macro index,pager <f2> '<sync-mailbox><enter-command>source ${school}<enter><change-folder>!<enter>'
+        macro index,pager <f3> '<sync-mailbox><enter-command>source ${work}<enter><change-folder>!<enter>'
 
         # Macros for khard
         set query_command= "khard email --parsable %s"

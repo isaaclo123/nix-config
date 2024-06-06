@@ -6,6 +6,9 @@
     enable = true;
     userName = "isaaclo123";
     userEmail = "isaaclo123@gmail.com";
+    extraConfig = {
+      push.autoSetupRemove = true;
+    };
   };
 
   programs.gh = {

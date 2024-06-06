@@ -30,6 +30,8 @@
           };
 
           lspBuf = {
+            gd = "definition";
+            gD = "references";
             gI = "type_definition";
             gi = "implementation";
             K = "hover";

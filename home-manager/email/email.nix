@@ -111,6 +111,7 @@ let
 
     notify "Personal"
     notify "School"
+    notify "Work"
   '');
 in
 
@@ -131,6 +132,12 @@ in
   #   NOTMUCH_CONFIG = notmuch-config;
   # };
 
+
+  home.file.".local/oauth2/mutt_oauth2.py" = {
+    text = (builtins.readFile ./mutt_oauth2.py);
+    executable = true;
+  };
+
   accounts.email = {
     maildirBasePath = maildir;
     accounts = {
@@ -138,7 +145,8 @@ in
         realName = "Isaac Lo";
         userName = "isaaclo123@gmail.com";
         accountName = "Personal";
-        passPath = "google.com/isaaclo123@gmail.com";
+        # passPath = "google.com/isaaclo123@gmail.com";
+        passPath = "gmail-personal-app";
         primary = true;
         imap = gmail-imap;
         smtp = gmail-smtp;
@@ -148,11 +156,44 @@ in
         realName = "Isaac Lo";
         userName = "loxxx298@umn.edu";
         accountName = "School";
-        passPath = "umn.edu/loxxx298@umn.edu";
+        # passPath = "umn.edu/loxxx298@umn.edu";
+        passPath = "gmail-school-app";
         primary = false;
         imap = gmail-imap;
         smtp = gmail-smtp;
       };
+
+      "Work" = lib.mkMerge [(create-account {
+        realName = "Isaac Lo";
+        userName = "isaac.lo@classranked.com";
+        accountName = "Work";
+        # passPath = "google.com/isaaclo123@gmail.com";
+        passPath = "microsoft-work-pass";
+        primary = false;
+        imap = {
+          host = "outlook.office365.com";
+          port = 993;
+          tls = {
+            enable = true;
+            useStartTls = false;
+          };
+        };
+        smtp = {
+          host = "smtp-mail.outlook.com";
+          port = 587;
+          tls = {
+            enable = true;
+            useStartTls = true;
+          };
+        };
+      })
+      {
+        passwordCommand = lib.mkForce "$HOME/.local/oauth2/mutt_oauth2.py $HOME/.local/oauth2/work-token";
+        mbsync.extraConfig.account = {
+          AuthMechs = "XOAUTH2";
+        };
+      }
+      ];
     };
   };
 
@@ -194,6 +235,7 @@ in
 
     mbsync = {
       enable = true;
+      package = pkgs.isync.override { withCyrusSaslXoauth2 = true; };
     };
 
     msmtp = {
