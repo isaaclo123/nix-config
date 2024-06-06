@@ -1,6 +1,11 @@
 #!/usr/bin/env python
 # https://www.vanormondt.net/~peter/blog/2021-03-16-mutt-office365-mfa.html
+# https://www.dcs.gla.ac.uk/~jacobd/posts/2022/03/configure-mutt-to-work-with-oauth-20/
 #
+# to authorize, do
+#./mutt_oauth2.py School-token --verbose --authorize
+# Preferred Oauth2 flow: localhostauthcode
+
 # Mutt OAuth2 token management script, version 2020-08-07
 # Written against python 3.7.3, not tried with earlier python versions.
 #
@@ -60,8 +65,8 @@ registrations = {
         'smtp_endpoint': 'smtp.gmail.com',
         'sasl_method': 'OAUTHBEARER',
         'scope': 'https://mail.google.com/',
-        'client_id': '',
-        'client_secret': '',
+        'client_id': '406964657835-aq8lmia8j95dhl1a2bvharmfk3t1hgqj.apps.googleusercontent.com',
+        'client_secret': 'kSmqreRr0qwBWJgbf5Y-PjSU',
     },
     'microsoft': {
         'authorize_endpoint': 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize',

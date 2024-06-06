@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 let
-  notmuch-config = "$.config/notmuch/notmuchrc";
+  notmuch-config = ".config/notmuch/notmuchrc";
   maildir = ".mail";
 in
 
@@ -23,31 +23,38 @@ let
       useStartTls = true;
     };
   };
+in
 
-  # microsoft-imap = {
-  #   host = "outlook.office365.com";
-  #   port = 993;
-  #   tls = {
-  #     enable = true;
-  #     # useStartTls = true;
-  #   };
-  # };
+let
+  mbsync-pkg = pkgs.isync.override { withCyrusSaslXoauth2 = true; };
 
-  # microsoft-smtp = {
-  #   host = "smtp.office365.com";
-  #   port = 587;
-  #   tls = {
-  #     enable = true;
-  #     useStartTls = true;
-  #   };
-  # };
+  notify-mail = (pkgs.writeShellScriptBin "notify-mail" ''
+    notify () {
+      ACCOUNTNAME=$1
+      COUNT=$(/bin/find "${maildir}/$ACCOUNTNAME/Inbox/new" -type f | wc -l)
+
+      if [ $COUNT -ge 1 ]; then
+        ${pkgs.libnotify}/bin/notify-send \
+          "You have $COUNT unread mails"
+        # -i icon.path/categories/applications-mail.svg $ACCOUNTNAME \
+      fi
+    }
+
+    notify "Personal"
+    notify "School"
+    notify "Work"
+  '');
+
+  mail-sync = (pkgs.writeShellScriptBin "mail-sync" ''
+    ${mbsync-pkg}/bin/mbsync -a
+    ${pkgs.notmuch}/bin/notmuch --config=${notmuch-config} new
+  '');
 in
 
 let create-account = {
   realName,
   userName,
   accountName,
-  passPath,
   primary,
   imap,
   smtp
@@ -67,19 +74,14 @@ let create-account = {
   imap = imap;
   smtp = smtp;
 
-  # imapnotify = {
-  #   enable = true;
-  #   boxes = [ "Inbox" ];
-  #   onNotify = "${pkgs.isync}/bin/mbsync ${accountName}";
-  #   onNotifyPost = {
-  #     mail =
-  #       "${pkgs.notmuch}/bin/notmuch --config=${notmuch-config} new && " +
-  #       "${pkgs.afew}/bin/afew -t -n --notmuch-config=${notmuch-config} && " +
-  #       "${pkgs.libnotify}/bin/notify-send -i ${icon.path}/categories/applications-mail.svg '${accountName}' \"You have $(${config.system.path}/bin/find '${maildir}/${accountName}/Inbox/new' -type f | ${config.system.path}/bin/wc -l) unread mails\"";
-  #   };
-  # };
+  imapnotify = {
+    enable = true;
+    boxes = [ "Inbox" ];
+    onNotify = "${mbsync-pkg}/bin/mbsync ${accountName}";
+    onNotifyPost = "notmuch --config=${notmuch-config} new";
+  };
 
-  passwordCommand = "${pkgs.pass}/bin/pass show ${passPath} | head -n1";
+  passwordCommand = lib.mkForce "$HOME/.local/oauth2/mutt_oauth2.py $HOME/.local/oauth2/${accountName}-token";
 
   mbsync = {
     enable = true;
@@ -89,41 +91,21 @@ let create-account = {
       "*"
       "!Travel"
     ];
+    extraConfig.account = {
+      AuthMechs = "XOAUTH2";
+    };
   };
 
   notmuch.enable = true;
   msmtp.enable = true;
-}; in
-
-
-let
-  notify-mail = (pkgs.writeShellScriptBin "notify-mail" ''
-    notify () {
-      ACCOUNTNAME=$1
-      COUNT=$(/bin/find "${maildir}/$ACCOUNTNAME/Inbox/new" -type f | wc -l)
-
-      if [ $COUNT -ge 1 ]; then
-        ${pkgs.libnotify}/bin/notify-send \
-          "You have $COUNT unread mails"
-        # -i icon.path/categories/applications-mail.svg $ACCOUNTNAME \
-      fi
-    }
-
-    notify "Personal"
-    notify "School"
-    notify "Work"
-  '');
+};
 in
 
 {
   home.packages = with pkgs;
-    let mail-sync = (writeShellScriptBin "mail-sync" ''
-      # ${pkgs.libnotify}/bin/notify-send -i icon.path/categories/applications-mail.svg 'Mail Syncing'
-      ${pkgs.isync}/bin/mbsync -a &> /dev/null &&
-      ${pkgs.notmuch}/bin/notmuch --config=${notmuch-config} new &> /dev/null
-    ''); in [
+    [
       (mail-sync)
-      # (notify-mail)
+      (notify-mail)
     ];
     # ${pkgs.libnotify}/bin/notify-send -i icon.path/categories/applications-mail.svg 'Mail Synced!'
     # ${pkgs.afew}/bin/afew -t -n --notmuch-config=${notmuch-config} &> /dev/null &&
@@ -145,8 +127,6 @@ in
         realName = "Isaac Lo";
         userName = "isaaclo123@gmail.com";
         accountName = "Personal";
-        # passPath = "google.com/isaaclo123@gmail.com";
-        passPath = "gmail-personal-app";
         primary = true;
         imap = gmail-imap;
         smtp = gmail-smtp;
@@ -156,19 +136,15 @@ in
         realName = "Isaac Lo";
         userName = "loxxx298@umn.edu";
         accountName = "School";
-        # passPath = "umn.edu/loxxx298@umn.edu";
-        passPath = "gmail-school-app";
         primary = false;
         imap = gmail-imap;
         smtp = gmail-smtp;
       };
 
-      "Work" = lib.mkMerge [(create-account {
+      "Work" = create-account {
         realName = "Isaac Lo";
         userName = "isaac.lo@classranked.com";
         accountName = "Work";
-        # passPath = "google.com/isaaclo123@gmail.com";
-        passPath = "microsoft-work-pass";
         primary = false;
         imap = {
           host = "outlook.office365.com";
@@ -186,20 +162,11 @@ in
             useStartTls = true;
           };
         };
-      })
-      {
-        passwordCommand = lib.mkForce "$HOME/.local/oauth2/mutt_oauth2.py $HOME/.local/oauth2/work-token";
-        mbsync.extraConfig.account = {
-          AuthMechs = "XOAUTH2";
-        };
-      }
-      ];
+      };
     };
   };
 
   services = {
-    # imapnotify.enable = true;
-
     mbsync = {
       enable = true;
       frequency = "hourly";
@@ -223,8 +190,7 @@ in
       enable = true;
       new.tags = [ "new" "unread" ];
       hooks = {
-        postNew = "${pkgs.afew}/bin/afew -t -n --notmuch-config=${notmuch-config}; ${notify-mail}/bin/notify-mail";# +
-          # "${pkgs.libnotify}/bin/notify-send -i icon.path/categories/applications-mail.svg '${accountName}' \"You have $(${config.system.path}/bin/find '${maildir}/${accountName}/Inbox/new' -type f | ${config.system.path}/bin/wc -l) unread mails\"";
+        postNew = "${pkgs.afew}/bin/afew -t -n --notmuch-config=${notmuch-config}; ${notify-mail}/bin/notify-mail";
       };
       extraConfig = {
         search = {
@@ -235,7 +201,7 @@ in
 
     mbsync = {
       enable = true;
-      package = pkgs.isync.override { withCyrusSaslXoauth2 = true; };
+      package = mbsync-pkg;
     };
 
     msmtp = {

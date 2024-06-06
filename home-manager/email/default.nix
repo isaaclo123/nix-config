@@ -1,6 +1,6 @@
 { pkgs, ...}: {
   imports = [
     ./email.nix
-    ./neomutt.nix
+    ./neomutt/default.nix
   ];
 }

@@ -1,0 +1,43 @@
+# cancel theme colors
+color index color15 default ~Q
+color index color15 default ~P
+color index color15 default ~T
+color index color15 default ~O
+color index color15 default ~F
+color index color15 default ~N
+
+#(foreground, background)
+
+# add some nice custom coloring to the message list
+# thanks to new neomutt features
+# http://www.mutt.org/doc/manual/#patterns
+# https://neomutt.org/feature/index-color
+color index_subject color12 default "~P !~T !~D"
+color index_author color12 default "~P !~T !~D"
+color index_subject color04 default "~Q !~T !~D"
+color index_author color04 default "~Q !~T !~D"
+
+# ~N new
+color index_subject color06 default "~N !~T !~D"
+color index_author color06 default "~N !~T !~D"
+color index color00 color06 "~N ~T !~D"
+
+color index_subject color02 default "~O !~T !~D"
+color index_author color02 default "~O !~T !~D"
+color index_subject color03 default "~F !~T !~D"
+color index_author color03 default "~F !~T !~D"
+
+color index color00 color03 "~F ~T !~D"
+
+color index_subject bold color03 default "~F ~N !~T !~D"
+color index_author  bold color03 default "~F ~N !~T !~D"
+color index_subject color01 default "~= !~T !~D"
+color index_author color01 default "~= !~T !~D"
+color index_subject bold color12 default "~P ~N !~T !~D"
+color index_author bold color12 default "~P ~N !~T !~D"
+
+# tagged
+color index color00 color07 "~T"
+
+# deleted
+color index color00 color05 "~D"
