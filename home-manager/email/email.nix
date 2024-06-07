@@ -57,7 +57,14 @@ let create-account = {
   primary,
   imap,
   smtp
-}: {
+}: 
+let
+  passScript = pkgs.writeShellScriptBin "pass-script.sh" ''
+    export PATH=$PATH:${pkgs.gnupg}/bin
+    ${pkgs.python3}/bin/python ${config.home.homeDirectory}/.local/share/oauth2/mutt_oauth2.py ${config.home.homeDirectory}/.local/share/oauth2/${accountName}-token
+  '';
+in
+{
   primary = primary;
   realName = realName;
   address = userName;
@@ -90,14 +97,7 @@ let create-account = {
   };
 
   # passwordCommand = "${pkgs.python3}/bin/python ${config.home.homeDirectory}/.local/share/oauth2/mutt_oauth2.py ${config.home.homeDirectory}/.local/share/oauth2/${accountName}-token'";
-  passwordCommand =
-    let
-      passScript = pkgs.writeShellScriptBin "pass-script.sh" ''
-        export PATH=$PATH:${pkgs.gnupg}/bin
-        ${pkgs.python3}/bin/python ${config.home.homeDirectory}/.local/share/oauth2/mutt_oauth2.py ${config.home.homeDirectory}/.local/share/oauth2/${accountName}-token
-      '';
-    in
-      "${pkgs.runtimeShell} ${passScript}/bin/pass-script.sh";
+  passwordCommand = "${pkgs.runtimeShell} ${passScript}/bin/pass-script.sh";
   # passwordCommand = "cat /home/isaac/personaltoken";
 
   mbsync = {
@@ -114,7 +114,13 @@ let create-account = {
   };
 
   notmuch.enable = true;
-  msmtp.enable = true;
+
+  msmtp = {
+    enable = true;
+    extraConfig = {
+      auth = "oauthbearer";
+    };
+  };
 };
 in
 
