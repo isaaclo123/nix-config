@@ -21,6 +21,10 @@
 
       ytdl=true;
 
+      ytdl-format="399[fps<=30]+251/248+251/137+251/398+251/302+251/298+251/247+251/136+251/397+251/244+251/135+251/396+251/243+251/134+251/bestvideo+bestaudio/best";
+      ytdl-raw-options="extractor-args=youtube:'player_client=android'";
+
+
       # Force starting with centered window
       # geometry="50%:50%";
       # autofit-larger="60%x60%";
@@ -112,7 +116,10 @@
       save-position-on-quit=true;
 
       # Uses a large seekable RAM cache even for local input.
-      cache="yes";
+      cache=true;
+      cache-pause=true;
+      cache-pause-wait=1;
+      cache-secs=120;
       # cache-secs=300
       # Uses extra large RAM cache (needs cache=yes to make it useful).
       demuxer-max-bytes="800M";

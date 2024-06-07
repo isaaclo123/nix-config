@@ -93,7 +93,7 @@ let create-account = {
   passwordCommand =
     let
       passScript = pkgs.writeShellScriptBin "pass-script.sh" ''
-        export PATH=$PATH:${pkgs.gnupg}/bin
+        export PATH=$PATH:${pkgs.gnupg}/bin/gpg
         ${pkgs.python3}/bin/python ${config.home.homeDirectory}/.local/share/oauth2/mutt_oauth2.py ${config.home.homeDirectory}/.local/share/oauth2/${accountName}-token
       '';
     in
