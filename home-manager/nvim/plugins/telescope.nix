@@ -5,14 +5,14 @@
   plugins.telescope = {
     enable = true;
     extensions = {
-      file_browser = {
-        enable = true;
-      };
+      # file_browser = {
+      #   enable = true;
+      # };
       fzf-native = {
         enable = true;
       };
     };
-    extensionConfig = {
+    extraOptions = {
       defaults = {
         layout_config = {
           horizontal = {
@@ -21,8 +21,6 @@
         };
         sorting_strategy = "ascending";
       };
-    };
-    extraOptions = {
       pickers = {
         colorscheme = {
           enable_preview = true;

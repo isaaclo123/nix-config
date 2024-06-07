@@ -1,7 +1,7 @@
 { pkgs, ...}: {
   programs.nixvim = {
     extraPlugins = with pkgs.vimPlugins; [
-      suda-vim
+      vim-suda
     ];
 
     globals = {

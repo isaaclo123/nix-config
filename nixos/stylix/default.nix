@@ -1,7 +1,7 @@
 {pkgs, ...}: {
   stylix = {
     polarity = "dark";
-    base16Scheme = "${pkgs.base16-schemes}/share/themes/rose-pine.yaml";
+    # base16Scheme = "${pkgs.base16-schemes}/share/themes/rose-pine.yaml";
 
     image = pkgs.fetchurl {
       url = "https://www.pixelstalk.net/wp-content/uploads/2016/05/Epic-Anime-Awesome-Wallpapers.jpg";

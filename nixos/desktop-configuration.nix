@@ -224,6 +224,7 @@
     enable = true;
     configFile = ''
       Defaults timestamp_timeout=60
+      Defaults !tty_tickets
     '';
   };
 
