@@ -30,9 +30,9 @@
       "colors.webpage.darkmode.enabled" = true;
       "colors.webpage.darkmode.algorithm" = "lightness-cielab";
       "colors.webpage.darkmode.contrast" = 0.5;
-      "colors.webpage.darkmode.policy.images" = "smart";
-      "colors.webpage.darkmode.policy.page" = "smart";
-      "colors.webpage.darkmode.threshold.text" = 150;
+      #"colors.webpage.darkmode.policy.images" = "smart";
+      #"colors.webpage.darkmode.policy.page" = "smart";
+      "colors.webpage.darkmode.threshold.foreground" = 150;
       "colors.webpage.darkmode.threshold.background" = 205;
       "colors.webpage.preferred_color_scheme" = "dark";
       "content.blocking.adblock.lists" = [
