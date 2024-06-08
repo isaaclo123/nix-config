@@ -52,10 +52,10 @@
   };
 
   # Configure keymap in X11
-  services.xserver = {
+  services.xserver.xkb = {
     layout = "us";
-    xkbVariant = "";
-    xkbOptions = "ctrl:nocaps";
+    variant = "";
+    options = "ctrl:nocaps";
   };
 
   console.useXkbConfig = true;
@@ -224,6 +224,7 @@
     enable = true;
     configFile = ''
       Defaults timestamp_timeout=60
+      Defaults !tty_tickets
     '';
   };
 

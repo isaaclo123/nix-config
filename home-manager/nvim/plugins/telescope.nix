@@ -5,14 +5,14 @@
   plugins.telescope = {
     enable = true;
     extensions = {
-      file_browser = {
+      file-browser = {
         enable = true;
       };
       fzf-native = {
         enable = true;
       };
     };
-    extensionConfig = {
+    settings = {
       defaults = {
         layout_config = {
           horizontal = {
@@ -21,8 +21,6 @@
         };
         sorting_strategy = "ascending";
       };
-    };
-    extraOptions = {
       pickers = {
         colorscheme = {
           enable_preview = true;
@@ -38,19 +36,19 @@
     keymaps = {
       "<C-p>" = {
         action = "find_files, {}";
-        desc = "Find project files";
+        options.desc = "Find project files";
       };
       "<leader>g" = {
         action = "live_grep";
-        desc = "Grep (root dir)";
+        options.desc = "Grep (root dir)";
       };
       "<leader>:" = {
         action = "command_history, {}";
-        desc = "Command History";
+        options.desc = "Command History";
       };
       "<leader>b" = {
         action = "buffers, {}";
-        desc = "+buffer";
+        options.desc = "+buffer";
       };
       # "<leader>P" = {
       #   action = "find_files, {}";
@@ -60,7 +58,7 @@
       # };
       "<leader>gg" = {
         action = "live_grep, {}";
-        desc = "Find text";
+        options.desc = "Find text";
       };
       # "<C-p>" = {
       #   action = "git_files, {}";

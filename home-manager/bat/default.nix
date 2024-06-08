@@ -3,7 +3,7 @@
     enable = true;
     config = {
       italic-text="always";
-      theme="base16";
+      # theme="base16";
     };
   };
 }

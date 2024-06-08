@@ -30,5 +30,6 @@
 
     gnome.cheese
     wget
+    killall
   ];
 }

@@ -1,9 +1,9 @@
 { pkgs, ...}: {
   programs.nixvim = {
-    colorschemes.base16.enable = true;
-    colorschemes.base16.colorscheme = "rose-pine";
+    # colorschemes.base16.enable = true;
+    # colorschemes.base16.colorscheme = "rose-pine";
 
-    options = {
+    opts = {
 	    # syn = "sync fromstart";
 	    encoding = "utf-8";
 	    number = true;
