@@ -2,7 +2,6 @@
   programs.nixvim = {
     plugins.tagbar = {
       enable = true;
-      extraConfig = {};
     };
 
     keymaps = [

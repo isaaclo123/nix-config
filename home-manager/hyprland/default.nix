@@ -28,6 +28,10 @@ in
         "waybar"
       ];
 
+      misc = {
+        disable_hyprland_logo = true;
+      };
+
       # unscale XWayland
       xwayland = {
         force_zero_scaling = true;
