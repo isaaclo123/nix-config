@@ -7,7 +7,7 @@ in
     ./waybar/default.nix
   ];
 
-  home.packages = with pkgs; [wofi brightnessctl];
+  home.packages = with pkgs; [wofi brightnessctl wev];
 
   wayland.windowManager.hyprland = {
     enable = true;

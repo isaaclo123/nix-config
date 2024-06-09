@@ -13,6 +13,8 @@
   imports =
     [ # Include the results of the hardware scan.
       aagl/default.nix
+      bluetooth/default.nix
+      pipewire/default.nix
     ];
 
   # home-manager = {
@@ -165,11 +167,6 @@
 
   # udisk2
   services.udisks2.enable = true;
-
-  # audio
-  sound.enable = true;
-  nixpkgs.config.pulseaudio = true;
-  hardware.pulseaudio.enable = true;
 
   #fonts
   fonts = {

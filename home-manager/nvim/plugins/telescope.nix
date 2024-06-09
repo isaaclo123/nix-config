@@ -35,7 +35,7 @@
 
     keymaps = {
       "<C-p>" = {
-        action = "find_files, {}";
+        action = "git_files";
         options.desc = "Find project files";
       };
       "<leader>g" = {
