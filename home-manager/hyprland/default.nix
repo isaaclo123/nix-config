@@ -5,6 +5,8 @@ in
 {
   imports = [
     ./waybar/default.nix
+    ./sway-osd/default.nix
+    ./hyprlock/default.nix
   ];
 
   home.packages = with pkgs; [wofi brightnessctl wev];
@@ -82,6 +84,7 @@ in
         "$mod, S, pseudo" # dwindle
         "$mod, V, togglesplit" # dwindle
 
+        "$mod, DELETE, exec, hyprlock" # sleep
 
 	# move focus
         "$mod, h, movefocus, l"
@@ -142,6 +145,22 @@ in
 
         ", XF86AudioRaiseVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"
         ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
+
+
+        # Sink volume toggle mute
+        ", XF86AudioMute, exec, swayosd-client --output-volume mute-toggle"
+        # Source volume toggle mute
+        ", XF86AudioMicMute, exec, swayosd-client --input-volume mute-toggle"
+        
+        # Volume raise with custom value
+        ", XF86AudioRaiseVolume, exec, swayosd-client --output-volume raise"
+        # Volume lower with custom value
+        ", XF86AudioLowerVolume, exec, swayosd-client --output-volume lower"
+        
+        # Brightness raise
+        ", XF86MonBrightnessUp, exec, swayosd-client --brightness raise"
+        # Brightness lower
+        ", XF86MonBrightnessDown, exec, swayosd-client --brightness lower"
       ];
 
       bindl = [

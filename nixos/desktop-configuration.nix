@@ -15,6 +15,7 @@
       aagl/default.nix
       bluetooth/default.nix
       pipewire/default.nix
+      hyprlock/default.nix
     ];
 
   # home-manager = {
