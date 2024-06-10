@@ -31,5 +31,7 @@
     gnome.cheese
     wget
     killall
+
+    firefox
   ];
 }

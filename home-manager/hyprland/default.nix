@@ -6,10 +6,16 @@ in
   imports = [
     ./waybar/default.nix
     ./sway-osd/default.nix
+    ./wlogout/default.nix
     ./hyprlock/default.nix
+    ./hypridle/default.nix
   ];
 
-  home.packages = with pkgs; [wofi brightnessctl wev];
+  home.packages = with pkgs; [wofi brightnessctl wev hyprshot];
+
+  home.sessionVariables = {
+    HYPRSHOT_DIR = "$HOME/Pictures/Screenshots/";
+  };
 
   wayland.windowManager.hyprland = {
     enable = true;
@@ -74,10 +80,20 @@ in
       ];
 
       bind = [
+        # Screenshot a window
+        "$mod, PRINT, exec, hyprshot -m window"
+        "$mod, END, exec, hyprshot -m window"
+        # Screenshot a monitor
+        ", PRINT, exec, hyprshot -m output"
+        ", END, exec, hyprshot -m output"
+        # Screenshot a region
+        "SHIFT $mod, PRINT, exec, hyprshot -m region"
+        "SHIFT $mod, END, exec, hyprshot -m region"
+
         "$mod, D, exec, pkill wofi || wofi --show=drun"
         "$mod, RETURN, exec, $terminal"
         "$mod SHIFT, Q, killactive"
-        "$mod CTRL, E, exit"
+        "$mod CTRL, E, exec, wlogout"
         "$mod, SPACE, togglefloating"
         "$mod, B, exec, qutebrowser"
         "$mod, F, fullscreen"

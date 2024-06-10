@@ -110,6 +110,8 @@
       config.unbind("D", mode='normal')
       config.unbind(";i", mode='normal')
       config.unbind(";I", mode='normal')
+
+      # c.fonts.default_family = "Operator Mono Medium"
     '';
   };
 }
