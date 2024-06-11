@@ -29,6 +29,7 @@
     ./gpg/default.nix
     ./nodejs/default.nix
     ./mpv/default.nix
+    ./dunst/default.nix
     ./python/default.nix
     ./udiskie/default.nix
     ./gammastep/default.nix
