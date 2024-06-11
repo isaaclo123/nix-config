@@ -78,11 +78,14 @@
   # Enable home-manager and git
   programs.home-manager.enable = true;
 
-
   programs.nix-index =
   {
     enable = true;
     enableFishIntegration = true;
+  };
+
+  services.syncthing = {
+    enable = true;
   };
 
   # Nicely reload system units when changing configs
