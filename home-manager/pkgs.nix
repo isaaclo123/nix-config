@@ -19,9 +19,14 @@
     htop
 
     awscli2
+    ssm-session-manager-plugin
+
+    postman
 
     audacity
     gimp
+
+    unzip
 
     ani-cli
 
@@ -33,5 +38,10 @@
     killall
 
     firefox
+
+    httpie
+    http-prompt
+
+    terraform
   ];
 }

@@ -35,6 +35,7 @@
     ./gammastep/default.nix
     ./email/default.nix
     ./git/default.nix
+    ./zathura/default.nix
     ./pkgs.nix
   ];
 

@@ -15,6 +15,9 @@
     BROWSER = "qutebrowser";
   };
 
+  # clear cookies
+  home.packages = [ pkgs.haskellPackages.bisc ];
+
   programs.qutebrowser = 
     let user-content-css = pkgs.fetchurl {
       url = "https://www.gozer.org/mozilla/ad_blocking/css/ad_blocking.css";

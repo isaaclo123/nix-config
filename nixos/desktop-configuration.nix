@@ -36,6 +36,9 @@
   # Enable networking
   networking.networkmanager.enable = true;
 
+  # printing
+  services.printing.enable = true;
+
   # Set your time zone.
   time.timeZone = "America/Chicago";
 
@@ -179,7 +182,13 @@
   };
 
   # geoclue2
-  services.avahi.enable = true;
+  services.avahi = {
+    enable = true;
+    # printing
+    nssmdns = true;
+    openFirewall = true;
+  };
+
   services.geoclue2 = {
     enable = true;
     enableWifi = true;
