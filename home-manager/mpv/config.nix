@@ -31,8 +31,8 @@
       # autofit-smaller="10%x10%";
 
       # Keep the player window on top of all other windows.
-      fs=true;
-      ontop=false;
+      no-fs=true;
+      no-ontop=true;
 
       # Keep open
       keep-open=true;

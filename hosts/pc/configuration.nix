@@ -17,6 +17,8 @@
       ../../nixos/opengl/default.nix
       ../../nixos/steam/default.nix
       ../../nixos/stylix/default.nix
+      ../../nixos/virt-manager/default.nix
+      ../../nixos/adb/default.nix
       ./home.nix
     ];
 

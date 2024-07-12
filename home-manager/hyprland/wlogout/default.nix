@@ -19,7 +19,7 @@
     {
         label = "logout";
         action = "loginctl terminate-user $USER";
-        text = "Hibernate";
+        text = "Logout";
         keybind = "h";
     }
     {

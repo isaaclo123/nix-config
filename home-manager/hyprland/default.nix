@@ -4,6 +4,7 @@ let
 in
 {
   imports = [
+    ./wofi/default.nix
     ./waybar/default.nix
     ./sway-osd/default.nix
     ./wlogout/default.nix
@@ -11,7 +12,7 @@ in
     ./hypridle/default.nix
   ];
 
-  home.packages = with pkgs; [wofi brightnessctl wev hyprshot];
+  home.packages = with pkgs; [brightnessctl wev hyprshot];
 
   home.sessionVariables = {
     HYPRSHOT_DIR = "$HOME/Pictures/Screenshots/";
@@ -36,8 +37,14 @@ in
         "waybar"
       ];
 
+      general = {
+        border_size = 3;
+      };
+
       misc = {
         disable_hyprland_logo = true;
+        mouse_move_enables_dpms = true;
+        key_press_enables_dpms = true;
       };
 
       # unscale XWayland
@@ -45,9 +52,9 @@ in
         force_zero_scaling = true;
       };
 
-      general = {
-        cursor_inactive_timeout = 10;
-        no_cursor_warps = true;
+      cursor = {
+        inactive_timeout = 10;
+        # no_cursor_warps = true;
       };
 
       env = [
@@ -66,12 +73,17 @@ in
       };
 
       master = {
-      	new_is_master = true;
+      	new_status = "master";
       };
 
       input = {
         kb_options="ctrl:nocaps";
+        scroll_factor="0.2";
       };
+      
+      # windowrule = [
+      #   "center,float,^(mpv)$"
+      # ];
 
       # Move/resize windows with mainMod + LMB/RMB and dragging
       bindm = [

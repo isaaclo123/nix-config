@@ -11,7 +11,7 @@
   ...
 }: {
   imports =
-    [ # Include the results of the hardware scan.
+    [
       aagl/default.nix
       bluetooth/default.nix
       pipewire/default.nix
@@ -57,6 +57,8 @@
     LC_TIME = "en_US.UTF-8";
   };
 
+  services.gvfs.enable = true;
+
   # Configure keymap in X11
   services.xserver.xkb = {
     layout = "us";
@@ -80,6 +82,8 @@
   programs.nix-ld.libraries = with pkgs; [
     openal
     libpulseaudio
+    audiofile
+    pkg-config
 
     # for python pip
     # stdenv.cc.cc.lib
@@ -169,6 +173,7 @@
   };
 
   programs.hyprland.enable = true;
+  programs.hyprland.systemd.setPath.enable = true;
 
   # udisk2
   services.udisks2.enable = true;

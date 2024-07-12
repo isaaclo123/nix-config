@@ -15,6 +15,10 @@
 
     prismlauncher
 
+    p7zip
+
+    wineWowPackages.waylandFull
+
     pavucontrol
     htop
 
@@ -22,6 +26,7 @@
     ssm-session-manager-plugin
 
     postman
+    python311Packages.python-kasa
 
     audacity
     gimp
@@ -37,11 +42,18 @@
     wget
     killall
 
+    jmtpfs
+    cmake
+    android-studio
+
     firefox
 
     httpie
     http-prompt
 
     terraform
+
+    wiimms-iso-tools
+    android-tools
   ];
 }

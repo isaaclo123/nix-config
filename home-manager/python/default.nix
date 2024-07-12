@@ -19,6 +19,10 @@
       export LD_LIBRARY_PATH=$NIX_LD_LIBRARY_PATH
       exec ${pkgs.python3}/bin/python "$@"
     '')
+    (pkgs.writeShellScriptBin "python3" ''
+      export LD_LIBRARY_PATH=$NIX_LD_LIBRARY_PATH
+      exec ${pkgs.python3}/bin/python "$@"
+    '')
     python311Packages.pip
     pipenv
 
