@@ -19,6 +19,8 @@
       ../../nixos/stylix/default.nix
       ../../nixos/virt-manager/default.nix
       ../../nixos/adb/default.nix
+      ../../nixos/mtkclient/default.nix
+      ../../nixos/web-server/default.nix
       ./home.nix
     ];
 

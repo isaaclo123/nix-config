@@ -85,11 +85,15 @@
     audiofile
     pkg-config
 
+    libusb
+    fuse2
+
     # for python pip
     # stdenv.cc.cc.lib
     # zlib
     # gcc.cc
 
+    libev
     glibc
     gcc.cc
     alsa-lib
@@ -271,8 +275,9 @@
       PermitRootLogin = "no";
       # Opinionated: use keys only.
       # Remove if you want to SSH using passwords
-      PasswordAuthentication = false;
+      PasswordAuthentication = true;
     };
+    ports = [2222];
   };
 
   # Open ports in the firewall.

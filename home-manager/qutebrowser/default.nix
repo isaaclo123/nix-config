@@ -27,6 +27,20 @@
     enable = true;
     enableDefaultBindings = true;
 
+    greasemonkey = [
+      # (pkgs.fetchurl {
+      #   url = "https://update.greasyfork.org/scripts/489265/YouTube%20Ad%20Blocker.user.js";
+      #   sha256 = "0sw5l9vwdizc0p6f2r0ij2g6g3kbv44yry08mrrzwvkccdw18xa6";
+      #   name = "youtube-adblocker.js";
+      # })
+      (pkgs.fetchurl {
+        url = "https://update.greasyfork.org/scripts/453320/Simple%20Sponsor%20Skipper.user.js";
+        sha256 = "1r4adaf2ys138xj6maa1n3xhksghd868y564yqahc48mccd74rsa";
+        name = "youtube-sponsorblock.js";
+      })
+      (pkgs.writeText "youtube-adblock.js" ''$builtins.readFile {./youtube-adblock.js}'')
+    ];
+
     settings = {
       "content.user_stylesheets" = ["${user-content-css}"];
       "content.blocking.method" = "both";
@@ -115,6 +129,18 @@
       config.unbind(";I", mode='normal')
 
       # c.fonts.default_family = "Operator Mono Medium"
+
+
+      c.fonts.web.family.cursive = "Operator Mono Italic"
+      c.fonts.web.family.fantasy = "Operator Mono Italic"
+      c.fonts.web.family.fixed = "Operator Mono"
+      c.fonts.web.family.sans_serif = "DejaVu Sans"
+      c.fonts.web.family.serif = "DejaVu Serif"
+      c.fonts.web.family.standard = "DejaVu Sans"
+
+      config.set('content.headers.user_agent',
+           'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36',
+           'accounts.google.com')
     '';
   };
 }

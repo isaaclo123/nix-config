@@ -5,7 +5,7 @@
     settings = {
       general = {
         after_sleep_cmd = "hyprctl dispatch dpms on";
-        ignore_dbus_inhibit = true;
+        ignore_dbus_inhibit = false;
         lockCmd = "pidof hyprlock || hyprlock";
       };
 
@@ -13,7 +13,7 @@
         {
          timeout = 900;
          on-timeout = "hyprctl dispatch dpms off";
-         on-resume = "hyprctl dispatch dpms on";
+         # on-resume = "hyprctl dispatch dpms on";
         }
         {
          timeout = 1600;

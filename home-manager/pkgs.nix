@@ -12,6 +12,7 @@
       withOpenASAR = true;
       withVencord = true;
     })
+    # discord
 
     prismlauncher
 
@@ -55,5 +56,14 @@
 
     wiimms-iso-tools
     android-tools
+
+    jq
+
+    transmission_4-gtk
+    unar
+    lutris
+
+    ungoogled-chromium
+    zip
   ];
 }
