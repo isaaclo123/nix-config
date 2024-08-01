@@ -63,7 +63,15 @@
     unar
     lutris
 
-    ungoogled-chromium
     zip
+
+    alsa-utils
+    gdb
+
+    rust-bindgen
+    tinyalsa
+
+    sox
+    mediainfo
   ];
 }

@@ -80,6 +80,7 @@
   programs.nix-ld.enable = true;
   # programs.nix-ld.package = inputs.nix-ld-rs.packages.${pkgs.hostPlatform.system}.nix-ld-rs;
   programs.nix-ld.libraries = with pkgs; [
+    tinyalsa
     openal
     libpulseaudio
     audiofile
@@ -93,6 +94,7 @@
     # zlib
     # gcc.cc
 
+    libclang
     libev
     glibc
     gcc.cc
@@ -176,8 +178,29 @@
     };
   };
 
+
   programs.hyprland.enable = true;
   programs.hyprland.systemd.setPath.enable = true;
+
+  services.greetd =
+  let
+    tuigreet = "${pkgs.greetd.tuigreet}/bin/tuigreet";
+    session = "${pkgs.hyprland}/bin/Hyprland";
+    username = "isaac";
+  in
+  {
+    enable = true;
+    settings = {
+      initial_session = {
+        command = "${session}";
+        user = "${username}";
+      };
+      default_session = {
+        command = "${tuigreet} --greeting 'Welcome to NixOS!' --asterisks --remember --remember-user-session --time -cmd ${session}";
+        user = "greeter";
+      };
+    };
+  };
 
   # udisk2
   services.udisks2.enable = true;
@@ -194,7 +217,7 @@
   services.avahi = {
     enable = true;
     # printing
-    nssmdns = true;
+    nssmdns4 = true;
     openFirewall = true;
   };
 
@@ -253,8 +276,8 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
      # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-     nix-prefetch
-     nix-prefetch-github
+    nix-prefetch
+    nix-prefetch-github
   ];
 
   # Some programs need SUID wrappers, can be configured further or are

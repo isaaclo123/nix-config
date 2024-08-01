@@ -8,7 +8,15 @@
     # You can access packages and modules from different nixpkgs revs
     # at the same time. Here's an working example:
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+
+    # dwarffs.url = "github:edolstra/dwarffs";
+
     # Also see the 'unstable-packages' overlay at 'overlays/default.nix'.
+
+    rust-overlay = {
+      url = "github:oxalica/rust-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # nix-hardware
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
@@ -46,6 +54,7 @@
     home-manager,
     stylix,
     nixvim,
+    rust-overlay,
     aagl,
     ...
   } @ inputs: let
@@ -88,6 +97,7 @@
           nixos-hardware.nixosModules.asus-zephyrus-ga401
           ./hosts/zephyrus-g14/configuration.nix
           stylix.nixosModules.stylix
+          # dwarffs.nixosModules.dwarffs
         ];
       };
       pc = nixpkgs.lib.nixosSystem {
@@ -96,6 +106,7 @@
           # > Our main nixos configuration file <
           ./hosts/pc/configuration.nix
           stylix.nixosModules.stylix
+          # dwarffs.nixosModules.dwarffs
         ];
       };
     };

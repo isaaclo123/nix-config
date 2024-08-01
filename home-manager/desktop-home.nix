@@ -18,14 +18,17 @@
 
     # You can also split up your configuration and import pieces of it here:
     inputs.nixvim.homeManagerModules.nixvim
+
     ./bat/default.nix
     ./nvim/default.nix
     ./hyprland/default.nix
     ./kitty/default.nix
     ./qutebrowser/default.nix
+    ./chromium/default.nix
     ./fish/default.nix
     ./ranger/default.nix
     ./password-store/default.nix
+    ./rust/default.nix
     ./gpg/default.nix
     ./nodejs/default.nix
     ./mpv/default.nix
@@ -46,6 +49,7 @@
       outputs.overlays.additions
       outputs.overlays.modifications
       outputs.overlays.unstable-packages
+      inputs.rust-overlay.overlays.default
 
       # You can also add overlays exported from other flakes:
       # neovim-nightly-overlay.overlays.default
