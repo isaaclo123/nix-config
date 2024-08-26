@@ -19,6 +19,8 @@
 	    clipboard = "unnamedplus";
 	    so = 999;
 
+	    splitright = true;
+
 	    tabstop = 2;
 	    softtabstop = 0;
 	    expandtab = true;

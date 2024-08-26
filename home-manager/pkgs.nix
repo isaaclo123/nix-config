@@ -23,6 +23,8 @@
     pavucontrol
     htop
 
+    solaar
+
     awscli2
     ssm-session-manager-plugin
 
@@ -73,5 +75,6 @@
 
     sox
     mediainfo
+    lz4
   ];
 }

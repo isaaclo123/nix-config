@@ -8,7 +8,15 @@
 
   programs.nixvim = {
     plugins = {
-      lsp-format.enable = true;
+      lsp-format = {
+        enable = true;
+        lspServersToEnable = [
+          "pylsp"
+          "pyright"
+          "rust-analyzer"
+          "eslint"
+        ];
+      };
 
       lsp = {
         enable = true;
@@ -21,6 +29,7 @@
           pylsp.enable = true;
 
           rust-analyzer.enable = true;
+          eslint.enable = true;
           tsserver.enable = true;
         };
         keymaps = {

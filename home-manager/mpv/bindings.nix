@@ -10,6 +10,7 @@
       "f" = "script-binding quality_menu/video_formats_toggle";
       "Alt+f" = "script-binding quality_menu/audio_formats_toggle";
       "Ctrl+r" = "script-binding quality_menu/reload";
+      "ENTER" = "seek 0 absolute-percent ; set pause no";
     };
   };
 }

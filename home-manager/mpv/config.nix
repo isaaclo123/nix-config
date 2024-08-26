@@ -31,8 +31,10 @@
       # autofit-smaller="10%x10%";
 
       # Keep the player window on top of all other windows.
-      no-fs=true;
-      no-ontop=true;
+      fullscreen=false;
+      ontop=false;
+      focus-on-open=false;
+      focused=false;
 
       # Keep open
       keep-open=true;
@@ -126,7 +128,7 @@
       demuxer-max-bytes="800M";
       demuxer-max-back-bytes="200M";
       # Sets volume to 70%.
-      volume=70;
+      volume=100;
 
       af-add="dynaudnorm=g=5:f=250:r=0.9:p=0.5";
     };

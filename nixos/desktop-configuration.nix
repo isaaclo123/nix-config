@@ -92,12 +92,12 @@
     # for python pip
     # stdenv.cc.cc.lib
     # zlib
-    # gcc.cc
+    gcc.cc
+    clang
 
     libclang
     libev
     glibc
-    gcc.cc
     alsa-lib
     at-spi2-atk
     at-spi2-core
@@ -178,6 +178,7 @@
     };
   };
 
+  environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
   programs.hyprland.enable = true;
   programs.hyprland.systemd.setPath.enable = true;

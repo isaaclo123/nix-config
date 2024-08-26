@@ -81,9 +81,12 @@ in
         scroll_factor="0.2";
       };
       
-      # windowrule = [
-      #   "center,float,^(mpv)$"
-      # ];
+      windowrule = [
+        # "float,^(mpv)$"
+        "tile,^(mpv)$"
+        "suppressevent fullscreen,^(mpv)$"
+        "suppressevent maximize,^(mpv)$"
+      ];
 
       # Move/resize windows with mainMod + LMB/RMB and dragging
       bindm = [
