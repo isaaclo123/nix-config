@@ -17,6 +17,7 @@
   home-manager = {
     extraSpecialArgs = {
       inherit inputs outputs; 
+      turn_off_non_bedroom_lights_on_resume = true;
       monitors = [
         {
             name = "DP-2"; #aoc

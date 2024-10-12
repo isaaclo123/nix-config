@@ -1,7 +1,11 @@
-{ pkgs, ...}: 
+{ pkgs, specialArgs, ...}: 
 let turn_off_non_bedroom_lights = pkgs.writeShellScript "turn_off_non_bedroom_lights.sh" ''
   curl -X POST -H "Authorization: Bearer $(pass show hass-cli-pc)" -H "Content-Type: application/json" -d '{"entity_id": "automation.turn_off_non_bedroom_lights"}' http://10.0.0.125:8123/api/services/automation/trigger
 ''; in
+
+let
+  inherit (specialArgs) turn_off_non_bedroom_lights_on_resume;
+in
 
 {
   wayland.windowManager.hyprland.systemd.variables = ["--all"];
@@ -21,14 +25,15 @@ let turn_off_non_bedroom_lights = pkgs.writeShellScript "turn_off_non_bedroom_li
          on-resume = "hyprctl dispatch dpms on";
         }
         {
-         timeout = 900;
-         on-resume = "${turn_off_non_bedroom_lights}";
-        }
-        {
          timeout = 1600;
          on-timeout = "hyprlock";
         }
-      ];
+      ] ++ (if specialArgs?turn_off_non_bedroom_lights_on_resume then [
+        {
+         timeout = 900;
+         on-resume = "${turn_off_non_bedroom_lights}";
+        }
+      ] else []);
     };
   };
 }
