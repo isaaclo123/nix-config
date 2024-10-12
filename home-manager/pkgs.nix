@@ -76,5 +76,16 @@
     sox
     mediainfo
     lz4
+
+    clang
+    mold
+
+    universal-android-debloater
+    webcamoid
+    ffmpeg
+
+    swayimg
+
+    home-assistant-cli
   ];
 }

@@ -26,7 +26,7 @@
     python311Packages.pip
     pipenv
 
-    gcc
+    # gcc
     gnumake
     zlib
     libffi

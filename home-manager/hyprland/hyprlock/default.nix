@@ -5,7 +5,8 @@
     settings = {
       background = {
           monitor = "";
-          path = "~/Pictures/Wallpapers/city.jpg";
+          path = "/etc/nixos/stylix/rocket.png";
+          # path = "~/Pictures/Wallpapers/city.jpg";
           blur_passes = 3;
           contrast = 0.8916;
           brightness = 0.8172;

@@ -15,7 +15,7 @@ in
   home.packages = with pkgs; [brightnessctl wev hyprshot];
 
   home.sessionVariables = {
-    HYPRSHOT_DIR = "$HOME/Pictures/Screenshots/";
+    HYPRSHOT_DIR = "$HOME/Pictures/Screenshots";
   };
 
   wayland.windowManager.hyprland = {
@@ -36,6 +36,8 @@ in
       exec-once = [
         "waybar"
       ];
+
+      decoration.rounding = 4;
 
       general = {
         border_size = 3;

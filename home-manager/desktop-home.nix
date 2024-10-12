@@ -48,7 +48,7 @@
       # Add overlays your own flake exports (from overlays and pkgs dir):
       outputs.overlays.additions
       outputs.overlays.modifications
-      outputs.overlays.unstable-packages
+      # outputs.overlays.unstable-packages
       inputs.rust-overlay.overlays.default
 
       # You can also add overlays exported from other flakes:
@@ -92,6 +92,11 @@
 
   services.syncthing = {
     enable = true;
+  };
+
+  gtk.iconTheme = {
+    package = pkgs.rose-pine-icon-theme;
+    name = "rose-pine-icon-theme";
   };
 
   # Nicely reload system units when changing configs
