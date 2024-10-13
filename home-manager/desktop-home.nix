@@ -100,6 +100,8 @@
     name = "rose-pine-icon-theme";
   };
 
+  # stylix.targets.regreet.enable = false;
+
   # Nicely reload system units when changing configs
   systemd.user.startServices = "sd-switch";
 

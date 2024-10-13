@@ -7,6 +7,7 @@ in
     ./wofi/default.nix
     ./waybar/default.nix
     ./sway-osd/default.nix
+    ./hyprpaper/default.nix
     ./wlogout/default.nix
     ./hyprlock/default.nix
     ./hypridle/default.nix
@@ -102,14 +103,14 @@ in
 
       bind = [
         # Screenshot a window
-        "$mod, PRINT, exec, hyprshot -m window"
-        "$mod, END, exec, hyprshot -m window"
+        "$mod, PRINT, exec, HYPRSHOT_DIR=$HOME/Pictures/Screenshots hyprshot -m window"
+        "$mod, END, exec, HYPRSHOT_DIR=$HOME/Pictures/Screenshots hyprshot -m window"
         # Screenshot a monitor
-        ", PRINT, exec, hyprshot -m output"
-        ", END, exec, hyprshot -m output"
+        ", PRINT, exec, HYPRSHOT_DIR=$HOME/Pictures/Screenshots hyprshot -m output"
+        ", END, exec, HYPRSHOT_DIR=$HOME/Pictures/Screenshots hyprshot -m output"
         # Screenshot a region
-        "SHIFT $mod, PRINT, exec, hyprshot -m region"
-        "SHIFT $mod, END, exec, hyprshot -m region"
+        "SHIFT $mod, PRINT, exec, HYPRSHOT_DIR=$HOME/Pictures/Screenshots hyprshot -m region"
+        "SHIFT $mod, END, exec, HYPRSHOT_DIR=$HOME/Pictures/Screenshots hyprshot -m region"
 
         "$mod, D, exec, pkill wofi || wofi --show=drun"
         "$mod, RETURN, exec, $terminal"
