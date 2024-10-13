@@ -26,8 +26,8 @@
         indicate_hidden = true;
         shrink = false;
         separator_height = 0;
-        padding = 16;
-        horizontal_padding = 16;
+        padding = 20;
+        horizontal_padding = 20;
         frame_width = 2;
         sort = false;
         idle_threshold = 120;

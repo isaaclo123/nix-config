@@ -37,6 +37,10 @@ in
         "waybar"
       ];
 
+      exec = [
+        "turn_off_non_bedroom_lights"
+      ];
+
       decoration.rounding = 4;
 
       general = {
