@@ -38,7 +38,7 @@ let turn_off_non_bedroom_lights = pkgs.writeShellScriptBin "turn_off_non_bedroom
          on-timeout = "hyprlock";
         }
         {
-         timeout = 900;
+         timeout = 60;
          on-resume = "turn_off_non_bedroom_lights";
         }
       ];

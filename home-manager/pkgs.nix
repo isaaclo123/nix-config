@@ -87,5 +87,7 @@
     swayimg
 
     home-assistant-cli
+
+    hyprpaper
   ];
 }
