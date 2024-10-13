@@ -29,6 +29,7 @@
     ./ranger/default.nix
     ./password-store/default.nix
     ./rust/default.nix
+    ./kdeconnect/default.nix
     ./gpg/default.nix
     ./nodejs/default.nix
     ./mpv/default.nix
