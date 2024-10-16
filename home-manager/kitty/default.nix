@@ -11,6 +11,6 @@
   };
 
   home.sessionVariables = {
-    TERM = "xterm";
+    TERM = "xterm-256color";
   };
 }

@@ -25,6 +25,7 @@ let turn_off_non_bedroom_lights = pkgs.writeShellScriptBin "turn_off_non_bedroom
         after_sleep_cmd = "hyprctl dispatch dpms on";
         ignore_dbus_inhibit = false;
         lockCmd = "pidof hyprlock || hyprlock";
+        unlockCmd = "turn_off_non_bedroom_lights";
       };
 
       listener = [

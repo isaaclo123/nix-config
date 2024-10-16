@@ -272,6 +272,8 @@
     '';
   };
 
+  programs.kdeconnect.enable = true;
+
   virtualisation.waydroid.enable = true;
 
   virtualisation.docker.enable = true;

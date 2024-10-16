@@ -12,6 +12,7 @@
 
     interactiveShellInit = ''
       set fish_greeting # Disable greeting
+      alias ranger "TERM=xterm ${pkgs.ranger}/bin/ranger"
     '';
 
     plugins = with pkgs.fishPlugins; [
