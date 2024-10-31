@@ -25,6 +25,7 @@
 
     extraPlugins = with pkgs.vimPlugins; [
       auto-pairs
+      vim-rooter
     ];
   };
 }
