@@ -115,7 +115,7 @@ in
         "$mod, D, exec, pkill wofi || wofi --show=drun"
         "$mod, RETURN, exec, $terminal"
         "$mod SHIFT, Q, killactive"
-        "$mod CTRL, E, exec, wlogout"
+        "$mod CTRL, E, exec, pkill wlogout || wlogout"
         "$mod, SPACE, togglefloating"
         "$mod, B, exec, qutebrowser"
         "$mod, F, fullscreen"

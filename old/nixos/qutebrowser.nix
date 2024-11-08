@@ -98,7 +98,8 @@ in
             # Searchengines
             config.set('url.searchengines', {
               "DEFAULT": "https://duckduckgo.com/?q={}",
-              "y": "https://www.youtube.com/results?search_query={}",
+              # "y": "https://www.youtube.com/results?search_query={}",
+              "y": "https://yewtu.be/search?q={}",
               "w": "https://en.wikipedia.org/w/index.php?search={}&title=Special:Search",
               "g": "https://www.google.com/search?q={}",
               "r": "https://doc.rust-lang.org/std/index.html?search={}"
