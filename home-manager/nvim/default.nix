@@ -2,6 +2,7 @@
   imports = [
     ./options.nix
     ./keymaps.nix
+    ./plugins/direnv.nix
     ./plugins/trouble.nix
     ./plugins/nvim-tree.nix
     ./plugins/surround.nix

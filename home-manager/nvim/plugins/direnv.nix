@@ -1,7 +1,8 @@
 { pkgs, ...}: {
   programs.nixvim = {
-    plugins.direnv = {
+    plugins.trouble = {
       enable = true;
+      settings.use_diagnostic_signs = true;
     };
   };
 }

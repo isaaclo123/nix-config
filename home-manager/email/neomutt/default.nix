@@ -36,7 +36,7 @@ let create-account = folder: email: signature: (pkgs.writeText folder ''
       text/html; w3m -I %{charset} -T text/html; copiousoutput;
       auto_view text/html
 
-      image/*; sxiv %s; test=test -n "$DISPLAY";
+      image/*; swayimg %s; test=test -n "$DISPLAY";
       application/pdf; zathura %s; test=test -n "$DISPLAY"
     '';
 
@@ -57,6 +57,7 @@ let create-account = folder: email: signature: (pkgs.writeText folder ''
       in ''
         ${builtins.readFile ./powerline.neomuttrc}
         ${builtins.readFile ./colors-powerline.neomuttrc}
+        ${builtins.readFile ./catpuccin.neomuttrc}
         ${builtins.readFile ./.neomuttrc}
 
         # Macros for switching accounts
