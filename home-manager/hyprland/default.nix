@@ -31,7 +31,7 @@ in
           in
           "${m.name},${resolution},${position},1"
         )
-        (monitors)) else ",preferred,auto,auto";
+        (monitors)) else ",preferred,auto,1";
 
       #autostart
       exec-once = [
