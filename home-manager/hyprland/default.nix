@@ -201,9 +201,9 @@ in
         ", XF86MonBrightnessDown, exec, swayosd-client --brightness lower"
       ];
 
-      bindl = [
-        ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
-      ];
+      # bindl = [
+      #   ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+      # ];
     };
   };
 }

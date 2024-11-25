@@ -90,6 +90,8 @@
 
     hyprpaper
 
+    powertop
+
     # slack
     # teams-for-linux
   ];
