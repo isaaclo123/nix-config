@@ -22,6 +22,7 @@
     });
 
     "ranger/scope.sh".text = "${builtins.readFile ./scope.sh}";
+    "ranger/rifle.conf".text = "${builtins.readFile ./rifle.conf}";
     "ranger/rc.conf".text =
     ''
       default_linemode devicons

@@ -64,7 +64,7 @@
   services.xserver.xkb = {
     layout = "us";
     variant = "";
-    options = "ctrl:nocaps";
+    options = "ctrl:nocaps,altwin:swap_alt_win";
   };
 
   console.useXkbConfig = true;
