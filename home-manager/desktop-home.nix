@@ -41,6 +41,7 @@
     ./git/default.nix
     ./zathura/default.nix
     ./calcurse/default.nix
+    ./khard/default.nix
     ./pkgs.nix
   ];
 
