@@ -40,6 +40,7 @@ in
         workspace_swipe_min_speed_to_force = 5;
         workspace_swipe_cancel_ratio = 0.1;
         workspace_swipe_touch = true;
+        workspace_swipe_invert = true;
       };
 
       #autostart
@@ -94,7 +95,7 @@ in
       };
 
       input = {
-        kb_options="ctrl:nocaps";
+        kb_options="ctrl:nocaps,altwin:swap_alt_win";
         scroll_factor="0.2";
       };
       
