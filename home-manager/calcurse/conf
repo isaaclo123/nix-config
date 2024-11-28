@@ -22,6 +22,5 @@ general.firstdayofweek=monday
 general.periodicsave=0
 general.progressbar=yes
 general.systemdialogs=no
-notification.command=calcurse --next | xargs -0 notify-send "Calendar"
 notification.notifyall=all
 notification.warning=900

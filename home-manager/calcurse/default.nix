@@ -40,7 +40,10 @@
   };
 
   home.file = {
-    ".calcurse/conf".text = "${builtins.readFile ./conf}";
+    ".calcurse/conf".text = ''
+      ${builtins.readFile ./conf}
+      notification.command=calcurse --next | xargs -0 notify-send -i "${pkgs.rose-pine-icon-theme}/share/icons/rose-pine/32x32/categories/calendar.svg" "Calendar"
+    '';
 
     ".calcurse/caldav/config".text = ''
       [General]

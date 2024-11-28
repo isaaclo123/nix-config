@@ -45,6 +45,7 @@ in
       #autostart
       exec-once = [
         "waybar"
+        "calcurse --daemon"
       ];
 
       exec = [
