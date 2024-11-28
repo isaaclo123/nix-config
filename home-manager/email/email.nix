@@ -56,7 +56,8 @@ let create-account = {
   accountName,
   primary,
   imap,
-  smtp
+  smtp,
+  msmtp-auth
 }: 
 let
   passScript = pkgs.writeShellScriptBin "pass-script.sh" ''
@@ -118,7 +119,8 @@ in
   msmtp = {
     enable = true;
     extraConfig = {
-      auth = "oauthbearer";
+      # auth = "oauthbearer";
+      auth = msmtp-auth;
     };
   };
 };
@@ -153,6 +155,7 @@ in
         primary = true;
         imap = gmail-imap;
         smtp = gmail-smtp;
+        msmtp-auth = "oauthbearer";
       };
 
       "School" = create-account {
@@ -162,6 +165,7 @@ in
         primary = false;
         imap = gmail-imap;
         smtp = gmail-smtp;
+        msmtp-auth = "oauthbearer";
       };
 
       "Work" = create-account {
@@ -185,6 +189,7 @@ in
             useStartTls = true;
           };
         };
+        msmtp-auth = "xoauth2";
       };
     };
   };

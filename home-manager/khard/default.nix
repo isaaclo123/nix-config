@@ -76,7 +76,6 @@
     #    private_objects = ["Jabber" "Skype" "Twitter"];
     #  };
     # };
-
   accounts.contact.accounts.isaac = {
     # khard.enable = true;
 

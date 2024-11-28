@@ -46,7 +46,8 @@ in
       #autostart
       exec-once = [
         "waybar"
-        "calcurse --daemon"
+        "calcurse --datadir=$HOME/.calcurse_personal/ --daemon"
+        "calcurse --datadir=$HOME/.calcurse_work/ --daemon"
       ];
 
       exec = [
@@ -95,7 +96,7 @@ in
       };
 
       input = {
-        kb_options="ctrl:nocaps,altwin:swap_alt_win";
+        kb_options="ctrl:nocaps";
         scroll_factor="0.2";
       };
       
