@@ -21,13 +21,18 @@
       sha256 = "0lvcfykhxsjcz2ipxlldasclz459arya4q8b9786kbqp2y1k6z5k";
     });
 
-    "ranger/scope.sh".text = "${builtins.readFile ./scope.sh}";
     "ranger/rifle.conf".text = "${builtins.readFile ./rifle.conf}";
+    "ranger/scope.sh" = {
+      text = "${builtins.readFile ./scope.sh}";
+      executable = true;
+    };
     "ranger/rc.conf".text =
     ''
       default_linemode devicons
       set preview_images true
       set preview_images_method kitty
+      set preview_script ~/.config/ranger/scope.sh
+      set use_preview_script true
       map gn cd /etc/nixos
     '';
   };

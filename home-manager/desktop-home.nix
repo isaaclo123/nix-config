@@ -40,6 +40,7 @@
     ./email/default.nix
     ./git/default.nix
     ./zathura/default.nix
+    ./calcurse/default.nix
     ./pkgs.nix
   ];
 
