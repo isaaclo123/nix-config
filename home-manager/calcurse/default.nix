@@ -6,7 +6,8 @@ let
     color,
     timer,
     pass,
-    caldav-conf
+    caldav-conf,
+    only-remote
   }: 
   { pkgs, ... }:
   {
@@ -47,7 +48,7 @@ let
           ExecStart = "${pkgs.writeShellScript "run-calcurse-caldav" ''
             DATADIR=$HOME/.calcurse_${name}
 
-            if [ -f $DATADIR/caldav/sync.db ]; then
+            if [ -f $DATADIR/caldav/sync.db ] && [ "${only-remote}" = "false" ]; then
               # if sync db exists dont init
               CALCURSE_CALDAV_PASSWORD=$(${pkgs.pass}/bin/pass show ${pass}) ${pkgs.calcurse}/bin/calcurse-caldav --datadir=$DATADIR --config=$DATADIR/caldav/config --syncdb=$DATADIR/caldav/sync.db --lockfile $DATADIR/.calcurse.pid
             else
@@ -83,14 +84,16 @@ in
       color = "yellow";
       pass = "vps.loisa.ac/radicale";
       caldav-conf = ./caldav.conf;
+      only-remote = "false";
     })
 
     (create-calcurse-account {
       name = "work";
-      timer="*:1/00";
+      timer="*:2/00";
       color = "blue";
       pass = "office365.com/isaac.lo@classranked.com";
       caldav-conf = ./davmail.config;
+      only-remote = "true";
     })
   ];
 }
