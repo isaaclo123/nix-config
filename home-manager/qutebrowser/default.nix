@@ -87,6 +87,7 @@
       "xx" = "config-cycle statusbar.show always never;; config-cycle tabs.show always switching";
       "xt" = "config-cycle tabs.show always switching";
       "xb" = "config-cycle statusbars.show always never";
+      "xd" = "config-cycle colors.webpage.darkmode.enabled false true";
       "dd" = "tab-close";
       "J" = "tab-prev";
       "K" = "tab-next";
