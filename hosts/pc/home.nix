@@ -20,7 +20,7 @@
       turn_off_non_bedroom_lights_on_resume = true;
       monitors = [
         {
-            name = "DP-2"; #aoc
+            name = "DP-1"; #aoc
             width = 2560;
             height = 1440;
             refreshRate = 144;

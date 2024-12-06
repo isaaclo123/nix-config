@@ -36,6 +36,7 @@ let dpms_off = pkgs.writeShellScriptBin "dpms_off"
         before_sleep_cmd = "loginctl lock-session";
         after_sleep_cmd = "hyprctl dispatch dpms on";
         ignore_dbus_inhibit = false;
+        ignore_systemd_inhibit = true;
         lockCmd = "pidof hyprlock || hyprlock";
         unlockCmd = "turn_off_non_bedroom_lights";
       };

@@ -7,7 +7,19 @@
   ];
 
   programs.nixvim = {
+
     plugins = {
+      conform-nvim = {
+        enable = true;
+        formattersByFt = {
+          python = [ "isort" "black" ];
+        };
+        formatOnSave = {
+          lspFallback = true;
+          timeoutMs = 500;
+        };
+      };
+
       lsp-format = {
         enable = true;
         lspServersToEnable = [
