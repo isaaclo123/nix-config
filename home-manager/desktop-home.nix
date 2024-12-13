@@ -81,8 +81,6 @@
     --enable-features=UseOzonePlatform --ozone-platform=wayland
   '';
 
-  systemd.user.startServices = "sd-switch";
-
   # Add stuff for your user as you see fit:
   # programs.neovim.enable = true;
 

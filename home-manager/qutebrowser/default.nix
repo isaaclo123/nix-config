@@ -38,7 +38,6 @@
         sha256 = "1r4adaf2ys138xj6maa1n3xhksghd868y564yqahc48mccd74rsa";
         name = "youtube-sponsorblock.js";
       })
-      # (pkgs.writeText "youtube-adblock.js" ''$builtins.readFile {./youtube-adblock.js}'')
     ];
 
     settings = {
@@ -79,6 +78,7 @@
 
     aliases = {
       "tor-cycle" = "config-cycle -t -p content.proxy http://0.0.0.0:8118/ system";
+      "view-in-mpv" = "spawn --userscript ${pkgs.qutebrowser}/share/qutebrowser/userscripts/view_in_mpv";
       "qute-pass" = "spawn --userscript ${pkgs.qutebrowser}/share/qutebrowser/userscripts/qute-pass -d 'wofi --show=dmenu'";
       "password-fill" = "spawn --userscript ${pkgs.qutebrowser}/share/qutebrowser/userscripts/password_fill";
     };
@@ -101,8 +101,8 @@
       "I" = "set-cmd-text -s :open --private";
       ";I" = "hint --rapid links run :open --private {hint-url}";
 
-      "m" = "spawn mpv {url}";
-      "M" = "hint links spawn mpv {hint-url}";
+      "m" = "view-in-mpv {url}";
+      "M" = "hint links spawn --detach mpv {hint-url}";
 
       "<Alt-9>" = "buffer 9";
       "<Alt-0>" = "buffer 10";
