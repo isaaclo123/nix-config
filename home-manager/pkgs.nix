@@ -94,5 +94,6 @@
 
     # slack
     # teams-for-linux
+    eslint_d
   ];
 }

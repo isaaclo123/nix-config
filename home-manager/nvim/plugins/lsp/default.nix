@@ -13,9 +13,11 @@
         enable = true;
         formattersByFt = {
           python = [ "isort" "black" ];
+          typescript = [ "eslintd" ];
+          javascript = [ "eslintd" ];
         };
         formatOnSave = {
-          lspFallback = true;
+          lspFallback = false;
           timeoutMs = 500;
         };
       };

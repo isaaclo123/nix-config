@@ -22,6 +22,7 @@ let
       timers."calcurse-caldav-${name}" = {
         Unit = {
           Description = "Run calcurse-caldav for ${name} on a timer";
+          X-SwitchMethod = "keep-old";
         };
 
         Timer = {
@@ -37,6 +38,7 @@ let
       services."calcurse-caldav-${name}" = {
         Unit = {
           Description = "Run calcurse-caldav for ${name}";
+          X-SwitchMethod = "keep-old";
         };
 
         Install = {

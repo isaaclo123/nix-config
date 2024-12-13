@@ -28,17 +28,17 @@
     enableDefaultBindings = true;
 
     greasemonkey = [
-      # (pkgs.fetchurl {
-      #   url = "https://update.greasyfork.org/scripts/489265/YouTube%20Ad%20Blocker.user.js";
-      #   sha256 = "0sw5l9vwdizc0p6f2r0ij2g6g3kbv44yry08mrrzwvkccdw18xa6";
-      #   name = "youtube-adblocker.js";
-      # })
+      (pkgs.fetchurl {
+        url = "https://update.greasyfork.org/scripts/459541/YouTube%E5%8E%BB%E5%B9%BF%E5%91%8A.user.js";
+        sha256 = "07qk789r534rx9k0bjxx3zlbxz66m7b4ylzyq7xzxwq3mjxx4n4p";
+        name = "youtube-adblocker.js";
+      })
       (pkgs.fetchurl {
         url = "https://update.greasyfork.org/scripts/453320/Simple%20Sponsor%20Skipper.user.js";
         sha256 = "1r4adaf2ys138xj6maa1n3xhksghd868y564yqahc48mccd74rsa";
         name = "youtube-sponsorblock.js";
       })
-      (pkgs.writeText "youtube-adblock.js" ''$builtins.readFile {./youtube-adblock.js}'')
+      # (pkgs.writeText "youtube-adblock.js" ''$builtins.readFile {./youtube-adblock.js}'')
     ];
 
     settings = {
@@ -53,6 +53,7 @@
       "colors.webpage.darkmode.threshold.background" = 205;
       "colors.webpage.preferred_color_scheme" = "dark";
       "content.blocking.adblock.lists" = [
+        "https://github.com/uBlockOrigin/uAssets/raw/master/filters/filters.txt"
         "https://easylist.to/easylist/easylist.txt"
         "https://easylist.to/easylist/easyprivacy.txt"
         "https://easylist.to/easylist/fanboy-annoyance.txt"
