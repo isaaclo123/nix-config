@@ -48,4 +48,6 @@
   networking.hostName = "zephyrus-g14"; # Define your hostname.
   # Enable automatic login for the user.
   services.getty.autologinUser = "isaac";
+
+  services.rabbitmq.enable = true;
 }

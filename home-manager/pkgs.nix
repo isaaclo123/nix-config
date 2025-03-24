@@ -14,6 +14,8 @@
     # })
     # discord
 
+    filezilla
+
     prismlauncher
 
     p7zip
@@ -95,5 +97,6 @@
     # slack
     # teams-for-linux
     eslint_d
+    nvtop
   ];
 }

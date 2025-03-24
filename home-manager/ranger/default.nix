@@ -1,6 +1,5 @@
 { pkgs, ...}: {
   home.packages = with pkgs; [
-    ueberzug
     ranger
     imagemagick
     elinks
@@ -11,6 +10,7 @@
     calibre
     poppler_utils
     atool
+    python311Packages.pillow
   ];
 
   xdg.configFile = {

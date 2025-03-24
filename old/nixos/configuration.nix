@@ -260,9 +260,9 @@ in
     enable = true;
     checkReversePath = false; # https://github.com/NixOS/nixpkgs/issues/10101
 
-    allowedTCPPorts = [
-      24800 # synergy
-    ];
+    # allowedTCPPorts = [
+    #   24800 # synergy
+    # ];
   };
 
   # Enable CUPS to print documents.
