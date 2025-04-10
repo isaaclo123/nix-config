@@ -89,13 +89,13 @@ in
       only-remote = "false";
     })
 
-    (create-calcurse-account {
-      name = "work";
-      timer="*:2/00";
-      color = "blue";
-      pass = "office365.com/isaac.lo@classranked.com";
-      caldav-conf = ./davmail.config;
-      only-remote = "true";
-    })
+    # (create-calcurse-account {
+    #   name = "work";
+    #   timer="*:2/00";
+    #   color = "blue";
+    #   pass = "office365.com/isaac.lo@classranked.com";
+    #   caldav-conf = ./davmail.config;
+    #   only-remote = "true";
+    # })
   ];
 }

@@ -13,6 +13,7 @@
     #   withVencord = false;
     # })
     # discord
+    jira-cli-go
 
     filezilla
 

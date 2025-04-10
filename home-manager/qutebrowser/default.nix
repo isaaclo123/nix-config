@@ -27,18 +27,18 @@
     enable = true;
     enableDefaultBindings = true;
 
-    greasemonkey = [
-      (pkgs.fetchurl {
-        url = "https://update.greasyfork.org/scripts/459541/YouTube%E5%8E%BB%E5%B9%BF%E5%91%8A.user.js";
-        sha256 = "07qk789r534rx9k0bjxx3zlbxz66m7b4ylzyq7xzxwq3mjxx4n4p";
-        name = "youtube-adblocker.js";
-      })
-      (pkgs.fetchurl {
-        url = "https://update.greasyfork.org/scripts/453320/Simple%20Sponsor%20Skipper.user.js";
-        sha256 = "1r4adaf2ys138xj6maa1n3xhksghd868y564yqahc48mccd74rsa";
-        name = "youtube-sponsorblock.js";
-      })
-    ];
+    # greasemonkey = [
+    #   (pkgs.fetchurl {
+    #     url = "https://update.greasyfork.org/scripts/459541/YouTube%E5%8E%BB%E5%B9%BF%E5%91%8A.user.js";
+    #     sha256 = "07qk789r534rx9k0bjxx3zlbxz66m7b4ylzyq7xzxwq3mjxx4n4p";
+    #     name = "youtube-adblocker.js";
+    #   })
+    #   (pkgs.fetchurl {
+    #     url = "https://update.greasyfork.org/scripts/453320/Simple%20Sponsor%20Skipper.user.js";
+    #     sha256 = "1r4adaf2ys138xj6maa1n3xhksghd868y564yqahc48mccd74rsa";
+    #     name = "youtube-sponsorblock.js";
+    #   })
+    # ];
 
     settings = {
       "content.user_stylesheets" = ["${user-content-css}"];
