@@ -13,7 +13,7 @@
       inputs.aagl.nixosModules.default
     ];
 
-  programs.anime-game-launcher.enable = true;
+  programs.anime-game-launcher.enable = false;
 
   nix.settings = inputs.aagl.nixConfig;
 }

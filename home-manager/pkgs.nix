@@ -13,6 +13,7 @@
     #   withVencord = false;
     # })
     # discord
+    usbutils
     jira-cli-go
 
     filezilla
@@ -57,7 +58,7 @@
     httpie
     http-prompt
 
-    terraform
+    # terraform
 
     wiimms-iso-tools
     android-tools
@@ -99,5 +100,7 @@
     # teams-for-linux
     eslint_d
     nvtop
+
+    inxi
   ];
 }

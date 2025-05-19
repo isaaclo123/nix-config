@@ -104,6 +104,7 @@
 
   # stylix.targets.regreet.enable = false;
   stylix.targets.fish.enable = false;
+  stylix.targets.hyprlock.enable = false;
 
   # Nicely reload system units when changing configs
   systemd.user.startServices = "sd-switch";

@@ -88,7 +88,7 @@
     audiofile
     pkg-config
 
-    libusb
+    libusb1
     fuse2
 
     # for python pip
@@ -181,7 +181,7 @@
   };
 
   services.mysql.enable = true;
-  services.mysql.package = pkgs.mysql;
+  services.mysql.package = pkgs.mariadb;
 
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
@@ -232,7 +232,7 @@
     enableWifi = true;
   };
 
-  programs.anime-game-launcher.enable = true;
+  programs.anime-game-launcher.enable = false;
 
   nix = let
     flakeInputs = lib.filterAttrs (_: lib.isType "flake") inputs;

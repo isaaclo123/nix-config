@@ -16,7 +16,7 @@
           typescript = [ "eslintd" ];
           javascript = [ "eslintd" ];
         };
-        formatOnSave = {
+        settings.format_on_save = {
           lspFallback = false;
           timeoutMs = 500;
         };

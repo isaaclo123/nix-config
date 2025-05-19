@@ -1,5 +1,5 @@
 # https://www.reddit.com/r/hyprland/comments/1b3cjzf/just_another_hyprlock_appreciation_post/
-{ pkgs, ...}: {
+{ lib, pkgs, ...}: {
   programs.hyprlock = {
     enable = true;
     settings = {
