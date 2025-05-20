@@ -11,7 +11,7 @@
     plugins = {
       conform-nvim = {
         enable = true;
-        formattersByFt = {
+        settings.formatters_by_ft = {
           python = [ "isort" "black" ];
           typescript = [ "eslintd" ];
           javascript = [ "eslintd" ];
@@ -27,7 +27,7 @@
         lspServersToEnable = [
           "pylsp"
           "pyright"
-          "rust-analyzer"
+          "rust_analyzer"
           "eslint"
         ];
       };
@@ -42,9 +42,9 @@
           pyright.enable = true;
           pylsp.enable = true;
 
-          rust-analyzer.enable = true;
+          rust_analyzer.enable = true;
           eslint.enable = true;
-          tsserver.enable = true;
+          ts_ls.enable = true;
         };
         keymaps = {
           silent = true;

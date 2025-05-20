@@ -1,8 +1,7 @@
 { pkgs, ...}: {
   programs.nixvim = {
-    plugins.bufferline = {
+    plugins.web-devicons = {
       enable = true;
-      settings.options.mode = "tabs";
     };
   };
 }

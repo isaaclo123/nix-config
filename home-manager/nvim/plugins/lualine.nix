@@ -2,8 +2,10 @@
   programs.nixvim = {
     plugins.lualine = {
       enable = true;
-      iconsEnabled = true;
-      theme = "base16";
+      settings.options = {
+        icons_enabled = true;
+        theme = "base16";
+      };
     };
   };
 }

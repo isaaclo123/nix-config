@@ -45,7 +45,7 @@
     fastfetch
     mangohud
 
-    gnome.cheese
+    cheese
     wget
     killall
 

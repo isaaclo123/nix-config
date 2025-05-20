@@ -1,6 +1,6 @@
 { pkgs, ...}: {
   programs.nixvim = {
-    plugins.surround = {
+    plugins.vim-surround = {
       enable = true;
     };
   };

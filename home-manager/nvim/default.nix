@@ -17,6 +17,7 @@
     ./plugins/tagbar.nix
     ./plugins/alpha.nix
     ./plugins/indent-blankline.nix
+    ./plugins/web-devicons.nix
   ];
 
   home.packages = with pkgs; [wl-clipboard];
