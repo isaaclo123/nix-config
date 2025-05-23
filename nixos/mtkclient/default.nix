@@ -9,7 +9,7 @@
   users.users.isaac.extraGroups = [ "plugdev" "dialout" ];
 
   environment.systemPackages = with pkgs; [
-    libusb
+    libusb1
     fuse2
     usbutils
   ];
