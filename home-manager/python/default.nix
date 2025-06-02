@@ -17,14 +17,18 @@
     # python3
     (pkgs.writeShellScriptBin "python" ''
       export LD_LIBRARY_PATH=$NIX_LD_LIBRARY_PATH
+      export LD_LIBRARY_PATH = ${pkgs.stdenv.cc.cc.lib}/lib:$NIX_LD_LIBRARY_PATH;
       exec ${pkgs.python3}/bin/python "$@"
     '')
     (pkgs.writeShellScriptBin "python3" ''
       export LD_LIBRARY_PATH=$NIX_LD_LIBRARY_PATH
+      export LD_LIBRARY_PATH = ${pkgs.stdenv.cc.cc.lib}/lib:$NIX_LD_LIBRARY_PATH;
       exec ${pkgs.python3}/bin/python "$@"
     '')
-    python311Packages.pip
-    pipenv
+    python312Packages.pip
+    python312Packages.numpy
+    # (pkgs.pipenv.override { python3 = pkgs.python311; })
+    pkgs.pipenv
 
     # gcc
     gnumake
@@ -34,5 +38,6 @@
     bzip2
     openssl
     ncurses
+    openblas
   ];
 }

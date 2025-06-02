@@ -51,7 +51,8 @@
       # Add overlays your own flake exports (from overlays and pkgs dir):
       outputs.overlays.additions
       outputs.overlays.modifications
-      # outputs.overlays.unstable-packages
+      outputs.overlays.unstable-packages
+      outputs.overlays.old-packages
       inputs.rust-overlay.overlays.default
 
       # You can also add overlays exported from other flakes:

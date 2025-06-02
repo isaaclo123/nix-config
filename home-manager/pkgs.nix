@@ -102,5 +102,7 @@
     nvtop
 
     inxi
+
+    qjackctl
   ];
 }
