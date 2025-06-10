@@ -88,12 +88,8 @@ in
     onNotifyPost = "${pkgs.notmuch}/bin/notmuch new";
     extraConfig = {
       xoauth2 = true;
-      extraConfig = {
-        tlsOptions = {
-          rejectUnauthorized = true;
-          starttls = true;
-        };
-      };
+      # rejectUnauthorized = true;
+      # starttls = true;
     };
   };
 

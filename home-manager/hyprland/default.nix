@@ -47,7 +47,9 @@ in
       exec-once = [
         "waybar"
         "calcurse --datadir=$HOME/.calcurse_personal/ --daemon"
-        "calcurse --datadir=$HOME/.calcurse_work/ --daemon"
+        # "calcurse --datadir=$HOME/.calcurse_work/ --daemon"
+        "slack -u"
+        "teams-for-linux --minimized"
       ];
 
       exec = [

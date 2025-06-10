@@ -104,5 +104,7 @@
     inxi
 
     qjackctl
+
+    lm_sensors
   ];
 }

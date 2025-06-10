@@ -23,7 +23,7 @@ let create-account = folder: email: signature: (pkgs.writeText folder ''
 
 {
   home.packages = with pkgs; [
-    neomutt
+    old.neomutt
     # elinks
     w3m-full
     urlscan
