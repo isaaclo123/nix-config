@@ -17,21 +17,21 @@
           "--dbus-user.talk=org.freedesktop.Notifications"
         ];
       };
-      discord = {
-        executable = "${pkgs.discord}/bin/discord";
-        profile = "${pkgs.firejail}/etc/firejail/discord.profile";
-        desktop = "${pkgs.discord}/share/applications/discord.desktop";
-        extraArgs = [
-          # Required for U2F USB stick
-          # "--ignore=private-dev"
-          # "--ignore=caps.keep"
-          "--ignore=novideo"
-          # Enforce dark mode
-          "--env=GTK_THEME=Adwaita:dark"
-          # Enable system notifications
-          "--dbus-user.talk=org.freedesktop.Notifications"
-        ];
-      };
+      # discord = {
+      #   executable = "${pkgs.discord}/bin/discord";
+      #   profile = "${pkgs.firejail}/etc/firejail/discord.profile";
+      #   desktop = "${pkgs.discord}/share/applications/discord.desktop";
+      #   extraArgs = [
+      #     # Required for U2F USB stick
+      #     # "--ignore=private-dev"
+      #     # "--ignore=caps.keep"
+      #     "--ignore=novideo"
+      #     # Enforce dark mode
+      #     "--env=GTK_THEME=Adwaita:dark"
+      #     # Enable system notifications
+      #     "--dbus-user.talk=org.freedesktop.Notifications"
+      #   ];
+      # };
 
       teams-for-linux= {
         executable = "${pkgs.teams-for-linux}/bin/teams-for-linux";

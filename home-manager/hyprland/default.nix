@@ -50,6 +50,7 @@ in
         # "calcurse --datadir=$HOME/.calcurse_work/ --daemon"
         "slack -u"
         "teams-for-linux --minimized"
+        "discord --start-minimized"
       ];
 
       exec = [
