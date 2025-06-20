@@ -51,6 +51,10 @@ in
         "slack -u"
         "teams-for-linux --minimized"
         "discord --start-minimized"
+
+        # chinese
+        "fcitx5 -d -r"
+        "fcitx5-remote -r"
       ];
 
       exec = [
@@ -108,6 +112,7 @@ in
         "tile,^(mpv)$"
         "suppressevent fullscreen,^(mpv)$"
         "suppressevent maximize,^(mpv)$"
+        "pseudo, fcitx" # chinese
       ];
 
       # Move/resize windows with mainMod + LMB/RMB and dragging

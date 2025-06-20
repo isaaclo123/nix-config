@@ -14,14 +14,15 @@
       osc-bar=false;
       border=false;
       video-sync="display-resample";
-      script-opts="ytdl_hook-ytdl_path=${pkgs.yt-dlp}/bin/yt-dlp";
+      script-opts="ytdl_hook-ytdl_path=${pkgs.unstable.yt-dlp}/bin/yt-dlp";
 
       x11-bypass-compositor=true; # bypass compositor
       demuxer-thread=true;
 
       ytdl=true;
 
-      ytdl-format="399[fps<=30]+251/248+251/137+251/398+251/302+251/298+251/247+251/136+251/397+251/244+251/135+251/396+251/243+251/134+251/bestvideo+bestaudio/best";
+      # ytdl-format="399[fps<=30]+251/248+251/137+251/398+251/302+251/298+251/247+251/136+251/397+251/244+251/135+251/396+251/243+251/134+251/bestvideo+bestaudio/best";
+      ytdl-format="bestvideo[ext=mp4][vcodec^=avc][height<=?1080]+bestaudio/best";
       ytdl-raw-options="extractor-args=youtube:'player_client=android'";
 
 
