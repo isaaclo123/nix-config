@@ -21,12 +21,6 @@
     # nix-hardware
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 
-    # anime game
-    aagl = {
-     url = "github:ezKEa/aagl-gtk-on-nix/release-25.05";
-     inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     # nix-hardware
     # nix-ld-rs = {
     #   url = "github:nix-community/nix-ld-rs/main";
@@ -55,7 +49,6 @@
     stylix,
     nixvim,
     rust-overlay,
-    aagl,
     ...
   } @ inputs: let
     inherit (self) outputs;

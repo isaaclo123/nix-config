@@ -12,7 +12,6 @@
 }: {
   imports =
     [
-      aagl/default.nix
       bluetooth/default.nix
       pipewire/default.nix
       firejail/default.nix
@@ -231,8 +230,6 @@
     enable = true;
     enableWifi = true;
   };
-
-  programs.anime-game-launcher.enable = false;
 
   nix = let
     flakeInputs = lib.filterAttrs (_: lib.isType "flake") inputs;
