@@ -16,6 +16,7 @@
     ./plugins/cursorline.nix
     ./plugins/tagbar.nix
     ./plugins/alpha.nix
+    ./plugins/csvview.nix
     ./plugins/indent-blankline.nix
     ./plugins/web-devicons.nix
   ];

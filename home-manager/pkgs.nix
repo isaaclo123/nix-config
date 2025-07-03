@@ -99,7 +99,7 @@
     # slack
     # teams-for-linux
     eslint_d
-    nvtop
+    # nvtop
 
     inxi
 

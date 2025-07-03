@@ -15,6 +15,8 @@ in
 
   home.packages = with pkgs; [brightnessctl wev hyprshot];
 
+  home.file.".icons/default".source = "${pkgs.vanilla-dmz}/share/icons/Vanilla-DMZ";
+
   home.sessionVariables = {
     HYPRSHOT_DIR = "$HOME/Pictures/Screenshots";
   };
@@ -45,6 +47,7 @@ in
 
       #autostart
       exec-once = [
+        "hyprctl setcursor Vanilla-DMZ 24"
         "waybar"
         "calcurse --datadir=$HOME/.calcurse_personal/ --daemon"
         # "calcurse --datadir=$HOME/.calcurse_work/ --daemon"
@@ -109,10 +112,10 @@ in
       
       windowrule = [
         # "float,^(mpv)$"
-        "tile,^(mpv)$"
-        "suppressevent fullscreen,^(mpv)$"
-        "suppressevent maximize,^(mpv)$"
-        "pseudo, fcitx" # chinese
+        "tile,class:(^mpv$)"
+        "suppressevent fullscreen,class:(^mpv$)"
+        "suppressevent maximize,class:(^mpv$)"
+        "pseudo,class:(fcitx)" # chinese
       ];
 
       # Move/resize windows with mainMod + LMB/RMB and dragging

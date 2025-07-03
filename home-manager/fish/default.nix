@@ -2,7 +2,7 @@
 
   home.sessionVariables = {
     DIRENV_WARN_TIMEOUT = 0;
-    JIRA_API_TOKEN = "$(pass show jira/api_token)";
+    # JIRA_API_TOKEN = "$(pass show jira/api_token)";
   };
   programs.direnv = {
     enable = true;
