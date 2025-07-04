@@ -44,6 +44,8 @@
     nvidiaBusId = "PCI:1:0:0";
   };
 
+  # boot.kernelParams = [ "pcie_aspm=off" ];
+
   boot.initrd.luks.devices."luks-ab9fcfa9-f400-4fe0-8c38-5eca10042f29".device = "/dev/disk/by-uuid/ab9fcfa9-f400-4fe0-8c38-5eca10042f29";
   networking.hostName = "zephyrus-g14"; # Define your hostname.
   # Enable automatic login for the user.

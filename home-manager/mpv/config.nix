@@ -108,6 +108,7 @@
       ## CONFIG SETTINGS
 
       # Uses GPU-accelerated video output by default.
+      gpu-api="opengl";
       vo="gpu";
       # Can cause performance problems with some drivers and GPUs.
       profile="gpu-hq,M60";

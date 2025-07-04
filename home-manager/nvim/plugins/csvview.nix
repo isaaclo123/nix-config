@@ -2,6 +2,7 @@
   programs.nixvim = {
     plugins.csvview = {
       enable = true;
+      autoLoad = true;
       settings = {
           parser = { comments = [ "#" "//" ]; };
           keymaps = {
