@@ -102,6 +102,14 @@
           # dwarffs.nixosModules.dwarffs
         ];
       };
+      t14s = nixpkgs.lib.nixosSystem {
+        specialArgs = {inherit inputs outputs;};
+        modules = [
+          # > Our main nixos configuration file <
+          ./hosts/t14s/configuration.nix
+          stylix.nixosModules.stylix
+        ];
+      };
     };
   };
 }
