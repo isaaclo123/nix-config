@@ -47,17 +47,19 @@ in
 
       #autostart
       exec-once = [
+        # chinese
+        "fcitx5 -d -r"
+        "fcitx5-remote -r"
+
         "hyprctl setcursor Vanilla-DMZ 24"
-        "waybar"
         "calcurse --datadir=$HOME/.calcurse_personal/ --daemon"
         # "calcurse --datadir=$HOME/.calcurse_work/ --daemon"
+
         "slack -u"
         "teams-for-linux --minimized"
         "discord --start-minimized"
 
-        # chinese
-        "fcitx5 -d -r"
-        "fcitx5-remote -r"
+        "sleep 1.5 && waybar"
       ];
 
       exec = [

@@ -13,3 +13,7 @@ My NixOS configuration files
 
 And that's it, really! You're ready to have fun with your configurations using
 the latest and greatest nix3 flake-enabled command UX.
+
+note: need to set key trust for email to work
+* gpg --edit-key <KEY_ID>
+* gpg> trust
