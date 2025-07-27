@@ -295,6 +295,7 @@
      # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     nix-prefetch
     nix-prefetch-github
+    rose-pine-gtk-theme
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -333,5 +334,19 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "23.11"; # Did you read the comment?
+
+  # This next stuff is technically not necessary if you're going to use
+  # a theme chooser or set it in your user settings, but if you go
+  # through all this effort might as well set it system-wide.
+  #
+  # Oddly, NixOS doesn't have a module for this yet.
+  environment.etc."xdg/gtk-2.0/gtkrc".text = ''
+    gtk-theme-name = "rose-pine-gtk"
+  '';
+
+  environment.etc."xdg/gtk-3.0/settings.ini".text = ''
+    [Settings]
+    gtk-theme-name = "rose-pine-gtk"
+  '';
 
 }
