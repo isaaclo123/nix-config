@@ -12,6 +12,7 @@
 }: {
   imports =
     [
+      nordvpn/default.nix
       bluetooth/default.nix
       pipewire/default.nix
       firejail/default.nix
@@ -24,6 +25,9 @@
   #     isaac = import ../home-manager/home.nix;
   #   };
   # };
+
+  # nordvpn
+  myypo.services.custom.nordvpn.enable = true;
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -73,7 +77,7 @@
   users.users.isaac = {
     isNormalUser = true;
     description = "Isaac Lo";
-    extraGroups = [ "networkmanager" "wheel" "docker" ];
+    extraGroups = [ "networkmanager" "wheel" "docker" "nordvpn" ];
     packages = with pkgs; [];
   };
 

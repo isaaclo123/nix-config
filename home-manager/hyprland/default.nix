@@ -55,9 +55,9 @@ in
         "calcurse --datadir=$HOME/.calcurse_personal/ --daemon"
         # "calcurse --datadir=$HOME/.calcurse_work/ --daemon"
 
-        "slack -u"
-        "teams-for-linux --minimized"
-        "discord --start-minimized"
+        "sleep 1.5; slack -u"
+        "sleep 1.5; teams-for-linux --minimized"
+        "sleep 1.5; discord --start-minimized"
 
         "sleep 1.5 && waybar"
       ];

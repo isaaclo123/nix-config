@@ -35,7 +35,7 @@
 
   hardware.enableRedistributableFirmware = true;
 
-  powerManagement.enable = true;
+  # powerManagement.enable = true;
 
   services.tlp = {
     enable = true;
