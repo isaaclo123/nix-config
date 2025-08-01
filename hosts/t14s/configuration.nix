@@ -36,6 +36,7 @@
   hardware.enableRedistributableFirmware = true;
 
   # powerManagement.enable = true;
+  services.fwupd.enable = true;
 
   services.tlp = {
     enable = true;
@@ -52,7 +53,7 @@
       CPU_MAX_PERF_ON_BAT = 60;
 
       #Optional helps save long term battery health
-      START_CHARGE_THRESH_BAT0 = 40; # 40 and below it starts to charge
+      START_CHARGE_THRESH_BAT0 = 75; # 75 and below it starts to charge
       STOP_CHARGE_THRESH_BAT0 = 80; # 80 and above it stops charging
     };
   };

@@ -17,6 +17,7 @@
       pipewire/default.nix
       firejail/default.nix
       hyprlock/default.nix
+      bolt/default.nix
     ];
 
   # home-manager = {

@@ -106,5 +106,8 @@
     qjackctl
 
     lm_sensors
+
+    tenv
+    acpi
   ];
 }
