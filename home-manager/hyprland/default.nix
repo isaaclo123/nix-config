@@ -47,6 +47,8 @@ in
 
       #autostart
       exec-once = [
+        "nordvpn c"
+
         # chinese
         "fcitx5 -d -r"
         "fcitx5-remote -r"
