@@ -109,5 +109,7 @@
 
     tenv
     acpi
+
+    libreoffice
   ];
 }
