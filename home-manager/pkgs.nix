@@ -111,5 +111,6 @@
     acpi
 
     libreoffice
+    gphoto2fs
   ];
 }
