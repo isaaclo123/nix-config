@@ -34,6 +34,8 @@
       set preview_script ~/.config/ranger/scope.sh
       set use_preview_script true
       map gn cd /etc/nixos
+      set preview_max_size 20000000
+
     '';
   };
 }

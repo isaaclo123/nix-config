@@ -32,6 +32,7 @@
     procps,
     cacert,
     libnl, # Needed for 3.9.x +
+    sqlite,
     libcap_ng, # Needed for 3.9.x +
     libxml2,
     libidn2,
@@ -39,17 +40,17 @@
     wireguard-tools,
   }: let
     pname = "nordvpn";
-    version = "4.0.0";
+    version = "4.2.2";
 
 nordVPNBase = stdenv.mkDerivation {
       inherit pname version;
 
       src = fetchurl {
         url = "https://repo.nordvpn.com/deb/nordvpn/debian/pool/main/n/nordvpn/nordvpn_${version}_amd64.deb";
-        hash = "sha256-elKREKiFrx2TgJPJl1ARtEebsv4PNG9fMq2mrV9xngs=";
+        hash = "sha256-1RtXWYB+X/fRLoSdBUOHdnYCwzSvzj+S3G+yp+nCZks=";
       };
 
-      buildInputs = [libxml2 libidn2 libnl libcap_ng];
+      buildInputs = [libxml2 libidn2 libnl libcap_ng sqlite ];
       nativeBuildInputs = [dpkg autoPatchelfHook stdenv.cc.cc.lib];
 
       dontConfigure = true;
@@ -86,6 +87,7 @@ nordVPNBase = stdenv.mkDerivation {
         libnl # Needed for 3.9.x +
         libcap_ng # Needed for 3.9.x +
         libxml2
+        sqlite
         libidn2
         zlib
         wireguard-tools

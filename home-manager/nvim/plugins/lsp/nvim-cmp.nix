@@ -44,9 +44,11 @@
 
       lspkind = {
         enable = true;
+        mode = "symbol_text";
 
         cmp = {
           enable = true;
+
           menu = {
             nvim_lsp = "[LSP]";
             nvim_lua = "[api]";
@@ -62,6 +64,7 @@
         settings = {
           sources = [
             {name = "path";}
+            {name = "copilot";}
             {name = "nvim_lsp";}
             {name = "luasnip";}
             {

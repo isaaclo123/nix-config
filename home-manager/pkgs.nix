@@ -112,5 +112,13 @@
 
     libreoffice
     gphoto2fs
+    bluetui
+
+    unstable.edl
+
+    digikam
+
+    slack
+    unstable.teams-for-linux
   ];
 }

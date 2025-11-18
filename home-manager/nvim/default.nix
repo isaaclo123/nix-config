@@ -3,12 +3,14 @@
     ./options.nix
     ./keymaps.nix
     ./plugins/direnv.nix
+    ./plugins/blame.nix
     ./plugins/trouble.nix
     ./plugins/nvim-tree.nix
     ./plugins/surround.nix
     ./plugins/hop.nix
     ./plugins/bufferline.nix
     ./plugins/telescope.nix
+    ./plugins/copilot.nix
     ./plugins/lualine.nix
     ./plugins/tree-sitter.nix
     ./plugins/suda-vim.nix
