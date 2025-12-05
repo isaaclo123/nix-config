@@ -35,15 +35,15 @@ in
         )
         (monitors)) else ",preferred,auto,1";
 
-      gestures = {
-        workspace_swipe = true;
-        workspace_swipe_fingers = 3;
-        workspace_swipe_distance = 100;
-        workspace_swipe_min_speed_to_force = 5;
-        workspace_swipe_cancel_ratio = 0.1;
-        workspace_swipe_touch = true;
-        workspace_swipe_invert = true;
-      };
+      # gestures = {
+      #   workspace_swipe = true;
+      #   workspace_swipe_fingers = 3;
+      #   workspace_swipe_distance = 100;
+      #   workspace_swipe_min_speed_to_force = 5;
+      #   workspace_swipe_cancel_ratio = 0.1;
+      #   workspace_swipe_touch = true;
+      #   workspace_swipe_invert = true;
+      # };
 
       #autostart
       exec-once = [
