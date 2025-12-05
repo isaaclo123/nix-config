@@ -68,7 +68,7 @@
       #   enable = true;
       #   currentLine = false;
       # };
-      rust-tools.enable = true;
+      # rust-tools.enable = true;
     };
   };
 }

@@ -45,6 +45,10 @@
   # printing
   services.printing.enable = true;
 
+  # firmware
+  hardware.enableAllFirmware = true;
+  hardware.enableRedistributableFirmware = true;
+
   # Set your time zone.
   time.timeZone = "America/Chicago";
 
@@ -86,6 +90,7 @@
   programs.nix-ld.enable = true;
   # programs.nix-ld.package = inputs.nix-ld-rs.packages.${pkgs.hostPlatform.system}.nix-ld-rs;
   programs.nix-ld.libraries = with pkgs; [
+    libgcrypt
     tinyalsa
     openal
     libpulseaudio

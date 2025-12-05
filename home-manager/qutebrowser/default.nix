@@ -16,7 +16,7 @@
   };
 
   # clear cookies
-  home.packages = [ pkgs.haskellPackages.bisc ];
+  # home.packages = [ pkgs.haskellPackages.bisc ];
 
   programs.qutebrowser = 
     let user-content-css = pkgs.fetchurl {

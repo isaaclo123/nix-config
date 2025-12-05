@@ -8,7 +8,7 @@
     libtar
     file
     calibre
-    poppler_utils
+    poppler-utils
     atool
     python311Packages.pillow
   ];

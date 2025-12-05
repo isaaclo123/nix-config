@@ -56,7 +56,7 @@
     firefox
 
     httpie
-    http-prompt
+    # http-prompt
 
     # terraform
 
@@ -120,5 +120,10 @@
 
     slack
     unstable.teams-for-linux
+
+    go
+    pixelflasher
+
+    wireshark
   ];
 }

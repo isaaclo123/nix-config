@@ -16,7 +16,7 @@
   services.gpg-agent = {
     enable = true;
 
-    pinentryPackage = pkgs.pinentry-gtk2;
+    pinentry.package = pkgs.pinentry-qt;
 
     defaultCacheTtl = 2147483647;
     maxCacheTtl = 2147483647;

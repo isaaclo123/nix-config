@@ -7,7 +7,7 @@
       rime-data
       fcitx5-gtk
       fcitx5-rime
-      fcitx5-chinese-addons
+      qt6Packages.fcitx5-chinese-addons
     ];
     fcitx5.settings.inputMethod = {
       GroupOrder."0" = "Default";
