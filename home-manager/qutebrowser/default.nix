@@ -77,6 +77,7 @@
     };
 
     aliases = {
+      "paywall" = "open https://www.removepaywall.com/search?url={url}";
       "tor-cycle" = "config-cycle -t -p content.proxy http://0.0.0.0:8118/ system";
       "view-in-mpv" = "spawn --userscript ${pkgs.qutebrowser}/share/qutebrowser/userscripts/view_in_mpv";
       "qute-pass" = "spawn --userscript ${pkgs.qutebrowser}/share/qutebrowser/userscripts/qute-pass -d 'wofi --show=dmenu'";
