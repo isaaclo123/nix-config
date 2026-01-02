@@ -10,7 +10,6 @@
     ./plugins/hop.nix
     ./plugins/bufferline.nix
     ./plugins/telescope.nix
-    ./plugins/copilot.nix
     ./plugins/lualine.nix
     ./plugins/tree-sitter.nix
     ./plugins/suda-vim.nix
@@ -20,8 +19,11 @@
     ./plugins/alpha.nix
     ./plugins/csvview.nix
     ./plugins/indent-blankline.nix
+    ./plugins/copilot-chat.nix
     ./plugins/web-devicons.nix
   ];
+
+  # ./plugins/copilot.nix
 
   home.packages = with pkgs; [wl-clipboard];
 
