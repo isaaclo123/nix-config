@@ -4,6 +4,8 @@
       CopilotChatVisual = {
         command.__raw = ''
           function(args)
+            local chat = require("CopilotChat")
+            local select = require("CopilotChat.select")
             chat.ask(args.args, { selection = select.visual })
           end
         '';
@@ -13,6 +15,8 @@
       CopilotChatInline = {
         command.__raw = ''
           function(args)
+            local chat = require("CopilotChat")
+            local select = require("CopilotChat.select")
             chat.ask(args.args, {
               selection = select.visual,
               window = {
@@ -31,6 +35,8 @@
       CopilotChatBuffer = {
         command.__raw = ''
           function(args)
+            local chat = require("CopilotChat")
+            local select = require("CopilotChat.select")
             chat.ask(args.args, { selection = select.buffer })
           end
         '';
