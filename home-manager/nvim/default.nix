@@ -19,11 +19,12 @@
     ./plugins/alpha.nix
     ./plugins/csvview.nix
     ./plugins/indent-blankline.nix
-    ./plugins/copilot-chat.nix
+    # ./plugins/copilot-chat.nix
+    ./plugins/copilot.nix
+    ./plugins/avante.nix
     ./plugins/web-devicons.nix
   ];
 
-  # ./plugins/copilot.nix
 
   home.packages = with pkgs; [wl-clipboard];
 
