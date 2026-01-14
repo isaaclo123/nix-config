@@ -19,7 +19,14 @@ let create-account = folder: email: signature: (pkgs.writeText folder ''
   macro index,pager gs "<change-folder>=${folder}/Sent<enter>"        "open sent"
   macro index,pager gt "<change-folder>=${folder}/Trash<enter>"       "open trash"
   macro index,pager gf "<change-folder>?"                   "open mailbox..."
-''); in
+'');
+
+  pipe2w3m = pkgs.writeShellScript 
+    "pipe2w3m"
+    ''
+      cat "$@"| w3m -o auto_image=TRUE -I %{charset} -T text/html -F
+    '';
+in
 
 {
   home.packages = with pkgs; [
@@ -31,9 +38,14 @@ let create-account = folder: email: signature: (pkgs.writeText folder ''
   ];
 
   home.file = {
+    ".w3m/config".text = ''
+      ${builtins.readFile ./w3m.config}
+    '';
+
     ".mailcap".text = ''
       # text/html; elinks -dump -dump-color-mode 1 -no-numbering -no-references -dump-width 100; copiousoutput;
       text/html; w3m -I %{charset} -T text/html; copiousoutput;
+      text/html; cat %s | ${pipe2w3m}
       auto_view text/html
 
       image/*; swayimg %s; test=test -n "$DISPLAY";
