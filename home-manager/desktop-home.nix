@@ -31,6 +31,7 @@
     ./rust/default.nix
     ./kdeconnect/default.nix
     ./gpg/default.nix
+    ./radicale/default.nix
     ./nodejs/default.nix
     ./mpv/default.nix
     ./dunst/default.nix

@@ -49,6 +49,8 @@ in
       exec-once = [
         "nordvpn c"
 
+        # "radicale &"
+
         # chinese
         "fcitx5 -d -r"
         "fcitx5-remote -r"

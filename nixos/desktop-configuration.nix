@@ -18,6 +18,7 @@
       firejail/default.nix
       hyprlock/default.nix
       bolt/default.nix
+      # radicale/default.nix
     ];
 
   # home-manager = {

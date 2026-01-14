@@ -9,7 +9,7 @@
     ".config/khard/khard.conf".text = ''
       [addressbooks]
       [[contacts]]
-      path = "~/.contacts/ade68564-23e0-f2cb-9f07-afe629979f45"
+      path = "~/.contacts/default"
 
       [general]
       debug = no
@@ -77,13 +77,13 @@
     #  };
     # };
   accounts.contact.accounts.isaac = {
-    # khard.enable = true;
+    khard.enable = true;
 
     remote = {
-      passwordCommand = ["${pkgs.pass}/bin/pass" "show" "vps.loisa.ac/radicale"];
+      passwordCommand = ["${pkgs.pass}/bin/pass" "show" "posteo.de/isaaclo123"];
       type = "carddav";
-      url = "https://vps.loisa.ac/radicale/isaac/ade68564-23e0-f2cb-9f07-afe629979f45/";
-      userName = "isaac";
+      url = "https://posteo.de:8843/addressbooks/isaaclo123/default";
+      userName = "isaaclo123";
     };
 
     local = {

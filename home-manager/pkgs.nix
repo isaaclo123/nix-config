@@ -4,6 +4,7 @@
   pkgs,
   ...
 }: {
+  programs.lutris.enable = true;
   # Add stuff for your user as you see fit:
   # programs.neovim.enable = true;
   home.packages = with pkgs; [
@@ -67,7 +68,7 @@
 
     transmission_4-gtk
     unar
-    lutris
+    # unstable.pkgs.lutris
 
     zip
 
@@ -125,5 +126,8 @@
     pixelflasher
 
     wireshark
+    mkgmap
+    mkgmap-splitter
+    vulkan-tools
   ];
 }
