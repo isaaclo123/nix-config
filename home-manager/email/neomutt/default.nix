@@ -46,9 +46,9 @@ in
       confirm_qq false
     '';
 
-    # ".w3m/keymap".text = ''
-    #   ${builtins.readFile ./w3m.config}
-    # '';
+    ".w3m/keymap".text = ''
+      ${builtins.readFile ./w3m.config}
+    '';
 
     ".mailcap".text = ''
       text/html; cat %s | ${pipe2w3m}

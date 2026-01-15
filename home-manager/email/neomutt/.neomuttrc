@@ -199,6 +199,9 @@ auto_view text/html
 alternative_order text/plain text/enriched text/html
 
 macro index,pager v "<view-attachments><search>html<enter>"
+# quick html view macro; view attachments, find html file, view it, exit the pager, and then mark the message as read
+macro index,pager V "<view-attachments><search>html<enter><view-mailcap><exit>"
+
 macro attach 'V' "<pipe-entry>tee /tmp/mutt.html 1>/dev/null && qutebrowser /tmp/mutt.html<enter>"
 bind attach <return> view-mailcap
 
