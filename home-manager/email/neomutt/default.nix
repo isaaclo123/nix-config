@@ -30,7 +30,7 @@ in
 
 {
   home.packages = with pkgs; [
-    old.neomutt
+    neomutt
     # elinks
     w3m-full
     urlscan
@@ -39,14 +39,22 @@ in
 
   home.file = {
     ".w3m/config".text = ''
-      ${builtins.readFile ./w3m.config}
+      # kitty img
+      inline_img_protocol 4
+      imgdisplay kitty
+
+      confirm_qq false
     '';
 
+    # ".w3m/keymap".text = ''
+    #   ${builtins.readFile ./w3m.config}
+    # '';
+
     ".mailcap".text = ''
-      # text/html; elinks -dump -dump-color-mode 1 -no-numbering -no-references -dump-width 100; copiousoutput;
-      text/html; w3m -I %{charset} -T text/html; copiousoutput;
       text/html; cat %s | ${pipe2w3m}
-      auto_view text/html
+      text/html; w3m -I %{charset} -T text/html; copiousoutput;
+      # text/html; elinks -dump -dump-color-mode 3 -no-numbering -no-references -dump-width 100; copiousoutput;
+      # auto_view text/html
 
       image/*; swayimg %s; test=test -n "$DISPLAY";
       application/pdf; zathura %s; test=test -n "$DISPLAY"

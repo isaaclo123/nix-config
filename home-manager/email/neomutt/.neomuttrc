@@ -34,7 +34,7 @@ set sort_re
 set pager_index_lines = 8
 set pager_context     = 5
 set help              = no
-# set pager_stop
+set pager_stop = yes
 set menu_scroll
 set smart_wrap
 set tilde
@@ -196,5 +196,11 @@ set allow_ansi="yes"
 
 # viewing HTML mail
 auto_view text/html
+alternative_order text/plain text/enriched text/html
+
+macro index,pager v "<view-attachments><search>html<enter>"
 macro attach 'V' "<pipe-entry>tee /tmp/mutt.html 1>/dev/null && qutebrowser /tmp/mutt.html<enter>"
 bind attach <return> view-mailcap
+
+# Kill Autoview, squash blank lines
+set display_filter = "grep -v Autoview | cat -s"
