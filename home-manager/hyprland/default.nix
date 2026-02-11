@@ -56,7 +56,7 @@ in
         "fcitx5-remote -r"
 
         "hyprctl setcursor Vanilla-DMZ 24"
-        "calcurse --datadir=$HOME/.calcurse_personal/ --daemon"
+        "calcurse --daemon"
         # "calcurse --datadir=$HOME/.calcurse_work/ --daemon"
 
         "sleep 1.5; slack -u"
