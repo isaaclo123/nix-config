@@ -39,8 +39,8 @@
         name = "youtube-adblocker.js";
       })
       (pkgs.fetchurl {
-        url = "https://update.greasyfork.org/scripts/453320/Simple%20Sponsor%20Skipper.user.js";
-        sha256 = "1r4adaf2ys138xj6maa1n3xhksghd868y564yqahc48mccd74rsa";
+        url = "https://raw.githubusercontent.com/hxueh/SponsorBlock/refs/heads/master/sponsorblock.user.js";
+        sha256 = "0x8k86slf9za62lpw36gf6swf2cwh0pr32k22nprhimngdsck5fx";
         name = "youtube-sponsorblock.js";
       })
     ];

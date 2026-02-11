@@ -129,5 +129,7 @@
     mkgmap
     mkgmap-splitter
     vulkan-tools
+
+    ncdu
   ];
 }

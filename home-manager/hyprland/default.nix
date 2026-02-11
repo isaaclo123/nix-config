@@ -47,7 +47,7 @@ in
 
       #autostart
       exec-once = [
-        "nordvpn c"
+        "sleep 1.5; nordvpn c"
 
         # "radicale &"
 
