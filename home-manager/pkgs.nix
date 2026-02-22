@@ -131,5 +131,6 @@
     vulkan-tools
 
     ncdu
+    ente-desktop
   ];
 }

@@ -30,6 +30,7 @@
   boot.initrd.luks.devices."luks-b65bf4f8-f57c-4ecc-baf9-8a30932a1b97".device = "/dev/disk/by-uuid/b65bf4f8-f57c-4ecc-baf9-8a30932a1b97";
 
   networking.hostName = "t14s"; # Define your hostname.
+  networking.networkmanager.wifi.powersave = false;
   # Enable automatic login for the user.
   services.getty.autologinUser = "isaac";
 
@@ -51,6 +52,8 @@
       CPU_MAX_PERF_ON_AC = 100;
       CPU_MIN_PERF_ON_BAT = 0;
       CPU_MAX_PERF_ON_BAT = 60;
+
+      WIFI_PWR_ON_BAT="on";
 
       #Optional helps save long term battery health
       START_CHARGE_THRESH_BAT0 = 80; # 75 and below it starts to charge
