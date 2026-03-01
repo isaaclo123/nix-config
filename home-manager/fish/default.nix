@@ -2,6 +2,7 @@
 
   home.sessionVariables = {
     DIRENV_WARN_TIMEOUT = 0;
+    # AVANTE_OPENAI_API_KEY = "$(pass show AVANTE_OPENAI_API_KEY)";
     # JIRA_API_TOKEN = "$(pass show jira/api_token)";
   };
   programs.direnv = {

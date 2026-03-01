@@ -1,7 +1,15 @@
 { pkgs, ...}: {
   programs.chromium = {
     enable = true;
-    package = pkgs.ungoogled-chromium;
+    package = (pkgs.unstable.chromium.override {
+      enableWideVine = true;
+      commandLineArgs = [
+        "--enable-features=AcceleratedVideoEncoder"
+        "--ignore-gpu-blocklist"
+        "--enable-zero-copy"
+      ];
+    });
+    # package = pkgs.ungoogled-chromium;
 
     # extensions = [
     #   { id = "cjpalhdlnbpafiamejdnhcphjbkeiagm"; }
