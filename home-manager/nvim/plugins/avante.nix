@@ -7,8 +7,8 @@
         auto_suggestions_provider = "copilot";
         providers = {
           copilot = {
-            model = "claude-sonnet-4.6";
-            # model = "gpt-5-mini";
+            # model = "claude-sonnet-4.6";
+            model = "gpt-5-mini";
           };
           openai = {
             model = "gpt-5-mini";
