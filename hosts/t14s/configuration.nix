@@ -27,6 +27,8 @@
   boot.initrd.kernelModules = [ "amdgpu" ];
   services.xserver.videoDrivers = ["amdgpu" ];
 
+  boot.kernelParams = [ "pcie_aspm=off" ];
+
   boot.initrd.luks.devices."luks-b65bf4f8-f57c-4ecc-baf9-8a30932a1b97".device = "/dev/disk/by-uuid/b65bf4f8-f57c-4ecc-baf9-8a30932a1b97";
 
   networking.hostName = "t14s"; # Define your hostname.
@@ -56,8 +58,8 @@
       WIFI_PWR_ON_BAT="on";
 
       #Optional helps save long term battery health
-      START_CHARGE_THRESH_BAT0 = 80; # 75 and below it starts to charge
-      STOP_CHARGE_THRESH_BAT0 = 100; # 80 and above it stops charging
+      START_CHARGE_THRESH_BAT0 = 75; # 75 and below it starts to charge
+      STOP_CHARGE_THRESH_BAT0 = 80; # 80 and above it stops charging
     };
   };
 

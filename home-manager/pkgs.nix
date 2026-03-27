@@ -132,5 +132,9 @@
 
     ncdu
     ente-desktop
+
+    unstable.yt-dlp
+
+    codex
   ];
 }
