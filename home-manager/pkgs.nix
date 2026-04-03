@@ -10,7 +10,7 @@
   home.packages = with pkgs; [
     (pkgs.discord.override {
       # remove any overrides that you don't want
-      withOpenASAR = true;
+      withOpenASAR = false;
       withVencord = false;
     })
     # discord
@@ -135,6 +135,7 @@
 
     unstable.yt-dlp
 
-    codex
+    unstable.bubblewrap
+    unstable.codex
   ];
 }
