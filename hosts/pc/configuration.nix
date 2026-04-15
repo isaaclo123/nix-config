@@ -28,6 +28,7 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.initrd.kernelModules = [ "amdgpu" ];
+  boot.kernelParams = [ "usbcore.autosuspend=-1" ];
   services.xserver.videoDrivers = ["amdgpu" ];
 
   boot.initrd.luks.devices."luks-31e8f9c7-09f0-413b-932e-5bf095de9716".device = "/dev/disk/by-uuid/31e8f9c7-09f0-413b-932e-5bf095de9716";
