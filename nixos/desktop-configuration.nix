@@ -109,7 +109,7 @@
 
     libclang
     libev
-    glibc
+    # glibc
     alsa-lib
     at-spi2-atk
     at-spi2-core
