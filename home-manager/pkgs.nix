@@ -137,5 +137,7 @@
 
     unstable.bubblewrap
     unstable.codex
+    pandoc
+    texliveFull
   ];
 }
