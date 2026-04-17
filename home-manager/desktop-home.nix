@@ -44,6 +44,7 @@
     ./calcurse/default.nix
     ./khard/default.nix
     ./i18n/default.nix
+    ./opencode/default.nix
     ./pkgs.nix
   ];
 

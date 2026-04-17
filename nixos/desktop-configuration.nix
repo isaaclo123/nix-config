@@ -91,6 +91,7 @@
   programs.nix-ld.enable = true;
   # programs.nix-ld.package = inputs.nix-ld-rs.packages.${pkgs.hostPlatform.system}.nix-ld-rs;
   programs.nix-ld.libraries = with pkgs; [
+    # (pkgs.runCommand "steamrun-lib" {} "mkdir $out; ln -s ${pkgs.steam-run.fhsenv}/usr/lib64 $out/lib")
     libgcrypt
     tinyalsa
     openal
@@ -307,6 +308,7 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
      # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    spice-gtk
     nix-prefetch
     nix-prefetch-github
     rose-pine-gtk-theme
@@ -363,4 +365,5 @@
     gtk-theme-name = "rose-pine-gtk"
   '';
 
+  virtualisation.spiceUSBRedirection.enable = true;
 }
