@@ -74,6 +74,7 @@ in
         personal = create-account "Personal" "isaaclo123@gmail.com" signature;
         school = create-account "School" "loxxx298@umn.edu" signature;
         work = create-account "Work" "isaac.lo@classranked.com" signature;
+        coursedog = create-account "CourseDog" "ilo@coursedog.com" signature;
       in ''
         ${builtins.readFile ./powerline.neomuttrc}
         ${builtins.readFile ./colors-powerline.neomuttrc}
@@ -82,14 +83,16 @@ in
 
         # Macros for switching accounts
         macro index,pager <f1> '<sync-mailbox><enter-command>source ${personal}<enter><change-folder>!<enter>'
-        macro index,pager <f2> '<sync-mailbox><enter-command>source ${school}<enter><change-folder>!<enter>'
+        macro index,pager <f2> '<sync-mailbox><enter-command>source ${coursedog}<enter><change-folder>!<enter>'
         macro index,pager <f3> '<sync-mailbox><enter-command>source ${work}<enter><change-folder>!<enter>'
+        macro index,pager <f4> '<sync-mailbox><enter-command>source ${school}<enter><change-folder>!<enter>'
 
         # multiple account setup
         source ${personal}
 
         folder-hook Personal/* source ${personal}
         folder-hook School/* source ${school}
+        folder-hook CourseDog/* source ${coursedog}
         folder-hook Work/* source ${work}
       '';
   };

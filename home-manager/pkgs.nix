@@ -140,11 +140,7 @@
     pandoc
     texliveFull
     spotify
-    (heroic.override {
-      extraPkgs = pkgs': with pkgs'; [
-        gamescope
-        gamemode
-      ];
-    })
+
+    claude-code
   ];
 }

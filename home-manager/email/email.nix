@@ -164,6 +164,16 @@ in
         msmtp-auth = "oauthbearer";
       };
 
+      "CourseDog" = create-account {
+        realName = "Isaac Lo";
+        userName = "ilo@coursedog.com";
+        accountName = "CourseDog";
+        primary = false;
+        imap = gmail-imap;
+        smtp = gmail-smtp;
+        msmtp-auth = "oauthbearer";
+      };
+
       "Work" = create-account {
         realName = "Isaac Lo";
         userName = "isaac.lo@classranked.com";

@@ -30,7 +30,7 @@
     }
     {
         label = "suspend";
-        action = "systemctl suspend; hyprlock";
+        action = "hyprlock & disown && systemctl suspend";
         text = "Suspend";
         keybind = "u";
     }
