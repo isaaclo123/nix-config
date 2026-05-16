@@ -17,32 +17,47 @@
   home-manager = {
     extraSpecialArgs = {
       inherit inputs outputs; 
-      turn_off_non_bedroom_lights_on_resume = true;
+      turn_off_non_bedroom_lights_on_resume = false;
       monitors = [
         {
-            name = "DP-1"; #aoc
+            name = "DP-2"; #aoc
             width = 2560;
             height = 1440;
             refreshRate = 144;
-            x=-960;
-            y=1080;
-        }
-        {
-            name = "HDMI-A-2"; #dell
-            width = 1920;
-            height = 1080;
-            refreshRate = 60;
-            x=-1920;
-            y=0;
-        }
-        {
-            name = "HDMI-A-1"; #asus
-            width = 1920;
-            height = 1080;
-            refreshRate = 60;
+            transform = 0;
             x=0;
             y=0;
         }
+        {
+            name = "HDMI-A-1"; #dell
+            width = 1920;
+            height = 1080;
+            transform = 3;
+            refreshRate = 60;
+            x=2560;
+            y=0;
+        }
+        # {
+        #     name = "HDMI-A-1"; #asus
+        #     width = 1920;
+        #     height = 1080;
+        #     refreshRate = 60;
+        #     x=0;
+        #     y=0;
+        # }
+      ];
+      workspaces = [
+        "1, monitor:DP-2"
+        "2, monitor:DP-2"
+        "3, monitor:DP-2"
+        "4, monitor:DP-2"
+        "5, monitor:DP-2"
+
+        "6, monitor:HDMI-A-1"
+        "7, monitor:HDMI-A-1"
+        "8, monitor:HDMI-A-1"
+        "9, monitor:HDMI-A-1"
+        "10, monitor:HDMI-A-1"
       ];
     };
     users = {

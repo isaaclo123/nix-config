@@ -142,5 +142,7 @@
     spotify
 
     claude-code
+
+    gcalcli
   ];
 }

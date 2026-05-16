@@ -1,6 +1,6 @@
 { pkgs, lib, specialArgs, ...}: 
 let
-  inherit (specialArgs) monitors;
+  inherit (specialArgs) monitors workspaces;
 in
 {
   imports = [
@@ -30,10 +30,13 @@ in
           let
             resolution = "${toString m.width}x${toString m.height}@${toString m.refreshRate}";
             position  = "${toString m.x}x${toString m.y}";
+            transform = "${toString m.transform}";
           in
-          "${m.name},${resolution},${position},1"
+          "${m.name},${resolution},${position},1,transform,${transform}"
         )
         (monitors)) else ",preferred,auto,1";
+
+      workspace = if specialArgs?workspaces then workspaces else null;
 
       # gestures = {
       #   workspace_swipe = true;
