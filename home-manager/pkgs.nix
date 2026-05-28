@@ -145,5 +145,6 @@
 
     wf-recorder
     zoom
+    gcalcli
   ];
 }
