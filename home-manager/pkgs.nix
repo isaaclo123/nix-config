@@ -142,5 +142,8 @@
     spotify
 
     claude-code
+
+    wf-recorder
+    zoom
   ];
 }
