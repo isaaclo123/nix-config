@@ -144,5 +144,7 @@
     claude-code
 
     gcalcli
+
+    wf-recorder
   ];
 }
