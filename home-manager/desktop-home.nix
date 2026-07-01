@@ -110,6 +110,11 @@
   stylix.targets.fish.enable = false;
   stylix.targets.hyprlock.enable = false;
 
+  xdg.portal = {
+    enable = true;
+    xdgOpenUsePortal = true;
+  };
+
   # Nicely reload system units when changing configs
   systemd.user.startServices = "sd-switch";
 

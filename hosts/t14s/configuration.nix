@@ -29,7 +29,7 @@
 
   boot.kernelParams = [ "pcie_aspm=off" ];
 
-  boot.initrd.luks.devices."luks-b65bf4f8-f57c-4ecc-baf9-8a30932a1b97".device = "/dev/disk/by-uuid/b65bf4f8-f57c-4ecc-baf9-8a30932a1b97";
+  boot.initrd.luks.devices."luks-28de44cd-6f1c-4e16-bd84-0561cf51192a".device = "/dev/disk/by-uuid/28de44cd-6f1c-4e16-bd84-0561cf51192a";
 
   networking.hostName = "t14s"; # Define your hostname.
   networking.networkmanager.wifi.powersave = false;

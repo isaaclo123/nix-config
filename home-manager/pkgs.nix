@@ -143,6 +143,8 @@
 
     claude-code
 
+    wf-recorder
+    zoom
     gcalcli
 
     wf-recorder
