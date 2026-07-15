@@ -116,7 +116,7 @@ in
 
       input = {
         kb_options="ctrl:nocaps";
-        scroll_factor="0.2";
+        #scroll_factor="0.2";
       };
       
       windowrule = [
